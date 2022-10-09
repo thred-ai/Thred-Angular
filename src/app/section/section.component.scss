@@ -1,0 +1,32 @@
+.truncate {
+  /**Major Properties**/
+  overflow: hidden;
+  line-height: 2rem;
+  max-height: 8rem;
+  -webkit-box-orient: vertical;
+  display: block;
+  display: -webkit-box;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+}
+
+.rounded-dynamic {
+  border-radius: 25%;
+}
+
+.arrow-btn {
+  opacity: 0.8;
+}
+
+.arrow-btn:hover {
+  opacity: 1;
+}
+
+.zoom {
+  transition: transform 0.2s;
+}
+
+.zoom:hover {
+  transform: scale(1.5);
+}

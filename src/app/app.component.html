@@ -1,0 +1,129 @@
+<mat-sidenav-container class="w-100" style="min-height: 100vh">
+  <mat-sidenav
+    class="bg-white w-100 w-md-25 p-3 h-100"
+    [position]="'start'"
+    #drawer
+  >
+    <div class="w-100 d-flex justify-content-end align-items-center">
+      <mat-icon
+        class="d-inline-flex justify-content-center align-items-center fw-bolder"
+        style="height: 40px; width: 40px; font-size: xx-large"
+        (click)="drawer.toggle()"
+      >
+        close
+      </mat-icon>
+    </div>
+    <div
+      class="bg-white w-100 d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="w-100">
+        <div
+          class="w-100 d-flex justify-content-center align-items-center"
+          style="aspect-ratio: 1"
+        >
+          <img class="w-100 px-5" [src]="'assets/logo_light.png'" />
+        </div>
+        <div class="my-3 mx-auto w-100" style="height: 60px">
+          <app-search-bar [placeholder]="'Search Smart Utils, Developers'">
+          </app-search-bar>
+        </div>
+        <div class="w-100">
+          <div
+            class="w-100 text-center my-1 fw-bold"
+            style="font-size: x-large"
+          >
+            Explore
+          </div>
+          <br />
+          <div
+            class="w-100 text-center my-1 fw-bold"
+            style="font-size: x-large"
+          >
+            Developer
+          </div>
+          <br />
+          <div
+            class="w-100 text-center my-2 fw-bold btn btn-dark p-4"
+            style="font-size: x-large"
+          >
+            Connect
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="h-100 d-flex flex-column bg-light">
+    <div
+      class="w-100 border-bottom d-flex justify-content-between align-items-center bg-white"
+      style="height: 7.5vh; position: fixed; z-index: 50;"
+    >
+      <div class="d-flex justify-content-start align-items-center h-100">
+        <img
+          class="my-1 mx-0 mx-md-4 h-100 py-2 py-md-3"
+          [src]="'assets/logo_light.png'"
+          style="object-fit: contain"
+        />
+        <div
+          class="h-100 d-none d-md-flex justify-content-start align-items-center"
+        >
+          <div
+            class="h-50 my-1 mx-4"
+            [class.search-bar-extend]="expandedSearch"
+            [class.search-bar-back]="!expandedSearch"
+            style="width: 265px"
+          >
+            <app-search-bar
+              [placeholder]="'Search Smart Utils, Developers'"
+              (inputChanged)="updateBar($event)"
+            >
+            </app-search-bar>
+          </div>
+          <span class="text-purple-hover mx-4" role="button">Explore</span>
+          <span class="text-purple-hover mx-4" role="button"
+            >Developer Portal</span
+          >
+        </div>
+      </div>
+      <div class="d-flex justify-content-end align-items-center h-100 me-3 mx-md-4">
+        <div
+          class="w-100 h-100 d-none d-md-flex justify-content-end align-items-center"
+        >
+          <div
+            class="d-flex justify-content-end align-items-center"
+            style="height: 40px"
+          >
+            <span
+              class="fw-bold text-white mx-4 btn btn-dark rounded-pill px-3 d-none d-md-block"
+              role="button"
+              >Connect</span
+            >
+            <img
+              class="rounded-circle h-100 p-1 bg-pink icons"
+              role="button"
+              style="aspect-ratio: 1"
+              [src]="'assets/profile.png'"
+            />
+          </div>
+        </div>
+
+        <div
+          class="w-100 h-100 d-flex justify-content-end align-items-center d-md-none"
+        >
+          <div
+            class="p-1 btn btn-dark d-flex justify-content-center align-items-center"
+            (click)="drawer.toggle()"
+          >
+            <mat-icon> menu </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-100 bg-white" style="min-height: 92.5vh; margin-top: 7.5vh;">
+      <router-outlet></router-outlet>
+      <div class="bg-dark border-top w-100 mt-5" style="height: 50vh">
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,49 @@
+<div class="rounded-pill bg-comp bar-hover w-100 h-100 position-relative">
+  <form
+    class="w-100 h-100 d-flex justify-content-start align-items-center glowing"
+    [formGroup]="searchForm"
+  >
+    <div
+      class="full-width h-100 w-100 ps-3 pe-3 d-flex justify-content-center align-items-center"
+      style="font-size: small"
+    >
+      <input
+        (input)="changed($event)"
+        class="text-dark w-100 bg-transparent border-0"
+        style="height: 20px"
+        matInput
+        placeholder="{{ placeholder }}"
+        formControlName="text"
+        type="text"
+      />
+    </div>
+    <div class="my-0 d-flex justify-content-center align-items-center pe-2">
+      <mat-icon
+        *ngIf="!loading; else load"
+        role="button"
+        class="bg-purple text-white rounded-circle shadow d-flex justify-content-center align-items-center fw-bold"
+        style="font-size: 20px;"
+        (click)="search()"
+        >keyboard_double_arrow_right</mat-icon
+      >
+      <ng-template #load>
+        <div
+          class="my-0 h-100 p-0 d-flex justify-content-center align-items-center"
+          style="aspect-ratio: 1"
+        >
+          <div
+            class="w-100 d-inline-flex justify-content-center align-items-center py-0 my-0"
+            style="height: 24px"
+          >
+            <div class="lds-ring rounded-circle shadow search-button">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </form>
+</div>

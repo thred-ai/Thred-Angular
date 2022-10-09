@@ -1,0 +1,188 @@
+<div
+  class="w-100 h-100 p-0 p-md-5 d-flex justify-content-start align-items-center flex-column position-relative"
+>
+  <div
+    class="w-100 d-inline-flex justify-content-start align-items-start flex-column"
+  >
+    <div
+      class="w-100 d-flex justify-content-center align-items-center py-3 pb-5"
+    >
+      <h2 class="fw-bold text-dark">{{ headline }}</h2>
+    </div>
+
+    <div class="position-relative w-100" style="height: 350px">
+      <div
+        class="h-100 d-none d-md-flex justify-content-center align-items-center position-absolute"
+        style="z-index: 49; left: -0.5rem"
+      >
+        <div
+          class="bg-white shadow rounded-circle p-1 arrow-btn"
+          style="aspect-ratio: 1; width: 50px; overflow: hidden"
+          role="button"
+          (click)="moveLeft()"
+        >
+          <mat-icon
+            class="w-100 h-100 d-flex justify-content-center align-content-center"
+            role="button"
+            style="font-size: 45px"
+            >keyboard_arrow_left</mat-icon
+          >
+        </div>
+      </div>
+
+      <div
+        class="h-100 d-flex d-md-none justify-content-center align-items-center position-absolute"
+        style="z-index: 49; left: 1.5rem"
+      >
+        <div
+          class="bg-dark shadow rounded-circle p-1 arrow-btn"
+          style="aspect-ratio: 1; width: 30px; overflow: hidden"
+          role="button"
+          (click)="moveLeft()"
+        >
+          <mat-icon
+            class="w-100 h-100 d-flex text-white justify-content-center align-content-center"
+            role="button"
+            style="font-size: 25px"
+            >keyboard_arrow_left</mat-icon
+          >
+        </div>
+      </div>
+
+      <div
+        class="h-100 d-none d-md-flex justify-content-center align-items-center position-absolute"
+        style="z-index: 49; right: -0.5rem"
+      >
+        <div
+          class="bg-white shadow rounded-circle p-1 arrow-btn"
+          style="aspect-ratio: 1; width: 50px; overflow: hidden"
+          role="button"
+          (click)="moveRight()"
+        >
+          <mat-icon
+            class="w-100 h-100 d-flex justify-content-center align-content-center"
+            role="button"
+            style="font-size: 45px"
+            >keyboard_arrow_right</mat-icon
+          >
+        </div>
+      </div>
+
+      <div
+        class="h-100 d-flex d-md-none justify-content-center align-items-center position-absolute"
+        style="z-index: 49; right: 1.5rem"
+      >
+        <div
+          class="bg-dark shadow rounded-circle p-1"
+          style="aspect-ratio: 1; width: 30px; overflow: hidden"
+          role="button"
+          (click)="moveRight()"
+        >
+          <mat-icon
+            class="w-100 h-100 d-flex text-white justify-content-center align-content-center"
+            role="button"
+            style="font-size: 25px"
+            >keyboard_arrow_right</mat-icon
+          >
+        </div>
+      </div>
+
+      <drag-scroll
+        #carousel
+        class="w-100 h-100 position-absolute"
+        [scrollbar-hidden]="!isMobile()"
+        [snap-duration]="200"
+      >
+        <div
+          drag-scroll-item
+          class="h-100 p-3 p-md-3 w-100 w-md-25 align-items-center"
+          *ngFor="let item of items; index as i"
+        >
+          <div
+            class="animate__animated animate__fadeIn rounded-15 shadow d-flex flex-column justify-content-between align-items-center"
+            style="overflow: hidden; height: 90%"
+          >
+            <img
+              class="w-100 bg-white zoom"
+              style="object-fit: cover; height: 77.5%;"
+              *ngIf="item?.coverUrl"
+              [src]="item?.coverUrl"
+              role="button"
+            />
+            <div
+              class="w-100 bg-white d-flex justify-content-between align-items-center"
+              style="height: 22.5%; bottom: 0px; right: 0px; z-index: 1;"
+            >
+            <span
+              class="p-0 ms-3 w-50 fw-bold text-truncate"
+              style="font-size: medium"
+            >
+              {{ item.name }}
+            </span>
+              <div
+                class="h-100 bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
+                style="
+                  aspect-ratio: 1;
+                  margin-right: 1rem;
+                  margin-bottom: 2rem;
+                  overflow: hidden;
+                "
+              >
+                <img
+                  class="m-auto"
+                  style="object-fit: contain; height: 90%; width: 90%"
+                  [src]="(item?.displayUrls ?? [])[0]"
+                  role="button"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </drag-scroll>
+    </div>
+
+    <!-- <div
+      class="w-100 m-0 row row-cols-1 row-cols-md-3 g-3 g-md-5 py-4 px-md-2"
+      style="overflow-x: hidden"
+    >
+      <div
+        *ngFor="let item of items"
+        class="col px-2"
+        style="height: 350px"
+        role="button"
+      >
+       
+        <div
+          class="w-100 h-100 d-flex d-inline-flex justify-content-start justify-content-md-center align-items-center"
+        >
+          <img
+            class="rounded-15 shadow animate__animated animate__fadeIn"
+            style="height: 75px; aspect-ratio: 1"
+            [src]="item.displayUrls[0]"
+          />
+          <div
+            class="ms-3 d-flex flex-column justify-content-start align-items-start w-50"
+          >
+            <span
+              class="p-0 fw-bold w-100 text-truncate text-purple"
+              style="font-size: medium"
+            >
+              {{ item.name }}
+            </span>
+            <div
+              class="d-flex justify-content-start align-items-center mt-0 p-0 text-secondary w-100"
+            >
+              <span class="mw-75 mw-md-50 text-truncate" style="font-size: small">{{
+                item.creatorName
+              }}</span>
+              <span class="mx-1" style="font-size: small"> • </span>
+              <span style="font-size: small">{{
+                item.price | currency: "US":"$":"1.0-0"
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

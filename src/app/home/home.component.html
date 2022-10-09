@@ -1,0 +1,13 @@
+<div class="w-100 bg-light">
+  <div class="w-100 vh-md-60 bg-light">
+    <app-featured [item]="featuredUtil"> </app-featured>
+  </div>
+  <div class="w-100 mt-2 bg-white border-top">
+    <div class="w-100 pt-2" *ngFor="let category of utilCategories ?? []">
+      <app-section
+        [headline]="category.name"
+        [items]="category.utils"
+      ></app-section>
+    </div>
+  </div>
+</div>
