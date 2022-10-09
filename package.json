@@ -32,7 +32,7 @@
     "@metamask/detect-provider": "^1.2.0",
     "@ncstate/sat-popover": "^8.0.1",
     "@ng-bootstrap/ng-bootstrap": "^12.0.0-beta.4",
-    "@nguniversal/express-engine": "^13.0.1",
+    "@nguniversal/express-engine": "^13.1.1",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "^4.5.0",
