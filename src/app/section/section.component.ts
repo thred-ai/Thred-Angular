@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  Inject,
+  Input,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { DragScrollComponent } from 'ngx-drag-scroll';
 import { Util } from '../util.model';
 
@@ -8,7 +16,7 @@ import { Util } from '../util.model';
   styleUrls: ['./section.component.scss'],
 })
 export class SectionComponent implements OnInit {
-  constructor() {}
+  constructor(@Inject(PLATFORM_ID) private platformID: Object) {}
 
   @Input() headline: string = '';
 
@@ -34,10 +42,14 @@ export class SectionComponent implements OnInit {
     this.ds?.moveLeft();
   }
 
-  isMobile = function () {
-    if (window.innerWidth < 768) {
-      return true;
+  isMobile() {
+    if (isPlatformBrowser(this.platformID)) {
+      if (window.innerWidth < 768) {
+        return true;
+      }
+      return false;
+    } else {
+      return false;
     }
-    return false;
-  };
+  }
 }

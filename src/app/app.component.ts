@@ -5,7 +5,7 @@ import {
   Inject,
   PLATFORM_ID,
 } from '@angular/core';
-import * as AOS from 'aos';
+// import * as AOS from 'aos';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ export class AppComponent {
     @Inject(PLATFORM_ID) private platformID: Object
   ) {
     if (isPlatformBrowser(this.platformID)) {
-      AOS.init();
+      // AOS.init();
     }
   }
 
