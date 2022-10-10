@@ -7,6 +7,7 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { DragScrollComponent } from 'ngx-drag-scroll';
 import { Util } from '../util.model';
 
@@ -16,7 +17,7 @@ import { Util } from '../util.model';
   styleUrls: ['./section.component.scss'],
 })
 export class SectionComponent implements OnInit {
-  constructor(@Inject(PLATFORM_ID) private platformID: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformID: Object, private router: Router) {}
 
   @Input() headline: string = '';
 
@@ -28,6 +29,10 @@ export class SectionComponent implements OnInit {
   ds?: DragScrollComponent;
 
   ngOnInit(): void {}
+
+  openProduct(){
+    this.router.navigateByUrl("/utils/983756")
+  }
 
   moveRight() {
     if (

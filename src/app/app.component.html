@@ -134,7 +134,7 @@
       </div>
     </div>
     <div class="w-100 bg-white" style="min-height: 92.5vh; margin-top: 7.5vh">
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
       <div class="bg-dark border-top w-100 mt-5" style="min-height: 40vh">
         <div
           class="w-100 d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-content-center px-2 px-md-5 py-2 py-md-5"

@@ -7155,6 +7155,16 @@ mat-sidenav {
   height: 60vh !important;
 }
 
+.vh-50 {
+  height: 50vh !important;
+}
+.vh-40 {
+  height: 40vh !important;
+}
+.vh-30 {
+  height: 30vh !important;
+}
+
 .vh-80 {
   height: 80vh !important;
 }
@@ -8858,6 +8868,12 @@ mat-sidenav {
   }
   .vh-md-50 {
     height: 50vh !important;
+  }
+  .vh-md-40 {
+    height: 40vh !important;
+  }
+  .vh-md-30 {
+    height: 30vh !important;
   }
 }
 
