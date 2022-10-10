@@ -59,11 +59,13 @@
       style="height: 7.5vh; position: fixed; z-index: 50"
     >
       <div class="d-flex justify-content-start align-items-center h-100">
-        <img
-          class="my-1 mx-0 mx-md-4 h-100 py-2 py-md-3"
-          [src]="'assets/logo_light.png'"
-          style="object-fit: contain"
-        />
+        <div class="my-1 mx-0 mx-md-4 h-100 py-2 py-md-3">
+          <img
+            class="h-100 w-auto p-2 ms-2 ms-md-0"
+            [src]="'assets/logo_light.png'"
+            style="object-fit: contain"
+          />
+        </div>
         <div
           class="h-100 d-none d-md-flex justify-content-start align-items-center"
         >
@@ -100,12 +102,22 @@
               role="button"
               >Connect</span
             >
-            <img
-              class="rounded-circle h-100 p-1 bg-pink icons"
-              role="button"
-              style="aspect-ratio: 1"
-              [src]="'assets/profile.png'"
-            />
+            <div
+              class="rounded-circle h-100 icons bg-pink"
+              style="
+                border-style: solid;
+                border-width: 0.2rem;
+                border-color: rgb(255, 232, 248);
+                width: fit-content;
+              "
+            >
+              <img
+                class="h-100 p-0 m-auto rounded-circle"
+                role="button"
+                style="object-fit: contain; aspect-ratio: 1"
+                [src]="'assets/profile.png'"
+              />
+            </div>
           </div>
         </div>
 
@@ -173,7 +185,7 @@
         </div>
         <div class="text-light px-2 px-md-5">
           <div class="px-3 px-md-3 text-start py-4">
-            <hr>
+            <hr />
             <span class="mw-100" style="font-size: small">
               2021 - 2022 Thred Apps, Inc.
             </span>

@@ -7,35 +7,23 @@ input.form-control:focus {
   -webkit-box-shadow: none;
 }
 
-.lds-ring {
-  display: inline-block;
-  position: relative;
-  height: 100%;
+.loader {
+  width: 60%;
+  height: 60%;
+  border: 2.5px solid #fff;
   background-color: #9c4aff;
-  aspect-ratio: 1;
-}
-.lds-ring div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  height: 15px;
-  aspect-ratio: 1;
-  margin: 4.25px;
-  border: 2px solid #fff;
+  border-bottom-color: transparent;
   border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotate 1s linear infinite;
 }
-.lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
+
+.loading-btn {
+  background-color: #9c4aff;
 }
-.lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
-}
-.lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes lds-ring {
+
+@keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
@@ -48,8 +36,6 @@ input.form-control:focus {
   animation: search-button-anim 0.25s ease-in;
   animation-fill-mode: forwards;
 }
-
-
 
 @keyframes search-button-anim {
   0% {
