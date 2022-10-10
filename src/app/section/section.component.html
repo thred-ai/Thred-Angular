@@ -10,7 +10,7 @@
       <h2 class="fw-bold text-dark">{{ headline }}</h2>
     </div>
 
-    <div class="position-relative w-100" style="height: 350px">
+    <div class="position-relative w-100" [style.height.px]="cols >= 4 ? '350' : '400'">
       <div
         class="h-100 d-none d-md-flex justify-content-center align-items-center position-absolute"
         style="z-index: 49; left: -0.5rem"
@@ -95,7 +95,8 @@
       >
         <div
           drag-scroll-item
-          class="h-100 p-3 pb-1 p-md-3 w-100 w-md-25 align-items-center"
+          class="h-100 p-3 pb-1 p-md-3 align-items-center"
+          [style.width.%]="isMobile() ? 100 : 100/cols"
           *ngFor="let item of items; index as i"
         >
           <div

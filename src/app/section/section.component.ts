@@ -20,6 +20,8 @@ export class SectionComponent implements OnInit {
 
   @Input() headline: string = '';
 
+  @Input() cols: number = 0;
+
   @Input() items: Util[] = [];
 
   @ViewChild('carousel', { read: DragScrollComponent })
@@ -28,10 +30,9 @@ export class SectionComponent implements OnInit {
   ngOnInit(): void {}
 
   moveRight() {
-    console.log(this.ds?.currIndex);
     if (
       this.ds?.currIndex ==
-      this.items.length - 1 - (this.isMobile() ? 0 : this.items.length / 2)
+      this.items.length - this.cols
     ) {
       return;
     }

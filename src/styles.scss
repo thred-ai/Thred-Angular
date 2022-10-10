@@ -8816,6 +8816,10 @@ mat-sidenav {
   .w-md-25 {
     width: 25% !important;
   }
+  .w-md-33 {
+    --width: 100%;
+    width: calc(var(--width) / 3) !important;
+  }
   .mw-md-25 {
     max-width: 25% !important;
   }
@@ -8851,6 +8855,9 @@ mat-sidenav {
   }
   .vh-md-60 {
     height: 60vh !important;
+  }
+  .vh-md-50 {
+    height: 50vh !important;
   }
 }
 
