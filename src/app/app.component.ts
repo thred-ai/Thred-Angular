@@ -31,22 +31,22 @@ export class AppComponent {
   }
 
   ngOnInit(){
-    console.log("mayn")
-    this.readData()
+    // console.log("mayn")
+    // this.readData()
   }
 
-  async readData(){
-    const sdk = new ThirdwebSDK('polygon');
+  // async readData(){
+  //   const sdk = new ThirdwebSDK('polygon');
 
-    // access your deployed contracts
-    const contract = await sdk.getContract('0x96988A60c4E36207cfc76beDae5171deDbB55e8d');
+  //   // access your deployed contracts
+  //   const contract = await sdk.getContract('0x96988A60c4E36207cfc76beDae5171deDbB55e8d');
 
-    console.log(contract)
+  //   console.log(contract)
 
-    // Read data using direct calls to your contract
-    // const myData = await contract.call('deployerAddress');
-    // console.log(myData)
-  }
+  //   // Read data using direct calls to your contract
+  //   // const myData = await contract.call('deployerAddress');
+  //   // console.log(myData)
+  // }
 
   updateBar(event: boolean) {
     console.log(event);

@@ -5,7 +5,7 @@
     class="w-100 d-inline-flex justify-content-start align-items-start flex-column"
   >
     <div
-      class="w-100 d-flex justify-content-center align-items-center py-3 pb-md-5"
+      class="w-100 d-flex justify-content-center align-items-center py-3 pb-2 pb-md-5 pt-md-0"
     >
       <h2 class="fw-bold text-dark">{{ headline }}</h2>
     </div>
@@ -95,7 +95,7 @@
       >
         <div
           drag-scroll-item
-          class="h-100 p-3 p-md-3 w-100 w-md-25 align-items-center"
+          class="h-100 p-3 pb-1 p-md-3 w-100 w-md-25 align-items-center"
           *ngFor="let item of items; index as i"
         >
           <div
@@ -104,21 +104,21 @@
           >
             <img
               class="w-100 bg-white zoom"
-              style="object-fit: cover; height: 77.5%;"
+              style="object-fit: cover; height: 77.5%"
               *ngIf="item?.coverUrl"
               [src]="item?.coverUrl"
               role="button"
             />
             <div
               class="w-100 bg-white d-flex justify-content-between align-items-center"
-              style="height: 22.5%; bottom: 0px; right: 0px; z-index: 1;"
+              style="height: 22.5%; bottom: 0px; right: 0px; z-index: 1"
             >
-            <span
-              class="p-0 ms-3 w-50 fw-bold text-truncate"
-              style="font-size: medium"
-            >
-              {{ item.name }}
-            </span>
+              <span
+                class="p-0 ms-3 w-50 fw-bold text-truncate"
+                style="font-size: medium"
+              >
+                {{ item.name }}
+              </span>
               <div
                 class="h-100 bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
                 style="

@@ -1,5 +1,5 @@
-import { Chain } from "./chain.model";
-import { Signature } from "./signature.model";
+import { Chain } from './chain.model';
+import { Signature } from './signature.model';
 
 export class Util {
   name!: string;
@@ -38,9 +38,9 @@ export class Util {
     coverUrl?: string
   ) {
     this.id = id;
-    this.creator = creator
+    this.creator = creator;
     this.signature = signature;
-    this.creatorName = creatorName ?? "Unknown Developer"
+    this.creatorName = creatorName ?? 'Unknown Developer';
     this.name = name ?? 'My SmartUtil';
     this.displayUrls = displayUrls ?? ['add_thred_default_later'];
     this.metaUrl = metaUrl ?? 'add_thred_default_later';
@@ -52,6 +52,6 @@ export class Util {
     this.reviews = reviews ?? 0;
     this.rating = rating ?? 0;
     this.chains = chains ?? [new Chain('Ethereum', 1)];
-    this.coverUrl = coverUrl
+    this.coverUrl = coverUrl;
   }
 }
