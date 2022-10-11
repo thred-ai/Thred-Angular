@@ -71,12 +71,12 @@
               <hr class="mt-1" />
               {{ item.description }}
               <div
-                class="w-100 w-md-75 my-5 rounded shadow p-2"
-                style="aspect-ratio: 1.5; overflow: hidden"
+                class="w-100 w-md-75 my-5 rounded shadow d-inline-flex justify-content-center align-content-center"
+                style="aspect-ratio: 1.5; overflow: hidden;"
               >
                 <img
-                  class="w-100 h-100 zoom rounded"
-                  style="object-fit: cover"
+                  class="zoom rounded my-auto"
+                  style="object-fit: cover; width: 97%; height: 95%;"
                   *ngIf="item?.coverUrl"
                   [src]="item?.coverUrl"
                 />
