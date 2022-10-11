@@ -10,7 +10,10 @@
       <h2 class="fw-bold text-dark">{{ headline }}</h2>
     </div>
 
-    <div class="position-relative w-100" [style.height.px]="cols >= 4 ? '350' : '400'">
+    <div
+      class="position-relative w-100"
+      [style.height.px]="cols >= 4 ? '350' : '400'"
+    >
       <div
         class="h-100 d-none d-md-flex justify-content-center align-items-center position-absolute"
         style="z-index: 49; left: -0.5rem"
@@ -96,7 +99,7 @@
         <div
           drag-scroll-item
           class="h-100 p-3 pb-1 p-md-3 align-items-center"
-          [style.width.%]="isMobile() ? 100 : 100/cols"
+          [style.width.%]="isMobile() ? 100 : 100 / cols"
           *ngFor="let item of items; index as i"
         >
           <div
@@ -142,49 +145,5 @@
         </div>
       </drag-scroll>
     </div>
-
-    <!-- <div
-      class="w-100 m-0 row row-cols-1 row-cols-md-3 g-3 g-md-5 py-4 px-md-2"
-      style="overflow-x: hidden"
-    >
-      <div
-        *ngFor="let item of items"
-        class="col px-2"
-        style="height: 350px"
-        role="button"
-      >
-       
-        <div
-          class="w-100 h-100 d-flex d-inline-flex justify-content-start justify-content-md-center align-items-center"
-        >
-          <img
-            class="rounded-15 shadow animate__animated animate__fadeIn"
-            style="height: 75px; aspect-ratio: 1"
-            [src]="item.displayUrls[0]"
-          />
-          <div
-            class="ms-3 d-flex flex-column justify-content-start align-items-start w-50"
-          >
-            <span
-              class="p-0 fw-bold w-100 text-truncate text-purple"
-              style="font-size: medium"
-            >
-              {{ item.name }}
-            </span>
-            <div
-              class="d-flex justify-content-start align-items-center mt-0 p-0 text-secondary w-100"
-            >
-              <span class="mw-75 mw-md-50 text-truncate" style="font-size: small">{{
-                item.creatorName
-              }}</span>
-              <span class="mx-1" style="font-size: small"> • </span>
-              <span style="font-size: small">{{
-                item.price | currency: "US":"$":"1.0-0"
-              }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </div>
