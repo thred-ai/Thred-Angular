@@ -1,16 +1,20 @@
-<div
-  class="w-100 bg-white animate__animated animate__fadeIn"
->
+<div class="w-100 bg-white animate__animated animate__fadeIn">
   <div class="w-100 bg-white">
-    <div class="w-100 bg-white h-100">
-        <div
-        class="w-100 bg-light d-flex justify-content-center align-content-center pt-2 pt-md-3 pb-md-1"
+    <div class="w-100 bg-light h-100">
+      <div
+        class="w-100 d-flex justify-content-center align-content-center pt-2 pt-md-3 pb-md-2"
       >
         <div
-          class="w-100 w-md-75 p-3 p-md-0 h-100 my-auto d-flex flex-column flex-md-row justify-content-between align-content-center"
+          class="w-100 w-md-75 p-2 p-md-0 my-auto d-flex flex-column flex-md-row justify-content-between align-content-center"
         >
+        <div class="d-flex justify-content-center align-content-center pe-5 py-2 py-md-0" style="width: 30px; ">
+            <mat-icon class="w-100 my-auto fw-bolder" role="button" (click)="back()" style="font-size: x-large;">
+                keyboard_arrow_left
+            </mat-icon>
+        </div>
+            
           <div
-            class="d-flex justify-content-start align-items-center my-auto w-100"
+            class="d-flex justify-content-start align-items-center my-auto w-100 px-2"
             style="height: 100px"
           >
             <div
@@ -24,13 +28,15 @@
                 role="button"
               />
             </div>
-  
+
             <div
               class="p-3 px-md-3 text-start h-100 w-100 d-flex justify-content-center align-content-center"
             >
               <div class="w-100 my-auto">
                 <h3 class="fw-bolder my-0">{{ item?.name }}</h3>
-                <div class="d-flex justify-content-start align-items-center mt-1">
+                <div
+                  class="d-flex justify-content-start align-items-center mt-1"
+                >
                   <span
                     class="fw-bold text-purple text-truncate mw-75 mw-md-50"
                     style="font-size: medium"
@@ -57,7 +63,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="w-100 h-100">
       <div
         class="w-100 h-100 bg-white border-top pt-5 pt-md-2 pe-md-3 d-flex justify-content-center align-items-start"
@@ -72,11 +78,11 @@
               {{ item.description }}
               <div
                 class="w-100 w-md-75 my-5 rounded shadow d-inline-flex justify-content-center align-content-center"
-                style="aspect-ratio: 1.5; overflow: hidden;"
+                style="aspect-ratio: 1.5; overflow: hidden"
               >
                 <img
                   class="zoom rounded my-auto"
-                  style="object-fit: cover; width: 97%; height: 95%;"
+                  style="object-fit: cover; width: 97%; height: 95%"
                   *ngIf="item?.coverUrl"
                   [src]="item?.coverUrl"
                 />
@@ -115,8 +121,6 @@
         [items]="category.utils"
         [cols]="category.cols"
       ></app-section>
-
-
     </div>
   </div>
 

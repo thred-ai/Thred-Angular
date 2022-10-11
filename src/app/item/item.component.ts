@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Category } from '../category.model';
 import { Chain } from '../chain.model';
 import { Signature } from '../signature.model';
@@ -11,7 +12,9 @@ import { Util } from '../util.model';
 })
 export class ItemComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   item = new Util(
     '123',
@@ -161,6 +164,10 @@ export class ItemComponent implements OnInit {
     ],
     4
   )
+
+  back(){
+    this.router.navigateByUrl("/home")
+  }
 
   ngOnInit(): void {
   }
