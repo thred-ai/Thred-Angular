@@ -34,6 +34,13 @@ export class SectionComponent implements OnInit {
     this.router.navigateByUrl("/utils/983756")
   }
 
+  width(){
+    if (isPlatformBrowser(this.platformID)){
+      return window.innerWidth
+    }
+    return globalThis.innerWidth
+  }
+
   moveRight() {
     if (
       this.ds?.currIndex ==

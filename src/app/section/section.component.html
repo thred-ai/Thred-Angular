@@ -12,7 +12,7 @@
 
     <div
       class="position-relative w-100"
-      [style.height.px]="cols >= 4 ? '350' : '400'"
+      [style.height.px]="(width() / (isMobile() ? 1 : cols)) / 1.5"
     >
       <div
         class="h-100 d-none d-md-flex justify-content-center align-items-center position-absolute"
