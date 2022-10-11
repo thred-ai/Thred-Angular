@@ -12,7 +12,7 @@
 
     <div
       class="position-relative w-100"
-      [style.height.px]="(width() / (isMobile() ? 1 : cols)) / 1.5"
+      [style.height.px]="(width() / (isMobile() ? 1 : cols)) / 1.3"
     >
       <div
         class="h-100 d-none d-md-flex justify-content-center align-items-center position-absolute"
@@ -92,7 +92,7 @@
 
       <drag-scroll
         #carousel
-        class="w-100 h-100 position-absolute"
+        class="w-100 h-100 position-absolute py-3"
         [scrollbar-hidden]="!isMobile()"
         [snap-duration]="200"
       >
