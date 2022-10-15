@@ -1,4 +1,12 @@
-import { Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -20,7 +28,10 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrls: ['./address-dialog.component.scss'],
 })
 export class AddressDialogComponent implements OnInit {
-  constructor(private loadService: LoadService, @Inject(PLATFORM_ID) private platformID: Object) {
+  constructor(
+    private loadService: LoadService,
+    @Inject(PLATFORM_ID) private platformID: Object
+  ) {
     this.filteredAddresses = this.addressCtrl.valueChanges.pipe(
       startWith(null),
       map((address: string | null) =>
@@ -38,8 +49,22 @@ export class AddressDialogComponent implements OnInit {
   selectedChain?: Chain = this.item?.chains[0];
   finalAddresses: string[] = [];
 
-  @HostListener('click', ['$event']) onClick(event: MouseEvent) {
-    if (isPlatformBrowser(this.platformID)){
+  @HostListener('click') onClick() {
+    if (isPlatformBrowser(this.platformID)) {
+      this.selectedAddresses.forEach((_, index: number) => {
+        if (document.getElementsByClassName(`menu-${index}`).length > 0) {
+          (
+            Object.values(
+              document.getElementsByClassName(`close-${index}`)
+            )[0] as HTMLElement
+          ).click();
+        }
+      });
+    }
+  }
+
+  @HostListener('touch') onTouch() {
+    if (isPlatformBrowser(this.platformID)) {
       this.selectedAddresses.forEach((_, index: number) => {
         if (document.getElementsByClassName(`menu-${index}`).length > 0) {
           (

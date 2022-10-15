@@ -23,7 +23,6 @@ export class LoadService {
       let provider1 = new ethers.providers.JsonRpcProvider(rpcEndpoint1);
       (this.providers as any)[str] = provider1
     })
-    console.log(this.providers)
   }
 
   
