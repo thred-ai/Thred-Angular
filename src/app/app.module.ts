@@ -49,21 +49,21 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgRouterOutletCommModule } from 'ng-router-outlet-comm';
 import { AddressValidatePipe } from './address-validate.pipe'
 import { AddressPipe } from './address.pipe';
-import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
-import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
-import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
-import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
-import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
-import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
+// import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
+// import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+// import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
+// import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
+// import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
+// import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+// import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
-import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
-import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
-import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
-import { MdbScrollspyModule } from 'mdb-angular-ui-kit/scrollspy';
-import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
-import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
-import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
+// import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
+// import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
+// import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
+// import { MdbScrollspyModule } from 'mdb-angular-ui-kit/scrollspy';
+// import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
+// import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
+// import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { AddressEnsLookupPipe } from './address-ens-lookup.pipe';
 import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
 
@@ -118,21 +118,21 @@ import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
     MatNativeDateModule,
     ScrollingModule,
     NgRouterOutletCommModule,
-    MdbAccordionModule,
-    MdbCarouselModule,
-    MdbCheckboxModule,
-    MdbCollapseModule,
-    MdbDropdownModule,
-    MdbFormsModule,
-    MdbModalModule,
+    // MdbAccordionModule,
+    // MdbCarouselModule,
+    // MdbCheckboxModule,
+    // MdbCollapseModule,
+    // MdbDropdownModule,
+    // MdbFormsModule,
+    // MdbModalModule,
     MdbPopoverModule,
-    MdbRadioModule,
-    MdbRangeModule,
-    MdbRippleModule,
-    MdbScrollspyModule,
-    MdbTabsModule,
-    MdbTooltipModule,
-    MdbValidationModule
+    // MdbRadioModule,
+    // MdbRangeModule,
+    // MdbRippleModule,
+    // MdbScrollspyModule,
+    // MdbTabsModule,
+    // MdbTooltipModule,
+    // MdbValidationModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

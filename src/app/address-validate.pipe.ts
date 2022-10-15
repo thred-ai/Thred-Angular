@@ -1,18 +1,21 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Pipe, PipeTransform, PLATFORM_ID } from '@angular/core';
 import { ethers } from 'ethers';
-import { isAddress } from 'ethers/lib/utils';
-import { environment } from 'src/environments/environment';
 
 @Pipe({
   name: 'addressValidate',
 })
 export class AddressValidatePipe implements PipeTransform {
+  constructor(@Inject(PLATFORM_ID) private platformID: Object){}
   transform(value: string) {
-    try {
-      let address = ethers.utils.isAddress(value);
-      return address;
-    } catch (error) {
-      return false;
+    if (isPlatformBrowser(this.platformID)){
+      try {
+        let address = ethers.utils.isAddress(value);
+        return address;
+      } catch (error) {
+        return false;
+      }
     }
+    return false
   }
 }

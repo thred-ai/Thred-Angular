@@ -1,20 +1,24 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Pipe, PipeTransform, PLATFORM_ID } from '@angular/core';
 import { LoadService } from './load.service';
 
 @Pipe({
   name: 'addressEnsLookup',
 })
 export class AddressEnsLookupPipe implements PipeTransform {
-  constructor(private loadService: LoadService) {}
+  constructor(
+    private loadService: LoadService,
+    @Inject(PLATFORM_ID) private platformID: Object
+  ) {}
 
   transform(value: string) {
-    try {
-      return (this.loadService.providers as any)['1']?.lookupAddress(value);
-    } catch (error) {
-      console.log(error)
-      return null;
+    if (isPlatformBrowser(this.platformID)) {
+      try {
+        return (this.loadService.providers as any)['1']?.lookupAddress(value);
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
     }
   }
 }

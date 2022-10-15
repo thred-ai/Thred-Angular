@@ -91,7 +91,7 @@ export class AddressDialogComponent implements OnInit {
         })
       );
     }
-    return undefined
+    return undefined;
   }
 
   async add(event: MatChipInputEvent) {
@@ -109,8 +109,8 @@ export class AddressDialogComponent implements OnInit {
   }
 
   async checkValidAddress(address: string) {
-    let ensPipe = new NameEnsLookupPipe(this.loadService);
-    let addressPipe = new AddressValidatePipe();
+    let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
+    let addressPipe = new AddressValidatePipe(this.platformID);
 
     let validAddress = addressPipe.transform(address);
     let validName = await ensPipe.transform(address);
