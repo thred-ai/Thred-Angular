@@ -45,7 +45,9 @@ export class AppComponent {
   @ViewChild('drawer') public sidenav?: MatSidenav;
 
   onActivate(event: any) {
-    window.scroll(0, 0);
+    if (isPlatformBrowser(this.platformID)){
+      window.scroll(0, 0);
+    }
     this.selectedInstall = undefined
     // window.scroll({
     //   top: 0,

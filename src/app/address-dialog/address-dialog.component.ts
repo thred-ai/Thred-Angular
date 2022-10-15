@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -12,6 +12,7 @@ import { HostListener } from '@angular/core';
 import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
 import { LoadService } from '../load.service';
 import { AddressValidatePipe } from '../address-validate.pipe';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-address-dialog',
@@ -19,7 +20,7 @@ import { AddressValidatePipe } from '../address-validate.pipe';
   styleUrls: ['./address-dialog.component.scss'],
 })
 export class AddressDialogComponent implements OnInit {
-  constructor(private loadService: LoadService) {
+  constructor(private loadService: LoadService, @Inject(PLATFORM_ID) private platformID: Object) {
     this.filteredAddresses = this.addressCtrl.valueChanges.pipe(
       startWith(null),
       map((address: string | null) =>
@@ -38,15 +39,17 @@ export class AddressDialogComponent implements OnInit {
   finalAddresses: string[] = [];
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent) {
-    this.selectedAddresses.forEach((_, index: number) => {
-      if (document.getElementsByClassName(`menu-${index}`).length > 0) {
-        (
-          Object.values(
-            document.getElementsByClassName(`close-${index}`)
-          )[0] as HTMLElement
-        ).click();
-      }
-    });
+    if (isPlatformBrowser(this.platformID)){
+      this.selectedAddresses.forEach((_, index: number) => {
+        if (document.getElementsByClassName(`menu-${index}`).length > 0) {
+          (
+            Object.values(
+              document.getElementsByClassName(`close-${index}`)
+            )[0] as HTMLElement
+          ).click();
+        }
+      });
+    }
   }
 
   async changed(event: MatSelectChange) {
