@@ -82,14 +82,14 @@ export class AddressDialogComponent implements OnInit {
     this.finalAddresses = [];
 
     if (isPlatformBrowser(this.platformID)) {
-      return Promise.all(
-        this.selectedAddresses.map(async (address) => {
-          let result = (await this.checkValidAddress(address)) ? true : false;
-          if (result) {
-            this.finalAddresses.push(address);
-          }
-        })
-      );
+      // return Promise.all(
+      //   this.selectedAddresses.map(async (address) => {
+      //     let result = (await this.checkValidAddress(address)) ? true : false;
+      //     if (result) {
+      //       this.finalAddresses.push(address);
+      //     }
+      //   })
+      // );
     }
     return undefined;
   }
