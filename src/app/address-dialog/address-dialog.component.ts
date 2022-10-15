@@ -81,14 +81,17 @@ export class AddressDialogComponent implements OnInit {
     this.selectedChain = event.value;
     this.finalAddresses = [];
 
-    return Promise.all(
-      this.selectedAddresses.map(async (address) => {
-        let result = (await this.checkValidAddress(address)) ? true : false;
-        if (result) {
-          this.finalAddresses.push(address);
-        }
-      })
-    );
+    if (isPlatformBrowser(this.platformID)) {
+      return Promise.all(
+        this.selectedAddresses.map(async (address) => {
+          let result = (await this.checkValidAddress(address)) ? true : false;
+          if (result) {
+            this.finalAddresses.push(address);
+          }
+        })
+      );
+    }
+    return undefined
   }
 
   async add(event: MatChipInputEvent) {
