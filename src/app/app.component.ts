@@ -2,10 +2,14 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Inject,
   PLATFORM_ID,
+  ViewChild,
 } from '@angular/core';
-import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import { MatSidenav } from '@angular/material/sidenav';
+import { LoadService } from './load.service';
+import { Util } from './util.model';
 
 // import * as AOS from 'aos';
 
@@ -15,35 +19,45 @@ import { ThirdwebSDK } from '@thirdweb-dev/sdk';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'frontend';
 
   openMobileMenu = false;
   expandedSearch = false;
+  selectedInstall?: Util
 
   constructor(
     private cdr: ChangeDetectorRef,
+    private loadService: LoadService,
     @Inject(PLATFORM_ID) private platformID: Object
-  ) {
-    if (isPlatformBrowser(this.platformID)) {
-      // AOS.init();
-    }
+  ) {}
 
+  sendToChildEmitter = new EventEmitter();
+
+  onChildEvent(data: any) {
+    // your logic here
+    if (data && data.install) {
+      console.log(data);
+      this.selectedInstall = data.install
+      this.sidenav?.toggle();
+      
+    }
   }
 
-  onActivate(event: any) {
-    // window.scroll(0,0);
- 
-    window.scroll({ 
-            top: 0, 
-            left: 0, 
-            behavior: 'smooth' 
-     });
- 
-     //or document.body.scrollTop = 0;
-     //or document.querySelector('body').scrollTo(0,0)
- }
+  @ViewChild('drawer') public sidenav?: MatSidenav;
 
-  ngOnInit(){
+  onActivate(event: any) {
+    window.scroll(0, 0);
+    this.selectedInstall = undefined
+    // window.scroll({
+    //   top: 0,
+    //   left: 0,
+    //   behavior: 'smooth',
+    // });
+
+    //or document.body.scrollTop = 0;
+    //or document.querySelector('body').scrollTo(0,0)
+  }
+
+  ngOnInit() {
     // console.log("mayn")
     // this.readData()
   }

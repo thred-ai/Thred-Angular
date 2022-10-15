@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Pipe } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from '../category.model';
 import { Chain } from '../chain.model';
+import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
 import { Signature } from '../signature.model';
 import { Util } from '../util.model';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss']
+  styleUrls: ['./item.component.scss'],
 })
 export class ItemComponent implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor(
-    private router: Router
-  ) { }
+  @Output() install = new EventEmitter<any>();
 
   item = new Util(
     '123',
@@ -33,9 +33,9 @@ export class ItemComponent implements OnInit {
     false,
     0,
     0,
-    [new Chain('Polygon', 137)],
+    [new Chain('Polygon', 137), new Chain("Ethereum", 1)],
     'https://firebasestorage.googleapis.com/v0/b/clothingapp-ed125.appspot.com/o/Resources%2Fimg.jpeg?alt=media'
-  )
+  );
 
   category = new Category(
     'Discover More',
@@ -163,17 +163,30 @@ export class ItemComponent implements OnInit {
       ),
     ],
     4
-  )
+  );
 
-  back(){
-    this.router.navigateByUrl("/home")
+  back() {
+    this.router.navigateByUrl('/home');
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+   
   }
 
-  date(){
-    return new Date()
+  date() {
+    return new Date();
   }
 
+  open() {
+    console.log('installing');
+    this.install.emit({ install: this.item });
+  }
+
+  onParentEvent(data: any) {
+    // your logic here
+  }
+
+  chains(util: Util) {
+    return util.chains.map((c) => c.name).join(', ');
+  }
 }

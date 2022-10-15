@@ -11,7 +11,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
 // import { Globals } from './globals';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DragScrollModule } from 'ngx-drag-scroll';
@@ -42,6 +42,30 @@ import { CategoryComponent } from './category/category.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { FeaturedComponent } from './featured/featured.component';
 import { SectionComponent } from './section/section.component';
+import { AddressDialogComponent } from './address-dialog/address-dialog.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NgRouterOutletCommModule } from 'ng-router-outlet-comm';
+import { AddressValidatePipe } from './address-validate.pipe'
+import { AddressPipe } from './address.pipe';
+import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
+import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
+import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
+import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
+import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
+import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
+import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
+import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
+import { MdbScrollspyModule } from 'mdb-angular-ui-kit/scrollspy';
+import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
+import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
+import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
+import { AddressEnsLookupPipe } from './address-ens-lookup.pipe';
+import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
 
 @NgModule({
   declarations: [
@@ -54,6 +78,11 @@ import { SectionComponent } from './section/section.component';
     SearchBarComponent,
     FeaturedComponent,
     SectionComponent,
+    AddressDialogComponent,
+    AddressValidatePipe,
+    AddressPipe,
+    AddressEnsLookupPipe,
+    NameEnsLookupPipe,
   ],
   imports: [
     CommonModule,
@@ -73,7 +102,10 @@ import { SectionComponent } from './section/section.component';
     MatDialogModule,
     InViewportModule,
     HttpClientModule,
+    FormsModule,
     // ApplicationPipesModule,
+    MatAutocompleteModule,
+    MatChipsModule,
     AngularFireFunctionsModule,
     VgCoreModule,
     VgControlsModule,
@@ -84,6 +116,23 @@ import { SectionComponent } from './section/section.component';
     NgbModule,
     MatTabsModule,
     MatNativeDateModule,
+    ScrollingModule,
+    NgRouterOutletCommModule,
+    MdbAccordionModule,
+    MdbCarouselModule,
+    MdbCheckboxModule,
+    MdbCollapseModule,
+    MdbDropdownModule,
+    MdbFormsModule,
+    MdbModalModule,
+    MdbPopoverModule,
+    MdbRadioModule,
+    MdbRangeModule,
+    MdbRippleModule,
+    MdbScrollspyModule,
+    MdbTabsModule,
+    MdbTooltipModule,
+    MdbValidationModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
