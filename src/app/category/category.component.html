@@ -9,7 +9,7 @@
       >
         {{ category?.name }}
         <br />
-        <span class="w-100 fw-bold text-purple h5">
+        <span class="fw-bold rounded-15 h5 btn bg-purple py-2 mt-3 px-3 text-white shadow-0" (click)="scrollToRow()">
           {{ category?.utils?.length ?? 0 }} Items
         </span>
       </h2>
@@ -17,7 +17,7 @@
   </div>
 
   <div
-    class="row row-cols-1 row-cols-md-4 justify-content-start align-content-center p-4 py-3 bg-white border-top"
+    class="items-row row row-cols-1 row-cols-md-4 justify-content-start align-content-center p-4 py-3 bg-white border-top example"
   >
     <div
       class="p-3 zoom my-0"
