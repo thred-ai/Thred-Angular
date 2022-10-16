@@ -9,6 +9,6 @@ export class Chain{
   constructor(name: string, id: number){
     this.name = name ?? "Ethereum"
     this.id = id ?? 1
-    this.url = `https://storage.googleapis.com/clothingapp-ed125.appspot.com/Logos/${id}.png`
+    this.url = `https://storage.googleapis.com/thred-protocol.appspot.com/chain-icons/${id}.png`
   }
 }

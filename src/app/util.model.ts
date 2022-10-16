@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import { Chain } from './chain.model';
 import { Signature } from './signature.model';
 
@@ -12,6 +13,7 @@ export class Util {
   metaUrl!: string;
   description?: string;
   price!: number;
+  cryptoPrice!: ethers.BigNumber;
   category!: number;
   available!: boolean;
   verified!: boolean;
@@ -29,6 +31,7 @@ export class Util {
     metaUrl?: string,
     description?: string,
     price?: number,
+    cryptoPrice?: ethers.BigNumber,
     category?: number,
     available?: boolean,
     verified?: boolean,
@@ -46,6 +49,7 @@ export class Util {
     this.metaUrl = metaUrl ?? 'add_thred_default_later';
     this.description = description ?? 'No Description Available';
     this.price = price ?? 0;
+    this.cryptoPrice = cryptoPrice ?? ethers.BigNumber.from(0);
     this.category = category ?? 0;
     this.available = available ?? false;
     this.verified = verified ?? false;

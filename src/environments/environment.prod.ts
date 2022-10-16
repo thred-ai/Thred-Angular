@@ -2,14 +2,13 @@ export const environment = {
   production: true,
 
   firebase: {
-    apiKey: 'AIzaSyD3Ec_FWZrlbTBWdgBWRrsBwMmXQ4aniWU',
-    // authDomain: "shopmythred.com",
-    databaseURL: 'https://clothingapp-ed125.firebaseio.com',
-    projectId: 'clothingapp-ed125',
-    storageBucket: 'clothingapp-ed125.appspot.com',
-    messagingSenderId: '628658827719',
-    appId: '1:628658827719:web:66671544aeb6d2a78029e2',
-    measurementId: 'G-YVHCR44N65',
+    apiKey: 'AIzaSyCCV1HUWCeM0kaSVM7FcpDyHrTanse6BAk',
+    authDomain: 'thred-protocol.firebaseapp.com',
+    projectId: 'thred-protocol',
+    storageBucket: 'thred-protocol.appspot.com',
+    messagingSenderId: '313615470277',
+    appId: '1:313615470277:web:76f4e51ce27c1338aa2aac',
+    measurementId: 'G-4NPVBWK3NK',
   },
 
   rpc: {
