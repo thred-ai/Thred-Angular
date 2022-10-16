@@ -62,8 +62,14 @@
         <div class="rounded-15 border w-100 pb-2 px-4 mb-3">
           <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
             <mat-chip-list #chipList aria-label="Product selection">
-              <ng-container *ngFor="let address of selectedAddresses ?? []; index as i">
-                <ng-container *ngIf="((address | addressValidate) ? 'y' : 'n') as validAddress">
+              <ng-container
+                *ngFor="let address of selectedAddresses ?? []; index as i"
+              >
+                <ng-container
+                  *ngIf="
+                    (address | addressValidate) ? 'y' : 'n' as validAddress
+                  "
+                >
                   <ng-container
                     *ngIf="
                       (
@@ -81,13 +87,11 @@
                       [selectable]="selectable"
                       class="bg-{{
                         result == 'y' ? 'light-success' : 'light-danger'
-                      }} close-{{i}}"
+                      }} close-{{ i }}"
                       role="button"
-                      style="opacity: 0.9"
                       [mdbPopover]="template"
                       placement="right"
                       trigger="click"
-                      
                     >
                       <div class="category-chip__text text-white">
                         {{ address | address: false:address.length > 10 }}
@@ -109,7 +113,7 @@
                         </mat-icon>
                       </div>
                       <ng-template #template>
-                        <div class="w-100 h-100 popover-menu menu-{{i}}">
+                        <div class="w-100 h-100 popover-menu menu-{{ i }}">
                           <ng-container *ngIf="result == 'y'">
                             <b class="fw-bolder mb-4 text-light-success"
                               >Verified Address</b
