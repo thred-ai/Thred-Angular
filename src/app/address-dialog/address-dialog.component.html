@@ -95,7 +95,10 @@
           Install Locations
         </h3>
 
-        <div class="rounded-15 border w-100 pb-2 px-4 mb-3">
+        <div
+          class="rounded-15 border w-100 pb-2 px-4 mb-3"
+          *ngIf="15 as threshold"
+        >
           <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
             <mat-chip-list #chipList aria-label="Product selection">
               <ng-container
@@ -127,10 +130,16 @@
                       [mdbPopover]="template"
                       placement="right"
                       trigger="click"
-                      style="cursor:pointer;"
+                      style="cursor: pointer"
+                      *ngIf="
+                        address
+                          | address
+                            : false
+                            : address.length > threshold as displayAddress
+                      "
                     >
                       <div class="category-chip__text text-white">
-                        {{ address | address: false:address.length > 10 }}
+                        {{ displayAddress }}
                       </div>
                       <div
                         matChipRemove
@@ -172,7 +181,7 @@
                               class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
                             >
                               Remove
-                          </button>
+                            </button>
                           </div>
                         </div>
                       </ng-template>
@@ -214,11 +223,20 @@
                   *cdkVirtualFor="let address of filteredAddresses | async"
                   [value]="address"
                 >
-                  <div
-                    class="d-flex justify-content-start align-items-center w-100"
+                  <ng-container
+                    *ngIf="
+                      address
+                        | address
+                          : false
+                          : address.length > threshold as displayAddress
+                    "
                   >
-                    {{ address | address: false:address.length > 10 }}
-                  </div>
+                    <div
+                      class="d-flex justify-content-start align-items-center w-100"
+                    >
+                      {{ displayAddress }}
+                    </div>
+                  </ng-container>
                 </mat-option>
               </cdk-virtual-scroll-viewport>
             </mat-autocomplete>

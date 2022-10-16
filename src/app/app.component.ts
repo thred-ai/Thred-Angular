@@ -40,7 +40,6 @@ export class AppComponent {
       console.log(data);
       this.selectedInstall = data.install
       this.sidenav?.toggle();
-      
     }
   }
 
