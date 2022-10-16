@@ -169,7 +169,7 @@ export class ItemComponent implements OnInit {
     this.router.navigateByUrl('/home');
   }
 
-  async ngOnInit() {
+  ngOnInit() {
    
   }
 
