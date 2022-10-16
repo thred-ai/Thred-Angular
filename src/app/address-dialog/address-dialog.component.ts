@@ -159,7 +159,7 @@ export class AddressDialogComponent implements OnInit {
     console.log(this.item);
 
     window.onclick = (e) => {
-      if ((e.target as any).id == 'removeBtn') {
+      if ((e.target as any)?.id == 'removeBtn') {
         return;
       }
 
@@ -170,7 +170,7 @@ export class AddressDialogComponent implements OnInit {
               Object.values(
                 document.getElementsByClassName(`close-${index}`)
               )[0] as HTMLElement
-            ).click();
+            )?.click();
           }
         });
       }
