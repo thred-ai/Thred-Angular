@@ -72,12 +72,14 @@
 input[matinput]::-webkit-outer-spin-button,
 input[matinput]::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
 /* Firefox */
 input[matinput][type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 body {
@@ -404,6 +406,7 @@ button,
 [type="reset"],
 [type="submit"] {
   -webkit-appearance: button;
+  appearance: button;
 }
 button:not(:disabled),
 [type="button"]:not(:disabled),
@@ -462,6 +465,7 @@ legend + * {
 [type="search"] {
   outline-offset: -2px;
   -webkit-appearance: textfield;
+  appearance: textfield;
 }
 
 /* rtl:raw:
@@ -474,6 +478,7 @@ legend + * {
 */
 ::-webkit-search-decoration {
   -webkit-appearance: none;
+  appearance: none;
 }
 
 ::-webkit-color-swatch-wrapper {
@@ -487,6 +492,7 @@ legend + * {
 ::-webkit-file-upload-button {
   font: inherit;
   -webkit-appearance: button;
+  appearance: button;
 }
 
 output {
