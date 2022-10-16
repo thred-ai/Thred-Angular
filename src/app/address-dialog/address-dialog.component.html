@@ -3,7 +3,7 @@
 <div class="p-0 h-100 w-100">
   <div class="w-100 h-100 d-flex justify-content-between flex-column">
     <div class="w-100 h-100 d-flex justify-content-center align-content-center">
-      <!-- <div class="w-100 px-3">
+      <div class="w-100 px-3">
         <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Network</h3>
         <div class="rounded-15 border w-100 pb-2 px-4 mb-4">
           <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
@@ -152,6 +152,8 @@
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 (matChipInputTokenEnd)="add($event)"
               />
+
+              <!-- [disabled]="data.asset" -->
             </mat-chip-list>
             <mat-autocomplete
               #auto="matAutocomplete"
@@ -210,7 +212,7 @@
         >
           Install
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>

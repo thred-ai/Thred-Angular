@@ -149,5 +149,9 @@
 </div>
 
 <ng-container
-
+  [ngRouterOutletComm]="{
+    type: 'child',
+    sender: install,
+    receiver: onParentEvent.bind(this)
+  }"
 ></ng-container>
