@@ -1,1 +1,68 @@
-<p>category works!</p>
+<div
+  class="w-100 bg-light animate__animated animate__fadeIn bg-white"
+  style="min-height: 80vh"
+>
+  <div
+    class="w-100 pb-4 pt-5 px-4 bg-light"
+  >
+  <div class="d-flex justify-content-center align-items-center">
+    <h2
+    class="fw-bold text-dark text-center text-truncate mw-100 mw-md-50 h1 py-2"
+  >
+    {{ category?.name }}
+  </h2>
+  </div>
+   
+  </div>
+
+  <div
+    class="row row-cols-1 row-cols-md-4 justify-content-start align-content-center p-4 py-3 bg-white border-top"
+  >
+    <div
+      class="p-3 zoom my-0"
+      role="button"
+      *ngFor="let item of category?.utils ?? []; index as i"
+      style="aspect-ratio: 1.5"
+      (click)="openItem(item.id)"
+    >
+      <div
+        class="h-100 animate__animated animate__fadeIn rounded-15 shadow d-flex flex-column justify-content-between align-items-center"
+        style="overflow: hidden"
+      >
+        <img
+          class="w-100 bg-white zoom-img"
+          style="object-fit: cover; height: 77.5%"
+          *ngIf="item?.coverUrl"
+          [src]="item?.coverUrl"
+        />
+        <div
+          class="w-100 bg-white d-flex justify-content-between align-items-center"
+          style="height: 22.5%; bottom: 0px; right: 0px; z-index: 1"
+        >
+          <span
+            class="p-0 ms-3 w-50 fw-bold text-truncate"
+            style="font-size: medium"
+          >
+            {{ item.name }}
+          </span>
+          <div
+            class="h-100 bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
+            style="
+              aspect-ratio: 1;
+              margin-right: 1rem;
+              margin-bottom: 2rem;
+              overflow: hidden;
+            "
+          >
+            <img
+              class="m-auto"
+              style="object-fit: contain; height: 90%; width: 90%"
+              [src]="(item?.displayUrls ?? [])[0]"
+              role="button"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

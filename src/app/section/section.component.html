@@ -12,7 +12,7 @@
 
     <div
       class="position-relative w-100"
-      [style.height.px]="(width() / (isMobile() ? 1 : cols)) / 1.3"
+      [style.height.px]="width() / (isMobile() ? 1 : cols) / 1.3"
     >
       <div
         class="h-100 d-none d-md-flex justify-content-center align-items-center position-absolute"
@@ -98,8 +98,10 @@
       >
         <div
           drag-scroll-item
-          class="h-100 p-3 pb-1 p-md-3 align-items-center"
+          class="h-100 p-3 pb-1 p-md-3 zoom"
           [style.width.%]="isMobile() ? 100 : 100 / cols"
+          (click)="openItem(item.id)"
+          role="button"
           *ngFor="let item of items; index as i"
         >
           <div
@@ -107,12 +109,10 @@
             style="overflow: hidden; height: 90%"
           >
             <img
-              class="w-100 bg-white zoom"
+              class="w-100 bg-white zoom-img"
               style="object-fit: cover; height: 77.5%"
               *ngIf="item?.coverUrl"
               [src]="item?.coverUrl"
-              role="button"
-              (click)="openItem(item.id)"
             />
             <div
               class="w-100 bg-white d-flex justify-content-between align-items-center"

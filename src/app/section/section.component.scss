@@ -24,9 +24,13 @@
 }
 
 .zoom {
-  transition: transform 0.2s;
+  .zoom-img {
+    transition: transform 0.2s;
+  }
 }
 
 .zoom:hover {
-  transform: scale(1.5);
+  .zoom-img {
+    transform: scale(1.5);
+  }
 }
