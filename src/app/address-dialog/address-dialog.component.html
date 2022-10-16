@@ -41,7 +41,7 @@
           </div>
         </div>
         <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Network</h3>
-        <div class="rounded-15 border w-100 pb-2 px-4 mb-4">
+        <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
           <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
             <mat-select
               [(ngModel)]="selectedChain"
@@ -96,7 +96,7 @@
         </h3>
 
         <div
-          class="rounded-15 border w-100 pb-2 px-4 mb-3"
+          class="rounded-pill border w-100 pb-2 px-4 mb-3"
           *ngIf="15 as threshold"
         >
           <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
@@ -268,7 +268,7 @@
         </div>
 
         <button
-          class="btn bg-purple text-white rounded-15 px-5 py-3 my-3 mt-3 fw-bold w-100"
+          class="btn bg-purple text-white rounded-pill px-5 py-3 my-3 mt-3 fw-bold w-100"
           role="button"
           [disabled]="finalAddresses.length == 0"
         >
