@@ -6,15 +6,15 @@
   >
     <div
       class="w-100 d-flex justify-content-end align-items-center"
-      style="pointer-events: all"
+      style="pointer-events: all; height: 40px;"
       (click)="
         drawer.toggle(); openMobileMenu = false; selectedInstall = undefined
       "
       role="button"
     >
       <mat-icon
-        class="d-inline-flex justify-content-center align-items-center fw-bolder"
-        style="height: 40px; width: 40px; font-size: xx-large; z-index: 50"
+        class="d-inline-flex justify-content-center align-items-center fw-bolder h-100"
+        style="aspect-ratio: 1; font-size: xx-large; z-index: 50"
       >
         close
       </mat-icon>
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div class="w-100 h-100" *ngIf="!openMobileMenu && selectedInstall">
+    <div class="w-100" *ngIf="!openMobileMenu && selectedInstall">
       <app-address-dialog [item]="selectedInstall"> </app-address-dialog>
     </div>
   </mat-sidenav>
