@@ -21,6 +21,7 @@ export class SectionComponent implements OnInit {
   constructor(@Inject(PLATFORM_ID) private platformID: Object, private loadService: LoadService) {}
 
   @Input() headline: string = '';
+  @Input() id: string = '';
 
   @Input() cols: number = 0;
 
@@ -40,6 +41,10 @@ export class SectionComponent implements OnInit {
       return window.innerWidth
     }
     return globalThis.innerWidth
+  }
+
+  viewCategory(){
+    this.loadService.openCategory(this.id)
   }
 
   moveRight() {

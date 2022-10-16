@@ -1,13 +1,27 @@
 <div
-  class="w-100 h-100 p-0 p-md-5 d-flex justify-content-start align-items-center flex-column position-relative"
+  class="w-100 h-100 p-0 p-md-5 py-md-4 d-flex justify-content-start align-items-center flex-column position-relative"
 >
   <div
     class="w-100 d-inline-flex justify-content-start align-items-start flex-column"
   >
     <div
-      class="w-100 d-flex justify-content-center align-items-center py-3 pb-2 pb-md-5 pt-md-0"
+      class="w-100 d-flex justify-content-center flex-column flex-md-row align-items-center mt-3 mt-md-0 pb-0 pb-md-1 mb-md-1 px-3 pt-md-0"
     >
-      <h2 class="fw-bold text-dark">{{ headline }}</h2>
+      <h3
+        class="fw-bold text-dark w-100 d-flex justify-content-between align-content-center"
+      >
+        <span class="fw-bold pt-1 text-truncate" style="max-width: 60%;">
+          {{ headline }}
+        </span>
+        <span
+          class="fw-bold rounded-pill h5 btn bg-purple py-2 px-3 text-white"
+          role="button"
+          style="font-size: small;"
+          (click)="viewCategory()"
+        >
+          View All
+        </span>
+      </h3>
     </div>
 
     <div

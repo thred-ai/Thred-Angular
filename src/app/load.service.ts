@@ -34,7 +34,7 @@ export class LoadService {
   }
 
   openCategory(id: string) {
-    this.router.navigateByUrl(`/sections/${id}`);
+    this.router.navigateByUrl(`/groups/${id}`);
   }
 
   openDevProfile(id: string) {
