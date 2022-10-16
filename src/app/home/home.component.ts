@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { ethers } from 'ethers';
 import { Category } from '../category.model';
 import { Chain } from '../chain.model';
@@ -415,9 +416,12 @@ export class HomeComponent implements OnInit {
   ];
 
   featuredUtil?: Util;
-
-  constructor() {
+  display = true;
+  constructor(@Inject(PLATFORM_ID) private platformID: Object) {
     this.featuredUtil = this.utilCategories[0].utils[0];
+    if (!isPlatformBrowser(this.platformID)) {
+      this.display = false;
+    }
   }
 
   ngOnInit(): void {}
@@ -426,3 +430,5 @@ export class HomeComponent implements OnInit {
     // your logic here
   }
 }
+
+
