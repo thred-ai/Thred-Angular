@@ -63,7 +63,7 @@ export class AddressDialogComponent implements OnInit {
     }
   }
 
-  @HostListener('touch') onTouch() {
+  @HostListener('touchstart') onTouch() {
     if (isPlatformBrowser(this.platformID)) {
       this.selectedAddresses.forEach((_, index: number) => {
         if (document.getElementsByClassName(`menu-${index}`).length > 0) {
