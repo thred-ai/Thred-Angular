@@ -66,6 +66,9 @@ import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { AddressEnsLookupPipe } from './address-ens-lookup.pipe';
 import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
+import { FormatEtherPipe } from './format-ether.pipe';
+import { TypeNumberPipe } from './type-number.pipe';
+import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +86,9 @@ import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
     AddressPipe,
     AddressEnsLookupPipe,
     NameEnsLookupPipe,
+    FormatEtherPipe,
+    TypeNumberPipe,
+    DeveloperProfileComponent,
   ],
   imports: [
     CommonModule,

@@ -1,14 +1,13 @@
+export class Chain {
+  name!: string;
+  id!: number;
+  currency!: string;
+  url!: string;
 
-
-export class Chain{
-
-  name!: string
-  id!: number
-  url!: string
-
-  constructor(name: string, id: number){
-    this.name = name ?? "Ethereum"
-    this.id = id ?? 1
-    this.url = `https://storage.googleapis.com/thred-protocol.appspot.com/chain-icons/${id}.png`
+  constructor(name: string, id: number, currency: string) {
+    this.name = name ?? 'Ethereum';
+    this.id = id ?? 1;
+    this.currency = currency
+    this.url = `https://storage.googleapis.com/thred-protocol.appspot.com/chain-icons/${id}.png`;
   }
 }

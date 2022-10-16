@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
 
@@ -11,7 +12,10 @@ export class LoadService {
     any?: ethers.providers.JsonRpcProvider;
   } = {};
 
-  constructor(@Inject(PLATFORM_ID) private platformID: Object) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformID: Object,
+    private router: Router
+  ) {
     if (isPlatformBrowser(this.platformID)) {
       let chains = [1, 137];
 
@@ -23,5 +27,9 @@ export class LoadService {
         (this.providers as any)[str] = provider1;
       });
     }
+  }
+
+  openItem(id: string) {
+    this.router.navigateByUrl(`/utils/${id}`);
   }
 }

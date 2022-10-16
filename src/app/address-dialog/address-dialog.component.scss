@@ -14,3 +14,20 @@
     border-radius: 15px !important;
 
 }
+
+.truncate {
+  /**Major Properties**/
+  overflow: hidden;
+  line-height: 2rem;
+  max-height: 8rem;
+  -webkit-box-orient: vertical;
+  display: block;
+  display: -webkit-box;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+}
+
+.rounded-10{
+  border-radius: 10px;
+}

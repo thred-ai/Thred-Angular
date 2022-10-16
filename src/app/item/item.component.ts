@@ -29,13 +29,13 @@ export class ItemComponent implements OnInit {
     '123',
     'My New Util for my New NFT Collection. This utility is designed to work with all NFT Collections, regardless of the chain they are built on.',
     100,
-    ethers.BigNumber.from(0),
+    ethers.utils.parseEther('100'),
     3,
     true,
     false,
     0,
     0,
-    [new Chain('Polygon', 137), new Chain("Ethereum", 1)],
+    [new Chain('Polygon', 137, 'MATIC'), new Chain('Ethereum', 1, 'ETH')],
     'https://storage.googleapis.com/thred-protocol.appspot.com/Test/img.png'
   );
 
@@ -55,13 +55,13 @@ export class ItemComponent implements OnInit {
         '123',
         'My New Util for my New NFT Collection.',
         100,
-    ethers.BigNumber.from(0),
+        ethers.utils.parseEther('100'),
         3,
         true,
         false,
         0,
         0,
-        [new Chain('Polygon', 137)],
+        [new Chain('Polygon', 137, 'MATIC')],
         'https://storage.googleapis.com/thred-protocol.appspot.com/Test/img.png'
       ),
       new Util(
@@ -76,13 +76,13 @@ export class ItemComponent implements OnInit {
         '123',
         'My New Util for my New NFT Collection.',
         100,
-    ethers.BigNumber.from(0),
+        ethers.utils.parseEther('100'),
         3,
         true,
         false,
         0,
         0,
-        [new Chain('Polygon', 137)],
+        [new Chain('Polygon', 137, 'MATIC')],
         'https://storage.googleapis.com/thred-protocol.appspot.com/Test/img.png'
       ),
       new Util(
@@ -97,13 +97,13 @@ export class ItemComponent implements OnInit {
         '123',
         'My New Util for my New NFT Collection.',
         100,
-    ethers.BigNumber.from(0),
+        ethers.utils.parseEther('100'),
         3,
         true,
         false,
         0,
         0,
-        [new Chain('Polygon', 137)],
+        [new Chain('Polygon', 137, 'MATIC')],
         'https://storage.googleapis.com/thred-protocol.appspot.com/Test/img.png'
       ),
       new Util(
@@ -118,13 +118,13 @@ export class ItemComponent implements OnInit {
         '123',
         'My New Util for my New NFT Collection.',
         100,
-    ethers.BigNumber.from(0),
+        ethers.utils.parseEther('100'),
         3,
         true,
         false,
         0,
         0,
-        [new Chain('Polygon', 137)],
+        [new Chain('Polygon', 137, 'MATIC')],
         'https://storage.googleapis.com/thred-protocol.appspot.com/Test/img.png'
       ),
       new Util(
@@ -139,13 +139,13 @@ export class ItemComponent implements OnInit {
         '123',
         'My New Util for my New NFT Collection.',
         100,
-    ethers.BigNumber.from(0),
+        ethers.utils.parseEther('100'),
         3,
         true,
         false,
         0,
         0,
-        [new Chain('Polygon', 137)],
+        [new Chain('Polygon', 137, 'MATIC')],
         'https://storage.googleapis.com/thred-protocol.appspot.com/Test/img.png'
       ),
       new Util(
@@ -160,13 +160,13 @@ export class ItemComponent implements OnInit {
         '123',
         'My New Util for my New NFT Collection.',
         100,
-    ethers.BigNumber.from(0),
+        ethers.utils.parseEther('100'),
         3,
         true,
         false,
         0,
         0,
-        [new Chain('Polygon', 137)],
+        [new Chain('Polygon', 137, 'MATIC')],
         'https://storage.googleapis.com/thred-protocol.appspot.com/Test/img.png'
       ),
     ],
@@ -177,16 +177,13 @@ export class ItemComponent implements OnInit {
     this.router.navigateByUrl('/home');
   }
 
-  async ngOnInit() {
-   
-  }
+  async ngOnInit() {}
 
   date() {
     return new Date();
   }
 
-  open() {
-    console.log('installing');
+  installItem() {
     this.install.emit({ install: this.item });
   }
 

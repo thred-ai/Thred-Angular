@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { DragScrollComponent } from 'ngx-drag-scroll';
+import { LoadService } from '../load.service';
 import { Util } from '../util.model';
 
 @Component({
@@ -17,7 +18,7 @@ import { Util } from '../util.model';
   styleUrls: ['./section.component.scss'],
 })
 export class SectionComponent implements OnInit {
-  constructor(@Inject(PLATFORM_ID) private platformID: Object, private router: Router) {}
+  constructor(@Inject(PLATFORM_ID) private platformID: Object, private loadService: LoadService) {}
 
   @Input() headline: string = '';
 
@@ -30,8 +31,8 @@ export class SectionComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  openProduct(){
-    this.router.navigateByUrl("/utils/983756")
+  openItem(id: string){
+    this.loadService.openItem(id)
   }
 
   width(){

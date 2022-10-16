@@ -112,7 +112,7 @@
               *ngIf="item?.coverUrl"
               [src]="item?.coverUrl"
               role="button"
-              (click)="openProduct()"
+              (click)="openItem(item.id)"
             />
             <div
               class="w-100 bg-white d-flex justify-content-between align-items-center"

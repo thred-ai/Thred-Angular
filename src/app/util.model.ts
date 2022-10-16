@@ -13,7 +13,7 @@ export class Util {
   metaUrl!: string;
   description?: string;
   price!: number;
-  cryptoPrice!: ethers.BigNumber;
+  etherPrice!: ethers.BigNumber;
   category!: number;
   available!: boolean;
   verified!: boolean;
@@ -31,7 +31,7 @@ export class Util {
     metaUrl?: string,
     description?: string,
     price?: number,
-    cryptoPrice?: ethers.BigNumber,
+    etherPrice?: ethers.BigNumber,
     category?: number,
     available?: boolean,
     verified?: boolean,
@@ -49,13 +49,13 @@ export class Util {
     this.metaUrl = metaUrl ?? 'add_thred_default_later';
     this.description = description ?? 'No Description Available';
     this.price = price ?? 0;
-    this.cryptoPrice = cryptoPrice ?? ethers.BigNumber.from(0);
+    this.etherPrice = etherPrice ?? ethers.utils.parseEther('0');
     this.category = category ?? 0;
     this.available = available ?? false;
     this.verified = verified ?? false;
     this.reviews = reviews ?? 0;
     this.rating = rating ?? 0;
-    this.chains = chains ?? [new Chain('Ethereum', 1)];
+    this.chains = chains ?? [new Chain('Ethereum', 1, 'ETH')];
     this.coverUrl = coverUrl;
   }
 }

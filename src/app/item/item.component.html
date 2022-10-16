@@ -58,9 +58,9 @@
           >
             <a
               class="btn bg-purple text-white rounded-15 px-5 py-3 fw-bold w-100 w-md-auto"
-              (click)="open()"
+              (click)="installItem()"
             >
-              Get for {{ item.price | currency: "US":"$":"1.0-0" }}
+              Download
             </a>
             <a
               class="btn btn-dark bg-black rounded-15 px-5 py-3 my-3 mb-5 my-md-0 mx-md-3 fw-bold w-100 w-md-auto"
@@ -104,7 +104,7 @@
               <b style="font-size: 25px">Details</b>
               <hr class="mt-1" />
               <span style="font-weight: 500"> Base Price: </span>
-              {{ item.price | currency: "US":"$":"1.0-0" }}
+              {{ item.etherPrice | formatEther }}
               <br />
               <span style="font-weight: 500"> Network: </span>
               {{ chains(item) }}
@@ -138,9 +138,9 @@
   >
     <a
       class="btn bg-purple text-white rounded-15 px-5 py-3 my-1 fw-bold w-100"
-      (click)="open()"
+      (click)="installItem()"
     >
-      Get for {{ item.price | currency: "US":"$":"1.0-0" }}
+      Download
     </a>
     <a class="btn bg-dark text-white rounded-15 px-5 py-3 my-1 fw-bold w-100">
       View Website

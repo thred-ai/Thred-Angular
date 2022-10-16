@@ -4,6 +4,42 @@
   <div class="w-100 h-100 d-flex justify-content-between flex-column">
     <div class="w-100 h-100 d-flex justify-content-center align-content-center">
       <div class="w-100 px-3">
+        <div class="w-100 mb-5" style="height: 60px">
+          <div
+            class="h-100 d-flex justify-content-start align-items-center my-auto w-100"
+          >
+            <div
+              class="h-100 rounded-15 shadow bg-white"
+              style="aspect-ratio: 1"
+            >
+              <img
+                class="rounded-15 w-100 h-100"
+                style="object-fit: contain"
+                [src]="item.displayUrls[0]"
+                role="button"
+              />
+            </div>
+
+            <div
+              class="px-3 text-start h-100 d-flex justify-content-center align-content-center w-75"
+            >
+              <div class="w-100 my-auto text-truncate">
+                <span class="fw-bolder my-0 mx-0" style="font-size: 16px">{{
+                  item.name
+                }}</span>
+                <div
+                  class="d-flex justify-content-start align-items-center mt-0"
+                >
+                  <span
+                    class="fw-bold text-purple text-truncate mw-100"
+                    style="font-size: 12.5px"
+                    >{{ item.creatorName }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Network</h3>
         <div class="rounded-15 border w-100 pb-2 px-4 mb-4">
           <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
@@ -88,10 +124,10 @@
                       class="bg-{{
                         result == 'y' ? 'light-success' : 'light-danger'
                       }} close-{{ i }}"
-                      role="button"
                       [mdbPopover]="template"
                       placement="right"
                       trigger="click"
+                      style="cursor:pointer;"
                     >
                       <div class="category-chip__text text-white">
                         {{ address | address: false:address.length > 10 }}
@@ -130,13 +166,13 @@
                           </ng-container>
                           <br />
                           <div class="w-100 h-100 mt-3">
-                            <a
+                            <button
                               (click)="remove(address, result == 'y')"
                               id="removeBtn"
-                              class="w-100 btn bg-dark text-white fw-bold rounded-3 px-4 py-2"
+                              class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
                             >
                               Remove
-                            </a>
+                          </button>
                           </div>
                         </div>
                       </ng-template>
@@ -189,34 +225,37 @@
           </mat-form-field>
         </div>
 
-        <div class="w-100 py-3">
+        <div class="w-100 py-3" *ngIf="item.etherPrice | formatEther as price">
           <div
             class="w-100 d-flex justify-content-between align-content-center px-1"
           >
-            <span>
-              {{ finalAddresses.length }} x
-              {{ item.price | currency: "US":"$":"1.0-0" }}
-            </span>
+            <ng-container *ngIf="' ' + selectedChain?.currency as currency">
+              <span>
+                {{ finalAddresses.length }} x
+                {{ price + currency }}
+              </span>
 
-            <span class="fw-bold">
-              {{
-                item.price * finalAddresses.length > 0
-                  ? (item.price * finalAddresses.length
-                    | currency: "US":"$":"1.0-0")
-                  : finalAddresses.length > 0
-                  ? "Free"
-                  : "No Location"
-              }}
-            </span>
+              <span class="fw-bold">
+                {{
+                  finalAddresses.length > 0
+                    ? ((price | numberType) ?? 0) * finalAddresses.length > 0
+                      ? ((price | numberType) ?? 0) * finalAddresses.length +
+                        currency
+                      : "Free"
+                    : "No Location"
+                }}
+              </span>
+            </ng-container>
           </div>
         </div>
 
-        <div
+        <button
           class="btn bg-purple text-white rounded-15 px-5 py-3 my-3 mt-3 fw-bold w-100"
           role="button"
+          [disabled]="finalAddresses.length == 0"
         >
           Install
-        </div>
+        </button>
       </div>
     </div>
   </div>
