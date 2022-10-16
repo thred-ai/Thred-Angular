@@ -49,34 +49,6 @@ export class AddressDialogComponent implements OnInit {
   selectedChain?: Chain = this.item?.chains[0];
   finalAddresses: string[] = [];
 
-  @HostListener('click') onClick() {
-    if (isPlatformBrowser(this.platformID)) {
-      this.selectedAddresses.forEach((_, index: number) => {
-        if (document.getElementsByClassName(`menu-${index}`).length > 0) {
-          (
-            Object.values(
-              document.getElementsByClassName(`close-${index}`)
-            )[0] as HTMLElement
-          ).click();
-        }
-      });
-    }
-  }
-
-  @HostListener('touchstart') onTouchStart() {
-    if (isPlatformBrowser(this.platformID)) {
-      this.selectedAddresses.forEach((_, index: number) => {
-        if (document.getElementsByClassName(`menu-${index}`).length > 0) {
-          (
-            Object.values(
-              document.getElementsByClassName(`close-${index}`)
-            )[0] as HTMLElement
-          ).click();
-        }
-      });
-    }
-  }
-
   async changed(event: MatSelectChange) {
     this.selectedChain = event.value;
     this.finalAddresses = [];
@@ -185,5 +157,23 @@ export class AddressDialogComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.item);
+
+    window.onclick = (e) => {
+      if ((e.target as any).id == 'removeBtn') {
+        return;
+      }
+
+      if (isPlatformBrowser(this.platformID)) {
+        this.selectedAddresses.forEach((_, index: number) => {
+          if (document.getElementsByClassName(`menu-${index}`).length > 0) {
+            (
+              Object.values(
+                document.getElementsByClassName(`close-${index}`)
+              )[0] as HTMLElement
+            ).click();
+          }
+        });
+      }
+    };
   }
 }
