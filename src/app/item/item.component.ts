@@ -20,7 +20,18 @@ export class ItemComponent implements OnInit {
   item = new Util(
     '123',
     '123',
-    new Signature('My New Util', '123', '123', 3, 100, '123'),
+    new Signature(
+      'My New Util',
+      '123',
+      '123',
+      3,
+      100,
+      1665828483000,
+      1665828483000,
+      '123'
+    ),
+    1665828483000,
+    1665828483000,
     'Thred Developer',
     'My New Util',
     [
@@ -41,12 +52,23 @@ export class ItemComponent implements OnInit {
 
   category = new Category(
     'Discover More',
-    "1",
+    '1',
     [
       new Util(
         '123',
         '123',
-        new Signature('My New Util', '123', '123', 3, 100, '123'),
+        new Signature(
+          'My New Util',
+          '123',
+          '123',
+          3,
+          100,
+          1665828483000,
+          1665828483000,
+          '123'
+        ),
+        1665828483000,
+        1665828483000,
         'Thred Developer',
         'My New Util',
         [
@@ -67,7 +89,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature('My New Util', '123', '123', 3, 100, '123'),
+        new Signature(
+          'My New Util',
+          '123',
+          '123',
+          3,
+          100,
+          1665828483000,
+          1665828483000,
+          '123'
+        ),
+        1665828483000,
+        1665828483000,
         'Thred Developer',
         'My New Util',
         [
@@ -88,7 +121,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature('My New Util', '123', '123', 3, 100, '123'),
+        new Signature(
+          'My New Util',
+          '123',
+          '123',
+          3,
+          100,
+          1665828483000,
+          1665828483000,
+          '123'
+        ),
+        1665828483000,
+        1665828483000,
         'Thred Developer',
         'My New Util',
         [
@@ -109,7 +153,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature('My New Util', '123', '123', 3, 100, '123'),
+        new Signature(
+          'My New Util',
+          '123',
+          '123',
+          3,
+          100,
+          1665828483000,
+          1665828483000,
+          '123'
+        ),
+        1665828483000,
+        1665828483000,
         'Thred Developer',
         'My New Util',
         [
@@ -130,7 +185,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature('My New Util', '123', '123', 3, 100, '123'),
+        new Signature(
+          'My New Util',
+          '123',
+          '123',
+          3,
+          100,
+          1665828483000,
+          1665828483000,
+          '123'
+        ),
+        1665828483000,
+        1665828483000,
         'Thred Developer',
         'My New Util',
         [
@@ -151,7 +217,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature('My New Util', '123', '123', 3, 100, '123'),
+        new Signature(
+          'My New Util',
+          '123',
+          '123',
+          3,
+          100,
+          1665828483000,
+          1665828483000,
+          '123'
+        ),
+        1665828483000,
+        1665828483000,
         'Thred Developer',
         'My New Util',
         [

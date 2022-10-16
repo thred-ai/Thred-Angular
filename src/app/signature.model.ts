@@ -4,6 +4,8 @@ export class Signature {
   pay_address!: string;
   category!: number;
   price!: number;
+  created!: number;
+  modified!: number;
   signature!: string;
 
   constructor(
@@ -12,10 +14,14 @@ export class Signature {
     pay_address: string,
     category: number,
     price: number,
+    created: number,
+    modified: number,
     signature: string
   ) {
     this.name = name ?? 'My SmartUtil';
     this.id = id;
+    this.created = created;
+    this.modified = modified ?? created;
     this.pay_address = pay_address;
     this.category = category ?? 0;
     this.price = price ?? 0;

@@ -20,11 +20,15 @@ export class Util {
   reviews!: number;
   rating!: number;
   chains!: Chain[];
+  created!: number;
+  modified!: number;
 
   constructor(
     id: string,
     creator: string,
     signature: Signature,
+    created: number,
+    modified?: number,
     creatorName?: string,
     name?: string,
     displayUrls?: string[],
@@ -43,6 +47,8 @@ export class Util {
     this.id = id;
     this.creator = creator;
     this.signature = signature;
+    this.created = created;
+    this.modified = modified ?? created;
     this.creatorName = creatorName ?? 'Unknown Developer';
     this.name = name ?? 'My SmartUtil';
     this.displayUrls = displayUrls ?? ['add_thred_default_later'];
