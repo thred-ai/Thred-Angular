@@ -56,7 +56,7 @@ import { AddressPipe } from './address.pipe';
 // import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
 // import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 // import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
-import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
+// import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
 // import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
 // import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
 // import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
@@ -125,7 +125,7 @@ import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
     // MdbDropdownModule,
     // MdbFormsModule,
     // MdbModalModule,
-    MdbPopoverModule,
+    // MdbPopoverModule,
     // MdbRadioModule,
     // MdbRangeModule,
     // MdbRippleModule,
