@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   utilCategories: Category[] = [
     new Category(
       'Great New Utilities',
-      1,
+      "1",
       [
         new Util(
           '123',
@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit {
     ),
     new Category(
       'Most Popular',
-      2,
+      "2",
       [
         new Util(
           '123',

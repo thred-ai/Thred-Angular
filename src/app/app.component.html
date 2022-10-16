@@ -23,7 +23,12 @@
           class="w-100 d-flex justify-content-center align-items-center"
           style="aspect-ratio: 1"
         >
-          <img class="w-100 px-5" [src]="'assets/logo_light.png'" />
+          <img
+            class="w-100 px-5"
+            role="button"
+            (click)="routeToHome()"
+            [src]="'assets/logo_light.png'"
+          />
         </div>
         <div class="my-3 mx-auto w-100" style="height: 60px">
           <app-search-bar [placeholder]="'Search Smart Utils, Developers'">
@@ -33,6 +38,8 @@
           <div
             class="w-100 text-center my-1 fw-bold"
             style="font-size: x-large"
+            role="button"
+            (click)="routeToHome()"
           >
             Explore
           </div>
@@ -40,6 +47,8 @@
           <div
             class="w-100 text-center my-1 fw-bold"
             style="font-size: x-large"
+            role="button"
+            (click)="routeToAuth()"
           >
             Developer
           </div>
@@ -54,10 +63,7 @@
       </div>
     </div>
 
-    <div
-      class="w-100 h-100"
-      *ngIf="!openMobileMenu && selectedInstall"
-    >
+    <div class="w-100 h-100" *ngIf="!openMobileMenu && selectedInstall">
       <app-address-dialog [item]="selectedInstall"> </app-address-dialog>
     </div>
   </mat-sidenav>
@@ -73,6 +79,8 @@
             class="h-100 w-auto p-2 ms-2 ms-md-0"
             [src]="'assets/logo_light.png'"
             style="object-fit: contain"
+            role="button"
+            (click)="routeToHome()"
           />
         </div>
         <div
@@ -90,8 +98,16 @@
             >
             </app-search-bar>
           </div>
-          <span class="text-purple-hover mx-4" role="button">Explore</span>
-          <span class="text-purple-hover mx-4" role="button"
+          <span
+            class="text-purple-hover mx-4"
+            role="button"
+            (click)="routeToHome()"
+            >Explore</span
+          >
+          <span
+            class="text-purple-hover mx-4"
+            role="button"
+            (click)="routeToAuth()"
             >Developer Portal</span
           >
         </div>
@@ -119,10 +135,11 @@
                 border-color: rgb(255, 232, 248);
                 width: fit-content;
               "
+              role="button"
+              (click)="routeToAuth()"
             >
               <img
                 class="h-100 p-0 m-auto rounded-circle"
-                role="button"
                 style="object-fit: contain; aspect-ratio: 1"
                 [src]="'assets/profile.png'"
               />
@@ -172,7 +189,9 @@
               <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
                 Discover
               </h3>
-              <div class="w-100 my-3" role="button">All SmartUtils</div>
+              <div class="w-100 my-3" role="button" (click)="routeToHome()">
+                All SmartUtils
+              </div>
               <div class="w-100 my-3" role="button">New Arrivals</div>
               <div class="w-100 my-3" role="button">Multi-Chain</div>
             </div>
@@ -180,7 +199,9 @@
               <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
                 Developers
               </h3>
-              <div class="w-100 my-3" role="button">Dev Portal</div>
+              <div class="w-100 my-3" role="button" (click)="routeToAuth()">
+                Dev Portal
+              </div>
               <div class="w-100 my-3" role="button">Get Started</div>
               <div class="w-100 my-3" role="button">Documentation</div>
             </div>

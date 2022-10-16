@@ -4,13 +4,13 @@ import { Util } from "./util.model"
 export class Category{
 
   name!: string
-  id!: number
+  id!: string
   utils!: Util[]
   cols!: number
 
-  constructor(name: string, id: number, utils: Util[], cols: number){
+  constructor(name: string, id: string, utils: Util[], cols: number){
     this.name = name ?? "New"
-    this.id = id ?? 1
+    this.id = id
     this.utils = utils ?? []
     this.cols = cols ?? 3
   }

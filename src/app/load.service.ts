@@ -32,4 +32,20 @@ export class LoadService {
   openItem(id: string) {
     this.router.navigateByUrl(`/utils/${id}`);
   }
+
+  openCategory(id: string) {
+    this.router.navigateByUrl(`/sections/${id}`);
+  }
+
+  openDevProfile(id: string) {
+    this.router.navigateByUrl(`/developers/${id}`);
+  }
+
+  openAuth(id: string) {
+    this.router.navigateByUrl(`/account?mode=${id}`);
+  }
+
+  openHome() {
+    this.router.navigateByUrl(`/home`);
+  }
 }

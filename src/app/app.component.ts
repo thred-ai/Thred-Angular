@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 import { LoadService } from './load.service';
 import { Util } from './util.model';
 
@@ -27,6 +28,7 @@ export class AppComponent {
   constructor(
     private cdr: ChangeDetectorRef,
     private loadService: LoadService,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformID: Object
   ) {}
 
@@ -57,6 +59,14 @@ export class AppComponent {
 
     //or document.body.scrollTop = 0;
     //or document.querySelector('body').scrollTo(0,0)
+  }
+  
+  routeToAuth(mode = '0'){
+    this.loadService.openAuth(mode)
+  }
+
+  routeToHome(){
+    this.loadService.openHome()
   }
 
   ngOnInit() {

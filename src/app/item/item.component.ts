@@ -41,7 +41,7 @@ export class ItemComponent implements OnInit {
 
   category = new Category(
     'Discover More',
-    1,
+    "1",
     [
       new Util(
         '123',
