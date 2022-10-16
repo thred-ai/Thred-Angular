@@ -46,7 +46,7 @@ import { AddressDialogComponent } from './address-dialog/address-dialog.componen
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { NgRouterOutletCommModule } from 'ng-router-outlet-comm';
+// import { NgRouterOutletCommModule } from 'ng-router-outlet-comm';
 import { AddressValidatePipe } from './address-validate.pipe'
 import { AddressPipe } from './address.pipe';
 // import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
@@ -117,7 +117,7 @@ import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
     MatTabsModule,
     MatNativeDateModule,
     ScrollingModule,
-    NgRouterOutletCommModule,
+    // NgRouterOutletCommModule,
     // MdbAccordionModule,
     // MdbCarouselModule,
     // MdbCheckboxModule,
