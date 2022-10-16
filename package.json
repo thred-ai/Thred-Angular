@@ -83,7 +83,6 @@
     "jose": "^4.8.1",
     "jszip": "^3.10.0",
     "jwt-decode": "^3.1.2",
-    "mdb-angular-ui-kit": "^2.3.0",
     "monaco-editor": "^0.24.0",
     "ng-apexcharts": "^1.6.0",
     "ng-in-viewport": "^6.1.5",
