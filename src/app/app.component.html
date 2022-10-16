@@ -4,9 +4,9 @@
     [position]="'start'"
     #drawer
   >
-    <div
+    <a
       class="w-100 d-flex justify-content-end align-items-center"
-      style="pointer-events: all; height: 40px;"
+      style="pointer-events: all; height: 40px"
       (click)="
         drawer.toggle(); openMobileMenu = false; selectedInstall = undefined
       "
@@ -18,7 +18,7 @@
       >
         close
       </mat-icon>
-    </div>
+    </a>
     <div
       class="bg-white w-100 d-flex d-md-none flex-column justify-content-center align-items-center"
       *ngIf="openMobileMenu"
