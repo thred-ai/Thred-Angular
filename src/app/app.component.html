@@ -4,12 +4,17 @@
     [position]="'start'"
     #drawer
   >
-    <div class="w-100 d-flex justify-content-end align-items-center">
+    <div
+      class="w-100 d-flex justify-content-end align-items-center"
+      style="pointer-events: all"
+      (click)="
+        drawer.toggle(); openMobileMenu = false; selectedInstall = undefined
+      "
+      role="button"
+    >
       <mat-icon
         class="d-inline-flex justify-content-center align-items-center fw-bolder"
-        style="height: 40px; width: 40px; font-size: xx-large; z-index: 50;"
-        (click)="drawer.toggle(); openMobileMenu = false; selectedInstall = undefined"
-        role="button"
+        style="height: 40px; width: 40px; font-size: xx-large; z-index: 50"
       >
         close
       </mat-icon>
