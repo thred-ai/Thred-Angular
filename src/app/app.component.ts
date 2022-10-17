@@ -30,7 +30,15 @@ export class AppComponent {
     private loadService: LoadService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformID: Object
-  ) {}
+  ) {
+    if (!isPlatformBrowser(this.platformID)) {
+      this.display = false;
+    }
+  }
+
+  featuredUtil?: Util;
+  display = true;
+
 
   sendToChildEmitter = new EventEmitter();
 

@@ -6,7 +6,7 @@
   >
     <a
       class="w-100 d-flex justify-content-end align-items-center text-dark"
-      style="pointer-events: all; height: 40px; text-decoration: none;"
+      style="pointer-events: all; height: 40px; text-decoration: none"
       (click)="
         drawer.toggle(); openMobileMenu = false; selectedInstall = undefined
       "
@@ -93,7 +93,7 @@
           class="h-100 d-none d-md-flex justify-content-start align-items-center"
         >
           <div
-            class="h-50 my-1 mx-4"
+            class="h-50 my-1 mx-4 d-{{display ? 'block' : 'none'}}"
             [class.search-bar-extend]="expandedSearch"
             [class.search-bar-back]="!expandedSearch"
             style="width: 265px"
