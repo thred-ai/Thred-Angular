@@ -37,11 +37,7 @@
           class="w-100 bg-white zoom-img"
           style="object-fit: cover; height: 77.5%"
           *ngIf="item?.coverUrl"
-          loading="lazy"
-          [useSrcset]="true"
-          [defaultImage]="'/assets/default.png'"
-          [lazyLoad]="item?.coverUrl ?? '/assets/default.png'"
-          role="button"
+          [src]="item?.coverUrl"
         />
         <div
           class="w-100 bg-white d-flex justify-content-between align-items-center"
@@ -65,10 +61,7 @@
             <img
               class="m-auto"
               style="object-fit: contain; height: 90%; width: 90%"
-              loading="lazy"
-              [useSrcset]="true"
-              [defaultImage]="'/assets/default.png'"
-              [lazyLoad]="(item?.displayUrls ?? [])[0]"
+              [src]="(item?.displayUrls ?? [])[0]"
               role="button"
             />
           </div>

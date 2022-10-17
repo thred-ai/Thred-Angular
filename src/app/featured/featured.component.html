@@ -51,10 +51,7 @@
           class="h-100 w-100 w-md-auto bg-white rounded-15 shadow"
           style="object-fit: contain; max-width: 650px"
           *ngIf="item.coverUrl"
-          loading="lazy"
-          [useSrcset]="true"
-          [defaultImage]="'/assets/default.png'"
-          [lazyLoad]="item.coverUrl"
+          [src]="item.coverUrl"
           role="button"
         />
 
@@ -72,10 +69,7 @@
           <img
             class="m-auto"
             style="object-fit: contain; height: 90%; width: 90%"
-            loading="lazy"
-            [useSrcset]="true"
-            [defaultImage]="'/assets/default.png'"
-            [lazyLoad]="item.displayUrls[0]"
+            [src]="(item.displayUrls)[0]"
             role="button"
           />
         </div>
