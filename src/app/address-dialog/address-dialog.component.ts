@@ -3,6 +3,7 @@ import {
   ElementRef,
   Inject,
   Input,
+  OnDestroy,
   OnInit,
   PLATFORM_ID,
   ViewChild,
@@ -27,7 +28,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './address-dialog.component.html',
   styleUrls: ['./address-dialog.component.scss'],
 })
-export class AddressDialogComponent implements OnInit {
+export class AddressDialogComponent implements OnInit, OnDestroy {
   constructor(
     private loadService: LoadService,
     @Inject(PLATFORM_ID) private platformID: Object
@@ -155,9 +156,11 @@ export class AddressDialogComponent implements OnInit {
 
   saving = false;
 
-  ngOnInit(): void {
-    console.log(this.item);
+  ngOnDestroy(): void {
+    window.onclick = null
+  }
 
+  ngOnInit(): void {
     window.onclick = (e) => {
       if ((e.target as any)?.id == 'removeBtn') {
         return;

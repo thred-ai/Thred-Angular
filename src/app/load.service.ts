@@ -3,6 +3,9 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
+import { Developer } from './developer.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +17,9 @@ export class LoadService {
 
   constructor(
     @Inject(PLATFORM_ID) private platformID: Object,
-    private router: Router
+    private router: Router,
+    private auth: AngularFireAuth,
+    private functions: AngularFireFunctions
   ) {
     if (isPlatformBrowser(this.platformID)) {
       let chains = [1, 137];
@@ -28,6 +33,43 @@ export class LoadService {
       });
     }
   }
+
+  finishSignUp(
+    email: string,
+    password: string,
+    callback: (result: { status: boolean; msg: string }) => any
+  ) {
+    this.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        callback({ status: true, msg: 'success' });
+      })
+      .catch((err: Error) => {
+        console.log(err);
+        callback({ status: false, msg: err.message });
+      });
+  }
+
+  finishSignIn(
+    email: string,
+    password: string,
+    callback: (result: { status: boolean; msg: string }) => any
+  ) {
+    this.auth
+      .signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        callback({ status: true, msg: 'success' });
+      })
+      .catch((err: Error) => {
+        console.log(err);
+        callback({ status: false, msg: err.message });
+      });
+  }
+
+  finishPassReset(
+    email: string,
+    callback: (result: { status: boolean; msg: string }) => any
+  ) {}
 
   openItem(id: string) {
     this.router.navigateByUrl(`/utils/${id}`);

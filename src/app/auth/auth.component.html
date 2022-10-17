@@ -13,80 +13,237 @@
     <div
       class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center px-3 pt-2 pt-md-0"
     >
-      <form class="vh-80" style="width: 600px; max-width: 100%; " [formGroup]="authForm">
+      <form
+        class="vh-80"
+        style="width: 600px; max-width: 100%"
+        [formGroup]="
+          mode == 0 ? signUpForm : mode == 1 ? signInForm : passResetForm
+        "
+      >
         <div
           class="rounded-15 bg-white big-design-card shadow h-100 w-100"
           style="z-index: 50"
         >
-          <div class="w-100 big-design-header">
-            <h4 class="w-100">Create an account</h4>
-          </div>
-          <div class="w-100 h-100 py-4">
-            <div class="w-100 py-1">
-                <span style="font-size: small;" class="w-100 text-start">Email</span>
-                <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
-                    <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
+          <ng-container *ngIf="mode == 0">
+            <div
+              class="w-100 h-100 d-flex flex-column justify-content-center align-items-center animate__animated animate__fadeIn"
+            >
+              <div class="w-100 big-design-header">
+                <h4 class="w-100 text-center">Create an account</h4>
+              </div>
+              <div class="w-100 py-4">
+                <div class="w-100 py-1">
+                  <span style="font-size: small" class="w-100 text-start"
+                    >Email</span
                   >
-                    <input
-                      class="h-100 text-dark"
-                      matInput
-                      type="email"
-                      formControlName="email"
-                      placeholder="Ex. john@thredapps.com"
-                    />
-                  </mat-form-field>
-                </div>
-            </div>
-            <div class="w-100 py-1">
-                <span style="font-size: small;" class="w-100 text-start">Password</span>
-                <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
+                  <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
                     <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
-                  >
-                    <input
-                      class="h-100 text-dark"
-                      matInput
-                      type="password"
-                      formControlName="password"
-                      placeholder="Secure Password"
-                    />
-                  </mat-form-field>
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
+                    >
+                      <input
+                        class="h-100 text-dark"
+                        matInput
+                        type="email"
+                        formControlName="email"
+                        placeholder="Ex. john@thredapps.com"
+                      />
+                    </mat-form-field>
+                  </div>
                 </div>
-            </div>
-            <div class="w-100 py-1">
-                <span style="font-size: small;" class="w-100 text-start">Confirm Password</span>
-                <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
+                <div class="w-100 py-1">
+                  <span style="font-size: small" class="w-100 text-start"
+                    >Password</span
+                  >
+                  <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
                     <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
-                  >
-                    <input
-                      class="h-100 text-dark"
-                      matInput
-                      type="password"
-                      formControlName="confirmPass"
-                      placeholder="Confirm Password"
-                    />
-                  </mat-form-field>
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
+                    >
+                      <input
+                        class="h-100 text-dark"
+                        matInput
+                        type="password"
+                        formControlName="password"
+                        placeholder="Secure Password"
+                      />
+                    </mat-form-field>
+                  </div>
                 </div>
-            </div>
-            <div class="w-100 py-1 mt-4">
-                <button class="btn bg-black rounded-15 text-white px-5 py-3 fw-bold w-100 mt-1">
+                <div class="w-100 py-1">
+                  <span style="font-size: small" class="w-100 text-start"
+                    >Confirm Password</span
+                  >
+                  <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
+                    >
+                      <input
+                        class="h-100 text-dark"
+                        matInput
+                        type="password"
+                        formControlName="confirmPass"
+                        placeholder="Confirm Password"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="w-100 py-1 mt-2 px-2" *ngIf="!err">
+                  <p
+                    class="w-100 text-center animate__animated animate__fadeIn"
+                    style="font-size: small"
+                  >
+                    By joining the
+                    <b role="button" class="fw-bold text-purple-hover"
+                      >Thred Developer Program</b
+                    >, you agree to our
+                    <b role="button" class="fw-bold text-purple-hover"
+                      >Terms of Service</b
+                    >.
+                  </p>
+                </div>
+                <div class="w-100 py-1 mt-2 px-2" *ngIf="err">
+                  <p
+                    class="w-100 text-center text-danger animate__animated animate__fadeIn"
+                    style="font-size: small"
+                  >
+                    {{ err }}
+                  </p>
+                </div>
+                <div class="w-100 py-1 mt-3">
+                  <button
+                    class="btn bg-black rounded-15 text-white px-5 py-3 fw-bold w-100 mt-1"
+                    (click)="continue()"
+                    id="continue"
+                  >
                     Continue
-                </button>
+                    <span
+                      *ngIf="loading"
+                      class="spinner-border spinner-border-sm ms-1"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                </div>
+
+                <div class="w-100 py-1 mt-3 px-2">
+                  <p
+                    class="w-100 text-center"
+                    style="font-size: small"
+                    role="button"
+                    (click)="mode = 1"
+                  >
+                    Already have an account?
+                    <b role="button" class="fw-bold text-purple-hover"
+                      >Sign in</b
+                    >.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="w-100 py-1 mt-3 px-2">
-                <p class="w-100 text-center" style="font-size: small;">
-                    By joining the <b role="button" class="fw-bold text-purple-hover">Thred Developer Program</b>, you agree to our <b role="button" class="fw-bold text-purple-hover">Terms of Service</b>.
-                </p>
+          </ng-container>
+          <ng-container *ngIf="mode == 1">
+            <div
+              class="w-100 h-100 d-flex flex-column justify-content-center align-items-center animate__animated animate__fadeIn"
+            >
+              <div class="w-100 big-design-header">
+                <h4 class="w-100 text-center">Sign in to your account</h4>
+              </div>
+              <div class="w-100 py-4">
+                <div class="w-100 py-1">
+                  <span style="font-size: small" class="w-100 text-start"
+                    >Email</span
+                  >
+                  <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
+                    >
+                      <input
+                        class="h-100 text-dark"
+                        matInput
+                        type="email"
+                        formControlName="email"
+                        placeholder="Ex. john@thredapps.com"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="w-100 py-1">
+                  <span style="font-size: small" class="w-100 text-start"
+                    >Password</span
+                  >
+                  <div class="rounded-15 border w-100 pb-2 px-4 mb-2 mt-1">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
+                    >
+                      <input
+                        class="h-100 text-dark"
+                        matInput
+                        type="password"
+                        formControlName="password"
+                        placeholder="Secure Password"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="w-100 py-1 mt-2 px-2" *ngIf="!err">
+                  <p class="w-100 text-center" style="font-size: small">
+                    <b
+                      role="button"
+                      class="fw-bold text-purple-hover animate__animated animate__fadeIn"
+                    >
+                      I forgot my password
+                    </b>
+                  </p>
+                </div>
+                <div class="w-100 py-1 mt-2 px-2" *ngIf="err">
+                  <p
+                    class="w-100 text-center text-danger animate__animated animate__fadeIn"
+                    style="font-size: small"
+                  >
+                    {{ err }}
+                  </p>
+                </div>
+                <div class="w-100 py-1 mt-3">
+                  <button
+                    class="btn bg-black rounded-15 text-white px-5 py-3 fw-bold w-100 mt-1"
+                    (click)="continue()"
+                    id="continue"
+                  >
+                    Continue
+                    <span
+                      *ngIf="loading"
+                      class="spinner-border spinner-border-sm ms-1"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                </div>
+
+                <div class="w-100 py-1 mt-3 px-2">
+                  <p
+                    class="w-100 text-center"
+                    style="font-size: small"
+                    role="button"
+                    (click)="mode = 0"
+                  >
+                    Don't have an account?
+                    <b role="button" class="fw-bold text-purple-hover"
+                      >Sign Up</b
+                    >.
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          </ng-container>
         </div>
       </form>
     </div>
