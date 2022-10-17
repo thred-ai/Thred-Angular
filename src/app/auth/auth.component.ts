@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
-  constructor() { }
+  authForm = this.fb.group({
+    email: [null, Validators.required],
+    password: [null, Validators.required],
+    confirmPass: [null, Validators.required],
+  });
+
+  constructor(private fb: FormBuilder) { }
+
+  mode = 0
 
   ngOnInit(): void {
   }
