@@ -3,13 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { CategoryComponent } from './category/category.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
 import { HomeComponent } from './home/home.component';
 import { ItemComponent } from './item/item.component';
 
 const routes: Routes = [
   { path: 'utils/:util', component: ItemComponent, pathMatch: 'full' },
   { path: 'groups/:group', component: CategoryComponent, pathMatch: 'full' },
+  { path: 'developers/:dev', component: DeveloperProfileComponent, pathMatch: 'full' },
   { path: 'account', component: AuthComponent, pathMatch: 'full' },
+
   {
     path: 'dashboard/:user',
     component: DashboardComponent,
