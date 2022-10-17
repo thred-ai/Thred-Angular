@@ -79,7 +79,7 @@
       style="height: 7.5vh; position: fixed; z-index: 50"
       id="top-bar"
     >
-      <ng-container class="d-{{ display ? 'block' : 'none' }}">
+      <div class="w-100 h-100 d-{{ display ? 'block' : 'none' }}">
         <div class="d-flex justify-content-start align-items-center h-100">
           <div class="my-1 mx-0 mx-md-4 h-100 py-2 py-md-3">
             <img
@@ -165,7 +165,7 @@
             </div>
           </div>
         </div>
-      </ng-container>
+      </div>
     </div>
     <div class="w-100 bg-white" style="min-height: 92.5vh; margin-top: 7.5vh">
       <router-outlet
