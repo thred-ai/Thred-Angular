@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { DateRange } from '@angular/material/datepicker';
 import { ethers } from 'ethers';
 import { Chain } from '../chain.model';
 import { Developer } from '../developer.model';
@@ -10,13 +11,11 @@ import { Util } from '../util.model';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-
   views?: Dict<any>[] = undefined;
   selectedCoord?: Dict<any> = undefined;
-
 
   today = new Date();
   month = this.today.getMonth();
@@ -27,6 +26,11 @@ export class DashboardComponent implements OnInit {
     start: new FormControl(this.loadService.addDays(this.today, -this.day + 1)),
     end: new FormControl(new Date(this.year, this.month, this.day)),
   });
+
+  selectedDateRange?: DateRange<Date> = new DateRange(
+    this.dateRange.controls['start'].value,
+    this.dateRange.controls['end'].value
+  );
 
   viewMapping: { [k: string]: string } = {
     '=0': 'No Views',
@@ -39,6 +43,8 @@ export class DashboardComponent implements OnInit {
     other: '# Sales',
   };
 
+  newDate = new Date();
+
   dateRangeChange(
     dateRangeStart: HTMLInputElement,
     dateRangeEnd: HTMLInputElement
@@ -47,12 +53,16 @@ export class DashboardComponent implements OnInit {
       let start = dateRangeStart.value;
       let end = dateRangeEnd.value;
 
+      this.selectedDateRange = new DateRange(
+        this.dateRange.controls['start'].value,
+        this.dateRange.controls['end'].value
+      );
+
       // this.loadStats();
     }
   }
 
-  
-  constructor(private loadService: LoadService) { }
+  constructor(private loadService: LoadService) {}
 
   @Input() dev?: Developer = new Developer(
     'Arta Koroushnia',
@@ -255,11 +265,7 @@ export class DashboardComponent implements OnInit {
     'https://storage.googleapis.com/thred-protocol.appspot.com/Test/app_img.png'
   );
 
-
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
   str = `
 
@@ -492,5 +498,4 @@ export class DashboardComponent implements OnInit {
     </html>    
 
     `;
-
 }

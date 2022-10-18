@@ -5,7 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { ANIMATION_MODULE_TYPE, BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  ANIMATION_MODULE_TYPE,
+  BrowserAnimationsModule,
+} from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
@@ -47,7 +50,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgRouterOutletCommModule } from 'ng-router-outlet-comm';
-import { AddressValidatePipe } from './address-validate.pipe'
+import { AddressValidatePipe } from './address-validate.pipe';
 import { AddressPipe } from './address.pipe';
 import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
@@ -73,7 +76,11 @@ import { IsAdminPipe } from './is-admin.pipe';
 import { CollectionTableComponent } from './collection-table/collection-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { StatusComponent } from './status/status.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {
+  DefaultMatCalendarRangeStrategy,
+  MatDatepickerModule,
+  MAT_DATE_RANGE_SELECTION_STRATEGY,
+} from '@angular/material/datepicker';
 import { DataTableComponent } from './data-table/data-table.component';
 import { LocationPipe } from './location.pipe';
 import { ViewsPipe } from './views.pipe';
@@ -164,7 +171,7 @@ import { NotificationComponent } from './notification/notification.component';
     MdbTooltipModule,
     MdbValidationModule,
     MatDatepickerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -172,6 +179,10 @@ import { NotificationComponent } from './notification/notification.component';
     // { provide: USE_FUNCTIONS_EMULATOR, useValue: !environment.production ? ['localhost', 5001] : undefined },
     { provide: LOCALE_ID, useValue: 'en-US' },
     { provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' },
+    {
+      provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+      useClass: DefaultMatCalendarRangeStrategy,
+    },
   ],
   bootstrap: [AppComponent],
 })

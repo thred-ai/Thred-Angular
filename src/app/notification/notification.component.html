@@ -8,6 +8,7 @@
         [mdbPopover]="template"
         placement="right"
         [trigger]="'hover'"
+        id="kicon"
       >
         <div
           class="bg-purple rounded-circle w-100 h-100 d-flex justify-content-center align-content-center p-0 notif-icon"
@@ -16,14 +17,24 @@
             {{ icon }}
           </mat-icon>
         </div>
+      </div>    
+
+      <div class="big-design-notif-content-body" id="hide">
+        <div class="big-design-notif-title fw-normal">{{ title }}</div>
+        <!-- <a
+          *ngIf="actionBtn"
+          class="big-design-button mt-2"
+          role="button"
+          (click)="actionBtnPressed.emit(true)"
+          >{{ actionBtn }}</a
+        > -->
       </div>
 
       <ng-template #template>
-        <div>
+        <div class="popover-body-padding">
             <b class="fw-bolder mb-4 text-light-success">{{title}}</b>
             <br />
             {{subtitle}}
-          <br />
           <!-- <div class="w-100 h-100 mt-3">
             <button
               (click)="remove(address, result == 'y')"
@@ -35,17 +46,6 @@
           </div> -->
         </div>
       </ng-template>
-
-      <div class="big-design-notif-content-body">
-        <div class="big-design-notif-title fw-normal">{{ title }}</div>
-        <!-- <a
-          *ngIf="actionBtn"
-          class="big-design-button mt-2"
-          role="button"
-          (click)="actionBtnPressed.emit(true)"
-          >{{ actionBtn }}</a
-        > -->
-      </div>
     </div>
     <div *ngIf="canClose" class="h-100">
       <a

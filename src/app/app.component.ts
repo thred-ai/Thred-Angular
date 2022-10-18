@@ -60,6 +60,9 @@ export class AppComponent {
     if (isPlatformBrowser(this.platformID)){
       window.scroll(0, 0);
     }
+    if (this.selectedInstall || this.openMobileMenu){
+      this.sidenav?.toggle();
+    }
     this.selectedInstall = undefined
     this.cdr.detectChanges()
 

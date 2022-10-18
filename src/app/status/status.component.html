@@ -4,14 +4,14 @@
   }} my-auto shadow"
   role="button"
   [mdbPopover]="template"
-  placement="right"
+  placement="bottom"
   trigger="hover"
 >
   {{ status == 0 ? enabledTitle : disabledTitle }}
 </p>
 
 <ng-template #template>
-  <div>
+  <div class="popover-body-padding">
     <b
       class="fw-bolder mb-4 text-{{
         status == 0 ? 'purple' : 'secondary'

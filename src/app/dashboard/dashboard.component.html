@@ -42,6 +42,9 @@
                   class="d-none d-md-flex justify-content-center align-items-center btn bg-purple text-light rounded-pill py-2 px-3"
                   role="button"
                   (click)="picker.open()"
+                  [mdbPopover]="template"
+                  placement="bottom"
+                  [trigger]="'hover'"
                 >
                   <div class="d-flex justify-content-center align-items-center">
                     <mat-form-field
@@ -67,7 +70,6 @@
                           placeholder="Start date"
                           formControlName="start"
                           #dateRangeStart
-                          matTooltip="Start Date"
                         />
                         <input
                           matEndDate
@@ -77,7 +79,6 @@
                           placeholder="End date"
                           formControlName="end"
                           #dateRangeEnd
-                          matTooltip="End Date"
                           (dateChange)="
                             dateRangeChange(dateRangeStart, dateRangeEnd)
                           "
@@ -88,7 +89,6 @@
                         mat-icon-button
                         class="p-0 me-0 my-auto date-icon"
                         matPrefix
-                        matTooltip="Edit Date Range"
                         (click)="picker.open()"
                       >
                         <mat-icon class="m-0" style="font-size: x-large"
@@ -102,6 +102,14 @@
                       ></mat-date-range-picker>
                     </mat-form-field>
                   </div>
+                  <ng-template #template>
+                    <div class="h-100" style="width: 250px;">
+                      <mat-calendar
+                        class="h-100 no-header pt-3"
+                        [selected]="selectedDateRange"
+                      ></mat-calendar>
+                    </div>
+                  </ng-template>
                 </button>
               </div>
               <div
@@ -140,7 +148,8 @@
                       [analytics]="{
                         name: 'Activity',
                         locData: (views | location),
-                        nftData: (views | location: undefined:1:dev?.utils ?? [])
+                        nftData:
+                          (views | location: undefined:1:dev?.utils ?? [])
                       }"
                       [utils]="dev?.utils ?? []"
                     ></app-data-table>
@@ -162,7 +171,13 @@
                       <div
                         class="big-design-body position-relative h-100 w-100 bg-black rounded-15"
                       >
-                      <img class="w-100 h-100 position-absolute bg-black animate__animated animate__fadeIn rounded-15" style="object-fit: cover;" [src]="'https://storage.googleapis.com/thred-protocol.appspot.com/resources/space.png'">
+                        <img
+                          class="w-100 h-100 position-absolute bg-black animate__animated animate__fadeIn rounded-15"
+                          style="object-fit: cover"
+                          [src]="
+                            'https://storage.googleapis.com/thred-protocol.appspot.com/resources/space.png'
+                          "
+                        />
 
                         <iframe
                           style="border-radius: 0.25rem"
@@ -289,7 +304,6 @@
                   <p
                     class="btn rounded-pill fw-bold bg-purple text-white d-flex justify-content-between align-content-center px-3 py-2"
                     style="right: 0px; margin-right: 0px"
-                    matTooltip="Create New Collection"
                   >
                     <mat-icon class="me-1" style="aspect-ratio: 1">
                       add
@@ -302,7 +316,10 @@
             <div class="px-3 w-100">
               <div class="w-100 h-100 p-4 pt-0 px-3">
                 <div class="w-100 big-design-card rounded-15">
-                  <app-collection-table [utils]="dev?.utils ?? []" [count]="(dev?.utils ?? []).length">
+                  <app-collection-table
+                    [utils]="dev?.utils ?? []"
+                    [count]="(dev?.utils ?? []).length"
+                  >
                   </app-collection-table>
                 </div>
               </div>
@@ -354,7 +371,6 @@
             </div>
           </div>
         </mat-tab> -->
-        
       </mat-tab-group>
     </div>
   </div>
