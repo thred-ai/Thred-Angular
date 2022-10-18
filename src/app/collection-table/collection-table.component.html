@@ -34,7 +34,14 @@
         </th>
         <td mat-cell *matCellDef="let element" class="big-design-body px-3">
           <div class="d-flex justify-content-start align-items-center my-auto">
-            <div class="position-relative" style="width: 100px; height: 47.5px">
+            <div
+              class="position-relative"
+              style="width: 100px; height: 47.5px"
+              [mdbPopover]="template"
+              placement="right"
+              trigger="hover"
+              role="button"
+            >
               <div
                 class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
                 style="
@@ -51,7 +58,6 @@
                   style="object-fit: contain; height: 85%; width: 85%"
                   [src]="element.chains[0].url"
                   role="button"
-                  matTooltip="{{ chains(element) }}"
                 />
               </div>
               <div
@@ -63,25 +69,69 @@
                   top: 0px;
                   left: 25px;
                   overflow: hidden;
+                  z-index: 49;
                 "
               >
                 <img
                   class="m-auto rounded-circle"
                   style="object-fit: contain; height: 85%; width: 85%"
                   [src]="element.chains[1].url"
-                  role="button"
-                  matTooltip="{{ chains(element) }}"
                 />
+              </div>
+              <div
+                class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                *ngIf="(element.chains.length ?? 0) > 2"
+                style="
+                  object-fit: contain;
+                  aspect-ratio: 1;
+                  top: 0px;
+                  left: 50px;
+                  overflow: hidden;
+                  z-index: 48;
+                  opacity: 0.5;
+                "
+              >
+                <!-- <img
+                  class="m-auto rounded-circle bg-purple"
+                  style="object-fit: contain; height: 85%; width: 85%"
+                /> -->
+                <mat-icon class="m-auto rounded-circle bg-purple text-white" style="object-fit: contain; height: 85%; width: 85%">
+                  add
+                </mat-icon>
               </div>
             </div>
 
-            <!-- <p
-              class="ms-3 my-auto text-purple text-truncate"
-              *ngIf="(element.chains.length ?? 0) > 1"
-              matTooltip="{{chains(element)}}"
-            >
-              ({{ (element.chains.length ?? 0) - 1 }} more)
-            </p> -->
+            <ng-template #template>
+              <div>
+                <b class="fw-bolder mb-4 text-purple"
+                  >Available Networks</b
+                >
+                <br />
+                <div
+                  *ngFor="let n of element.chains ?? []"
+                  class="d-flex justify-content-between align-items-center py-1"
+                >
+                  <div
+                    class="bg-white rounded-circle shadow d-flex justify-content-center align-items-center"
+                    style="
+                      object-fit: contain;
+                      aspect-ratio: 1;
+                      overflow: hidden;
+                      width: 45px;
+                    "
+                  >
+                    <img
+                      class="m-auto rounded-circle"
+                      style="object-fit: contain; height: 85%; width: 85%"
+                      [src]="n.url"
+                    />
+                  </div>
+                  <span class="fw-bold w-100 ps-2">
+                    {{n.name}}
+                  </span>
+                </div>
+              </div>
+            </ng-template>
           </div>
         </td>
       </ng-container>
@@ -101,10 +151,10 @@
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef class="big-design-body fw-bold">
+        <th mat-header-cell *matHeaderCellDef class="big-design-body fw-bold px-3">
           Status
         </th>
-        <td mat-cell *matCellDef="let element" class="big-design-body">
+        <td mat-cell *matCellDef="let element" class="big-design-body px-3">
           <app-status [status]="element.status"> </app-status>
         </td>
       </ng-container>
