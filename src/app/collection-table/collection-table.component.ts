@@ -27,7 +27,7 @@ export class CollectionTableComponent
 
     console.log(utils)
     this.dataSource = new MatTableDataSource<Util>(
-      utils.concat(utils).concat(utils)
+      utils
     );
     console.log(this.dataSource)
     setTimeout(() => {
