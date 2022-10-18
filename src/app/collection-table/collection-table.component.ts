@@ -25,7 +25,6 @@ export class CollectionTableComponent
 
   @Input() set utils(utils: Util[]) {
 
-    console.log(utils)
     this.dataSource = new MatTableDataSource<Util>(
       utils
     );
@@ -33,7 +32,6 @@ export class CollectionTableComponent
     setTimeout(() => {
       this.dataSource!.paginator = this.paginator1!;
       this.cdr.detectChanges()
-      console.log(this.paginator1)
     }, 200);
   }
 

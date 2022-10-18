@@ -1,9 +1,23 @@
 <p
   class="big-design-status bg-{{
     status == 0 ? 'purple' : 'secondary'
-  }} my-auto"
+  }} my-auto shadow"
   role="button"
-  matTooltip="{{status == 0 ? enabledText : disabledText}}"
+  [mdbPopover]="template"
+  placement="right"
+  trigger="hover"
 >
   {{ status == 0 ? enabledTitle : disabledTitle }}
 </p>
+
+<ng-template #template>
+  <div>
+    <b
+      class="fw-bolder mb-4 text-{{
+        status == 0 ? 'purple' : 'secondary'
+      }}"
+    >
+      {{ status == 0 ? enabledText : disabledText }}</b
+    >
+  </div>
+</ng-template>
