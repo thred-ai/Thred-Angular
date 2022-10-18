@@ -29,7 +29,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/miniature.earth.core.js",
+              "src/miniature.earth.js",
+              "src/hologram",
+              "src/src",
+              "src/modules"
             ],
             "styles": [
               "src/styles.scss"
@@ -180,7 +185,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/miniature.earth.core.js",
+              "src/miniature.earth.js",
+              "src/hologram",
+              "src/src",
+              "src/modules"
             ],
             "styles": [
               "src/styles.scss",

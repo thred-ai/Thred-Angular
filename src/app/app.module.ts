@@ -1,11 +1,11 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ANIMATION_MODULE_TYPE, BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
@@ -69,6 +69,19 @@ import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
 import { FormatEtherPipe } from './format-ether.pipe';
 import { TypeNumberPipe } from './type-number.pipe';
 import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
+import { IsAdminPipe } from './is-admin.pipe';
+import { CollectionTableComponent } from './collection-table/collection-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { StatusComponent } from './status/status.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { DataTableComponent } from './data-table/data-table.component';
+import { LocationPipe } from './location.pipe';
+import { ViewsPipe } from './views.pipe';
+import { LiveEarthViewPipePipe } from './live-earth-view-pipe.pipe';
+import { safeHtmlPipe } from './safeHtml.pipe';
+import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +102,15 @@ import { DeveloperProfileComponent } from './developer-profile/developer-profile
     FormatEtherPipe,
     TypeNumberPipe,
     DeveloperProfileComponent,
+    CollectionTableComponent,
+    StatusComponent,
+    DataTableComponent,
+    NotificationComponent,
+    IsAdminPipe,
+    ViewsPipe,
+    LocationPipe,
+    LiveEarthViewPipePipe,
+    safeHtmlPipe,
   ],
   imports: [
     CommonModule,
@@ -103,6 +125,7 @@ import { DeveloperProfileComponent } from './developer-profile/developer-profile
     NgbModule,
     MatInputModule,
     MatSelectModule,
+    MatButtonModule,
     MatSnackBarModule,
     DragScrollModule,
     MatDialogModule,
@@ -121,6 +144,7 @@ import { DeveloperProfileComponent } from './developer-profile/developer-profile
     MatSidenavModule,
     NgbModule,
     MatTabsModule,
+    MatTableModule,
     MatNativeDateModule,
     ScrollingModule,
     NgRouterOutletCommModule,
@@ -138,12 +162,16 @@ import { DeveloperProfileComponent } from './developer-profile/developer-profile
     MdbScrollspyModule,
     MdbTabsModule,
     MdbTooltipModule,
-    MdbValidationModule
+    MdbValidationModule,
+    MatDatepickerModule,
+    MatPaginatorModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     // Globals,
     // { provide: USE_FUNCTIONS_EMULATOR, useValue: !environment.production ? ['localhost', 5001] : undefined },
+    { provide: LOCALE_ID, useValue: 'en-US' },
+    { provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' },
   ],
   bootstrap: [AppComponent],
 })

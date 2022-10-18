@@ -22,6 +22,7 @@ export class Util {
   chains!: Chain[];
   created!: number;
   modified!: number;
+  status!: number;
 
   constructor(
     id: string,
@@ -42,7 +43,8 @@ export class Util {
     reviews?: number,
     rating?: number,
     chains?: Chain[],
-    coverUrl?: string
+    coverUrl?: string,
+    status?: number
   ) {
     this.id = id;
     this.creator = creator;
@@ -63,5 +65,6 @@ export class Util {
     this.rating = rating ?? 0;
     this.chains = chains ?? [new Chain('Ethereum', 1, 'ETH')];
     this.coverUrl = coverUrl;
+    this.status = status ?? 0
   }
 }

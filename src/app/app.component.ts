@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadService } from './load.service';
 import { Util } from './util.model';
 
@@ -28,7 +28,9 @@ export class AppComponent {
   constructor(
     private cdr: ChangeDetectorRef,
     private loadService: LoadService,
-    private router: Router,
+    private _router: Router,
+    public router: ActivatedRoute,
+    public location: Location,
     @Inject(PLATFORM_ID) private platformID: Object
   ) {
     if (!isPlatformBrowser(this.platformID)) {
@@ -50,6 +52,7 @@ export class AppComponent {
       this.sidenav?.toggle();
     }
   }
+  
 
   @ViewChild('drawer') public sidenav?: MatSidenav;
 
@@ -58,6 +61,8 @@ export class AppComponent {
       window.scroll(0, 0);
     }
     this.selectedInstall = undefined
+    this.cdr.detectChanges()
+
     // window.scroll({
     //   top: 0,
     //   left: 0,
@@ -79,6 +84,7 @@ export class AppComponent {
   ngOnInit() {
     // console.log("mayn")
     // this.readData()
+   
   }
 
   // async readData(){

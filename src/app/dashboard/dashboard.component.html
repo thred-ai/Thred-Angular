@@ -1,1 +1,361 @@
-<p>dashboard works!</p>
+<div
+  class="w-100 bg-light animate__animated animate__fadeIn bg-info"
+  style="min-height: 92.5vh"
+>
+  <div class="w-100 bg-light h-100">
+    <div id="content" class="tab w-100">
+      <mat-tab-group
+        mat-stretch-tabs
+        #menu
+        class="w-100"
+        dynamicHeight
+        animationDuration="0ms"
+        style="overflow-y: hidden; background-color: white"
+      >
+        <mat-tab class="tab">
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon text-dark">public</mat-icon>
+            <span class="ms-2 text-dark big-design-body fw-bold">
+              Analytics
+            </span>
+          </ng-template>
+
+          <div class="px-2 bg-light">
+            <div class="w-100 pt-1 bg-light px-4">
+              <div
+                class="d-flex justify-content-between align-items-center py-3"
+                style="width: 100%"
+              >
+                <p
+                  class="big-design-title"
+                  style="
+                    font-weight: lighter;
+                    font-size: 2rem;
+                    font-weight: 300;
+                    line-height: 2.5rem;
+                  "
+                >
+                  Analytics
+                </p>
+
+                <button
+                  class="d-none d-md-flex justify-content-center align-items-center btn bg-purple text-light rounded-pill py-2 px-3"
+                  role="button"
+                  (click)="picker.open()"
+                >
+                  <div class="d-flex justify-content-center align-items-center">
+                    <mat-form-field
+                      class="big-design-title px-0 mat-form-field-no-padding"
+                      style="font-size: large; font-weight: 500"
+                      floatLabel="never"
+                      appearance="legacy"
+                    >
+                      <mat-date-range-input
+                        [formGroup]="dateRange"
+                        [rangePicker]="picker"
+                        [comparisonStart]="dateRange.value.start"
+                        role="button"
+                        class="ms-1 w-100"
+                        [comparisonEnd]="dateRange.value.end"
+                        [max]="today"
+                      >
+                        <input
+                          matStartDate
+                          readonly
+                          (click)="picker.open()"
+                          role="button"
+                          placeholder="Start date"
+                          formControlName="start"
+                          #dateRangeStart
+                          matTooltip="Start Date"
+                        />
+                        <input
+                          matEndDate
+                          readonly
+                          (click)="picker.open()"
+                          role="button"
+                          placeholder="End date"
+                          formControlName="end"
+                          #dateRangeEnd
+                          matTooltip="End Date"
+                          (dateChange)="
+                            dateRangeChange(dateRangeStart, dateRangeEnd)
+                          "
+                        />
+                      </mat-date-range-input>
+
+                      <a
+                        mat-icon-button
+                        class="p-0 me-0 my-auto date-icon"
+                        matPrefix
+                        matTooltip="Edit Date Range"
+                        (click)="picker.open()"
+                      >
+                        <mat-icon class="m-0" style="font-size: x-large"
+                          >event</mat-icon
+                        >
+                      </a>
+
+                      <mat-date-range-picker
+                        touchUi
+                        #picker
+                      ></mat-date-range-picker>
+                    </mat-form-field>
+                  </div>
+                </button>
+              </div>
+              <div
+                class="w-100 h-100 d-flex flex-column-reverse flex-md-row justify-content-between align-items-start pb-md-4"
+              >
+                <div
+                  class="w-100 w-md-50 d-flex justify-content-start align-items-top flex-column pe-md-2 pb-2"
+                >
+                  <div class="my-2 mt-md-0">
+                    <app-notification
+                      [canClose]="false"
+                      [title]="'Welcome, ' + dev?.name"
+                      [subtitle]="'You have new updates!'"
+                      [icon]="'smart_toy'"
+                      [iconColor]="'purple'"
+                    >
+                    </app-notification>
+                  </div>
+                  <!-- <div
+                  class="my-2 mt-md-0"
+                  *ngIf="storeInfo && !storeInfo.active"
+                >
+                  <app-notification
+                    [canClose]="false"
+                    [title]="'Action Required!'"
+                    [subtitle]="
+                      'Finish setting up your account in Account settings.'
+                    "
+                    [iconColor]="'danger'"
+                    [icon]="'error'"
+                  >
+                  </app-notification>
+                </div> -->
+                  <div class="big-design-card my-0 rounded-15">
+                    <app-data-table
+                      [analytics]="{
+                        name: 'Activity',
+                        locData: (views | location),
+                        nftData: (views | location: undefined:1:dev?.utils ?? [])
+                      }"
+                      [utils]="dev?.utils ?? []"
+                    ></app-data-table>
+                    <!-- (clicked)="
+                      $event.mode == 0
+                        ? scrollToLocation($event.data)
+                        : createNewNFT($event.data) -->
+                  </div>
+                </div>
+
+                <div
+                  class="w-100 w-md-50 pb-md-1 d-flex justify-content-between align-items-center flex-column earth-frame"
+                >
+                  <div class="p-0 h-100 w-100">
+                    <div
+                      class="h-100 w-100 big-design-card p-0 bg-black rounded-15"
+                      style="overflow: hidden"
+                    >
+                      <div
+                        class="big-design-body position-relative h-100 w-100 bg-black"
+                      >
+                      <img class="w-100 h-100 position-absolute bg-black animate__animated animate__fadeIn" style="object-fit: cover;" [src]="'https://storage.googleapis.com/thred-protocol.appspot.com/resources/space.png'">
+
+                        <iframe
+                          style="border-radius: 0.25rem"
+                          class="w-100 h-100 position-absolute"
+                          id="earthFrame"
+                          [srcdoc]="
+                            str | liveEarthViewPipe: views ?? [] | safeHtml
+                          "
+                        >
+                        </iframe>
+
+                        <div
+                          class="d-inline-flex align-items-top justify-content-between"
+                          style="top: 1.2rem; left: 1.5rem; position: absolute"
+                        >
+                          <div class="h-100">
+                            <a
+                              class="side d-flex align-items-center justify-content-start"
+                              style="font-size: large"
+                            >
+                              <mat-icon
+                                [inline]="true"
+                                class="me-2 my-0 d-flex justify-content-center align-items-center px-1 rounded-circle"
+                                style="
+                                  background-color: #ff003f;
+                                  aspect-ratio: 1;
+                                "
+                              >
+                              </mat-icon>
+                              <p
+                                class="my-0 big-design-body"
+                                style="color: white; font-size: larger"
+                              >
+                                {{
+                                  (views | views)?.length ?? 0
+                                    | i18nPlural: viewMapping
+                                }}
+                              </p>
+                            </a>
+                            <!-- <a
+                            role="button"
+                            class="side d-flex mt-2 align-items-center justify-content-start"
+                            style="font-size: large"
+                          >
+                            <mat-icon
+                              [inline]="true"
+                              class="me-2 my-0 d-flex justify-content-center align-items-center px-1 rounded-circle"
+                              style="
+                                background-color: rgb(0, 188, 75);
+                                aspect-ratio: 1;
+                              "
+                            >
+                            </mat-icon>
+                            <p
+                              class="my-0 big-design-body"
+                              style="color: white; font-size: larger"
+                            >
+                              {{
+                                (views | sales)?.length ?? 0
+                                  | i18nPlural: saleMapping
+                              }}
+                            </p>
+                          </a> -->
+                          </div>
+                        </div>
+
+                        <div
+                          *ngIf="selectedCoord"
+                          class="position-absolute w-100 h-100 animate__animated animate__fadeIn animate__faster animate__delay-0s"
+                          style="
+                            border-radius: 0.25rem;
+                            background-color: rgba(0, 0, 0, 0.406);
+                          "
+                        ></div>
+                        <!-- (click)="closeCard()" -->
+                        <div
+                          class="big-design-card bg-white animate__animated animate__fadeInRight animate__faster animate__delay-0s"
+                          *ngIf="selectedCoord"
+                          style="
+                            top: 10px;
+                            right: 10px;
+                            position: absolute;
+                            width: 275px;
+                          "
+                        >
+                          <app-view-coord
+                            [coord]="selectedCoord"
+                          ></app-view-coord>
+                          <!-- (close)="closeCard()" -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab class="tab">
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon text-dark"> token</mat-icon>
+            <span class="ms-2 text-dark big-design-body fw-bold">
+              Develop
+            </span>
+          </ng-template>
+          <div class="h-100 w-100 bg-light">
+            <div *ngIf="dev?.utils" class="px-2 mt-0 pt-0 w-100">
+              <div class="w-100 h-100 py-5 pb-1 pt-3 px-4">
+                <div
+                  class="d-flex justify-content-between align-items-center py-2"
+                  style="width: 100%"
+                >
+                  <p
+                    class="big-design-title"
+                    style="
+                      font-weight: lighter;
+                      font-size: 2rem;
+                      font-weight: 300;
+                      line-height: 2.5rem;
+                    "
+                  >
+                    Develop
+                  </p>
+                  <p
+                    class="btn rounded-pill fw-bold bg-purple text-white d-flex justify-content-between align-content-center px-3 py-2"
+                    style="right: 0px; margin-right: 0px"
+                    matTooltip="Create New Collection"
+                  >
+                    <mat-icon class="me-1" style="aspect-ratio: 1">
+                      add
+                    </mat-icon>
+                    Add new
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="px-3 w-100">
+              <div class="w-100 h-100 p-4 pt-0 px-3">
+                <div class="w-100 big-design-card rounded-15">
+                  <app-collection-table [utils]="dev?.utils ?? []" [count]="(dev?.utils ?? []).length">
+                  </app-collection-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- <mat-tab class="tab">
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon text-dark">
+              account_circle</mat-icon
+            >
+            <span class="ms-2 text-dark big-design-body fw-bold">
+              Account
+            </span>
+          </ng-template>
+
+          <div class="w-100 h-100 px-2 bg-light px-5">
+            <div class="w-100 pt-3 px-4">
+              <div
+                class="d-flex justify-content-between align-items-center py-2 mb-1"
+                style="width: 100%"
+              >
+                <p
+                  class="big-design-title"
+                  style="
+                    font-weight: lighter;
+                    font-size: 2rem;
+                    font-weight: 300;
+                    line-height: 2.5rem;
+                  "
+                >
+                  Account
+                </p>
+              </div>
+
+              <div class="big-design-card mx-0 rounded-15">
+                <div class="big-design-header">
+                  <p class="big-design-title">Account</p>
+                  <a class="big-design-button" matTooltip="View Details">
+                    {{ "Change" }}
+                  </a>
+                </div>
+                <div class="big-design-body">Email: arta2001@icloud.com</div>
+                <div class="big-design-body" *ngIf="billingInfo == ''">
+                  This card will be used for your Thred Merchant Plan.
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab> -->
+        
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

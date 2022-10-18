@@ -7,10 +7,16 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { Developer } from './developer.model';
 
+export interface Dict<T> {
+  [key: string]: T;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class LoadService {
+
+  
   providers: {
     any?: ethers.providers.JsonRpcProvider;
   } = {};
@@ -89,5 +95,17 @@ export class LoadService {
 
   openHome() {
     this.router.navigateByUrl(`/home`);
+  }
+
+  addDays(date: Date, days: number) {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + days,
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds()
+    );
   }
 }
