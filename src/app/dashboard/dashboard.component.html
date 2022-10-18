@@ -160,13 +160,13 @@
                       style="overflow: hidden"
                     >
                       <div
-                        class="big-design-body position-relative h-100 w-100 bg-black"
+                        class="big-design-body position-relative h-100 w-100 bg-black rounded-15"
                       >
-                      <img class="w-100 h-100 position-absolute bg-black animate__animated animate__fadeIn" style="object-fit: cover;" [src]="'https://storage.googleapis.com/thred-protocol.appspot.com/resources/space.png'">
+                      <img class="w-100 h-100 position-absolute bg-black animate__animated animate__fadeIn rounded-15" style="object-fit: cover;" [src]="'https://storage.googleapis.com/thred-protocol.appspot.com/resources/space.png'">
 
                         <iframe
                           style="border-radius: 0.25rem"
-                          class="w-100 h-100 position-absolute"
+                          class="w-100 h-100 position-absolute rounded-15"
                           id="earthFrame"
                           [srcdoc]="
                             str | liveEarthViewPipe: views ?? [] | safeHtml
