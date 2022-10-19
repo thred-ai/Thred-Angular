@@ -1,15 +1,11 @@
-// ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
-//   color: unset;
-// }
-
-// ::ng-deep .mat-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
-//   background-color: #9c4aff;
-//   color: #9c4aff;
-// }
-
-// ::ng-deep .mat-option-pseudo-checkbox {
-//   border-radius: 50% !important;
-// }
+.notif-icon {
+    transition: transform 0.25s ease-in-out;
+  }
+  
+  .notif-icon:hover {
+    transform: rotate(180deg) scale(1.2, 1.2);
+    background-color: #01df5d !important;
+  }
 
 ::ng-deep .mat-option .mat-pseudo-checkbox {
   display: none;

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
+import { CurrencyMaskInputMode } from 'ngx-currency';
 import { Chain } from '../chain.model';
 
 @Component({
@@ -26,6 +27,19 @@ export class SmartUtilComponent implements OnInit {
     appImg: [null, Validators.required],
     marketingImg: [null, Validators.required],
   });
+
+  customCurrencyMaskConfig = {
+    align: 'left',
+    allowNegative: false,
+    allowZero: false,
+    decimal: '.',
+    precision: 1,
+    prefix: '',
+    suffix: '',
+    thousands: ',',
+    min: 0,
+    inputMode: CurrencyMaskInputMode.NATURAL,
+  };
 
   categories: {
     name: string;

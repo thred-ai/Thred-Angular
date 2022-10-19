@@ -90,6 +90,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NotificationComponent } from './notification/notification.component';
 import { SmartUtilComponent } from './smart-util/smart-util.component';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { SmartUtilComponent } from './smart-util/smart-util.component';
     InViewportModule,
     HttpClientModule,
     FormsModule,
+    NgxCurrencyModule,
     // ApplicationPipesModule,
     MatAutocompleteModule,
     MatChipsModule,
