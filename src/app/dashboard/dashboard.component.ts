@@ -66,8 +66,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private loadService: LoadService, private dialog: MatDialog) {}
 
-
-  openUtil(util?: Util){
+  openUtil(util?: Util) {
     const modalRef = this.dialog.open(SmartUtilComponent, {
       width: '750px',
       maxHeight: '100vh',
@@ -87,16 +86,18 @@ export class DashboardComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -119,16 +120,18 @@ export class DashboardComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -151,16 +154,18 @@ export class DashboardComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -183,16 +188,18 @@ export class DashboardComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -215,16 +222,18 @@ export class DashboardComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -247,16 +256,18 @@ export class DashboardComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',

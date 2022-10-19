@@ -20,16 +20,18 @@ export class ItemComponent implements OnInit {
   item = new Util(
     '123',
     '123',
-    new Signature(
-      'My New Util',
-      '123',
-      '123',
-      3,
-      100,
-      1665828483000,
-      1665828483000,
-      '123'
-    ),
+    [
+      new Signature(
+        'My New Util',
+        '123',
+        '123',
+        3,
+        100,
+        1665828483000,
+        1665828483000,
+        '123'
+      ),
+    ],
     1665828483000,
     1665828483000,
     'Thred Developer',
@@ -57,16 +59,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -89,16 +93,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -121,16 +127,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -153,16 +161,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -185,16 +195,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -217,16 +229,18 @@ export class ItemComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',

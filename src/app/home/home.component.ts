@@ -1,5 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ethers } from 'ethers';
 import { Category } from '../category.model';
 import { Chain } from '../chain.model';
@@ -22,16 +29,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -54,16 +63,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -86,16 +97,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -118,16 +131,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -150,16 +165,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -182,16 +199,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -221,16 +240,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -253,16 +274,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -285,16 +308,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -317,16 +342,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -349,16 +376,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -381,16 +410,18 @@ export class HomeComponent implements OnInit {
         new Util(
           '123',
           '123',
-          new Signature(
-            'My New Util',
-            '123',
-            '123',
-            3,
-            100,
-            1665828483000,
-            1665828483000,
-            '123'
-          ),
+          [
+            new Signature(
+              'My New Util',
+              '123',
+              '123',
+              3,
+              100,
+              1665828483000,
+              1665828483000,
+              '123'
+            ),
+          ],
           1665828483000,
           1665828483000,
           'Thred Developer',
@@ -430,5 +461,3 @@ export class HomeComponent implements OnInit {
     // your logic here
   }
 }
-
-

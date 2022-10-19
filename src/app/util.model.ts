@@ -6,7 +6,7 @@ export class Util {
   name!: string;
   id!: string;
   creator!: string;
-  signature!: Signature;
+  signatures!: Signature[];
   creatorName?: string;
   displayUrls!: string[];
   coverUrl?: string;
@@ -27,7 +27,7 @@ export class Util {
   constructor(
     id: string,
     creator: string,
-    signature: Signature,
+    signatures: Signature[],
     created: number,
     modified?: number,
     creatorName?: string,
@@ -48,7 +48,7 @@ export class Util {
   ) {
     this.id = id;
     this.creator = creator;
-    this.signature = signature;
+    this.signatures = signatures ?? [];
     this.created = created;
     this.modified = modified ?? created;
     this.creatorName = creatorName ?? 'Unknown Developer';

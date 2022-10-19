@@ -10,10 +10,9 @@ import { Util } from '../util.model';
 @Component({
   selector: 'app-developer-profile',
   templateUrl: './developer-profile.component.html',
-  styleUrls: ['./developer-profile.component.scss']
+  styleUrls: ['./developer-profile.component.scss'],
 })
 export class DeveloperProfileComponent implements OnInit {
-
   @Input() dev?: Developer = new Developer(
     'Arta Koroushnia',
     '1',
@@ -21,16 +20,18 @@ export class DeveloperProfileComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -53,16 +54,18 @@ export class DeveloperProfileComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -85,16 +88,18 @@ export class DeveloperProfileComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -117,16 +122,18 @@ export class DeveloperProfileComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -149,16 +156,18 @@ export class DeveloperProfileComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -181,16 +190,18 @@ export class DeveloperProfileComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -223,7 +234,6 @@ export class DeveloperProfileComponent implements OnInit {
     if (isPlatformBrowser(this.platformID)) {
       const el = document.querySelector('.items-row');
       el?.scrollIntoView({ block: 'start', behavior: 'smooth' });
-
     }
   }
 
@@ -231,9 +241,6 @@ export class DeveloperProfileComponent implements OnInit {
     private loadService: LoadService,
     @Inject(PLATFORM_ID) private platformID: Object
   ) {}
-  
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

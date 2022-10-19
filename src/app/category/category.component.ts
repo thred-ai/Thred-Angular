@@ -20,16 +20,18 @@ export class CategoryComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -52,16 +54,18 @@ export class CategoryComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -84,16 +88,18 @@ export class CategoryComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -116,16 +122,18 @@ export class CategoryComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -148,16 +156,18 @@ export class CategoryComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -180,16 +190,18 @@ export class CategoryComponent implements OnInit {
       new Util(
         '123',
         '123',
-        new Signature(
-          'My New Util',
-          '123',
-          '123',
-          3,
-          100,
-          1665828483000,
-          1665828483000,
-          '123'
-        ),
+        [
+          new Signature(
+            'My New Util',
+            '123',
+            '123',
+            3,
+            100,
+            1665828483000,
+            1665828483000,
+            '123'
+          ),
+        ],
         1665828483000,
         1665828483000,
         'Thred Developer',
@@ -221,7 +233,6 @@ export class CategoryComponent implements OnInit {
     if (isPlatformBrowser(this.platformID)) {
       const el = document.querySelector('.items-row');
       el?.scrollIntoView({ block: 'start', behavior: 'smooth' });
-
     }
   }
 
