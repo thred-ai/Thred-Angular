@@ -28,12 +28,10 @@ export class LoadService {
     private functions: AngularFireFunctions
   ) {
     if (isPlatformBrowser(this.platformID)) {
-      let chains = [1, 137];
-
+      let chains = [1, 13, 5, 80001];
       chains.forEach((chain) => {
         let str = `${chain}` as string;
         let rpcEndpoint1 = (environment.rpc as any)[str];
-
         let provider1 = new ethers.providers.JsonRpcProvider(rpcEndpoint1);
         (this.providers as any)[str] = provider1;
       });

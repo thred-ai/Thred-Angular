@@ -1,0 +1,57 @@
+// ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+//   color: unset;
+// }
+
+// ::ng-deep .mat-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
+//   background-color: #9c4aff;
+//   color: #9c4aff;
+// }
+
+// ::ng-deep .mat-option-pseudo-checkbox {
+//   border-radius: 50% !important;
+// }
+
+::ng-deep .mat-option .mat-pseudo-checkbox {
+  display: none;
+}
+
+
+
+
+::ng-deep .mat-form-field-underline {
+    display: none;
+  }
+
+  .nft-img {
+    width: 47.5px;
+    height: 47.5px;
+    object-fit: cover;
+  }
+  
+  :host ::ng-deep .mat-form-field-wrapper {
+    margin: 0 !important;
+    padding: 0;
+  }
+  
+  
+  .rounded-panel.mat-select-panel{
+      border-radius: 15px !important;
+  
+  }
+  
+  .truncate {
+    /**Major Properties**/
+    overflow: hidden;
+    line-height: 2rem;
+    max-height: 8rem;
+    -webkit-box-orient: vertical;
+    display: block;
+    display: -webkit-box;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+  }
+  
+  .rounded-10{
+    border-radius: 10px;
+  }

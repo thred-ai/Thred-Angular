@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
 import { ethers } from 'ethers';
 import { Chain } from '../chain.model';
 import { Developer } from '../developer.model';
 import { Dict, LoadService } from '../load.service';
 import { Signature } from '../signature.model';
+import { SmartUtilComponent } from '../smart-util/smart-util.component';
 import { Util } from '../util.model';
 
 @Component({
@@ -62,7 +64,21 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  constructor(private loadService: LoadService) {}
+  constructor(private loadService: LoadService, private dialog: MatDialog) {}
+
+
+  openUtil(util?: Util){
+    const modalRef = this.dialog.open(SmartUtilComponent, {
+      width: '750px',
+      maxHeight: '100vh',
+      maxWidth: '100vw',
+      panelClass: 'app-full-bleed-sm-dialog',
+
+      data: {
+        util,
+      },
+    });
+  }
 
   @Input() dev?: Developer = new Developer(
     'Arta Koroushnia',

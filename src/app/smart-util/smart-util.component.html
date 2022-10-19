@@ -1,0 +1,287 @@
+<div
+  mat-dialog-title
+  class="d-flex pt-4 pt-md-0 px-3 px-md-0 justify-content-between align-items-center"
+>
+  <!-- <h2 class="me-2 text-center d-none d-md-block">
+      {{
+        mode == 0
+          ? editingBlock == undefined
+            ? "Drag/Drop to Rearrange"
+            : "Edit Block"
+          : "Edit Page"
+      }}
+    </h2> -->
+  <h2 class="big-design-input-title text-center">New SmartUtil</h2>
+</div>
+<mat-dialog-content class="h-100">
+  <div class="w-100 h-100" style="overflow-y: scroll">
+    <form
+      class="mt-3 pb-4 px-3 px-md-5 px-lg-5 w-100 contact1-form"
+      [formGroup]="utilForm"
+    >
+      <div class="wrap-input1 w-100">
+        <h3 class="w-100 mb-4" style="font-size: 20px">Network</h3>
+
+        <div class="rounded-pill border w-100 pe-4 mb-3">
+          <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
+            <mat-select
+              formControlName="networks"
+              (selectionChange)="changed($event)"
+              class="my-auto d-flex justify-content-start align-items-center"
+              panelClass="rounded-panel"
+              multiple
+            >
+              <mat-select-trigger class="text-dark h-100 m-auto bg-danger">
+                <div
+                  class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                >
+                  <!-- [mdbPopover]="template"
+                placement="bottom"
+                trigger="hover" -->
+                  <div
+                    class="position-relative"
+                    style="width: 95px; height: 47.5px"
+                    role="button"
+                  >
+                    <div
+                      class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                      style="
+                        object-fit: contain;
+                        aspect-ratio: 1;
+                        top: 0px;
+                        left: 0px;
+                        overflow: hidden;
+                        z-index: 50;
+                      "
+                    >
+                      <img
+                        class="m-auto rounded-circle"
+                        style="object-fit: contain; height: 85%; width: 85%"
+                        [src]="
+                          (utilForm.controls['networks'].value ?? [])[0].url
+                        "
+                        role="button"
+                      />
+                    </div>
+                    <div
+                      class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute fw-bold"
+                      *ngIf="
+                        ((utilForm.controls['networks'].value ?? []).length ??
+                          0) >
+                        1
+                      "
+                      style="
+                        object-fit: contain;
+                        aspect-ratio: 1;
+                        top: 0px;
+                        left: 25px;
+                        overflow: hidden;
+                        z-index: 49;
+                      "
+                    >
+                      <img
+                        class="m-auto rounded-circle"
+                        style="object-fit: contain; height: 85%; width: 85%"
+                        [src]="
+                          (utilForm.controls['networks'].value ?? [])[1].url
+                        "
+                      />
+                    </div>
+
+                    <div
+                      class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                      *ngIf="
+                        ((utilForm.controls['networks'].value ?? []).length ??
+                          0) <
+                        2
+                      "
+                      style="
+                        object-fit: contain;
+                        aspect-ratio: 1;
+                        top: 0px;
+                        left: 25px;
+                        overflow: hidden;
+                        z-index: 48;
+                        opacity: 0.5;
+                      "
+                    >
+                      <!-- <img
+                    class="m-auto rounded-circle bg-purple"
+                    style="object-fit: contain; height: 85%; width: 85%"
+                  /> -->
+                      <mat-icon
+                        class="m-auto rounded-circle bg-purple text-white"
+                        style="object-fit: contain; height: 85%; width: 85%"
+                      >
+                      </mat-icon>
+                    </div>
+
+                    <div
+                      class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                      *ngIf="
+                        ((utilForm.controls['networks'].value ?? []).length ??
+                          0) >
+                        2
+                      "
+                      style="
+                        object-fit: contain;
+                        aspect-ratio: 1;
+                        top: 0px;
+                        left: 50px;
+                        overflow: hidden;
+                        z-index: 48;
+                        opacity: 0.5;
+                      "
+                    >
+                      <!-- <img
+                    class="m-auto rounded-circle bg-purple"
+                    style="object-fit: contain; height: 85%; width: 85%"
+                  /> -->
+                      <mat-icon
+                        class="m-auto rounded-circle bg-purple text-white"
+                        style="object-fit: contain; height: 85%; width: 85%"
+                      >
+                        
+                      </mat-icon>
+                    </div>
+                  </div>
+                  <span
+                    class="fw-bold text-start text-truncate w-50 ms-3"
+                    style="font-size: large"
+                  >
+                    {{ chains(utilForm.controls["networks"].value ?? []) }}
+                  </span>
+                </div>
+              </mat-select-trigger>
+
+              <mat-optgroup
+                *ngFor="let category of categories"
+                [label]="category.name"
+              >
+                <mat-option
+                  *ngFor="let chain of category.chains ?? []"
+                  [value]="chain"
+                >
+                  <div
+                    class="h-100 w-100 d-flex justify-content-between align-items-center py-3"
+                  >
+                    <div
+                      class="w-100 d-flex justify-content-start align-items-center"
+                      style="height: 22.5px"
+                    >
+                      <img
+                        id="image"
+                        *ngIf="chain?.url"
+                        class="me-2 h-100"
+                        [src]="chain?.url"
+                        style="object-fit: cover; aspect-ratio: 1"
+                      />
+                      <span class="py-1" style="font-size: medium">
+                        {{ chain?.name ?? "No Network Selected" }}
+                      </span>
+                    </div>
+                    <div class="h-100 p-3">
+                      <div
+                        class="bg-white border rounded-circle p-1"
+                        style="height: 22.5px; aspect-ratio: 1"
+                      >
+                        <div
+                          class="h-100 border rounded-circle bg-{{
+                            contains(chain) ? 'purple' : 'light'
+                          }}"
+                          style="aspect-ratio: 1"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="wrap-input1 w-100 pt-3">
+        <h3 class="w-100 mb-4" style="font-size: 20px">Name</h3>
+
+        <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+          <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
+            <input
+              matInput
+              class="bg-transparent"
+              type="text"
+              name="name"
+              formControlName="name"
+              placeholder="SmartUtil Name"
+            />
+            <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- <div class="wrap-input1 w-100">
+        <h2 class="my-0 big-design-input-title">Identifier</h2>
+        <h5 class="mt-0 big-design-input-subtitle">
+          The Collection's Identifier
+        </h5>
+        <mat-form-field class="w-100" appearance="outline" floatLabel="never">
+          <input
+            matInput
+            class="bg-transparent"
+            type="text"
+            name="name"
+            formControlName="symbol"
+            placeholder="Collection ID"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="wrap-input1 w-100">
+        <h2 class="my-0 big-design-input-title">Royalties</h2>
+        <h5 class="mt-0 big-design-input-subtitle">
+          Wallet address for Royalty Fees to be transferred to (Optional).
+        </h5>
+        <mat-form-field class="w-100" appearance="outline" floatLabel="never">
+          <input
+            matInput
+            class="bg-transparent"
+            type="text"
+            name="name"
+            formControlName="royaltyAddress"
+            placeholder="Royalty Address"
+          />
+        </mat-form-field>
+      </div> -->
+
+      <!-- <div class="wrap-input1 w-100">
+          <h2 class="my-0 big-design-input-title">Generate Page</h2>
+          <h5 class="mt-0 big-design-input-subtitle">
+            Whether a page should be generated for this collection.
+          </h5>
+          <mat-radio-group formControlName="generatePage">
+            <div>
+              <mat-radio-button
+                [value]="true"
+                [color]="'primary'"
+                (change)="radioChange($event)"
+                >Create Page</mat-radio-button
+              >
+            </div>
+            <div class="mt-2">
+              <mat-radio-button
+                [value]="false"
+                [color]="'primary'"
+                (change)="radioChange($event)"
+                >Don't Create Page</mat-radio-button
+              >
+            </div>
+          </mat-radio-group>
+        </div> -->
+    </form>
+    <!-- <p *ngIf="err != ''" class="text-danger my-1 text-center fw-bold">
+        {{ err }}
+      </p> -->
+  </div>
+</mat-dialog-content>
+
+<!-- (load)='passVars(iframe2)' -->

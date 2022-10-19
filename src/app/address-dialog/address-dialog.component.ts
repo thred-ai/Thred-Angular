@@ -81,6 +81,8 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
     }
   }
 
+  
+
   async checkValidAddress(address: string) {
     let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
     let addressPipe = new AddressValidatePipe(this.platformID);
