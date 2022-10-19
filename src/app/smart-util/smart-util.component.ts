@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { Chain } from '../chain.model';
 
@@ -9,9 +10,12 @@ import { Chain } from '../chain.model';
   styleUrls: ['./smart-util.component.scss'],
 })
 export class SmartUtilComponent implements OnInit {
-  constructor(private fb: FormBuilder) {
-    this.utilForm.controls['networks'].setValue([this.categories[0].chains[0]])
-
+  constructor(
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<SmartUtilComponent>
+  ) {
+    this.utilForm.controls['networks'].setValue([this.categories[0].chains[0]]);
   }
 
   utilForm = this.fb.group({
@@ -23,33 +27,27 @@ export class SmartUtilComponent implements OnInit {
     marketingImg: [null, Validators.required],
   });
 
-
   categories: {
-    name: string,
-    chains: Chain[]
+    name: string;
+    chains: Chain[];
   }[] = [
     {
-      name: "Mainnets",
+      name: 'Mainnets',
       chains: [
         new Chain('Ethereum', 1, 'ETH'),
         new Chain('Polygon', 137, 'MATIC'),
-      ]
+      ],
     },
     {
-      name: "Testnets",
+      name: 'Testnets',
       chains: [
         new Chain('Ethereum Goerli', 5, 'ETH'),
         new Chain('Polygon Mumbai', 80001, 'MATIC'),
-      ]
-    }
-  ]
+      ],
+    },
+  ];
 
-
-  
-
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   chains(networks: Chain[]) {
     return networks.map((c) => c.name).join(', ');
@@ -61,6 +59,10 @@ export class SmartUtilComponent implements OnInit {
         (n) => n.id == chain.id
       ) >= 0
     );
+  }
+
+  close() {
+    this.dialogRef.close()
   }
 
   async changed(event: MatSelectChange) {
