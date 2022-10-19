@@ -24,8 +24,11 @@ export class SmartUtilComponent implements OnInit {
     description: [null, Validators.required],
     price: [null, Validators.required],
     networks: [[], Validators.required],
-    appImg: [null, Validators.required],
-    marketingImg: [null, Validators.required],
+    wallet: [null, Validators.required],
+    appImg: ['https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png', Validators.required],
+    marketingImg: ['https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png', Validators.required],
+    installWebHook: [null],
+    uninstallWebHook: [null],
   });
 
   customCurrencyMaskConfig = {

@@ -6,6 +6,7 @@ export class Signature {
   price!: number;
   created!: number;
   modified!: number;
+  chainId!: number;
   signature!: string;
 
   constructor(
@@ -16,6 +17,7 @@ export class Signature {
     price: number,
     created: number,
     modified: number,
+    chainId: number,
     signature: string
   ) {
     this.name = name ?? 'My SmartUtil';
@@ -25,6 +27,7 @@ export class Signature {
     this.pay_address = pay_address;
     this.category = category ?? 0;
     this.price = price ?? 0;
+    this.chainId = chainId ?? 1
     this.signature = signature;
   }
 }

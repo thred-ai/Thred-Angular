@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -129,6 +130,7 @@ export class DashboardComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -163,6 +165,7 @@ export class DashboardComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -197,6 +200,7 @@ export class DashboardComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -231,6 +235,7 @@ export class DashboardComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -265,6 +270,7 @@ export class DashboardComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],

@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -72,6 +73,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -106,6 +108,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -140,6 +143,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -174,6 +178,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -208,6 +213,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -249,6 +255,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -283,6 +290,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -317,6 +325,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -351,6 +360,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -385,6 +395,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],
@@ -419,6 +430,7 @@ export class HomeComponent implements OnInit {
               100,
               1665828483000,
               1665828483000,
+              1,
               '123'
             ),
           ],

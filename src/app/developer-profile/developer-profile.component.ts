@@ -29,6 +29,7 @@ export class DeveloperProfileComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -63,6 +64,7 @@ export class DeveloperProfileComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -97,6 +99,7 @@ export class DeveloperProfileComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -131,6 +134,7 @@ export class DeveloperProfileComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -165,6 +169,7 @@ export class DeveloperProfileComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
@@ -199,6 +204,7 @@ export class DeveloperProfileComponent implements OnInit {
             100,
             1665828483000,
             1665828483000,
+            1,
             '123'
           ),
         ],
