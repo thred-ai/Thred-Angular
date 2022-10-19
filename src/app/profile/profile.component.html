@@ -32,7 +32,7 @@
               <img
                 class="w-100 h-100 position-absolute"
                 style="z-index: 50; object-fit: cover"
-                [src]="profileForm.controls['url'].value | safeUrl"
+                [src]="profileForm.controls['url'].value.url | safeUrl"
               />
               <div
                 class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
@@ -107,8 +107,15 @@
         <div class="wrap-input1 w-100 pt-0 px-4 px-md-5">
           <button
             class="px-3 py-3 w-100 btn bg-purple text-white fw-bolder rounded-pill"
+            (click)="save()"
           >
             Save Profile
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm ms-1"
+              role="status"
+              aria-hidden="true"
+            ></span>
           </button>
         </div>
       </form>
