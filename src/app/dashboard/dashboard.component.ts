@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
   openUtil(util?: Util) {
     const modalRef = this.dialog.open(SmartUtilComponent, {
       width: '750px',
-      maxHeight: '100vh',
+      maxHeight: '80vh',
       maxWidth: '100vw',
       panelClass: 'app-full-bleed-sm-dialog',
 
