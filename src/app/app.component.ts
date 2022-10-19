@@ -7,9 +7,12 @@ import {
   PLATFORM_ID,
   ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Developer } from './developer.model';
 import { LoadService } from './load.service';
+import { ProfileComponent } from './profile/profile.component';
 import { Util } from './util.model';
 
 // import * as AOS from 'aos';
@@ -20,10 +23,10 @@ import { Util } from './util.model';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-
   openMobileMenu = false;
   expandedSearch = false;
-  selectedInstall?: Util
+  selectedInstall?: Util;
+  localStorage?: Storage;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -31,16 +34,18 @@ export class AppComponent {
     private _router: Router,
     public router: ActivatedRoute,
     public location: Location,
-    @Inject(PLATFORM_ID) private platformID: Object
+    @Inject(PLATFORM_ID) private platformID: Object,
+    private dialog: MatDialog
   ) {
     if (!isPlatformBrowser(this.platformID)) {
       this.display = false;
+    } else {
+      this.localStorage = localStorage;
     }
   }
 
   featuredUtil?: Util;
   display = true;
-
 
   sendToChildEmitter = new EventEmitter();
 
@@ -48,23 +53,55 @@ export class AppComponent {
     // your logic here
     if (data && data.install) {
       console.log(data);
-      this.selectedInstall = data.install
+      this.selectedInstall = data.install;
       this.sidenav?.toggle();
     }
   }
-  
 
   @ViewChild('drawer') public sidenav?: MatSidenav;
 
+  editProfile() {
+    this.loadService.currentUser.then((user) => {
+      if (user) {
+        let uid = user.uid;
+        let email = user.email ?? '';
+        let url = localStorage['url'] ?? '';
+        let name = localStorage['name'];
+
+        let dev = new Developer(name, uid, [], 0, url, email);
+
+        const modalRef = this.dialog.open(ProfileComponent, {
+          width: '750px',
+          maxHeight: '80vh',
+          maxWidth: '100vw',
+          panelClass: 'app-full-bleed-sm-dialog',
+
+          data: {
+            dev,
+          },
+        });
+      }
+    });
+  }
+
+  signOut() {}
+
   onActivate(event: any) {
-    if (isPlatformBrowser(this.platformID)){
+    if (isPlatformBrowser(this.platformID)) {
       window.scroll(0, 0);
+      let menu = document.getElementById('profile-menu');
+
+      if (menu) {
+        let toggle = document.getElementById('profile-toggle');
+        toggle?.click();
+      }
     }
-    if (this.selectedInstall || this.openMobileMenu){
+    if (this.selectedInstall || this.openMobileMenu) {
       this.sidenav?.toggle();
     }
-    this.selectedInstall = undefined
-    this.cdr.detectChanges()
+
+    this.selectedInstall = undefined;
+    this.cdr.detectChanges();
 
     // window.scroll({
     //   top: 0,
@@ -75,19 +112,18 @@ export class AppComponent {
     //or document.body.scrollTop = 0;
     //or document.querySelector('body').scrollTo(0,0)
   }
-  
-  routeToAuth(mode = '0'){
-    this.loadService.openAuth(mode)
+
+  routeToAuth(mode = '0') {
+    this.loadService.openAuth(mode);
   }
 
-  routeToHome(){
-    this.loadService.openHome()
+  routeToHome() {
+    this.loadService.openHome();
   }
 
   ngOnInit() {
     // console.log("mayn")
     // this.readData()
-   
   }
 
   // async readData(){

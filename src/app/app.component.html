@@ -140,22 +140,88 @@
                 >Connect</span
               >
               <div
-                class="rounded-circle h-100 icons bg-pink"
-                style="
-                  border-style: solid;
-                  border-width: 0.2rem;
-                  border-color: rgb(255, 232, 248);
-                  width: fit-content;
-                "
+                class="d-flex justify-content-between align-items-center h-100"
                 role="button"
-                (click)="routeToAuth()"
-                *ngIf="!(location.path() | isAdmin)"
+                [mdbPopover]="template"
+                placement="bottom"
+                [trigger]="'click'"
+                id="profile-toggle"
+                #profileToggle
               >
-                <img
-                  class="h-100 p-0 m-auto rounded-circle"
-                  style="object-fit: contain; aspect-ratio: 1"
-                  [src]="'assets/profile.png'"
-                />
+                <span
+                  class="fw-bold mx-2 text-dark px-2 d-none d-md-block"
+                  *ngIf="location.path() | isAdmin"
+                >
+                  {{
+                    localStorage && localStorage["name"]
+                      ? localStorage["name"]
+                      : "ok"
+                  }}
+                </span>
+                <div
+                  class="rounded-circle h-100 icons bg-pink"
+                  style="
+                    border-style: solid;
+                    border-width: 0.2rem;
+                    border-color: rgb(255, 232, 248);
+                    width: fit-content;
+                  "
+                >
+                  <img
+                    class="h-100 p-0 m-auto rounded-circle"
+                    style="object-fit: contain; aspect-ratio: 1"
+                    [src]="
+                      localStorage && localStorage['url']
+                        ? localStorage['url']
+                        : 'assets/profile.png'
+                    "
+                  />
+                  <ng-template #template>
+                    <div
+                      class="popover-body-padding text-center px-3 animate__animated animate__fadeIn"
+                      id="profile-menu"
+                      style="min-width: 250px"
+                    >
+                      <div class="big-design-header" style="height: 40px">
+                        <mat-icon
+                          class="fw-bold text-purple"
+                          role="button"
+                          (click)="profileToggle.click()"
+                        >
+                          close
+                        </mat-icon>
+                      </div>
+                      <b
+                        class="fw-bolder mb-4 text-dark text-center"
+                        style="font-size: medium"
+                        >{{
+                          localStorage && localStorage["email"]
+                            ? localStorage["email"]
+                            : ""
+                        }}</b
+                      >
+                      <br />
+                      <div class="w-100 text-start mt-3">
+                        <a
+                          role="button"
+                          class="w-100 btn bg-purple text-white px-1 py-2 fw-bold rounded-pill"
+                          style="font-size: small"
+                          (click)="editProfile()"
+                        >
+                          Edit Profile
+                        </a>
+                        <a
+                          role="button"
+                          class="w-100 btn bg-black text-white px-1 py-2 mt-2 fw-bold rounded-pill"
+                          style="font-size: small"
+                          (click)="signOut()"
+                        >
+                          Sign Out
+                        </a>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
               </div>
             </div>
           </div>
@@ -183,7 +249,11 @@
         }"
       ></router-outlet>
 
-      <div class="bg-dark border-top w-100 mt-5" style="min-height: 40vh" *ngIf="!(location.path() | isAdmin)">
+      <div
+        class="bg-dark border-top w-100 mt-5"
+        style="min-height: 40vh"
+        *ngIf="!(location.path() | isAdmin)"
+      >
         <div
           class="w-100 d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-content-center px-2 px-md-5 py-2 py-md-5"
         >

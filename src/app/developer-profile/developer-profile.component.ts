@@ -229,7 +229,8 @@ export class DeveloperProfileComponent implements OnInit {
       ),
     ],
     1665828483000,
-    'https://storage.googleapis.com/thred-protocol.appspot.com/Test/app_img.png'
+    'https://storage.googleapis.com/thred-protocol.appspot.com/Test/app_img.png',
+    ""
   );
 
   openItem(id: string) {

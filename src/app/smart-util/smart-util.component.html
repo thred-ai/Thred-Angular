@@ -434,7 +434,7 @@
         <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
           <h3 class="w-100 mb-4" style="font-size: 20px">Display Images</h3>
 
-          <div class="rounded-15 border w-100" style="aspect-ratio: 1.5;">
+          <div class="rounded-15 border w-100" style="aspect-ratio: 1.5">
             <div
               class="position-relative w-100 h-100 animate__animated animate__fadeIn zoom"
             >
@@ -445,17 +445,21 @@
               >
                 <img
                   class="h-100 w-100 m-img-input-display"
-                  style="object-fit: cover;"
+                  style="object-fit: cover"
                   [src]="utilForm.controls['marketingImg'].value | safeUrl"
                   role="button"
                 />
                 <input
-                        #marketingImgInput
-                        type="file"
-                        (change)="fileChangeEvent($event, 0)"
-                        style="display: none"
-                      />
-                <mat-icon class="text-white shadow fw-bolder position-absolute" style="z-index: 48; top: 50%;">upload </mat-icon>
+                  #marketingImgInput
+                  type="file"
+                  (change)="fileChangeEvent($event, 0)"
+                  style="display: none"
+                />
+                <mat-icon
+                  class="text-white shadow fw-bolder position-absolute"
+                  style="z-index: 48; top: 50%"
+                  >upload
+                </mat-icon>
               </div>
 
               <div
@@ -487,11 +491,11 @@
                     <mat-icon class="m-auto">upload </mat-icon>
                   </div>
                   <input
-                        #appImgInput
-                        type="file"
-                        (change)="fileChangeEvent($event, 1)"
-                        style="display: none"
-                      />
+                    #appImgInput
+                    type="file"
+                    (change)="fileChangeEvent($event, 1)"
+                    style="display: none"
+                  />
                 </div>
               </div>
             </div>

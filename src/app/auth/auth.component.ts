@@ -42,10 +42,14 @@ export class AuthComponent implements OnInit, OnDestroy {
   ) {}
 
   continue() {
-    this.loading = true
-    this.beginAuth((result) => {
-      this.loading = false
+    this.loading = true;
+    this.beginAuth(async (result) => {
+      this.loading = false;
       if (result.status) {
+        let user = await this.loadService.currentUser;
+        if (user) {
+          this.loadService.openDash(user.uid);
+        }
       } else {
         this.err = result.msg;
       }

@@ -284,7 +284,7 @@
             </span>
           </ng-template>
           <div class="h-100 w-100 bg-light">
-            <div *ngIf="dev?.utils" class="px-2 mt-0 pt-0 w-100">
+            <div class="px-2 mt-0 pt-0 w-100">
               <div class="w-100 h-100 py-5 pb-1 pt-3 px-4">
                 <div
                   class="d-flex justify-content-between align-items-center py-2"
@@ -314,7 +314,7 @@
                 </div>
               </div>
             </div>
-            <div class="px-3 w-100">
+            <div class="px-3 w-100" *ngIf="dev?.utils">
               <div class="w-100 h-100 p-4 pt-0 px-3">
                 <div class="w-100 big-design-card rounded-15">
                   <app-collection-table
