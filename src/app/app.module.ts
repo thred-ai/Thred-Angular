@@ -91,6 +91,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { NotificationComponent } from './notification/notification.component';
 import { SmartUtilComponent } from './smart-util/smart-util.component';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { SafeUrlPipe } from './safe-url.pipe';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
     LocationPipe,
     LiveEarthViewPipePipe,
     safeHtmlPipe,
+    SafeUrlPipe,
     SmartUtilComponent,
   ],
   imports: [

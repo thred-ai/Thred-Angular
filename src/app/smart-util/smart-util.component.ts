@@ -25,10 +25,16 @@ export class SmartUtilComponent implements OnInit {
     price: [null, Validators.required],
     networks: [[], Validators.required],
     wallet: [null, Validators.required],
-    appImg: ['https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png', Validators.required],
-    marketingImg: ['https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png', Validators.required],
-    installWebHook: [null],
-    uninstallWebHook: [null],
+    appImg: [
+      'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png',
+      Validators.required,
+    ],
+    marketingImg: [
+      'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png',
+      Validators.required,
+    ],
+    installWebhook: [null],
+    uninstallWebhook: [null],
   });
 
   customCurrencyMaskConfig = {
@@ -64,6 +70,31 @@ export class SmartUtilComponent implements OnInit {
     },
   ];
 
+  async fileChangeEvent(event: any, type = 0): Promise<void> {
+    console.log(event);
+
+    let file = event.target.files[0];
+
+    let buffer = await file.arrayBuffer();
+
+    var blob = new Blob([buffer]);
+
+    var reader = new FileReader();
+    reader.onload = (event: any) => {
+      var base64 = event.target.result;
+      if (type == 0){
+        this.utilForm.controls['marketingImg'].setValue(base64);
+      }
+      else if (type == 1){
+        this.utilForm.controls['appImg'].setValue(base64);
+      }
+    };
+
+    reader.readAsDataURL(blob);
+
+    console.log(file);
+  }
+
   ngOnInit(): void {}
 
   chains(networks: Chain[]) {
@@ -79,7 +110,7 @@ export class SmartUtilComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
   async changed(event: MatSelectChange) {

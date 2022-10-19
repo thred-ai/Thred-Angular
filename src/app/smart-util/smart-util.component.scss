@@ -22,6 +22,54 @@
   display: none;
 }
 
+.img-input {
+  overflow: hidden;
+  .img-input-display {
+    display: none;
+  }
+  img {
+    display: block;
+  }
+  mat-icon {
+    display: none;
+  }
+}
+
+.m-img-input {
+  overflow: hidden;
+  .m-img-input-display {
+    opacity: 1;
+  }
+  mat-icon {
+    display: none;
+  }
+}
+
+.img-input:hover {
+  .img-input-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12.5%;
+  }
+
+  img {
+    display: none;
+  }
+  mat-icon {
+    display: block;
+  }
+}
+
+.m-img-input:hover {
+  .m-img-input-display {
+    opacity: 0.5;
+  }
+  mat-icon {
+    display: block;
+  }
+}
+
 .nft-img {
   width: 47.5px;
   height: 47.5px;
