@@ -20,7 +20,7 @@ export class Signature {
     chainId: number,
     signature: string
   ) {
-    this.name = name ?? 'My SmartUtil';
+    this.name = name ?? 'My App';
     this.id = id;
     this.created = created;
     this.modified = modified ?? created;

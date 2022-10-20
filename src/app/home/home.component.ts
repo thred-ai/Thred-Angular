@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   @Output() install = new EventEmitter<any>();
 
   utilCategories: Category[] = [
-    new Category('Great New Utilities', '1', [], 3),
+    new Category('Great New Apps', '1', [], 3),
     new Category('Most Popular', '2', [], 4),
   ];
 

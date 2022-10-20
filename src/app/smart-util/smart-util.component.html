@@ -3,7 +3,7 @@
     mat-dialog-title
     class="d-flex pt-4 pt-md-0 px-4 px-md-0 justify-content-between align-items-center w-100"
   >
-    <h2 class="big-design-input-title text-center">New SmartUtil</h2>
+    <h2 class="big-design-input-title text-center">New App</h2>
     <a role="button" (click)="close()">
       <mat-icon
         class="d-inline-flex justify-content-center align-items-center fw-bolder h-100"
@@ -31,7 +31,7 @@
                 type="text"
                 name="name"
                 formControlName="name"
-                placeholder="SmartUtil Name"
+                placeholder="App Name"
               />
               <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
             </mat-form-field>
@@ -53,7 +53,7 @@
                 type="text"
                 name="name"
                 formControlName="description"
-                placeholder="SmartUtil Description"
+                placeholder="App Description"
                 style="min-height: 100px"
               >
               </textarea>
@@ -291,7 +291,7 @@
             <ng-template #webhook1Template>
               <div class="popover-body-padding">
                 <b class="fw-bolder mb-4 text-light-success"
-                  >Fired when SmartUtil installed</b
+                  >Fired when App installed</b
                 >
                 <br />
                 Press me to send a sample payload to your webhook!
@@ -340,7 +340,7 @@
             <ng-template #webhook2Template>
               <div class="popover-body-padding">
                 <b class="fw-bolder mb-4 text-danger"
-                  >Fired when SmartUtil uninstalled</b
+                  >Fired when App uninstalled</b
                 >
                 <br />
                 Press me to send a sample payload to your webhook!
@@ -513,7 +513,7 @@
             (click)="save()"
             [disabled]="loading"
           >
-            {{loading ? "Saving" : "Save SmartUtil"}}
+            {{loading ? "Saving" : "Save App"}}
             <span
             *ngIf="loading"
             class="spinner-border spinner-border-sm ms-1"

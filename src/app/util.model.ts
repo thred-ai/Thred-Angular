@@ -56,7 +56,7 @@ export class Util {
     this.created = created;
     this.modified = modified ?? created;
     this.creatorName = creatorName ?? 'Unknown Developer';
-    this.name = name ?? 'My SmartUtil';
+    this.name = name ?? 'My App';
     this.displayUrls = displayUrls ?? ['add_thred_default_later'];
     this.metaUrl = metaUrl ?? 'add_thred_default_later';
     this.description = description ?? 'No Description Available';
