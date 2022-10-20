@@ -107,7 +107,7 @@ export class LoadService {
 
   openDevProfile(id: string) {
     this.router.navigateByUrl(`/developers/${id}`);
-  }
+  }//
 
   openAuth(id: string) {
     this.router.navigateByUrl(`/account?mode=${id}`);
