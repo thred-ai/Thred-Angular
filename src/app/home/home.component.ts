@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
       this.utilCategories[0].utils = result;
     });
     this.loadService.getNewItems((result) => {
-      this.utilCategories[1].utils = this.shuffle(result);
+      this.utilCategories[1].utils = result.reverse();
     });
     if (!isPlatformBrowser(this.platformID)) {
       this.display = false;
@@ -53,9 +53,4 @@ export class HomeComponent implements OnInit {
     // your logic here
   }
 
-  shuffle(arr: any[]) {
-    const shuffledArray = arr.sort((a, b) => 0.5 - Math.random());
-
-    return shuffledArray
-  }
 }
