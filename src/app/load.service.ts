@@ -364,7 +364,7 @@ export class LoadService {
       ref.where(firebase.firestore.FieldPath.documentId(), '==', uid)
     );
 
-    let sub = query.valueChanges().subscribe((docs) => {
+    let sub = query.valueChanges().subscribe(async (docs) => {
       let doc = docs[0] as DocumentData;
 
       if (doc) {
@@ -373,7 +373,8 @@ export class LoadService {
         let joined = doc['joined'] as number;
         let uid = doc['uid'] as string;
         let url = doc['url'] as string;
-        if (isPlatformBrowser(this.platformID)) {
+        let myUID = (await this.currentUser)?.uid
+        if (isPlatformBrowser(this.platformID) && uid == myUID) {
           localStorage['url'] = url;
           localStorage['name'] = name;
           localStorage['email'] = email;
