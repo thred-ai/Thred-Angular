@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
       let uid = user?.uid;
 
       if (uid) {
-        this.loadService.getUserInfo(uid, (dev) => {
+        this.loadService.getUserInfo(uid, true, (dev) => {
           this.dev = dev;
           console.log(dev)
         });

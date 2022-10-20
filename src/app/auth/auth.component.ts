@@ -17,6 +17,7 @@ import { LoadService } from '../load.service';
 export class AuthComponent implements OnInit, OnDestroy {
   mode = 0;
   loading = false;
+  isAuth = true
 
   err?: string;
 

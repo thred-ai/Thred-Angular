@@ -1,4 +1,7 @@
-<div class="w-100 bg-white animate__animated animate__fadeIn">
+<div
+  class="w-100 bg-white animate__animated animate__fadeIn"
+  style="min-height: 100vh"
+>
   <div class="w-100 bg-white">
     <div class="w-100 bg-light h-100">
       <div
@@ -31,7 +34,8 @@
               <img
                 class="rounded-15 w-100 h-100"
                 style="object-fit: contain"
-                [src]="item.displayUrls[0]"
+                *ngIf="(item?.displayUrls ?? [])[0]"
+                [src]="(item?.displayUrls ?? [])[0]"
                 role="button"
               />
             </div>
@@ -40,14 +44,15 @@
               class="p-3 px-md-3 text-start h-100 w-100 d-flex justify-content-center align-content-center"
             >
               <div class="w-100 my-auto">
-                <h3 class="fw-bolder my-0">{{ item.name }}</h3>
+                <h3 class="fw-bolder my-0">{{ item?.name ?? "" }}</h3>
                 <div
                   class="d-flex justify-content-start align-items-center mt-1"
                 >
                   <span
                     class="fw-bold text-purple text-truncate mw-75 mw-md-50"
                     style="font-size: medium"
-                    >By {{ item.creatorName }}</span
+                    *ngIf="item"
+                    >By {{ item.creatorName ?? "" }}</span
                   >
                 </div>
               </div>
@@ -55,6 +60,7 @@
           </div>
           <div
             class="d-none d-md-flex flex-column flex-md-row justify-content-end align-items-center w-100 mb-0"
+            *ngIf="item"
           >
             <a
               class="btn bg-purple text-white rounded-pill px-5 py-3 fw-bold w-100 w-md-auto"
@@ -64,8 +70,9 @@
             </a>
             <a
               class="btn btn-dark bg-black rounded-pill px-5 py-3 my-3 mb-5 my-md-0 mx-md-3 fw-bold w-100 w-md-auto"
+              (click)="viewDev()"
             >
-              View Website
+              View Developer
             </a>
           </div>
         </div>
@@ -80,10 +87,13 @@
           class="w-100 w-md-75 h-100 d-flex flex-column flex-md-row justify-content-between align-items-start"
         >
           <div class="w-100 px-3 py-2 py-md-5 px-md-0 h-100 pe-md-5">
-            <div class="h-100 m-0 me-md-5 d-flex justify-content-start align-content-center flex-column" style="font-size: 18px">
+            <div
+              class="h-100 m-0 me-md-5 d-flex justify-content-start align-content-center flex-column"
+              style="font-size: 18px"
+            >
               <b style="font-size: 25px">About this SmartUtil</b>
               <hr class="mt-1" />
-              {{ item.description }}
+              {{ item?.description ?? "" }}
               <div
                 class="w-100 w-md-75 my-5 rounded shadow d-inline-flex justify-content-center align-content-center"
                 style="aspect-ratio: 1.5; overflow: hidden"
@@ -91,8 +101,8 @@
                 <img
                   class="zoom rounded my-auto"
                   style="object-fit: cover; width: 97%; height: 95%"
-                  *ngIf="item.coverUrl"
-                  [src]="item.coverUrl"
+                  *ngIf="item?.coverUrl"
+                  [src]="item?.coverUrl"
                 />
               </div>
             </div>
@@ -100,11 +110,11 @@
           <div
             class="w-100 w-md-50 px-3 py-2 py-md-5 px-md-0 w-100 h-100 mt-4 mt-md-0 mb-5"
           >
-            <div class="w-100 h-100">
+            <div class="w-100 h-100" *ngIf="item && (item.etherPrice | formatEther) as ether">
               <b style="font-size: 25px">Details</b>
               <hr class="mt-1" />
-              <span style="font-weight: 500"> Base Price: </span>
-              {{ item.etherPrice | formatEther }}
+              <span style="font-weight: 500" > Base Price: </span>
+              {{ ether != "0.0" ? ether : 'Free' }}
               <br />
               <span style="font-weight: 500"> Network: </span>
               {{ chains(item) }}
@@ -125,6 +135,7 @@
       </div>
 
       <app-section
+        *ngIf="item"
         [headline]="category.name"
         [id]="category.id"
         [items]="category.utils"
@@ -136,6 +147,7 @@
   <div
     class="d-flex d-md-none border-top bg-light flex-column justify-content-center align-items-center w-100 position-fixed p-2"
     style="bottom: 0; z-index: 50"
+    *ngIf="item"
   >
     <a
       class="btn bg-purple text-white rounded-15 px-5 py-3 my-1 fw-bold w-100"
@@ -143,8 +155,12 @@
     >
       Download
     </a>
-    <a class="btn bg-dark text-white rounded-15 px-5 py-3 my-1 fw-bold w-100">
-      View Website
+    <a
+      class="btn bg-dark text-white rounded-15 px-5 py-3 my-1 fw-bold w-100"
+      role="button"
+      (click)="viewDev()"
+    >
+      View Developer
     </a>
   </div>
 </div>

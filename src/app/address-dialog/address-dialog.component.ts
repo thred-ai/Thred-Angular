@@ -22,6 +22,7 @@ import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
 import { LoadService } from '../load.service';
 import { AddressValidatePipe } from '../address-validate.pipe';
 import { isPlatformBrowser } from '@angular/common';
+import { BigNumber, ethers } from 'ethers';
 
 @Component({
   selector: 'app-address-dialog',
@@ -49,6 +50,8 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
   addresses: any[] = [];
   selectedChain?: Chain = this.item?.chains[0];
   finalAddresses: string[] = [];
+
+  loading = 0;
 
   async changed(event: MatSelectChange) {
     this.selectedChain = event.value;
@@ -81,7 +84,76 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+  async complete() {
+    this.loading = 1;
+
+    try {
+      let chain = this.selectedChain;
+
+      let provider = await this.loadService.initializeProvider();
+
+      let addresses: string[] = [];
+
+      console.log(provider);
+
+      let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
+
+      await Promise.all(
+        this.finalAddresses.map(async (f) => {
+          var address: string | null = null;
+
+          try {
+            address = ethers.utils.getAddress(f);
+          } catch (error) {
+            address = await ensPipe.transform(f);
+          }
+
+          if (address) {
+            addresses.push(address);
+          }
+        })
+      );
+
+      if (provider) {
+        this.loadService.checkChain(chain?.id ?? 1, provider).then(() => {
+          this.loadService.getCoreABI(async (result) => {
+            if (result) {
+              this.loading = 2;
+              let abi = result.abi;
+              let address = result.address;
+
+              let signer = provider?.getSigner();
+              let contract = new ethers.Contract(address, abi, signer);
+              let util = JSON.parse(
+                JSON.stringify(
+                  this.item.signatures.find((s) => s.chainId == chain?.id)
+                )
+              );
+
+              let tx = await contract['buySmartUtil'](util, addresses, {
+                value: ethers.utils.parseEther(
+                  `${addresses.length * this.item.price}`
+                ),
+              });
+
+              console.log(tx);
+              await tx.wait();
+              this.loading = 3;
+              setTimeout(() => {
+                this.loading = 0;
+              }, 5000);
+            } else {
+              this.loading = 0;
+              this.finalAddresses = []
+              this.selectedAddresses = []
+            }
+          });
+        });
+      }
+    } catch (error) {
+      this.loading = 0;
+    }
+  }
 
   async checkValidAddress(address: string) {
     let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
@@ -159,7 +231,11 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
   saving = false;
 
   ngOnDestroy(): void {
-    window.onclick = null
+    window.onclick = null;
+  }
+
+  checkContract() {
+    // this.loadService.providers["1"].ethers.
   }
 
   ngOnInit(): void {

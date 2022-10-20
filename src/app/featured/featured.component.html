@@ -12,12 +12,13 @@
         <span
           class="fw-bold text-purple text-truncate mw-75 mw-md-50"
           style="font-size: medium"
+          (click)="openDevProfile()"
           >{{ item.creatorName }}</span
         >
         <span class="fw-bold mx-1" style="font-size: medium"> • </span>
-        <span class="fw-bold" style="font-size: medium">{{
-          item.price | currency: "US":"$":"1.0-0"
-        }}</span>
+        <span class="fw-bold" style="font-size: medium" *ngIf="(item.etherPrice | formatEther) as ether">
+          {{ ether != "0.0" ? ether : 'Free' }}
+        </span>
       </div>
       <p class="w-100 h-100 truncate my-4" style="font-size: large">
         {{ item.description }}
@@ -49,7 +50,7 @@
       >
         <img
           class="h-100 w-100 w-md-auto bg-white rounded-15 shadow"
-          style="object-fit: contain; max-width: 650px"
+          style="object-fit: cover; aspect-ratio: 1.5"
           *ngIf="item.coverUrl"
           [src]="item.coverUrl"
           role="button"
@@ -69,7 +70,7 @@
           <img
             class="m-auto"
             style="object-fit: contain; height: 90%; width: 90%"
-            [src]="(item.displayUrls)[0]"
+            [src]="item.displayUrls[0]"
             role="button"
           />
         </div>

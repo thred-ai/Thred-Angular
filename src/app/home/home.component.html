@@ -1,6 +1,6 @@
 <div class="w-100 bg-light" style="min-height: 92.5vh;">
   <div class="w-100 vh-md-60 bg-light d-{{display ? 'block' : 'none'}}">
-    <app-featured [item]="featuredUtil" (install)="install.emit($event)">
+    <app-featured *ngIf="featuredUtil" [item]="featuredUtil" (install)="install.emit($event)">
     </app-featured>
   </div>
   <div class="w-100 mt-2 bg-white border-top pt-3 pt-md-5 d-{{display ? 'block' : 'none'}}">

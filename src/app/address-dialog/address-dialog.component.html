@@ -4,7 +4,10 @@
   <div class="w-100 h-100 d-flex justify-content-between flex-column">
     <div class="w-100 h-100 d-flex justify-content-center align-content-center">
       <div class="w-100 px-3 h-100">
-        <div class="w-100 mb-5 mt-3 mt-md-2 d-none d-md-block" style="height: 60px; pointer-events: none;">
+        <div
+          class="w-100 mb-5 mt-3 mt-md-2 d-none d-md-block"
+          style="height: 60px; pointer-events: none"
+        >
           <div
             class="h-100 d-flex justify-content-start align-items-center my-auto w-100"
           >
@@ -158,7 +161,11 @@
                         </mat-icon>
                       </div>
                       <ng-template #template>
-                        <div class="w-100 h-100 popover-menu menu-{{ i }} popover-body-padding">
+                        <div
+                          class="w-100 h-100 popover-menu menu-{{
+                            i
+                          }} popover-body-padding"
+                        >
                           <ng-container *ngIf="result == 'y'">
                             <b class="fw-bolder mb-4 text-light-success"
                               >Verified Address</b
@@ -268,11 +275,26 @@
         </div>
 
         <button
-          class="btn bg-purple text-white rounded-pill px-5 py-3 my-3 mt-3 fw-bold w-100"
+          class="btn bg-{{loading == 3 ? 'light-success' : 'purple'}} text-white rounded-pill px-5 py-3 my-3 mt-3 fw-bold w-100"
           role="button"
-          [disabled]="finalAddresses.length == 0"
+          [disabled]="finalAddresses.length == 0 || loading > 0"
+          (click)="complete()"
         >
-          Install
+          {{
+            loading == 0
+              ? "Install"
+              : loading == 1
+              ? "Verifying"
+              : loading == 1
+              ? "Installing"
+              : "Installed"
+          }}
+          <span
+            *ngIf="loading > 0 && loading < 3"
+            class="spinner-border spinner-border-sm ms-1"
+            role="status"
+            aria-hidden="true"
+          ></span>
         </button>
       </div>
     </div>

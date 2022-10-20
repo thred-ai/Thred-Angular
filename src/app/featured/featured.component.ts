@@ -20,6 +20,10 @@ export class FeaturedComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  openDevProfile(){
+    this.loadService.openDevProfile(this.item?.creator!)
+  }
+
 
   installItem() {
     this.install.emit({ install: this.item });

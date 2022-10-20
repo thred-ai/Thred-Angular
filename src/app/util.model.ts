@@ -23,6 +23,8 @@ export class Util {
   created!: number;
   modified!: number;
   status!: number;
+  installWebhook!: string;
+  uninstallWebhook!: string;
 
   constructor(
     id: string,
@@ -44,7 +46,9 @@ export class Util {
     rating?: number,
     chains?: Chain[],
     coverUrl?: string,
-    status?: number
+    status?: number,
+    installWebhook?: string,
+    uninstallWebhook?: string
   ) {
     this.id = id;
     this.creator = creator;
@@ -65,6 +69,8 @@ export class Util {
     this.rating = rating ?? 0;
     this.chains = chains ?? [new Chain('Ethereum', 1, 'ETH')];
     this.coverUrl = coverUrl;
-    this.status = status ?? 0
+    this.status = status ?? 0;
+    this.installWebhook = installWebhook ?? '';
+    this.uninstallWebhook = uninstallWebhook ?? '';
   }
 }

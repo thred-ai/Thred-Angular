@@ -10,7 +10,10 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Developer } from './developer.model';
 import { first } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
-import { Network, Alchemy, AlchemyProvider } from 'alchemy-sdk';
+import { Alchemy, AlchemyProvider } from 'alchemy-sdk';
+import { Util } from './util.model';
+import { Chain } from './chain.model';
+import { Category } from './category.model';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -21,6 +24,13 @@ export interface Dict<T> {
 })
 export class LoadService {
   providers: Dict<{ alchemy: Alchemy; ethers: AlchemyProvider }> = {};
+
+  chains = [
+    new Chain('Ethereum Goerli', 5, 'ETH'),
+    new Chain('Polygon Mumbai', 80001, 'MATIC'),
+    new Chain('Ethereum', 1, 'ETH'),
+    new Chain('Polygon', 137, 'MATIC'),
+  ];
 
   constructor(
     @Inject(PLATFORM_ID) private platformID: Object,
@@ -55,7 +65,10 @@ export class LoadService {
   ) {
     this.auth
       .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then(async (user) => {
+        if (user.user) {
+          await this.setUserInfoInitial(user.user);
+        }
         callback({ status: true, msg: 'success' });
       })
       .catch((err: Error) => {
@@ -124,9 +137,9 @@ export class LoadService {
     return this.auth.authState.pipe(first()).toPromise();
   }
 
-  signOut(callback: (result: boolean) => any) {
+  async signOut(callback: (result: boolean) => any) {
     try {
-      this.auth.signOut();
+      await this.auth.signOut();
       localStorage.removeItem('url');
       localStorage.removeItem('name');
       localStorage.removeItem('email');
@@ -134,6 +147,66 @@ export class LoadService {
       callback(true);
     } catch (error) {
       callback(false);
+    }
+  }
+
+  getCoreABI(callback: (result?: { address: string; abi: any[] }) => any) {
+    var query = this.db.collection('Protocol');
+
+    let sub = query.valueChanges().subscribe((docs) => {
+      let doc = docs[0] as DocumentData;
+
+      if (doc) {
+        let address = doc['Address'] as string;
+        let abi = doc['ABI'] as any[];
+        callback({ address, abi });
+      } else {
+        callback();
+      }
+    });
+  }
+
+  async saveSmartUtil(
+    data: Util,
+    callback: (result?: Util) => any,
+    appImgFile?: File,
+    marketingImgFile?: File
+  ) {
+    let uid = data.creator;
+    let id = data.id;
+
+    if (appImgFile) {
+      try {
+        let ref = this.storage.ref(`smart-utils/${id}/app-${id}.png`);
+        await ref.put(appImgFile, { cacheControl: 'no-cache' });
+        data.displayUrls[0] = await ref.getDownloadURL().toPromise();
+      } catch (error) {
+        callback(undefined);
+      }
+    }
+
+    if (marketingImgFile) {
+      try {
+        let ref = this.storage.ref(`smart-utils/${id}/marketing-${id}.png`);
+        await ref.put(marketingImgFile, { cacheControl: 'no-cache' });
+        data.coverUrl = await ref.getDownloadURL().toPromise();
+      } catch (error) {
+        callback(undefined);
+      }
+    }
+
+    let uploadData = JSON.parse(JSON.stringify(data));
+
+    uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
+
+    try {
+      await this.db
+        .collection(`Developers/${uid}/Items`)
+        .doc(id)
+        .set(uploadData, { merge: true });
+      callback(data);
+    } catch (error) {
+      callback(undefined);
     }
   }
 
@@ -181,7 +254,112 @@ export class LoadService {
     }
   }
 
-  getUserInfo(uid: string, callback: (result?: Developer) => any) {
+  async setUserInfoInitial(user: firebase.User) {
+    let uid = user.uid;
+    let email = user.email;
+
+    let name = email?.split('@')[0].toUpperCase();
+
+    let joined = Math.floor(new Date().getTime());
+
+    let url =
+      'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_profile.png';
+
+    let userRef = this.db.collection('Developers').doc(uid);
+
+    let data = {
+      name,
+      uid,
+      email,
+      joined,
+      url,
+    };
+
+    return userRef.set(data);
+  }
+
+  getItem(id: string, callback: (result?: Util) => any, getProfiles = false) {
+    console.log(id);
+    let sub2 = this.db
+      .collectionGroup(`Items`, (ref) => ref.where('id', '==', id))
+      .valueChanges()
+      .subscribe((docs2) => {
+        sub2.unsubscribe();
+
+        let docs_2 = docs2 as any[];
+
+        let d = docs_2[0];
+
+        if (d) {
+          let util = d as Util;
+
+          d.chains.forEach((c: any, i: number) => {
+            d.chains[i] = this.chains.find((x) => x.id == c);
+          });
+          if (getProfiles) {
+            this.getUserInfo(d.creator, false, (result) => {
+              if (result) {
+                util.creatorName = result.name;
+              }
+              callback(util)
+            });
+          }
+          else{
+            callback(util);
+          }
+        } else {
+          callback(undefined);
+        }
+      });
+  }
+
+  getNewItems(callback: (result: Util[]) => any) {
+    this.db
+      .collectionGroup('Items', (ref) => ref.orderBy('created', 'desc'))
+      .valueChanges()
+      .subscribe((docs) => {
+        let docs_2 = (docs as any[]) ?? [];
+        var counter = 0;
+        docs_2.forEach((d, index) => {
+          d.chains.forEach((c: any, i: number) => {
+            d.chains[i] = this.chains.find((x) => x.id == c);
+          });
+        });
+        callback(docs_2);
+      });
+  }
+
+  get newUtilID() {
+    return this.db.createId();
+  }
+
+  getFeaturedItem(callback: (result?: Util) => any) {
+    let sub2 = this.db
+      .collectionGroup(`Engage`)
+      .valueChanges()
+      .subscribe((docs2) => {
+        sub2.unsubscribe();
+
+        let docs_2 = docs2 as any[];
+
+        let d = docs_2[0];
+
+        if (d) {
+          let featured = d['Featured'] as string;
+          this.getItem(featured, (result) => {
+            callback(result);
+          }, true);
+        } else {
+          callback(undefined);
+        }
+      });
+  }
+
+  getUserInfo(
+    uid: string,
+    fetchItems = true,
+    callback: (result?: Developer) => any
+  ) {
     var query = this.db.collection('Developers', (ref) =>
       ref.where(firebase.firestore.FieldPath.documentId(), '==', uid)
     );
@@ -201,7 +379,27 @@ export class LoadService {
           localStorage['email'] = email;
         }
         let developer = new Developer(name, uid, [], joined, url, email);
-        callback(developer);
+
+        if (fetchItems) {
+          let sub2 = this.db
+            .collection(`Developers/${uid}/Items`)
+            .valueChanges()
+            .subscribe((docs2) => {
+              let docs_2 = docs2 as any[];
+
+              docs_2.forEach((d) => {
+                d.chains.forEach((c: any, i: number) => {
+                  d.chains[i] = this.chains.find((x) => x.id == c);
+                });
+              });
+              developer.utils = (docs_2 as Util[]) ?? [];
+
+              callback(developer);
+              sub2.unsubscribe();
+            });
+        } else {
+          callback(developer);
+        }
       } else {
         callback(undefined);
       }

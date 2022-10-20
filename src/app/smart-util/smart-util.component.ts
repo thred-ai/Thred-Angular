@@ -2,8 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
+import { ethers } from 'ethers';
 import { CurrencyMaskInputMode } from 'ngx-currency';
 import { Chain } from '../chain.model';
+import { LoadService } from '../load.service';
+import { Signature } from '../signature.model';
+import { Util } from '../util.model';
 
 @Component({
   selector: 'app-smart-util',
@@ -14,6 +18,7 @@ export class SmartUtilComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private loadService: LoadService,
     public dialogRef: MatDialogRef<SmartUtilComponent>
   ) {
     this.utilForm.controls['networks'].setValue([this.categories[0].chains[0]]);
@@ -35,7 +40,11 @@ export class SmartUtilComponent implements OnInit {
     ],
     installWebhook: [null],
     uninstallWebhook: [null],
+    appFile: [null],
+    marketingFile: [null],
   });
+
+  loading = false;
 
   customCurrencyMaskConfig = {
     align: 'left',
@@ -82,23 +91,126 @@ export class SmartUtilComponent implements OnInit {
     var reader = new FileReader();
     reader.onload = (event: any) => {
       var base64 = event.target.result;
-      if (type == 0){
+      if (type == 0) {
         this.utilForm.controls['marketingImg'].setValue(base64);
-      }
-      else if (type == 1){
+        this.utilForm.controls[`marketingFile`].setValue(file);
+      } else if (type == 1) {
         this.utilForm.controls['appImg'].setValue(base64);
+        this.utilForm.controls[`appFile`].setValue(file);
       }
     };
 
     reader.readAsDataURL(blob);
-
-    console.log(file);
   }
 
   ngOnInit(): void {}
 
   chains(networks: Chain[]) {
     return networks.map((c) => c.name).join(', ');
+  }
+
+  async save() {
+    if (this.utilForm.valid) {
+      this.loading = true;
+
+      try {
+        let name = this.utilForm.controls['name'].value;
+        let id = this.loadService.newUtilID;
+        let creator = (await this.loadService.currentUser)?.uid!;
+
+        let chains =
+          (this.utilForm.controls['networks'].value as Chain[]) ?? [];
+
+        let wallet = this.utilForm.controls['wallet'].value;
+
+        let price = String(this.utilForm.controls['price'].value) as string;
+
+        let ethPrice = ethers.utils.parseEther(price);
+        let numPrice = Number(ethers.utils.formatEther(ethPrice));
+        let bigNumPrice = ethPrice.toHexString();
+        let category = 0;
+
+        let signatures: Signature[] = [];
+
+        let created = new Date().getTime();
+        let modified = created;
+
+        chains.forEach((chain) => {
+          signatures.push(
+            new Signature(
+              name,
+              id,
+              wallet,
+              category,
+              bigNumPrice,
+              created,
+              modified,
+              chain.id,
+              ''
+            )
+          );
+        });
+
+        let creatorName = 'thred';
+        let displayUrls: string[] = [this.utilForm.controls['appImg'].value];
+        let coverUrl: string = this.utilForm.controls['marketingImg'].value;
+        let metaUrl = '';
+        let description = this.utilForm.controls['description'].value;
+
+        let available = true;
+        let verified = false;
+
+        let reviews = 0;
+        let rating = 0;
+
+        let status = 1;
+        let installWebhook = this.utilForm.controls['installWebhook'].value;
+        let uninstallWebhook = this.utilForm.controls['uninstallWebhook'].value;
+
+        let util = new Util(
+          id,
+          creator,
+          signatures,
+          created,
+          modified,
+          creatorName,
+          name,
+          displayUrls,
+          metaUrl,
+          description,
+          numPrice,
+          ethPrice,
+          category,
+          available,
+          verified,
+          reviews,
+          rating,
+          chains,
+          coverUrl,
+          status,
+          installWebhook,
+          uninstallWebhook
+        );
+
+        let appFile = this.utilForm.controls[`appFile`].value;
+        let marketingFile = this.utilForm.controls[`marketingFile`].value;
+
+        this.loadService.saveSmartUtil(
+          util,
+          (result) => {
+            console.log(result);
+            this.loading = false
+            this.dialogRef.close()
+          },
+          appFile,
+          marketingFile
+        );
+      } catch (error) {
+        this.loading = false;
+      }
+    } else {
+      console.log('masuk');
+    }
   }
 
   contains(chain: Chain) {

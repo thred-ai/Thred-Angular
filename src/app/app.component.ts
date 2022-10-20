@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ethers } from 'ethers';
+import { AuthComponent } from './auth/auth.component';
 import { Developer } from './developer.model';
 import { LoadService } from './load.service';
 import { ProfileComponent } from './profile/profile.component';
@@ -101,7 +102,8 @@ export class AppComponent {
     this.loadService.signOut((success) => {});
   }
 
-  onActivate(event: any) {
+  async onActivate(event: any) {
+
     if (isPlatformBrowser(this.platformID)) {
       window.scroll(0, 0);
       let menu = document.getElementById('profile-menu');
@@ -110,7 +112,17 @@ export class AppComponent {
         let toggle = document.getElementById('profile-toggle');
         toggle?.click();
       }
+      
+      let component = event as AuthComponent
+      if (component && component.isAuth){
+        let user = await this.loadService.currentUser
+
+        if (user){
+          this.loadService.openDash(user.uid)
+        }
+      }
     }
+
     if (this.selectedInstall || this.openMobileMenu) {
       this.sidenav?.toggle();
     }
@@ -127,6 +139,7 @@ export class AppComponent {
     //or document.body.scrollTop = 0;
     //or document.querySelector('body').scrollTo(0,0)
   }
+
 
   routeToAuth(mode = '0') {
     this.loadService.openAuth(mode);

@@ -3,7 +3,7 @@ export class Signature {
   id!: string;
   pay_address!: string;
   category!: number;
-  price!: number;
+  price!: string;
   created!: number;
   modified!: number;
   chainId!: number;
@@ -14,7 +14,7 @@ export class Signature {
     id: string,
     pay_address: string,
     category: number,
-    price: number,
+    price: string,
     created: number,
     modified: number,
     chainId: number,
@@ -26,7 +26,7 @@ export class Signature {
     this.modified = modified ?? created;
     this.pay_address = pay_address;
     this.category = category ?? 0;
-    this.price = price ?? 0;
+    this.price = price ?? "";
     this.chainId = chainId ?? 1
     this.signature = signature;
   }
