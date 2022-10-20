@@ -2,6 +2,8 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { Network } from 'alchemy-sdk';
+
 export const environment = {
   production: false,
 
@@ -16,12 +18,22 @@ export const environment = {
   },
 
   rpc: {
-    '1': 'https://eth-mainnet.g.alchemy.com/v2/6ITDh9cH13O7QaI61cL0QRvBQS-Js1km',
-    '137':
-      'https://polygon-mainnet.g.alchemy.com/v2/zZ_J8XGhVME0rH8TX0aiqEX8C37rlPIG',
-    '5': 'https://eth-goerli.g.alchemy.com/v2/Y8B464dfKs682bqUJY_gLNST5RLr3XV_',
-    '80001':
-      'https://polygon-mumbai.g.alchemy.com/v2/ub1yRG4Xbh8bD0ON_SoB2qFO0txkHbxU',
+    '1': {
+      apiKey: '6ITDh9cH13O7QaI61cL0QRvBQS-Js1km',
+      network: Network.ETH_MAINNET,
+    },
+    '137': {
+      apiKey: 'zZ_J8XGhVME0rH8TX0aiqEX8C37rlPIG',
+      network: Network.MATIC_MAINNET,
+    },
+    '5': {
+      apiKey: 'Y8B464dfKs682bqUJY_gLNST5RLr3XV_',
+      network: Network.ETH_GOERLI,
+    },
+    '80001': {
+      apiKey: 'ub1yRG4Xbh8bD0ON_SoB2qFO0txkHbxU',
+      network: Network.MATIC_MUMBAI,
+    },
   },
 };
 

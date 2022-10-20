@@ -10,6 +10,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Developer } from './developer.model';
 import { first } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
+import { Network, Alchemy, AlchemyProvider } from 'alchemy-sdk';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -19,9 +20,7 @@ export interface Dict<T> {
   providedIn: 'root',
 })
 export class LoadService {
-  providers: {
-    any?: ethers.providers.JsonRpcProvider;
-  } = {};
+  providers: Dict<{ alchemy: Alchemy; ethers: AlchemyProvider }> = {};
 
   constructor(
     @Inject(PLATFORM_ID) private platformID: Object,
@@ -32,13 +31,20 @@ export class LoadService {
     private storage: AngularFireStorage
   ) {
     if (isPlatformBrowser(this.platformID)) {
-      let chains = [1, 13, 5, 80001];
-      chains.forEach((chain) => {
-        let str = `${chain}` as string;
-        let rpcEndpoint1 = (environment.rpc as any)[str];
-        let provider1 = new ethers.providers.JsonRpcProvider(rpcEndpoint1);
-        (this.providers as any)[str] = provider1;
-      });
+      // Optional Config object, but defaults to demo api-key and eth-mainnet.
+
+      let chains = Object.values(environment.rpc as any) as any[];
+      let keys = Object.keys(environment.rpc as any) as any[];
+
+      Promise.all(
+        chains.map(async (chain, index) => {
+          const alchemy = new Alchemy(chain);
+          (this.providers as any)[`${keys[index]}`] = {
+            alchemy,
+            ethers: await alchemy.config.getProvider(),
+          };
+        })
+      );
     }
   }
 
@@ -53,7 +59,6 @@ export class LoadService {
         callback({ status: true, msg: 'success' });
       })
       .catch((err: Error) => {
-        console.log(err);
         callback({ status: false, msg: err.message });
       });
   }
@@ -117,6 +122,19 @@ export class LoadService {
 
   get currentUser() {
     return this.auth.authState.pipe(first()).toPromise();
+  }
+
+  signOut(callback: (result: boolean) => any) {
+    try {
+      this.auth.signOut();
+      localStorage.removeItem('url');
+      localStorage.removeItem('name');
+      localStorage.removeItem('email');
+      this.openAuth('0');
+      callback(true);
+    } catch (error) {
+      callback(false);
+    }
   }
 
   async saveUserInfo(
@@ -189,5 +207,53 @@ export class LoadService {
       }
       sub.unsubscribe();
     });
+  }
+
+  async initializeProvider() {
+    if (isPlatformBrowser(this.platformID)) {
+      let w = window as any;
+      if (w && w.ethereum) {
+        const provider = new ethers.providers.Web3Provider(w.ethereum, 'any');
+        try {
+          await provider.send('eth_requestAccounts', []);
+        } catch (error: any) {
+          if (error.code === 4001) {
+            console.log('Please connect to MetaMask.');
+          }
+        }
+        return provider;
+      }
+    }
+    return undefined;
+  }
+
+  async checkChain(id: number, provider: ethers.providers.Web3Provider) {
+    const chainId = 137; // Polygon Mainnet
+
+    let network = await provider.getNetwork();
+    if (network.chainId !== chainId) {
+      try {
+        await provider.send('wallet_switchEthereumChain', [
+          { chainId: ethers.utils.hexValue(chainId) },
+        ]);
+      } catch (error) {
+        // This error code indicates that the chain has not been added to MetaMask
+        let err = error as any;
+        if (err.code === 4902) {
+          await provider.send('wallet_addEthereumChain', [
+            {
+              chainName: 'Polygon Mainnet',
+              chainId: ethers.utils.hexValue(chainId),
+              nativeCurrency: {
+                name: 'MATIC',
+                decimals: 18,
+                symbol: 'MATIC',
+              },
+              rpcUrls: ['https://polygon-rpc.com/'],
+            },
+          ]);
+        }
+      }
+    }
   }
 }

@@ -10,6 +10,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ethers } from 'ethers';
 import { Developer } from './developer.model';
 import { LoadService } from './load.service';
 import { ProfileComponent } from './profile/profile.component';
@@ -46,6 +47,7 @@ export class AppComponent {
 
   featuredUtil?: Util;
   display = true;
+  connected?: string = undefined;
 
   sendToChildEmitter = new EventEmitter();
 
@@ -84,7 +86,20 @@ export class AppComponent {
     });
   }
 
-  signOut() {}
+  viewProfile() {
+    this.loadService.currentUser.then((user) => {
+      if (user) {
+        let uid = user.uid;
+        this.loadService.openDash(uid);
+      } else {
+        this.loadService.openAuth('0');
+      }
+    });
+  }
+
+  signOut() {
+    this.loadService.signOut((success) => {});
+  }
 
   onActivate(event: any) {
     if (isPlatformBrowser(this.platformID)) {
@@ -119,6 +134,11 @@ export class AppComponent {
 
   routeToHome() {
     this.loadService.openHome();
+  }
+
+  async connect() {
+    let provider = await this.loadService.initializeProvider();
+    this.connected = await provider?.getSigner().getAddress();
   }
 
   ngOnInit() {

@@ -134,10 +134,15 @@
               style="height: 40px"
             >
               <span
-                class="fw-bold text-white mx-4 btn btn-dark rounded-pill px-3 d-none d-md-block"
+                class="fw-bold text-white mx-4 btn btn-dark rounded-pill px-3 d-none d-md-flex"
                 role="button"
                 *ngIf="!(location.path() | isAdmin)"
-                >Connect</span
+                (click)="connect()"
+                >
+                <mat-icon class="my-auto me-2">
+                  account_balance_wallet
+                </mat-icon>
+                {{ connected ? (connected | address) : "Connect" }}</span
               >
               <div
                 class="d-flex justify-content-between align-items-center h-100"
@@ -150,12 +155,15 @@
               >
                 <span
                   class="fw-bold mx-2 text-dark px-2 d-none d-md-block"
-                  *ngIf="location.path() | isAdmin"
+                  *ngIf="
+                    (location.path() | isAdmin) &&
+                    localStorage!['name'] != null
+                  "
                 >
                   {{
                     localStorage && localStorage["name"]
                       ? localStorage["name"]
-                      : "ok"
+                      : ""
                   }}
                 </span>
                 <div
@@ -170,12 +178,18 @@
                   <img
                     class="h-100 p-0 m-auto rounded-circle"
                     style="object-fit: contain; aspect-ratio: 1"
-                    [src]="
-                      localStorage && localStorage['url']
-                        ? localStorage['url']
-                        : 'assets/profile.png'
-                    "
+                    [src]="'assets/profile.png'"
+                    *ngIf="localStorage!['url'] == null; else profile"
                   />
+
+                  <ng-template #profile>
+                    <img
+                      class="h-100 p-0 m-auto rounded-circle"
+                      style="object-fit: contain; aspect-ratio: 1"
+                      [src]="localStorage!['url']"
+                    />
+                  </ng-template>
+
                   <ng-template #template>
                     <div
                       class="popover-body-padding text-center px-3 animate__animated animate__fadeIn"
@@ -195,9 +209,9 @@
                         class="fw-bolder mb-4 text-dark text-center"
                         style="font-size: medium"
                         >{{
-                          localStorage && localStorage["email"]
-                            ? localStorage["email"]
-                            : ""
+                          localStorage!["email"] != null
+                            ? localStorage!["email"]
+                            : "Not Signed In"
                         }}</b
                       >
                       <br />
@@ -207,14 +221,32 @@
                           class="w-100 btn bg-purple text-white px-1 py-2 fw-bold rounded-pill"
                           style="font-size: small"
                           (click)="editProfile()"
+                          *ngIf="
+                            (location.path() | isAdmin) &&
+                            localStorage!['email'] != null
+                          "
                         >
                           Edit Profile
+                        </a>
+                        <a
+                          role="button"
+                          class="w-100 btn bg-purple text-white px-1 py-2 fw-bold rounded-pill"
+                          style="font-size: small"
+                          (click)="viewProfile()"
+                          *ngIf="!(location.path() | isAdmin)"
+                        >
+                          {{
+                            localStorage!["email"] != null
+                              ? "Dashboard"
+                              : "Sign In"
+                          }}
                         </a>
                         <a
                           role="button"
                           class="w-100 btn bg-black text-white px-1 py-2 mt-2 fw-bold rounded-pill"
                           style="font-size: small"
                           (click)="signOut()"
+                          *ngIf="localStorage!['email'] != null"
                         >
                           Sign Out
                         </a>

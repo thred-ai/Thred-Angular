@@ -11,7 +11,7 @@ export class NameEnsLookupPipe implements PipeTransform {
   transform(value: string) {
     if (isPlatformBrowser(this.platformID)){
       try {
-        return (this.loadService.providers as any)['1']?.resolveName(value);
+        return (this.loadService.providers["1"].ethers.resolveName(value))
       } catch (error) {
         return null
       }
