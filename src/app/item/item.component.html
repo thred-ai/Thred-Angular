@@ -66,7 +66,7 @@
               class="btn bg-purple text-white rounded-pill px-5 py-3 fw-bold w-100 w-md-auto"
               (click)="installItem()"
             >
-              Download
+              {{ item.status == 0 ? "Download" : "Not Available" }}
             </a>
             <a
               class="btn btn-dark bg-black rounded-pill px-5 py-3 my-3 mb-5 my-md-0 mx-md-3 fw-bold w-100 w-md-auto"
@@ -110,11 +110,14 @@
           <div
             class="w-100 w-md-50 px-3 py-2 py-md-5 px-md-0 w-100 h-100 mt-4 mt-md-0 mb-5"
           >
-            <div class="w-100 h-100" *ngIf="item && (item.etherPrice | formatEther) as ether">
+            <div
+              class="w-100 h-100"
+              *ngIf="item && (item.etherPrice | formatEther) as ether"
+            >
               <b style="font-size: 25px">Details</b>
               <hr class="mt-1" />
-              <span style="font-weight: 500" > Base Price: </span>
-              {{ ether != "0.0" ? ether : 'Free' }}
+              <span style="font-weight: 500"> Base Price: </span>
+              {{ ether != "0.0" ? ether : "Free" }}
               <br />
               <span style="font-weight: 500"> Network: </span>
               {{ chains(item) }}
@@ -153,7 +156,7 @@
       class="btn bg-purple text-white rounded-15 px-5 py-3 my-1 fw-bold w-100"
       (click)="installItem()"
     >
-      Download
+      {{ item.status == 0 ? "Download" : "Private" }}
     </a>
     <a
       class="btn bg-dark text-white rounded-15 px-5 py-3 my-1 fw-bold w-100"

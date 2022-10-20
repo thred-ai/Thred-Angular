@@ -72,6 +72,7 @@ export class ItemComponent implements OnInit {
   }
 
   installItem() {
+    if (this.item?.status == 1) { return }
     this.install.emit({ install: this.item });
   }
 

@@ -15,6 +15,7 @@ export class FeaturedComponent implements OnInit {
   constructor(private loadService: LoadService) {}
 
   openItem(id: string) {
+    if (this.item?.status == 1) { return }
     this.loadService.openItem(id);
   }
 

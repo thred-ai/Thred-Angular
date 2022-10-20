@@ -16,8 +16,12 @@
           >{{ item.creatorName }}</span
         >
         <span class="fw-bold mx-1" style="font-size: medium"> • </span>
-        <span class="fw-bold" style="font-size: medium" *ngIf="(item.etherPrice | formatEther) as ether">
-          {{ ether != "0.0" ? ether : 'Free' }}
+        <span
+          class="fw-bold"
+          style="font-size: medium"
+          *ngIf="item.etherPrice | formatEther as ether"
+        >
+          {{ ether != "0.0" ? ether : "Free" }}
         </span>
       </div>
       <p class="w-100 h-100 truncate my-4" style="font-size: large">
@@ -31,7 +35,7 @@
           class="btn bg-purple text-white rounded-pill px-5 py-3 fw-bold w-100 w-md-auto"
           (click)="installItem()"
         >
-          Download
+          {{ item.status == 0 ? "Download" : "Not Available" }}
         </a>
         <a
           class="btn btn-dark bg-black rounded-pill px-5 py-3 my-3 mb-5 my-md-0 mx-md-3 fw-bold w-100 w-md-auto"

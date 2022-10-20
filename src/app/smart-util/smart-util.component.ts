@@ -163,7 +163,7 @@ export class SmartUtilComponent implements OnInit {
         let reviews = 0;
         let rating = 0;
 
-        let status = 1;
+        let status = 0;
         let installWebhook = this.utilForm.controls['installWebhook'].value;
         let uninstallWebhook = this.utilForm.controls['uninstallWebhook'].value;
 
