@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit {
     });
     this.loadService.getNewItems((result) => {
       this.utilCategories[0].utils = result;
+    });
+    this.loadService.getNewItems((result) => {
       this.utilCategories[1].utils = this.shuffle(result);
     });
     if (!isPlatformBrowser(this.platformID)) {
@@ -52,12 +54,8 @@ export class HomeComponent implements OnInit {
   }
 
   shuffle(arr: any[]) {
-    let m = arr.length,
-      i;
-    while (m) {
-      i = (Math.random() * m--) >>> 0;
-      [arr[m], arr[i]] = [arr[i], arr[m]];
-    }
-    return arr;
+    const shuffledArray = arr.sort((a, b) => 0.5 - Math.random());
+
+    return shuffledArray
   }
 }
