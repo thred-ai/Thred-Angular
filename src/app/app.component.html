@@ -152,6 +152,7 @@
                 [trigger]="'click'"
                 id="profile-toggle"
                 #profileToggle
+                *ngIf="isBrowser()"
               >
                 <span
                   class="fw-bold mx-2 text-dark px-2 d-none d-md-block"

@@ -102,6 +102,10 @@ export class AppComponent {
     this.loadService.signOut((success) => {});
   }
 
+  isBrowser(){
+    return isPlatformBrowser(this.platformID)
+  }
+
   async onActivate(event: any) {
 
     if (isPlatformBrowser(this.platformID)) {

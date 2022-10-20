@@ -33,16 +33,17 @@ export class HomeComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformID: Object,
     private loadService: LoadService
   ) {
-    this.loadService.getFeaturedItem((result) => {
-      this.featuredUtil = result;
-    });
-    this.loadService.getNewItems((result) => {
-      this.utilCategories[0].utils = result;
-    });
-    this.loadService.getNewItems((result) => {
-      this.utilCategories[1].utils = result.reverse();
-    });
-    if (!isPlatformBrowser(this.platformID)) {
+    if (isPlatformBrowser(this.platformID)) {
+      this.loadService.getFeaturedItem((result) => {
+        this.featuredUtil = result;
+      });
+      this.loadService.getNewItems((result) => {
+        this.utilCategories[0].utils = result;
+      });
+      this.loadService.getNewItems((result) => {
+        this.utilCategories[1].utils = result.reverse();
+      });
+    } else {
       this.display = false;
     }
   }
@@ -52,5 +53,4 @@ export class HomeComponent implements OnInit {
   onParentEvent(data: any) {
     // your logic here
   }
-
 }
