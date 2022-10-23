@@ -1,6 +1,14 @@
-import { Component, EventEmitter, OnInit, Output, Pipe } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  Pipe,
+} from '@angular/core';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { ethers } from 'ethers';
+import { filter, map } from 'rxjs/operators';
 import { Category } from '../category.model';
 import { Chain } from '../chain.model';
 import { LoadService } from '../load.service';
@@ -13,23 +21,38 @@ import { Util } from '../util.model';
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.scss'],
 })
-export class ItemComponent implements OnInit {
-  constructor(private router: Router, private _router: ActivatedRoute, private loadService: LoadService) {
+export class ItemComponent implements OnInit, OnDestroy {
+  oldUrl = '';
+
+  private sub = this.router.events
+    .pipe(
+      filter((event) => event instanceof NavigationStart),
+      map((event) => event as NavigationStart), // appease typescript
+      filter((event) => event.url !== this.oldUrl)
+    )
+    .subscribe((event) => {
+      this.oldUrl = event.url;
+      this.getItem(event.url.split('/').reverse()[0]);
+    });
+
+  constructor(
+    private router: Router,
+    private _router: ActivatedRoute,
+    private loadService: LoadService
+  ) {
     this.loadService.getNewItems((result) => {
       this.category.utils = this.shuffle(result);
     });
   }
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 
   @Output() install = new EventEmitter<any>();
 
-  item?: Util = undefined 
+  item?: Util = undefined;
 
-  category = new Category(
-    'Discover More',
-    '1',
-    [],
-    4
-  );
+  category = new Category('Discover More', '1', [], 4);
 
   shuffle(arr: any[]) {
     let m = arr.length,
@@ -45,11 +68,14 @@ export class ItemComponent implements OnInit {
     this.router.navigateByUrl('/home');
   }
 
-  getItem(){
-    let id = this.getId()
-    this.loadService.getItem(id, result => {
-      this.item = result
-    }, true)
+  getItem(id = this.getId()) {
+    this.loadService.getItem(
+      id,
+      (result) => {
+        this.item = result;
+      },
+      true
+    );
   }
 
   getId() {
@@ -59,12 +85,12 @@ export class ItemComponent implements OnInit {
     return id;
   }
 
-  viewDev(){
-    this.loadService.openDevProfile(this.item!.creator)
+  viewDev() {
+    this.loadService.openDevProfile(this.item!.creator);
   }
 
   async ngOnInit() {
-    this.getItem()
+    this.getItem();
   }
 
   date() {
@@ -72,7 +98,9 @@ export class ItemComponent implements OnInit {
   }
 
   installItem() {
-    if (this.item?.status == 1) { return }
+    if (this.item?.status == 1) {
+      return;
+    }
     this.install.emit({ install: this.item });
   }
 

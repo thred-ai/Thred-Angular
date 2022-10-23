@@ -11,20 +11,20 @@
   }
 }
 
-.search-bar-extend {
-  animation: animateThis 0.25s ease-in;
-  animation-fill-mode: forwards;
-}
+// .search-bar-extend {
+//   animation: animateThis 0.25s ease-in;
+//   animation-fill-mode: forwards;
+// }
 
 .logo-container {
   position: sticky;
   display: block;
 }
 
-.search-bar-back {
-    animation: animateBack 0.25s ease-in;
-    animation-fill-mode: forwards;
-}
+// .search-bar-back {
+//     animation: animateBack 0.25s ease-in;
+//     animation-fill-mode: forwards;
+// }
 
 @keyframes animateThis {
   0% {

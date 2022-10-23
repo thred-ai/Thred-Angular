@@ -1,7 +1,6 @@
 <div class="rounded-pill bg-comp bar-hover w-100 h-100 position-relative">
-  <form
+  <div
     class="w-100 h-100 d-flex justify-content-start align-items-center glowing"
-    [formGroup]="searchForm"
   >
     <div
       class="full-width h-100 w-100 ps-3 pe-3 d-flex justify-content-center align-items-center"
@@ -13,9 +12,50 @@
         style="height: 20px"
         matInput
         placeholder="{{ placeholder }}"
-        formControlName="text"
+        [formControl]="control"
+        [matAutocomplete]="auto"
         type="text"
       />
+
+      <mat-autocomplete #auto="matAutocomplete" [disabled]="true">
+
+        <cdk-virtual-scroll-viewport
+          class="autocomplete-test-viewport"
+          *ngIf="(filteredData) ?? [] as f"
+          [style.height.px]="size(f)"
+          itemSize="35"
+          
+        >
+          <mat-option
+            *cdkVirtualFor="let result of filteredData"
+            [value]="result.name"
+            role="button"
+            (click)="selected(result)"
+          >
+            <div
+              class="d-flex justify-content-between align-items-center w-100 p-1"
+            >
+              <div class="d-flex justify-content-start align-items-center">
+              
+                <img
+                  [src]="result.img"
+                  class="border me-2 rounded{{ result.type == 0 ? '-circle' : '' }}"
+                  style="aspect-ratio: 1; height: 30px"
+                />
+                <span class="px-1" style="font-size: 14px;">{{ result.name }}</span>
+              </div>
+              <div class="d-flex justify-content-end align-items-center">
+                <mat-icon
+                  role="button"
+                  class="text-purple fw-bold me-0 d-flex justify-content-center align-items-center"
+                  style="font-size: 20px"
+                  >keyboard_arrow_right</mat-icon
+                >
+              </div>
+            </div>
+          </mat-option>
+        </cdk-virtual-scroll-viewport>
+      </mat-autocomplete>
     </div>
     <div class="my-0 d-flex justify-content-center align-items-center pe-2">
       <mat-icon
@@ -35,5 +75,5 @@
         </div>
       </ng-template>
     </div>
-  </form>
+  </div>
 </div>

@@ -2,6 +2,21 @@
   class="w-100 bg-light animate__animated animate__fadeIn bg-white"
   style="min-height: 92.5vh"
 >
+  <div class="w-100 bg-light">
+    <div
+      class="d-flex justify-content-center align-content-center p-2 pt-3"
+      style="width: 30px"
+    >
+      <mat-icon
+        class="w-100 my-auto fw-bolder"
+        role="button"
+        style="font-size: x-large"
+        (click)="back()"
+      >
+        keyboard_arrow_left
+      </mat-icon>
+    </div>
+  </div>
   <div class="w-100 pb-4 pt-5 px-2 px-md-4 bg-light">
     <div
       class="d-flex flex-column justify-content-center align-items-center w-100"
@@ -127,17 +142,19 @@
       class="w-100 h-100 d-flex justify-content-center align-content-center px-4 position-relative"
       *ngIf="(dev?.utils?.length ?? 0) == 0"
     >
-      <span class="mw-100 fw-bold text-truncate position-absolute text-purple px-2" style="z-index: 50; top: 195px; font-size: xx-large;">
+      <span
+        class="mw-100 fw-bold text-truncate position-absolute text-purple px-2"
+        style="z-index: 50; top: 195px; font-size: xx-large"
+      >
         Nothing made yet.
       </span>
       <img
         class="w-100 position-absolute"
-        style="height: 400px; object-fit: contain;"
+        style="height: 400px; object-fit: contain"
         [src]="
           'https://storage.googleapis.com/thred-protocol.appspot.com/resources/empty.png'
         "
       />
-      
     </div>
   </div>
 </div>

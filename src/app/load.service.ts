@@ -14,6 +14,7 @@ import { Alchemy, AlchemyProvider } from 'alchemy-sdk';
 import { Util } from './util.model';
 import { Chain } from './chain.model';
 import { Category } from './category.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -107,7 +108,7 @@ export class LoadService {
 
   openDevProfile(id: string) {
     this.router.navigateByUrl(`/developers/${id}`);
-  }//
+  } //
 
   openAuth(id: string) {
     this.router.navigateByUrl(`/account?mode=${id}`);
@@ -196,7 +197,7 @@ export class LoadService {
     }
 
     let uploadData = JSON.parse(JSON.stringify(data));
-
+    uploadData.search_name = uploadData.name?.toLowerCase()
     uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
 
     try {
@@ -220,6 +221,7 @@ export class LoadService {
     let url = data.url;
     let name = data.name;
     let email = data.email;
+    let search_name = name?.toLowerCase()
 
     if (uploadImage) {
       try {
@@ -236,6 +238,7 @@ export class LoadService {
       url,
       name,
       email,
+      search_name
     };
 
     try {
@@ -259,6 +262,7 @@ export class LoadService {
     let email = user.email;
 
     let name = email?.split('@')[0].toUpperCase();
+    let search_name = name?.toLowerCase()
 
     let joined = Math.floor(new Date().getTime());
 
@@ -273,9 +277,58 @@ export class LoadService {
       email,
       joined,
       url,
+      search_name
     };
 
     return userRef.set(data);
+  }
+
+  filteredSearch: BehaviorSubject<any> = new BehaviorSubject([])
+
+  search(term: string) {
+    console.log(term)
+    let sub2 = this.db
+      .collectionGroup(`Items`, (ref) =>
+        ref
+          .where('search_name', '>=', term)
+          .where('search_name', '<=', term + '\uf8ff')
+          .limit(3)
+      )
+      .valueChanges()
+      .subscribe((docs2) => {
+        sub2.unsubscribe();
+        let returnVal: any[] = [];
+
+        (docs2 as Util[])?.forEach((d: Util) => {
+          returnVal.push({
+            name: d.name,
+            type: 1,
+            img: d.displayUrls[0],
+            id: d.id,
+          });
+        });
+
+        let sub3 = this.db
+          .collectionGroup(`Developers`, (ref) =>
+            ref
+              .where('search_name', '>=', term)
+              .where('search_name', '<=', term + '\uf8ff')
+              .limit(3)
+          )
+          .valueChanges()
+          .subscribe((docs3) => {
+            sub3.unsubscribe();
+            (docs3 as any[])?.forEach((d: any) => {
+              returnVal.push({
+                name: d.name,
+                type: 0,
+                img: d.url,
+                id: d.uid,
+              });
+            });
+            this.filteredSearch.next(returnVal)
+          });
+      });
   }
 
   getItem(id: string, callback: (result?: Util) => any, getProfiles = false) {
@@ -301,10 +354,9 @@ export class LoadService {
               if (result) {
                 util.creatorName = result.name;
               }
-              callback(util)
+              callback(util);
             });
-          }
-          else{
+          } else {
             callback(util);
           }
         } else {
@@ -315,7 +367,9 @@ export class LoadService {
 
   getNewItems(callback: (result: Util[]) => any) {
     this.db
-      .collectionGroup('Items', (ref) => ref.orderBy('created', 'desc'))
+      .collectionGroup('Items', (ref) =>
+        ref.orderBy('created', 'desc').limit(6)
+      )
       .valueChanges()
       .subscribe((docs) => {
         let docs_2 = (docs as any[]) ?? [];
@@ -346,9 +400,13 @@ export class LoadService {
 
         if (d) {
           let featured = d['Featured'] as string;
-          this.getItem(featured, (result) => {
-            callback(result);
-          }, true);
+          this.getItem(
+            featured,
+            (result) => {
+              callback(result);
+            },
+            true
+          );
         } else {
           callback(undefined);
         }
@@ -373,7 +431,7 @@ export class LoadService {
         let joined = doc['joined'] as number;
         let uid = doc['uid'] as string;
         let url = doc['url'] as string;
-        let myUID = (await this.currentUser)?.uid
+        let myUID = (await this.currentUser)?.uid;
         if (isPlatformBrowser(this.platformID) && uid == myUID) {
           localStorage['url'] = url;
           localStorage['name'] = name;

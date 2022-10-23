@@ -1,7 +1,8 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { ethers } from 'ethers';
+import { filter, map } from 'rxjs/operators';
 import { Chain } from '../chain.model';
 import { Developer } from '../developer.model';
 import { LoadService } from '../load.service';
@@ -13,7 +14,22 @@ import { Util } from '../util.model';
   templateUrl: './developer-profile.component.html',
   styleUrls: ['./developer-profile.component.scss'],
 })
-export class DeveloperProfileComponent implements OnInit {
+export class DeveloperProfileComponent implements OnInit, OnDestroy {
+  oldUrl = '';
+
+  private sub = this._router.events
+    .pipe(
+      filter((event) => event instanceof NavigationStart),
+      map((event) => event as NavigationStart), // appease typescript
+      filter(
+        (event) => event.url !== this.oldUrl
+      )
+    )
+    .subscribe((event) => {
+      this.oldUrl = event.url;
+      this.getProfile(event.url.split("/").reverse()[0])
+    });
+
   @Input() dev?: Developer;
 
   openItem(id: string) {
@@ -27,17 +43,19 @@ export class DeveloperProfileComponent implements OnInit {
     }
   }
 
-  getProfile() {
-    let uid = this.getId();
+  getProfile(uid = this.getId()) {
 
-    console.log(uid)
+    console.log(uid);
     if (uid) {
       this.loadService.getUserInfo(uid, true, (dev) => {
         this.dev = dev;
-        console.log(dev);
       });
     } else {
     }
+  }
+
+  back() {
+    this._router.navigateByUrl('/home');
   }
 
   getId() {
@@ -50,10 +68,15 @@ export class DeveloperProfileComponent implements OnInit {
   constructor(
     private loadService: LoadService,
     private router: ActivatedRoute,
+    private _router: Router,
     @Inject(PLATFORM_ID) private platformID: Object
   ) {}
 
+  ngOnDestroy(): void {
+    this.sub.unsubscribe()
+  }
+
   ngOnInit(): void {
-    this.getProfile()
+    this.getProfile();
   }
 }
