@@ -54,7 +54,7 @@ export class ItemComponent implements OnInit {
 
   getId() {
     const routeParams = this._router.snapshot.paramMap;
-    const id = routeParams.get('util') as string;
+    const id = routeParams.get('app') as string;
 
     return id;
   }

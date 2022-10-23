@@ -98,7 +98,7 @@ export class LoadService {
   ) {}
 
   openItem(id: string) {
-    this.router.navigateByUrl(`/utils/${id}`);
+    this.router.navigateByUrl(`/apps/${id}`);
   }
 
   openCategory(id: string) {

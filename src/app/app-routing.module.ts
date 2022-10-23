@@ -8,7 +8,8 @@ import { HomeComponent } from './home/home.component';
 import { ItemComponent } from './item/item.component';
 
 const routes: Routes = [
-  { path: 'utils/:util', component: ItemComponent, pathMatch: 'full' },
+  { path: 'apps/:app', component: ItemComponent, pathMatch: 'full' },
+  { path: 'utils/:app', redirectTo: 'apps/:app', pathMatch: 'full' },
   { path: 'groups/:group', component: CategoryComponent, pathMatch: 'full' },
   { path: 'developers/:dev', component: DeveloperProfileComponent, pathMatch: 'full' },
   { path: 'account', component: AuthComponent, pathMatch: 'full' },
