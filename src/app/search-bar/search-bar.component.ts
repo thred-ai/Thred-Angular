@@ -25,32 +25,31 @@ export class SearchBarComponent implements OnInit {
   control = new FormControl('');
   filteredData: any[] = [];
 
-  loadedData: Array<any> = [
-    
-  ];
+  loadedData: Array<any> = [];
 
   loading = false;
 
-  size(f: any[]){
-    return f.length > 4 ? '295' : `${50*f.length}`
+  size(f: any[]) {
+    return f.length > 4 ? '295' : `${50 * f.length}`;
   }
 
-  selected(val: any){
-    console.log(val)
-    let type = val.type
-    let id = val.id
+  selected(val: any) {
+    console.log(val);
+    let type = val.type;
+    let id = val.id;
 
-    if (type == 0){
-      this.loadService.openDevProfile(id)
-    }
-    else if (type == 1){
-      this.loadService.openItem(id)
+    if (type == 0) {
+      this.loadService.openDevProfile(id);
+    } else if (type == 1) {
+      this.loadService.openItem(id);
     }
   }
 
   search() {
     this.loading = true;
+    let text = this.control.value;
 
+    this.loadData(text);
     setTimeout(() => {
       this.loading = false;
     }, 3000);
@@ -59,29 +58,29 @@ export class SearchBarComponent implements OnInit {
   changed(event: any) {
     this.inputChanged.emit(event.target.value != '');
 
-    let text = this.control.value
+    let text = this.control.value;
 
-    this.loadData(text)
-
+    this.loadData(text);
     this.cdr.detectChanges();
   }
 
-  
   loadData(text: string) {
-    this.loadService.search(text)
+    this.loadService.search(text);
   }
 
   @Input() placeholder?: string = 'Search';
   @Output() inputChanged = new EventEmitter<boolean>();
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private loadService: LoadService) {
-    this.loadService.filteredSearch.subscribe(s => {
-      console.log(s)
-      this.filteredData = s
-    })
+  constructor(
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
+    private loadService: LoadService
+  ) {
+    this.loadService.filteredSearch.subscribe((s) => {
+      console.log(s);
+      this.filteredData = s;
+    });
   }
 
-
   ngOnInit() {}
-
 }
