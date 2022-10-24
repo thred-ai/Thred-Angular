@@ -213,6 +213,10 @@ export class SmartUtilComponent implements OnInit {
     }
   }
 
+  sendTestHook(hook: string, type = 0){
+    this.loadService.sendTestWebhook(hook, type, 1, "ethereum")
+  }
+
   contains(chain: Chain) {
     return (
       ((this.utilForm.controls['networks'].value as Chain[]) ?? []).findIndex(

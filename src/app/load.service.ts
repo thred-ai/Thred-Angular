@@ -155,6 +155,7 @@ export class LoadService {
     var query = this.db.collection('Protocol');
 
     let sub = query.valueChanges().subscribe((docs) => {
+      sub.unsubscribe();
       let doc = docs[0] as DocumentData;
 
       if (doc) {
@@ -165,6 +166,23 @@ export class LoadService {
         callback();
       }
     });
+  }
+
+  sendTestWebhook(webhook: string, type = 0, chain = 1, network = 'ethereum') {
+    this.functions
+      .httpsCallable('sendTestHook')({
+        webhook,
+        type,
+        chain,
+        network,
+      })
+      .pipe(first())
+      .subscribe(
+        async (resp) => {},
+        (err) => {
+          console.error({ err });
+        }
+      );
   }
 
   async saveSmartUtil(
@@ -197,7 +215,7 @@ export class LoadService {
     }
 
     let uploadData = JSON.parse(JSON.stringify(data));
-    uploadData.search_name = uploadData.name?.toLowerCase()
+    uploadData.search_name = uploadData.name?.toLowerCase();
     uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
 
     try {
@@ -221,7 +239,7 @@ export class LoadService {
     let url = data.url;
     let name = data.name;
     let email = data.email;
-    let search_name = name?.toLowerCase()
+    let search_name = name?.toLowerCase();
 
     if (uploadImage) {
       try {
@@ -238,7 +256,7 @@ export class LoadService {
       url,
       name,
       email,
-      search_name
+      search_name,
     };
 
     try {
@@ -262,7 +280,7 @@ export class LoadService {
     let email = user.email;
 
     let name = email?.split('@')[0].toUpperCase();
-    let search_name = name?.toLowerCase()
+    let search_name = name?.toLowerCase();
 
     let joined = Math.floor(new Date().getTime());
 
@@ -277,16 +295,16 @@ export class LoadService {
       email,
       joined,
       url,
-      search_name
+      search_name,
     };
 
     return userRef.set(data);
   }
 
-  filteredSearch: BehaviorSubject<any> = new BehaviorSubject([])
+  filteredSearch: BehaviorSubject<any> = new BehaviorSubject([]);
 
   search(term: string) {
-    console.log(term)
+    console.log(term);
     let sub2 = this.db
       .collectionGroup(`Items`, (ref) =>
         ref
@@ -326,7 +344,7 @@ export class LoadService {
                 id: d.uid,
               });
             });
-            this.filteredSearch.next(returnVal)
+            this.filteredSearch.next(returnVal);
           });
       });
   }

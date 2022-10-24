@@ -17,10 +17,9 @@
         type="text"
       />
 
-      <mat-autocomplete #auto="matAutocomplete" [disabled]="true">
+      <mat-autocomplete #auto="matAutocomplete">
 
         <cdk-virtual-scroll-viewport
-          class="autocomplete-test-viewport"
           *ngIf="(filteredData) ?? [] as f"
           [style.height.px]="size(f)"
           itemSize="35"

@@ -154,9 +154,7 @@
                 #profileToggle
                 *ngIf="isBrowser()"
               >
-                <span
-                  class="fw-bold mx-2 text-dark px-2 d-none d-md-block"
-                >
+                <span class="fw-bold mx-2 text-dark px-2 d-none d-md-block">
                   {{
                     localStorage && localStorage["name"]
                       ? localStorage["name"]
@@ -280,7 +278,7 @@
 
       <div
         class="bg-dark border-top w-100 mt-5"
-        style="min-height: 40vh; z-index: 1;"
+        style="min-height: 40vh; z-index: 1"
         *ngIf="!(location.path() | isAdmin)"
       >
         <div
@@ -316,7 +314,13 @@
                 Dev Portal
               </div>
               <div class="w-100 my-3" role="button">Get Started</div>
-              <div class="w-100 my-3" role="button">Documentation</div>
+              <a
+                class="w-100 my-3 text-white text-decoration-none"
+                role="button"
+                [href]="'https://docs.thredapps.io'"
+                target="_blank"
+                >Documentation</a
+              >
             </div>
             <div class="h-100 col">
               <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">

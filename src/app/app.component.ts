@@ -161,6 +161,7 @@ export class AppComponent {
   ngOnInit() {
     // console.log("mayn")
     // this.readData()
+
   }
 
   // async readData(){

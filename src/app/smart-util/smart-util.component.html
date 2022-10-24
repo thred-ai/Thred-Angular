@@ -278,6 +278,9 @@
               [mdbPopover]="webhook1Template"
               placement="top"
               [trigger]="'hover'"
+              (click)="
+                sendTestHook(utilForm.controls['installWebhook'].value, 0)
+              "
             >
               <div
                 class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
@@ -327,6 +330,9 @@
               [mdbPopover]="webhook2Template"
               placement="top"
               [trigger]="'hover'"
+              (click)="
+                sendTestHook(utilForm.controls['uninstallWebhook'].value, 1)
+              "
             >
               <div
                 class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon danger-hover"
@@ -513,13 +519,13 @@
             (click)="save()"
             [disabled]="loading"
           >
-            {{loading ? "Saving" : "Save App"}}
+            {{ loading ? "Saving" : "Save App" }}
             <span
-            *ngIf="loading"
-            class="spinner-border spinner-border-sm ms-1"
-            role="status"
-            aria-hidden="true"
-          ></span>
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm ms-1"
+              role="status"
+              aria-hidden="true"
+            ></span>
           </button>
         </div>
       </form>
