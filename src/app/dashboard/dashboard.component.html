@@ -320,6 +320,7 @@
                   <app-collection-table
                     [utils]="dev?.utils ?? []"
                     [count]="(dev?.utils ?? []).length"
+                    (clicked)="openUtil($event)"
                   >
                   </app-collection-table>
                 </div>

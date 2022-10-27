@@ -92,27 +92,27 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
 
       let provider = await this.loadService.initializeProvider();
 
-      let addresses: string[] = [];
+      // let addresses: string[] = [];
 
-      console.log(provider);
+      // console.log(provider);
 
-      let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
+      // let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
 
-      await Promise.all(
-        this.finalAddresses.map(async (f) => {
-          var address: string | null = null;
+      // await Promise.all(
+      //   this.finalAddresses.map(async (f) => {
+      //     var address: string | null = null;
 
-          try {
-            address = ethers.utils.getAddress(f);
-          } catch (error) {
-            address = await ensPipe.transform(f);
-          }
+      //     try {
+      //       address = ethers.utils.getAddress(f);
+      //     } catch (error) {
+      //       address = await ensPipe.transform(f);
+      //     }
 
-          if (address) {
-            addresses.push(address);
-          }
-        })
-      );
+      //     if (address) {
+      //       addresses.push(address);
+      //     }
+      //   })
+      // );
 
       if (provider) {
         this.loadService.checkChain(chain?.id ?? 1, provider).then(() => {
@@ -130,9 +130,9 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
                 )
               );
 
-              let tx = await contract['buySmartUtil'](util, addresses, {
+              let tx = await contract['buySmartUtil'](util, {
                 value: ethers.utils.parseEther(
-                  `${addresses.length * this.item.price}`
+                  `${this.item.price}`
                 ),
               });
 
@@ -144,8 +144,6 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
               }, 5000);
             } else {
               this.loading = 0;
-              this.finalAddresses = []
-              this.selectedAddresses = []
             }
           });
         });

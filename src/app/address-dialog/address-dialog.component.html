@@ -94,10 +94,10 @@
           </mat-form-field>
         </div>
 
-        <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
+        <!-- <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
           Install Locations
-        </h3>
-
+        </h3> 
+        
         <div
           class="rounded-pill border w-100 pb-2 px-4 mb-3"
           *ngIf="15 as threshold"
@@ -208,9 +208,9 @@
                 [matChipInputFor]="chipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 (matChipInputTokenEnd)="add($event)"
+                [disabled]="true"
               />
 
-              <!-- [disabled]="data.asset" -->
             </mat-chip-list>
             <mat-autocomplete
               #auto="matAutocomplete"
@@ -248,7 +248,7 @@
               </cdk-virtual-scroll-viewport>
             </mat-autocomplete>
           </mat-form-field>
-        </div>
+        </div> -->
 
         <div class="w-100 py-3" *ngIf="item.etherPrice | formatEther as price">
           <div
@@ -256,18 +256,16 @@
           >
             <ng-container *ngIf="' ' + selectedChain?.currency as currency">
               <span>
-                {{ finalAddresses.length }} x
+                1 x
                 {{ price + currency }}
               </span>
 
               <span class="fw-bold">
                 {{
-                  finalAddresses.length > 0
-                    ? ((price | numberType) ?? 0) * finalAddresses.length > 0
-                      ? ((price | numberType) ?? 0) * finalAddresses.length +
+                  ((price | numberType) ?? 0) > 0
+                      ? ((price | numberType) ?? 0) +
                         currency
                       : "Free"
-                    : "No Location"
                 }}
               </span>
             </ng-container>
@@ -275,9 +273,11 @@
         </div>
 
         <button
-          class="btn bg-{{loading == 3 ? 'light-success' : 'purple'}} text-white rounded-pill px-5 py-3 my-3 mt-3 fw-bold w-100"
+          class="btn bg-{{
+            loading == 3 ? 'light-success' : 'purple'
+          }} text-white rounded-pill px-5 py-3 my-3 mt-3 fw-bold w-100"
           role="button"
-          [disabled]="finalAddresses.length == 0 || loading > 0"
+          [disabled]="loading > 0"
           (click)="complete()"
         >
           {{

@@ -23,6 +23,8 @@ export class CollectionTableComponent
   implements OnInit, AfterViewInit, OnChanges
 {
 
+  @Output() clicked = new EventEmitter<Util>();
+
   @Input() set utils(utils: Util[]) {
 
     this.dataSource = new MatTableDataSource<Util>(
@@ -38,6 +40,9 @@ export class CollectionTableComponent
   @Input() count: number = 0;
   
 
+  open(app: Util){
+    this.clicked.emit(app)
+  }
   dataSource?: MatTableDataSource<Util>;
 
   displayedColumns2: string[] = [

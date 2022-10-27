@@ -1,33 +1,39 @@
 export class Signature {
   name!: string;
   id!: string;
-  pay_address!: string;
+  signer!: string;
+  payAddress!: string;
+  appFeeAddress!: string;
+  appFee!: string;
   category!: number;
   price!: string;
   created!: number;
-  modified!: number;
   chainId!: number;
   signature!: string;
 
   constructor(
     name: string,
     id: string,
-    pay_address: string,
+    signer: string,
+    payAddress: string,
+    appFeeAddress: string,
+    appFee: string,
     category: number,
     price: string,
     created: number,
-    modified: number,
     chainId: number,
     signature: string
   ) {
-    this.name = name ?? 'My App';
+    this.name = name;
     this.id = id;
+    this.signer = signer;
+    this.payAddress = payAddress;
+    this.appFeeAddress = appFeeAddress;
+    this.appFee = appFee;
+    this.category = category;
+    this.price = price;
     this.created = created;
-    this.modified = modified ?? created;
-    this.pay_address = pay_address;
-    this.category = category ?? 0;
-    this.price = price ?? "";
-    this.chainId = chainId ?? 1
+    this.chainId = chainId;
     this.signature = signature;
   }
 }

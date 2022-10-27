@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
@@ -19,10 +19,9 @@ export class SmartUtilComponent implements OnInit {
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private loadService: LoadService,
-    public dialogRef: MatDialogRef<SmartUtilComponent>
-  ) {
-    this.utilForm.controls['networks'].setValue([this.categories[0].chains[0]]);
-  }
+    public dialogRef: MatDialogRef<SmartUtilComponent>,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   utilForm = this.fb.group({
     name: [null, Validators.required],
@@ -30,14 +29,8 @@ export class SmartUtilComponent implements OnInit {
     price: [null, Validators.required],
     networks: [[], Validators.required],
     wallet: [null, Validators.required],
-    appImg: [
-      'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png',
-      Validators.required,
-    ],
-    marketingImg: [
-      'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png',
-      Validators.required,
-    ],
+    appImg: [null, Validators.required],
+    marketingImg: [null, Validators.required],
     installWebhook: [null],
     uninstallWebhook: [null],
     appFile: [null],
@@ -103,7 +96,41 @@ export class SmartUtilComponent implements OnInit {
     reader.readAsDataURL(blob);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let app = this.data.util as Util;
+    if (app) {
+      this.utilForm.controls['name'].setValue(app.name);
+      this.utilForm.controls['description'].setValue(app.description);
+      this.utilForm.controls['price'].setValue(app.price);
+
+      var chains: Chain[] = [];
+
+      this.categories.forEach((c) => {
+        c.chains.forEach((a) => {
+          if (app.chains.find((x) => x.id == a.id)) {
+            chains.push(a);
+          }
+        });
+      });
+      this.utilForm.controls['networks'].setValue(chains);
+
+      this.utilForm.controls['wallet'].setValue(app.signatures[0].payAddress);
+      this.utilForm.controls['appImg'].setValue(app.displayUrls[0]);
+      this.utilForm.controls['marketingImg'].setValue(app.coverUrl);
+      this.utilForm.controls['installWebhook'].setValue(app.installWebhook);
+      this.utilForm.controls['uninstallWebhook'].setValue(app.uninstallWebhook);
+    } else {
+      this.utilForm.controls['networks'].setValue([
+        this.categories[0].chains[0],
+      ]);
+      this.utilForm.controls['appImg'].setValue(
+        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png'
+      );
+      this.utilForm.controls['marketingImg'].setValue(
+        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png'
+      );
+    }
+  }
 
   chains(networks: Chain[]) {
     return networks.map((c) => c.name).join(', ');
@@ -115,7 +142,7 @@ export class SmartUtilComponent implements OnInit {
 
       try {
         let name = this.utilForm.controls['name'].value;
-        let id = this.loadService.newUtilID;
+        let id = this.data.util?.id ?? this.loadService.newUtilID;
         let creator = (await this.loadService.currentUser)?.uid!;
 
         let chains =
@@ -128,6 +155,8 @@ export class SmartUtilComponent implements OnInit {
         let ethPrice = ethers.utils.parseEther(price);
         let numPrice = Number(ethers.utils.formatEther(ethPrice));
         let bigNumPrice = ethPrice.toHexString();
+        let extraFee = ethers.BigNumber.from('0').toHexString();
+
         let category = 0;
 
         let signatures: Signature[] = [];
@@ -140,11 +169,13 @@ export class SmartUtilComponent implements OnInit {
             new Signature(
               name,
               id,
+              '',
               wallet,
+              '',
+              extraFee,
               category,
               bigNumPrice,
               created,
-              modified,
               chain.id,
               ''
             )
@@ -199,8 +230,8 @@ export class SmartUtilComponent implements OnInit {
           util,
           (result) => {
             console.log(result);
-            this.loading = false
-            this.dialogRef.close()
+            this.loading = false;
+            this.dialogRef.close();
           },
           appFile,
           marketingFile
@@ -213,8 +244,8 @@ export class SmartUtilComponent implements OnInit {
     }
   }
 
-  sendTestHook(hook: string, type = 0){
-    this.loadService.sendTestWebhook(hook, type, 1, "ethereum")
+  sendTestHook(hook: string, type = 0) {
+    this.loadService.sendTestWebhook(hook, type, 1, 'ethereum');
   }
 
   contains(chain: Chain) {
