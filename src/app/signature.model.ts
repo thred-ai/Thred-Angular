@@ -1,10 +1,12 @@
+import { ethers } from "ethers";
+
 export class Signature {
   id!: string;
   signer!: string;
   payAddress!: string;
   feeAddress!: string;
   fee!: number;
-  price!: number;
+  price!: ethers.BigNumber;
   chainId!: number;
   signature!: string;
 
@@ -14,7 +16,7 @@ export class Signature {
     payAddress: string,
     feeAddress: string,
     fee: number,
-    price: number,
+    price: ethers.BigNumber,
     chainId: number,
     signature: string
   ) {

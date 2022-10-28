@@ -173,7 +173,7 @@ export class SmartUtilComponent implements OnInit {
               wallet,
               '',
               extraFee,
-              numPrice,
+              ethPrice,
               chain.id,
               ''
             )
