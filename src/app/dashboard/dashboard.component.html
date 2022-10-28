@@ -103,7 +103,7 @@
                     </mat-form-field>
                   </div>
                   <ng-template #template>
-                    <div class="h-100" style="width: 250px;">
+                    <div class="h-100" style="width: 250px">
                       <mat-calendar
                         class="h-100 no-header pt-3"
                         [selected]="selectedDateRange"
@@ -152,11 +152,12 @@
                           (views | location: undefined:1:dev?.utils ?? [])
                       }"
                       [utils]="dev?.utils ?? []"
+                      (clicked)="
+                        $event.mode == 0
+                          ? scrollToLocation($event.data)
+                          : ''
+                      "
                     ></app-data-table>
-                    <!-- (clicked)="
-                      $event.mode == 0
-                        ? scrollToLocation($event.data)
-                        : createNewNFT($event.data) -->
                   </div>
                 </div>
 
@@ -181,11 +182,10 @@
 
                         <iframe
                           style="border-radius: 0.25rem"
+                          *ngIf="views"
                           class="w-100 h-100 position-absolute rounded-15"
                           id="earthFrame"
-                          [srcdoc]="
-                            str | liveEarthViewPipe: views ?? [] | safeHtml
-                          "
+                          [srcdoc]="str | liveEarthViewPipe: views | safeHtml"
                         >
                         </iframe>
 
@@ -251,10 +251,11 @@
                             border-radius: 0.25rem;
                             background-color: rgba(0, 0, 0, 0.406);
                           "
+                          (click)="closeCard()"
                         ></div>
-                        <!-- (click)="closeCard()" -->
+
                         <div
-                          class="big-design-card bg-white animate__animated animate__fadeInRight animate__faster animate__delay-0s"
+                          class="big-design-card p-0 bg-white animate__animated animate__fadeInRight animate__faster animate__delay-0s rounded-15"
                           *ngIf="selectedCoord"
                           style="
                             top: 10px;
@@ -265,8 +266,8 @@
                         >
                           <app-view-coord
                             [coord]="selectedCoord"
+                            (close)="closeCard()"
                           ></app-view-coord>
-                          <!-- (close)="closeCard()" -->
                         </div>
                       </div>
                     </div>

@@ -73,6 +73,9 @@ export class ItemComponent implements OnInit, OnDestroy {
       id,
       (result) => {
         this.item = result;
+        if (result) {
+          this.loadService.logView(result.id, result.creator);
+        }
       },
       true
     );

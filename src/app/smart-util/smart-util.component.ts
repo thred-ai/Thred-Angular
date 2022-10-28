@@ -21,7 +21,45 @@ export class SmartUtilComponent implements OnInit {
     private loadService: LoadService,
     public dialogRef: MatDialogRef<SmartUtilComponent>,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    let app = this.data.util as Util;
+    console.log(app)
+    if (app) {
+      this.utilForm.controls['name'].setValue(app.name);
+      this.utilForm.controls['description'].setValue(app.description);
+      this.utilForm.controls['price'].setValue(app.price);
+
+      var chains: Chain[] = [];
+
+      this.categories.forEach((c) => {
+        c.chains.forEach((a) => {
+          if (app.chains.find((x) => x.id == a.id)) {
+            chains.push(a);
+          }
+        });
+      });
+      this.utilForm.controls['networks'].setValue(chains);
+
+      this.utilForm.controls['wallet'].setValue(app.signatures[0]?.payAddress);
+      this.utilForm.controls['appImg'].setValue(app.displayUrls[0]);
+      this.utilForm.controls['marketingImg'].setValue(app.coverUrl);
+      this.utilForm.controls['installWebhook'].setValue(app.installWebhook);
+      this.utilForm.controls['uninstallWebhook'].setValue(app.uninstallWebhook);
+    } else {
+      this.utilForm.controls['networks'].setValue([
+        this.categories[0].chains[0],
+      ]);
+      this.utilForm.controls['appImg'].setValue(
+        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png'
+      );
+      this.utilForm.controls['marketingImg'].setValue(
+        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png'
+      );
+    }
+  }
+  ngOnInit(): void {
+   this.cdr.detectChanges()
+  }
 
   utilForm = this.fb.group({
     name: [null, Validators.required],
@@ -94,42 +132,6 @@ export class SmartUtilComponent implements OnInit {
     };
 
     reader.readAsDataURL(blob);
-  }
-
-  ngOnInit(): void {
-    let app = this.data.util as Util;
-    if (app) {
-      this.utilForm.controls['name'].setValue(app.name);
-      this.utilForm.controls['description'].setValue(app.description);
-      this.utilForm.controls['price'].setValue(app.price);
-
-      var chains: Chain[] = [];
-
-      this.categories.forEach((c) => {
-        c.chains.forEach((a) => {
-          if (app.chains.find((x) => x.id == a.id)) {
-            chains.push(a);
-          }
-        });
-      });
-      this.utilForm.controls['networks'].setValue(chains);
-
-      this.utilForm.controls['wallet'].setValue(app.signatures[0]?.payAddress);
-      this.utilForm.controls['appImg'].setValue(app.displayUrls[0]);
-      this.utilForm.controls['marketingImg'].setValue(app.coverUrl);
-      this.utilForm.controls['installWebhook'].setValue(app.installWebhook);
-      this.utilForm.controls['uninstallWebhook'].setValue(app.uninstallWebhook);
-    } else {
-      this.utilForm.controls['networks'].setValue([
-        this.categories[0].chains[0],
-      ]);
-      this.utilForm.controls['appImg'].setValue(
-        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png'
-      );
-      this.utilForm.controls['marketingImg'].setValue(
-        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png'
-      );
-    }
   }
 
   chains(networks: Chain[]) {

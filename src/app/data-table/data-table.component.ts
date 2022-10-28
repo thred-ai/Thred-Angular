@@ -20,6 +20,7 @@ export class DataTableComponent implements OnInit {
   loc?: any;
   @Input() set analytics(loc: any) {
     this.loc = loc;
+    console.log(loc)
     this.setDataSource()
     this.cdr.detectChanges();
   }
@@ -42,7 +43,7 @@ export class DataTableComponent implements OnInit {
       id: 0
     },
     {
-      name: 'By Items',
+      name: 'By Apps',
       id: 1
     }
   ]
@@ -62,7 +63,7 @@ export class DataTableComponent implements OnInit {
   displayedColumns2: string[] = [
     'name',
     'views',
-    'sales',
+    'downloads',
     'action',
   ];
 

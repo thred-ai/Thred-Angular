@@ -11,7 +11,7 @@ export class LiveEarthViewPipePipe implements PipeTransform {
       address: Dict<string>;
       views: number;
       sales: number;
-      productId: string;
+      docId: string;
       timestamp: Date;
     }> = [];
     n.forEach((p) => {
@@ -20,7 +20,7 @@ export class LiveEarthViewPipePipe implements PipeTransform {
           p['address'].city == k.address['city'] &&
           p['address'].region == k.address['region'] &&
           p['address'].country == k.address['country'] &&
-          p['productId'] == k.productId
+          p['docId'] == k.docId
       );
       if (same >= 0) {
         if (p['type'] == 'SALE') {
@@ -41,7 +41,7 @@ export class LiveEarthViewPipePipe implements PipeTransform {
           address: p['address'],
           views: views,
           sales: sales,
-          productId: p['productId'],
+          docId: p['docId'],
           timestamp: p['timestamp'],
         });
       }
@@ -108,7 +108,7 @@ export class LiveEarthViewPipePipe implements PipeTransform {
             lat: ${i.coords['LATITUDE']},
             time: ${JSON.stringify(i.timestamp)},
             address: ${JSON.stringify(i.address)},
-            productID: '${i.productId}',
+            docId: '${i.docId}',
             views: ${i.views},
             sales: ${i.sales},
           }

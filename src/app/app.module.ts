@@ -93,6 +93,7 @@ import { SmartUtilComponent } from './smart-util/smart-util.component';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { ProfileComponent } from './profile/profile.component';
+import { ViewCoordComponent } from './view-coord/view-coord.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { ProfileComponent } from './profile/profile.component';
     SafeUrlPipe,
     SmartUtilComponent,
     ProfileComponent,
+    ViewCoordComponent
   ],
   imports: [
     CommonModule,

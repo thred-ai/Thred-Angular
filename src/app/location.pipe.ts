@@ -6,12 +6,7 @@ import { Util } from './util.model';
   name: 'location',
 })
 export class LocationPipe implements PipeTransform {
-  transform(
-    value?: Dict<any>[],
-    filterVal?: string,
-    mode = 0,
-    utils?: Util[]
-  ) {
+  transform(value?: Dict<any>[], filterVal?: string, mode = 0, utils?: Util[]) {
     var x = value ?? [];
 
     if (filterVal) {
@@ -23,11 +18,11 @@ export class LocationPipe implements PipeTransform {
         id:
           mode == 0
             ? `${v['address'].city}, ${v['address'].country}`
-            : `${v['productId']}`,
+            : `${v['docId']}`,
         name:
           mode == 0
             ? `${v['address'].city}, ${v['address'].country}`
-            : v['productId'],
+            : this.assetName(`${v['docId']}`, utils),
         type: v['type'],
         coords: v['coords'],
       })) ?? [];
@@ -84,12 +79,12 @@ export class LocationPipe implements PipeTransform {
     return [];
   }
 
-  // assetName(id: string, collections: Collection[] = []) {
-  //   let col = collections.find((c) => c.NFTs[`${id}`] != undefined);
-  //   if (col) {
-  //     return col?.NFTs[`${id}`].name;
-  //   } else {
-  //     return '';
-  //   }
-  // }
+  assetName(id: string, items: Util[] = []) {
+    let col = items.find((c) => c.id == id);
+    if (col) {
+      return col.name;
+    } else {
+      return '';
+    }
+  }
 }

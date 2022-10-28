@@ -15,6 +15,7 @@ import { Util } from './util.model';
 import { Chain } from './chain.model';
 import { Category } from './category.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -33,13 +34,28 @@ export class LoadService {
     new Chain('Polygon', 137, 'MATIC'),
   ];
 
+  defaultCoords = {
+    address: {
+      city: 'Los Angeles',
+      country: 'United States',
+      country_code: 'US',
+      region: 'California',
+      region_code: 'CA',
+    },
+    coords: {
+      LONGITUDE: -118.243683,
+      LATITUDE: 34.052235,
+    },
+  };
+
   constructor(
     @Inject(PLATFORM_ID) private platformID: Object,
     private router: Router,
     private auth: AngularFireAuth,
     private db: AngularFirestore,
     private functions: AngularFireFunctions,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private http: HttpClient
   ) {
     if (isPlatformBrowser(this.platformID)) {
       // Optional Config object, but defaults to demo api-key and eth-mainnet.
@@ -58,6 +74,7 @@ export class LoadService {
       );
     }
   }
+
 
   finishSignUp(
     email: string,
@@ -218,8 +235,8 @@ export class LoadService {
     uploadData.search_name = uploadData.name?.toLowerCase();
     uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
 
-    if (uploadData.downloads > 0){
-      delete uploadData.downloads
+    if (uploadData.downloads > 0) {
+      delete uploadData.downloads;
     }
 
     try {
@@ -304,7 +321,6 @@ export class LoadService {
 
     return userRef.set(data);
   }
-  
 
   filteredSearch: BehaviorSubject<any> = new BehaviorSubject([]);
 
@@ -353,8 +369,6 @@ export class LoadService {
           });
       });
   }
-
-
 
   getItem(id: string, callback: (result?: Util) => any, getProfiles = false) {
     console.log(id);
@@ -489,6 +503,118 @@ export class LoadService {
       }
       sub.unsubscribe();
     });
+  }
+
+  async logView(productId: string, uid: string) {
+    if (uid && isPlatformBrowser(this.platformID)) {
+      let coords = (await this.getCoords()) ?? this.defaultCoords;
+      this.updateView(uid, coords, productId);
+    }
+  }
+
+  updateView(uid: string, location: any, docId: string) {
+    const time = new Date();
+
+    const docName =
+      String(time.getFullYear()) +
+      String(time.getMonth()) +
+      String(time.getDate()) +
+      String(time.getHours());
+
+    return this.db
+      .collection('Developers/' + uid + '/Daily_Info')
+      .doc(`V${docName}`)
+      .set(
+        {
+          time: firebase.firestore.FieldValue.arrayUnion({
+            time,
+            docId,
+            coords: location.coords,
+            address: location.address,
+          }),
+          timestamp: time,
+          type: 'VIEW',
+        },
+        { merge: true }
+      );
+  }
+
+  getMiscStats(
+    uid: string,
+    date1: Date,
+    date2: Date,
+    callback: (views?: Dict<any>[]) => any
+  ) {
+    var views: Dict<any>[] = [];
+
+    let sub = this.db
+      .collection('Developers/' + uid + '/Daily_Info/', (ref) =>
+        ref
+          .where('timestamp', '>=', date1)
+          .where('timestamp', '<=', new Date(date2.setHours(23, 59, 59, 999)))
+      )
+      .valueChanges()
+      .subscribe((docDatas) => {
+        docDatas.forEach((doc, index) => {
+          const docData = doc as DocumentData;
+          if (docData) {
+            let time = docData['time'] as Array<any>;
+            let type = docData['type'] as string;
+            time.forEach((t) => {
+              let p =
+                t instanceof firebase.firestore.Timestamp
+                  ? (t as firebase.firestore.Timestamp).toDate()
+                  : (t.time as firebase.firestore.Timestamp).toDate();
+              let v =
+                t instanceof firebase.firestore.Timestamp
+                  ? this.defaultCoords.coords
+                  : t.coords;
+              let address =
+                t instanceof firebase.firestore.Timestamp
+                  ? this.defaultCoords.address
+                  : t.address;
+              let docId =
+                t instanceof firebase.firestore.Timestamp
+                  ? undefined
+                  : t.docId;
+              views?.push({
+                num: 1,
+                coords: v,
+                address,
+                docId,
+                type,
+                timestamp: p,
+              });
+            });
+          }
+        });
+        callback(views);
+        if (isPlatformBrowser(this.platformID)) sub.unsubscribe();
+      });
+  }
+
+  async getCoords() {
+    let value = (await this.http
+      .get('https://api.ipify.org/?format=json')
+      .toPromise()) as Dict<any>;
+
+    let url = `https://api.ipstack.com/${value['ip']}?access_key=5b5f96aced42e6b1c95ab24d96f704c5`;
+    let resp = (await this.http.get(url).toPromise()) as Dict<any>;
+    let address = {
+      city: resp['city'],
+      country: resp['country_name'],
+      country_code: resp['country_code'],
+      region: resp['region_name'],
+      region_code: resp['region_code'],
+    };
+    let coords = {
+      LATITUDE: resp['latitude'],
+      LONGITUDE: resp['longitude'],
+    };
+    return {
+      coords,
+      address,
+    };
   }
 
   async initializeProvider() {

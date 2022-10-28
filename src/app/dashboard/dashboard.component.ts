@@ -52,15 +52,13 @@ export class DashboardComponent implements OnInit {
     dateRangeEnd: HTMLInputElement
   ) {
     if (dateRangeStart.value && dateRangeEnd.value) {
-      let start = dateRangeStart.value;
-      let end = dateRangeEnd.value;
 
       this.selectedDateRange = new DateRange(
         this.dateRange.controls['start'].value,
         this.dateRange.controls['end'].value
       );
 
-      // this.loadStats();
+      this.loadStats(this.dev?.id);
     }
   }
 
@@ -82,9 +80,26 @@ export class DashboardComponent implements OnInit {
     private loadService: LoadService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    (<any>window).openCard = this.openCard.bind(this);
+  }
 
-  openUtil(util?: Util, index: number = -1) {
+  scrollToLocation(val?: any) {
+    if (val) {
+      let loc = val;
+      let coords = loc.coords;
+
+      let frame = (document.getElementById('earthFrame') as HTMLIFrameElement)
+        ?.contentWindow as any;
+
+      frame.goTo(coords);
+    }
+  }
+
+  openUtil(
+    util?: Util,
+    index: number = this.dev?.utils.findIndex((app) => app.id == util?.id) ?? -1
+  ) {
     const modalRef = this.dialog.open(SmartUtilComponent, {
       width: '750px',
       maxHeight: '80vh',
@@ -113,10 +128,41 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  closeCard() {
+    this.selectedCoord = undefined;
+    this.cdr.detectChanges();
+  }
+
+  openCard(coords: Dict<any>) {
+    coords['time'] = new Date(coords['time']);
+
+    let a = this.dev?.utils?.find((app) => app.id == coords['docId']);
+
+    if (a) {
+      coords['app'] = a;
+      this.selectedCoord = coords;
+      this.cdr.detectChanges();
+    }
+  }
+
   @Input() dev?: Developer = undefined;
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.getProfile();
+    this.loadStats((await this.loadService.currentUser)?.uid);
+  }
+
+  loadStats(uid?: string) {
+    this.loadService.getMiscStats(
+      uid ?? '',
+      this.dateRange.controls['start'].value,
+      this.dateRange.controls['end'].value,
+      (views: any) => {
+        this.views = views ?? [];
+        console.log(views);
+        this.cdr.detectChanges();
+      }
+    );
   }
 
   str = `
