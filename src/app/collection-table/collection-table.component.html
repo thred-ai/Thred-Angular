@@ -19,7 +19,7 @@
           *matCellDef="let element"
           class="big-design-body text-truncate"
         >
-          0
+          {{element.downloads}}
         </td>
       </ng-container>
 
@@ -223,8 +223,8 @@
       <tr
         mat-row
         style="height: 70px"
-        *matRowDef="let row; columns: displayedColumns2"
-        (click)="open(row)"
+        *matRowDef="let row; columns: displayedColumns2; index as i"
+        (click)="open(row, i)"
       ></tr>
 
       <tr *matNoDataRow>

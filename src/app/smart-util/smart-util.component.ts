@@ -191,6 +191,7 @@ export class SmartUtilComponent implements OnInit {
 
         let reviews = 0;
         let rating = 0;
+        let downloads = this.data.util?.downloads ?? 0
 
         let status = this.data.util?.status ?? 0;
         let installWebhook = this.utilForm.controls['installWebhook'].value;
@@ -214,6 +215,7 @@ export class SmartUtilComponent implements OnInit {
           verified,
           reviews,
           rating,
+          downloads,
           chains,
           coverUrl,
           status,
@@ -229,7 +231,7 @@ export class SmartUtilComponent implements OnInit {
           (result) => {
             console.log(result);
             this.loading = false;
-            this.dialogRef.close();
+            this.dialogRef.close(util);
           },
           appFile,
           marketingFile

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
@@ -71,16 +71,20 @@ export class DashboardComponent implements OnInit {
       if (uid) {
         this.loadService.getUserInfo(uid, true, (dev) => {
           this.dev = dev;
-          console.log(dev)
+          console.log(dev);
         });
       } else {
       }
     });
   }
 
-  constructor(private loadService: LoadService, private dialog: MatDialog) {}
+  constructor(
+    private loadService: LoadService,
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  openUtil(util?: Util) {
+  openUtil(util?: Util, index: number = -1) {
     const modalRef = this.dialog.open(SmartUtilComponent, {
       width: '750px',
       maxHeight: '80vh',
@@ -91,12 +95,28 @@ export class DashboardComponent implements OnInit {
         util,
       },
     });
+
+    modalRef.afterClosed().subscribe((value) => {
+      if (value && this.dev && (value as Util)) {
+        console.log(index);
+        let apps = [...this.dev?.utils];
+
+        if (index > -1) {
+          apps[index] = Object.assign(this.dev.utils[index], value);
+        } else {
+          apps.push(value as Util);
+        }
+        this.dev.utils = apps;
+
+        this.cdr.detectChanges();
+      }
+    });
   }
 
-  @Input() dev?: Developer = undefined
+  @Input() dev?: Developer = undefined;
 
   ngOnInit(): void {
-    this.getProfile()
+    this.getProfile();
   }
 
   str = `

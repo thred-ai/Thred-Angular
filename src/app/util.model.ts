@@ -19,6 +19,7 @@ export class Util {
   verified!: boolean;
   reviews!: number;
   rating!: number;
+  downloads!: number;
   chains!: Chain[];
   created!: number;
   modified!: number;
@@ -44,6 +45,7 @@ export class Util {
     verified?: boolean,
     reviews?: number,
     rating?: number,
+    downloads?: number,
     chains?: Chain[],
     coverUrl?: string,
     status?: number,
@@ -67,6 +69,7 @@ export class Util {
     this.verified = verified ?? false;
     this.reviews = reviews ?? 0;
     this.rating = rating ?? 0;
+    this.downloads = downloads ?? 0
     this.chains = chains ?? [new Chain('Ethereum', 1, 'ETH')];
     this.coverUrl = coverUrl;
     this.status = status ?? 0;

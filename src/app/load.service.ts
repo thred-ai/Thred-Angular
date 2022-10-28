@@ -218,6 +218,10 @@ export class LoadService {
     uploadData.search_name = uploadData.name?.toLowerCase();
     uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
 
+    if (uploadData.downloads > 0){
+      delete uploadData.downloads
+    }
+
     try {
       await this.db
         .collection(`Developers/${uid}/Items`)
