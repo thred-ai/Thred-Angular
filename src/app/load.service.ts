@@ -370,7 +370,6 @@ export class LoadService {
           d.chains.forEach((c: any, i: number) => {
             d.chains[i] = this.chains.find((x) => x.id == c);
           });
-          d.status = 0
           if (getProfiles) {
             this.getUserInfo(d.creator, false, (result) => {
               if (result) {
