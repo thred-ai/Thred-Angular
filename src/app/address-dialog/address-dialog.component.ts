@@ -124,16 +124,13 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
 
               let signer = provider?.getSigner();
               let contract = new ethers.Contract(address, abi, signer);
-              let util = JSON.parse(
-                JSON.stringify(
-                  this.item.signatures.find((s) => s.chainId == chain?.id)
-                )
+
+              let util = this.item.signatures.find(
+                (s) => s.chainId == chain?.id
               );
 
               let tx = await contract['buySmartUtil'](util, {
-                value: ethers.utils.parseEther(
-                  `${this.item.price}`
-                ),
+                value: this.item.etherPrice,
               });
 
               console.log(tx);

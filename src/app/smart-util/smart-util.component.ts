@@ -114,7 +114,7 @@ export class SmartUtilComponent implements OnInit {
       });
       this.utilForm.controls['networks'].setValue(chains);
 
-      this.utilForm.controls['wallet'].setValue(app.signatures[0].payAddress);
+      this.utilForm.controls['wallet'].setValue(app.signatures[0]?.payAddress);
       this.utilForm.controls['appImg'].setValue(app.displayUrls[0]);
       this.utilForm.controls['marketingImg'].setValue(app.coverUrl);
       this.utilForm.controls['installWebhook'].setValue(app.installWebhook);
@@ -153,36 +153,34 @@ export class SmartUtilComponent implements OnInit {
         let price = String(this.utilForm.controls['price'].value) as string;
 
         let ethPrice = ethers.utils.parseEther(price);
-        let numPrice = Number(ethers.utils.formatEther(ethPrice));
-        let bigNumPrice = ethPrice.toHexString();
-        let extraFee = ethers.BigNumber.from('0').toHexString();
+        let strPrice = ethers.utils.formatEther(ethPrice);
+
+        let numPrice = Number(strPrice);
+        let extraFee = 0
 
         let category = 0;
 
         let signatures: Signature[] = [];
 
-        let created = new Date().getTime();
+        let created = this.data.util?.created ?? new Date().getTime();
         let modified = created;
 
         chains.forEach((chain) => {
           signatures.push(
             new Signature(
-              name,
               id,
               '',
               wallet,
               '',
               extraFee,
-              category,
-              bigNumPrice,
-              created,
+              numPrice,
               chain.id,
               ''
             )
           );
         });
 
-        let creatorName = 'thred';
+        let creatorName = '';
         let displayUrls: string[] = [this.utilForm.controls['appImg'].value];
         let coverUrl: string = this.utilForm.controls['marketingImg'].value;
         let metaUrl = '';
@@ -194,7 +192,7 @@ export class SmartUtilComponent implements OnInit {
         let reviews = 0;
         let rating = 0;
 
-        let status = 0;
+        let status = this.data.util?.status ?? 0;
         let installWebhook = this.utilForm.controls['installWebhook'].value;
         let uninstallWebhook = this.utilForm.controls['uninstallWebhook'].value;
 
