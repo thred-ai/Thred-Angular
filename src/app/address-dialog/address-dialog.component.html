@@ -263,9 +263,8 @@
               <span class="fw-bold">
                 {{
                   ((price | numberType) ?? 0) > 0
-                      ? ((price | numberType) ?? 0) +
-                        currency
-                      : "Free"
+                    ? ((price | numberType) ?? 0) + currency
+                    : "Free"
                 }}
               </span>
             </ng-container>
@@ -274,7 +273,7 @@
 
         <button
           class="btn bg-{{
-            loading == 3 ? 'light-success' : 'purple'
+            loading == 3 ? 'light-success' : loading == 4 ? 'danger' : 'purple'
           }} text-white rounded-pill px-5 py-3 my-3 mt-3 fw-bold w-100"
           role="button"
           [disabled]="loading > 0"
@@ -287,7 +286,9 @@
               ? "Verifying"
               : loading == 2
               ? "Installing"
-              : "Installed"
+              : loading == 3
+              ? "Installed"
+              : "Install Failed"
           }}
           <span
             *ngIf="loading > 0 && loading < 3"
