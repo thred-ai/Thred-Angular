@@ -13,6 +13,7 @@ export class WalletConnectComponentComponent implements OnInit {
     img: string;
     id: string;
     code: number;
+    mobile: boolean;
   }[] = [];
 
   @Input() set providers(value: string[]) {
@@ -28,11 +29,14 @@ export class WalletConnectComponentComponent implements OnInit {
         img: `assets/${id}.svg`,
         id,
         code: index,
+        mobile: index != 0,
       };
     });
   }
 
-  @Output() selected = new EventEmitter<ethers.providers.Web3Provider | undefined>();
+  @Output() selected = new EventEmitter<
+    ethers.providers.Web3Provider | undefined
+  >();
 
   async selectedProvider(provider: number) {
     console.log(provider);

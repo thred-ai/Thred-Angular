@@ -1,5 +1,7 @@
 <div
-  class="p-2 d-flex justify-content-between align-content-center w-100 hover-row"
+  class="p-3 d-{{
+    provider.mobile ? 'flex' : 'none'
+  }} d-md-flex justify-content-between align-content-center w-100 hover-row"
   role="button"
   *ngFor="let provider of savedProviders"
   style="height: 80px"
@@ -13,7 +15,10 @@
       </span>
     </div>
   </div>
-  <a role="button" class="text-purple my-auto">
-    <mat-icon> account_balance_wallet </mat-icon>
+  <a
+    class="text-purple h-100 d-flex justify-content-center align-items-center"
+    style="text-decoration: none"
+  >
+    <mat-icon class="my-auto"> account_balance_wallet </mat-icon>
   </a>
 </div>
