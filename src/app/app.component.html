@@ -7,9 +7,7 @@
     <a
       class="w-100 d-flex justify-content-end align-items-center text-dark"
       style="pointer-events: all; height: 40px; text-decoration: none"
-      (click)="
-        close()
-      "
+      (click)="close()"
       role="button"
     >
       <mat-icon
@@ -313,7 +311,9 @@
               <div class="w-100 my-3" role="button" (click)="routeToAuth()">
                 Dev Portal
               </div>
-              <div class="w-100 my-3" role="button">Get Started</div>
+              <div class="w-100 my-3" role="button" (click)="routeToAuth()">
+                Get Started
+              </div>
               <a
                 class="w-100 my-3 text-white text-decoration-none"
                 role="button"
@@ -326,9 +326,27 @@
               <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
                 Company
               </h3>
-              <div class="w-100 my-3" role="button">About</div>
-              <div class="w-100 my-3" role="button">Protocol</div>
-              <div class="w-100 my-3" role="button">Contact</div>
+              <a
+                class="w-100 my-3"
+                role="button"
+                [href]="'https://thredapps.com'"
+                target="_blank"
+                >About</a
+              >
+              <a
+                class="w-100 my-3"
+                role="button"
+                [href]="'https://thredapps.com'"
+                target="_blank"
+                >Protocol</a
+              >
+              <a
+                class="w-100 my-3"
+                role="button"
+                [href]="'https://thredapps.com/contact'"
+                target="_blank"
+                >Contact</a
+              >
             </div>
           </div>
         </div>
