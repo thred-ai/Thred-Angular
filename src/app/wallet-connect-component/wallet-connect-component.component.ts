@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ethers } from 'ethers';
+import { LoadService } from '../load.service';
 
 @Component({
   selector: 'app-wallet-connect-component',
@@ -30,9 +32,15 @@ export class WalletConnectComponentComponent implements OnInit {
     });
   }
 
-  @Output() selected = new EventEmitter<number>();
+  @Output() selected = new EventEmitter<ethers.providers.Web3Provider | undefined>();
 
-  constructor() {}
+  async selectedProvider(provider: number) {
+    console.log(provider);
+    let newProvider = await this.loadService.initializeProvider(provider);
+    this.selected.emit(newProvider);
+  }
+
+  constructor(private loadService: LoadService) {}
 
   ngOnInit(): void {}
 }

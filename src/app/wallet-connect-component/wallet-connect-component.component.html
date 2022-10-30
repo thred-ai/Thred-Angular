@@ -3,7 +3,7 @@
   role="button"
   *ngFor="let provider of savedProviders"
   style="height: 80px"
-  (click)="selected.emit(provider.code)"
+  (click)="selectedProvider(provider.code)"
 >
   <div class="d-flex justify-content-start align-content-center">
     <img class="h-100" [src]="provider.img" style="aspect-ratio: 1" />

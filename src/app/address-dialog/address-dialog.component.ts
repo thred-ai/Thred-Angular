@@ -84,12 +84,6 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  async selectedProvider(provider: number) {
-    console.log(provider);
-    let newProvider = await this.loadService.initializeProvider(provider);
-    this.complete(newProvider);
-  }
-
   async complete(provider?: ethers.providers.Web3Provider) {
     this.loading = 1;
 

@@ -307,7 +307,7 @@
       <div class="rounded-15 w-100 border" style="overflow: hidden">
         <app-wallet-connect-component
           [providers]="['metamask', 'wallet-connect']"
-          (selected)="selectedProvider($event)"
+          (selected)="complete($event)"
         >
         </app-wallet-connect-component>
       </div>
