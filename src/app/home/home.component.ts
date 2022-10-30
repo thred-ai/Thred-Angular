@@ -48,7 +48,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadService.addTags(
+      `Thred | App Store`,
+      `https://storage.googleapis.com/thred-protocol.appspot.com/resources/thred_link.png`,
+      `Buy, Sell, Discover Smart Contract Apps`,
+      'thredapps.io'
+    );
+  }
 
   onParentEvent(data: any) {
     // your logic here

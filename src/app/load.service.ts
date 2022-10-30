@@ -17,6 +17,7 @@ import { Category } from './category.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import { Meta, Title } from '@angular/platform-browser';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -56,7 +57,9 @@ export class LoadService {
     private db: AngularFirestore,
     private functions: AngularFireFunctions,
     private storage: AngularFireStorage,
-    private http: HttpClient
+    private http: HttpClient,
+    private metaService: Meta,
+    private titleService: Title
   ) {
     if (isPlatformBrowser(this.platformID)) {
       let chains = Object.values(environment.rpc);
@@ -686,4 +689,20 @@ export class LoadService {
       }
     }
   }
+
+  addTags(title: string, imgUrl: string, description: string, url: string) {
+    this.metaService.updateTag({ property: 'og:title', content: title });
+    this.metaService.updateTag({ property: 'og:image', content: imgUrl });
+    this.metaService.updateTag({property: 'og:image:secure_url', content: imgUrl})
+    this.metaService.updateTag({ property: 'og:url', content: url });
+    this.metaService.updateTag({
+      property: 'og:description',
+      content: description,
+    });
+    this.titleService.setTitle(title);
+    this.metaService.updateTag({ name: 'description', content: description });
+    // this.metaService.removeTag("name='robots'");
+    // this.metaService.removeTag("name='googlebot'");
+  }
+
 }

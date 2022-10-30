@@ -18,6 +18,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { Util } from './util.model';
 import Web3 from 'web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import { Meta, Title } from '@angular/platform-browser';
 // import * as AOS from 'aos';
 
 @Component({
@@ -38,7 +39,7 @@ export class AppComponent {
     public router: ActivatedRoute,
     public location: Location,
     @Inject(PLATFORM_ID) private platformID: Object,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {
     if (!isPlatformBrowser(this.platformID)) {
       this.display = false;
@@ -157,9 +158,7 @@ export class AppComponent {
     this.loadService.openHome();
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   // async readData(){
   //   const sdk = new ThirdwebSDK('polygon');

@@ -48,7 +48,15 @@ export class DeveloperProfileComponent implements OnInit, OnDestroy {
     console.log(uid);
     if (uid) {
       this.loadService.getUserInfo(uid, true, (dev) => {
-        this.dev = dev;
+        if (dev){
+          this.dev = dev;
+          this.loadService.addTags(
+            `${dev.name} - Thred App Store`,
+            dev.url,
+            `Join ${dev.name} on Thred today!`,
+            'thredapps.io'
+          );
+        }
       });
     } else {
     }

@@ -6,9 +6,11 @@ import {
   Output,
   Pipe,
 } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { ethers } from 'ethers';
 import { filter, map } from 'rxjs/operators';
+import { AppComponent } from '../app.component';
 import { Category } from '../category.model';
 import { Chain } from '../chain.model';
 import { LoadService } from '../load.service';
@@ -74,6 +76,12 @@ export class ItemComponent implements OnInit, OnDestroy {
       (result) => {
         this.item = result;
         if (result) {
+          this.loadService.addTags(
+            `${result.name} - ${result.creatorName}`,
+            result.coverUrl ?? result.displayUrls[0],
+            result.description ?? '',
+            'thredapps.io'
+          );
           this.loadService.logView(result.id, result.creator);
         }
       },
