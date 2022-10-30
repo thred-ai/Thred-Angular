@@ -158,10 +158,6 @@ export class AppComponent {
     this.loadService.openHome();
   }
 
-  async connect() {
-    let provider = await this.loadService.initializeProvider();
-    this.connected = await provider?.getSigner().getAddress();
-  }
 
   ngOnInit() {
     // console.log("mayn")

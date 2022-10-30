@@ -133,8 +133,6 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
                 let tx = await contract['buySmartUtil'](util, {
                   value: this.item.etherPrice,
                 });
-  
-                console.log(tx);
                 await tx.wait();
                 this.loading = 3;
                 setTimeout(() => {
@@ -146,7 +144,6 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
                   this.loading = 0;
                 }, 5000);
               }
-              
             } else {
               this.loading = 0;
             }
