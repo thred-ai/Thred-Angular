@@ -8,7 +8,11 @@
   (click)="selectedProvider(provider.code)"
 >
   <div class="d-flex justify-content-start align-content-center">
-    <img class="h-100" [src]="provider.img" style="aspect-ratio: 1" />
+    <img
+      class="h-100 shadow rounded-15 p-1"
+      [src]="provider.img"
+      style="aspect-ratio: 1"
+    />
     <div class="d-flex justify-content-start align-content-center w-100 h-100">
       <span class="my-auto fw-bold ms-3 h5">
         {{ provider.name }}
@@ -16,9 +20,11 @@
     </div>
   </div>
   <a
-    class="text-purple h-100 d-flex justify-content-center align-items-center"
+    class="text-secondary h-100 d-flex justify-content-center align-items-center"
     style="text-decoration: none"
   >
-    <mat-icon class="my-auto"> account_balance_wallet </mat-icon>
+    <mat-icon class="my-auto">
+      {{ provider.mobile ? "phone_iphone" : "computer" }}
+    </mat-icon>
   </a>
 </div>

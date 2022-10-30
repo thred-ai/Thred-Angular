@@ -303,13 +303,22 @@
       </div>
     </div>
     <div class="w-100 p-2" *ngIf="mode == 1">
-      <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Connect Wallet</h3>
+      <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Select a wallet</h3>
       <div class="rounded-15 w-100 border" style="overflow: hidden">
         <app-wallet-connect-component
           [providers]="['metamask', 'wallet-connect']"
           (selected)="complete($event)"
         >
         </app-wallet-connect-component>
+      </div>
+      <div class="w-100 text-center text-md-start mt-3">
+        <button
+          class="btn bg-purple text-white rounded-pill px-4 py-2 fw-bold"
+          role="button"
+          (click)="mode = 0; loading = 0"
+        >
+          Back
+        </button>
       </div>
     </div>
   </div>
