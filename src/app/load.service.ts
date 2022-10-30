@@ -16,6 +16,7 @@ import { Chain } from './chain.model';
 import { Category } from './category.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -58,15 +59,17 @@ export class LoadService {
     private http: HttpClient
   ) {
     if (isPlatformBrowser(this.platformID)) {
-      // Optional Config object, but defaults to demo api-key and eth-mainnet.
-
-      let chains = Object.values(environment.rpc as any) as any[];
-      let keys = Object.keys(environment.rpc as any) as any[];
+      let chains = Object.values(environment.rpc);
+      let keys = Object.keys(environment.rpc);
 
       Promise.all(
         chains.map(async (chain, index) => {
-          const alchemy = new Alchemy(chain);
-          (this.providers as any)[`${keys[index]}`] = {
+          const alchemy = new Alchemy({
+            network: chain.network,
+            apiKey: chain.apiKey,
+            url: `${chain.prefix}${chain.apiKey}`,
+          });
+          this.providers[`${keys[index]}`] = {
             alchemy,
             ethers: await alchemy.config.getProvider(),
           };
@@ -74,7 +77,6 @@ export class LoadService {
       );
     }
   }
-
 
   finishSignUp(
     email: string,
@@ -574,9 +576,7 @@ export class LoadService {
                   ? this.defaultCoords.address
                   : t.address;
               let docId =
-                t instanceof firebase.firestore.Timestamp
-                  ? undefined
-                  : t.docId;
+                t instanceof firebase.firestore.Timestamp ? undefined : t.docId;
               views?.push({
                 num: 1,
                 coords: v,
@@ -617,27 +617,49 @@ export class LoadService {
     };
   }
 
-  async initializeProvider() {
+  async initializeProvider(mode = 0) {
     if (isPlatformBrowser(this.platformID)) {
       let w = window as any;
-      if (w && w.ethereum) {
+      if (mode == 0 && w && w.ethereum) {
         const provider = new ethers.providers.Web3Provider(w.ethereum, 'any');
         try {
           await provider.send('eth_requestAccounts', []);
         } catch (error: any) {
           if (error.code === 4001) {
-            console.log('Please connect to MetaMask.');
+            return undefined;
           }
         }
         return provider;
+      } else if (mode == 1) {
+        const options = {
+          rpc: {},
+          chainId: 1,
+        };
+
+        let keys = Object.keys(this.providers);
+        keys.forEach((chainId) => {
+          let provider = this.providers[chainId];
+          let alchemy = provider.alchemy;
+          let url = alchemy.config.url;
+          (options.rpc as any)[chainId] = url;
+        });
+
+        try {
+          const provider = new WalletConnectProvider(options);
+
+          await provider.enable();
+          const ethersProvider = new ethers.providers.Web3Provider(provider);
+
+          return ethersProvider;
+        } catch (error) {
+          return undefined;
+        }
       }
     }
     return undefined;
   }
 
-  async checkChain(id: number, provider: ethers.providers.Web3Provider) {
-    const chainId = 137; // Polygon Mainnet
-
+  async checkChain(chainId: number, provider: ethers.providers.Web3Provider) {
     let network = await provider.getNetwork();
     if (network.chainId !== chainId) {
       try {

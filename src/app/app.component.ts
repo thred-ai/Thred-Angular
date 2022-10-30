@@ -13,11 +13,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ethers } from 'ethers';
 import { AuthComponent } from './auth/auth.component';
 import { Developer } from './developer.model';
-import { IsAdminPipe } from './is-admin.pipe';
 import { LoadService } from './load.service';
 import { ProfileComponent } from './profile/profile.component';
 import { Util } from './util.model';
-
+import Web3 from 'web3';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 // import * as AOS from 'aos';
 
 @Component({
@@ -107,10 +107,10 @@ export class AppComponent {
     return isPlatformBrowser(this.platformID);
   }
 
-  close(){
-    this.sidenav?.close()
-    this.openMobileMenu = false
-    this.selectedInstall = undefined
+  close() {
+    this.sidenav?.close();
+    this.openMobileMenu = false;
+    this.selectedInstall = undefined;
   }
 
   async onActivate(event: any) {
@@ -133,9 +133,8 @@ export class AppComponent {
       }
     }
 
-
     if (this.sidenav?.opened ?? false) {
-      this.close()
+      this.close();
     }
 
     this.cdr.detectChanges();
@@ -158,10 +157,8 @@ export class AppComponent {
     this.loadService.openHome();
   }
 
-
   ngOnInit() {
-    // console.log("mayn")
-    // this.readData()
+
   }
 
   // async readData(){

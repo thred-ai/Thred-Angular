@@ -17,12 +17,11 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { Util } from '../util.model';
 import { Chain } from '../chain.model';
 import { MatSelectChange } from '@angular/material/select';
-import { HostListener } from '@angular/core';
 import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
 import { LoadService } from '../load.service';
 import { AddressValidatePipe } from '../address-validate.pipe';
 import { isPlatformBrowser } from '@angular/common';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 
 @Component({
   selector: 'app-address-dialog',
@@ -52,6 +51,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
   finalAddresses: string[] = [];
 
   loading = 0;
+  mode = 0;
 
   async changed(event: MatSelectChange) {
     this.selectedChain = event.value;
@@ -84,13 +84,17 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  async complete() {
+  async selectedProvider(provider: number) {
+    console.log(provider);
+    let newProvider = await this.loadService.initializeProvider(provider);
+    this.complete(newProvider);
+  }
+
+  async complete(provider?: ethers.providers.Web3Provider) {
     this.loading = 1;
 
     try {
       let chain = this.selectedChain;
-
-      let provider = await this.loadService.initializeProvider();
 
       // let addresses: string[] = [];
 
@@ -115,6 +119,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
       // );
 
       if (provider) {
+        this.mode = 0;
         this.loadService.checkChain(chain?.id ?? 1, provider).then(() => {
           this.loadService.getCoreABI(async (result) => {
             if (result) {
@@ -123,6 +128,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
               let address = result.address;
 
               let signer = provider?.getSigner();
+
               let contract = new ethers.Contract(address, abi, signer);
 
               let util = this.item.signatures.find(
@@ -139,6 +145,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
                   this.loading = 0;
                 }, 5000);
               } catch (error) {
+                console.log(error)
                 this.loading = 4;
                 setTimeout(() => {
                   this.loading = 0;
@@ -149,6 +156,9 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
             }
           });
         });
+      } else {
+        this.mode = 1;
+        return;
       }
     } catch (error) {
       this.loading = 0;

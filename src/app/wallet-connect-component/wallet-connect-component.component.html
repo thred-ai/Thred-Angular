@@ -1,0 +1,19 @@
+<div
+  class="p-2 d-flex justify-content-between align-content-center w-100 hover-row"
+  role="button"
+  *ngFor="let provider of savedProviders"
+  style="height: 80px"
+  (click)="selected.emit(provider.code)"
+>
+  <div class="d-flex justify-content-start align-content-center">
+    <img class="h-100" [src]="provider.img" style="aspect-ratio: 1" />
+    <div class="d-flex justify-content-start align-content-center w-100 h-100">
+      <span class="my-auto fw-bold ms-3 h5">
+        {{ provider.name }}
+      </span>
+    </div>
+  </div>
+  <a role="button" class="text-purple my-auto">
+    <mat-icon> account_balance_wallet </mat-icon>
+  </a>
+</div>

@@ -23,7 +23,14 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "crypto":["node_modules/crypto-js"],
+      "stream":["node_modules/stream-browserify"],
+      "http":["node_modules/stream-http"],
+      "https":["node_modules/https-browserify"],
+      "os":["node_modules/os-browserify/browser"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -94,7 +94,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { ProfileComponent } from './profile/profile.component';
 import { ViewCoordComponent } from './view-coord/view-coord.component';
-
+import { WalletConnectComponentComponent } from './wallet-connect-component/wallet-connect-component.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -126,7 +126,8 @@ import { ViewCoordComponent } from './view-coord/view-coord.component';
     SafeUrlPipe,
     SmartUtilComponent,
     ProfileComponent,
-    ViewCoordComponent
+    ViewCoordComponent,
+    WalletConnectComponentComponent
   ],
   imports: [
     CommonModule,
