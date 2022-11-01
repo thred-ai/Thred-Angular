@@ -4,63 +4,62 @@
     [position]="'start'"
     #drawer
   >
-    <a
-      class="w-100 d-flex justify-content-end align-items-center text-dark px-1"
-      style="pointer-events: all; height: 40px; text-decoration: none"
-      (click)="close()"
-      role="button"
-    >
-      <mat-icon style="aspect-ratio: 1; font-size: xx-large; z-index: 500">
-        close
-      </mat-icon>
-    </a>
     <div
-      class="bg-white w-100 d-flex d-md-none flex-column justify-content-center align-items-center"
+      class="w-100 d-flex justify-content-end align-items-center text-dark px-1"
+      style="height: 40px"
+    >
+      <mat-icon class="fw-bold" (click)="close()"
+      role="button"> close </mat-icon> 
+    </div>
+    <div
+      class="w-100 d-flex d-md-none flex-column justify-content-center align-items-center bg-white"
       *ngIf="mode == 1"
     >
-      <div class="w-100">
+      <div class="w-100 text-center">
         <div
-          class="w-100 d-flex justify-content-center align-items-center"
-          style="aspect-ratio: 1"
+          class="w-100 d-flex flex-column justify-content-center align-items-center"
         >
           <img
-            class="w-100 px-5"
+            class="w-75"
             role="button"
             (click)="routeToHome()"
             [src]="'assets/logo_light.png'"
+            style="aspect-ratio: 1; object-fit: contain;"
           />
-        </div>
-        <div class="my-3 mx-auto w-100" style="height: 60px">
-          <app-search-bar [placeholder]="'Search Apps, Developers'">
-          </app-search-bar>
-        </div>
-        <div class="w-100 text-center">
-          <div
-            class="w-100 text-center my-1 fw-bold"
-            style="font-size: x-large"
-            role="button"
-            (click)="routeToHome()"
-          >
-            Explore
-          </div>
-          <br />
-          <div
-            class="w-100 text-center my-1 fw-bold"
-            style="font-size: x-large"
-            role="button"
-            (click)="routeToAuth()"
-          >
-            Developer
-          </div>
-          <br />
           <span
-            class="fw-bold text-white btn btn-dark rounded-pill px-3 d-inline-flex text-center"
+            class="fw-bold text-white btn btn-dark rounded-pill px-3 d-inline-flex text-center mt-5"
             role="button"
-            (click)="mode = 3;"
+            (click)="mode = 3"
           >
             <mat-icon class="my-auto me-2"> apps </mat-icon>
             {{ "My Apps" }}</span
           >
+          <div class="w-100 text-center mt-5">
+            <div
+              class="w-100 text-center my-1"
+              style="font-size: large"
+              role="button"
+              (click)="routeToHome()"
+            >
+              Explore
+            </div>
+            <br />
+            <div
+              class="w-100 text-center my-1"
+              style="font-size: large"
+              role="button"
+              (click)="routeToAuth()"
+            >
+              Developer
+            </div>
+            <br />
+            
+          </div>
+        </div>
+        
+        <div class="my-3 mx-auto w-100" style="height: 60px">
+          <!-- <app-search-bar [placeholder]="'Search Apps, Developers'">
+          </app-search-bar> -->
         </div>
       </div>
     </div>
