@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers } from 'ethers';
 
 export class Signature {
   id!: string;
@@ -8,6 +8,7 @@ export class Signature {
   fee!: number;
   price!: ethers.BigNumber;
   chainId!: number;
+  version!: number;
   signature!: string;
 
   constructor(
@@ -18,6 +19,7 @@ export class Signature {
     fee: number,
     price: ethers.BigNumber,
     chainId: number,
+    version: number,
     signature: string
   ) {
     this.id = id;
@@ -27,6 +29,7 @@ export class Signature {
     this.fee = fee;
     this.price = price;
     this.chainId = chainId;
+    this.version = version;
     this.signature = signature;
   }
 }

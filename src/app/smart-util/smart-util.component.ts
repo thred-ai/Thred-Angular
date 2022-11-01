@@ -171,7 +171,17 @@ export class SmartUtilComponent implements OnInit {
 
         chains.forEach((chain) => {
           signatures.push(
-            new Signature(id, '', wallet, '', extraFee, ethPrice, chain.id, '')
+            new Signature(
+              id,
+              '',
+              wallet,
+              '',
+              extraFee,
+              ethPrice,
+              chain.id,
+              new Date().getTime(),
+              ''
+            )
           );
         });
 
