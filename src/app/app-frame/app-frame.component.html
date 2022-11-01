@@ -1,7 +1,6 @@
-<div style="max-height: 100vh; overflow: hidden">
+<div class="p-0" style="max-height: 100vh; overflow: hidden">
   <div
-    mat-dialog-title
-    class="d-flex pt-4 pt-md-0 px-4 px-md-0 justify-content-between align-items-center w-100"
+    class="d-flex pt-2 px-3 justify-content-between align-items-center w-100"
   >
     <h2 class="big-design-input-title text-center">{{ app?.name }}</h2>
     <a role="button" (click)="close()">
@@ -17,9 +16,15 @@
     <div style="overflow-y: scroll; height: 85vh">
       <iframe
         class="w-100 h-100"
+        style="overflow: hidden"
         [src]="
           (app?.loadURL ?? '') +
-            ('/?session=' + sessionKey + '&address=' + address + '&chain=' + chain) | safeUrl
+            ('/?session=' +
+              sessionKey +
+              '&address=' +
+              address +
+              '&chain=' +
+              chain) | safeUrl
         "
       ></iframe>
     </div>

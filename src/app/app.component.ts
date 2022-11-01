@@ -103,7 +103,7 @@ export class AppComponent {
       width: '2000px',
       maxHeight: '100vh',
       maxWidth: '100vw',
-      panelClass: 'app-full-bleed-sm-dialog',
+      panelClass: 'app-full-bleed-dialog',
       data,
     });
   }
