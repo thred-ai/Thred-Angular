@@ -100,7 +100,6 @@ export class AppComponent {
       return;
     }
     const modalRef = this.dialog.open(AppFrameComponent, {
-      width: '2000px',
       maxHeight: '100vh',
       maxWidth: '100vw',
       panelClass: 'app-full-bleed-dialog',

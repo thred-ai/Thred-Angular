@@ -1,6 +1,10 @@
-<div class="p-0" style="max-height: 100vh; overflow: hidden">
+<div
+  class="p-0"
+  style="height: 100vh; width: 100vw; overflow: hidden"
+>
   <div
     class="d-flex pt-2 px-3 justify-content-between align-items-center w-100"
+    style="height: 5vh"
   >
     <h2 class="big-design-input-title text-center">{{ app?.name }}</h2>
     <a role="button" (click)="close()">
@@ -12,21 +16,19 @@
       </mat-icon>
     </a>
   </div>
-  <mat-dialog-content style="overflow: hidden">
-    <div style="overflow-y: scroll; height: 85vh">
-      <iframe
-        class="w-100 h-100"
-        style="overflow: hidden"
-        [src]="
-          (app?.loadURL ?? '') +
-            ('/?session=' +
-              sessionKey +
-              '&address=' +
-              address +
-              '&chain=' +
-              chain) | safeUrl
-        "
-      ></iframe>
-    </div>
-  </mat-dialog-content>
+  <div class="w-100" style="height: 95vh">
+    <iframe
+      class="w-100 h-100"
+      style="overflow: hidden"
+      [src]="
+        (app?.loadURL ?? '') +
+          ('/?session=' +
+            sessionKey +
+            '&address=' +
+            address +
+            '&chain=' +
+            chain) | safeUrl
+      "
+    ></iframe>
+  </div>
 </div>
