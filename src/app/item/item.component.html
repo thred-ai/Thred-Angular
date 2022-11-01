@@ -131,7 +131,10 @@
               {{ item.creatorName }}
               <br />
               <span style="font-weight: 500">Last Updated:</span>
-              {{ item.modified | date }}
+              {{ item.signatures[0].version | date }}
+              <br />
+              <!-- <span style="font-weight: 500">Created:</span>
+              {{ item.created | date }} -->
             </div>
           </div>
         </div>

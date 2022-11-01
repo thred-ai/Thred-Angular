@@ -19,7 +19,7 @@
         class="w-100 h-100"
         [src]="
           (app?.loadURL ?? '') +
-            ('/?session=' + sessionKey + '&address=' + address) | safeUrl
+            ('/?session=' + sessionKey + '&address=' + address + '&chain=' + chain) | safeUrl
         "
       ></iframe>
     </div>

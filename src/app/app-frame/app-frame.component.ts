@@ -15,6 +15,7 @@ export class AppFrameComponent implements OnInit {
   address?: string
   app?: Util;
   sessionKey = '12345';
+  chain = 1
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,6 +25,7 @@ export class AppFrameComponent implements OnInit {
   ) {
     this.provider = data.provider;
     this.address = data.address
+    this.chain = data.chain
     this.app = data.app;
 
     //Unique session key for the active app instance
