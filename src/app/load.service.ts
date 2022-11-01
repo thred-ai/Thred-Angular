@@ -30,10 +30,10 @@ export class LoadService {
   providers: Dict<{ alchemy: Alchemy; ethers: AlchemyProvider }> = {};
 
   chains = [
-    new Chain('Ethereum Goerli', 5, 'ETH'),
-    new Chain('Polygon Mumbai', 80001, 'MATIC'),
     new Chain('Ethereum', 1, 'ETH'),
     new Chain('Polygon', 137, 'MATIC'),
+    new Chain('Ethereum Goerli', 5, 'ETH'),
+    new Chain('Polygon Mumbai', 80001, 'MATIC'),
   ];
 
   defaultCoords = {
