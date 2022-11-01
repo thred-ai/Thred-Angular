@@ -34,7 +34,7 @@
           <app-search-bar [placeholder]="'Search Apps, Developers'">
           </app-search-bar>
         </div>
-        <div class="w-100">
+        <div class="w-100 text-center">
           <div
             class="w-100 text-center my-1 fw-bold"
             style="font-size: x-large"
@@ -53,12 +53,14 @@
             Developer
           </div>
           <br />
-          <div
-            class="w-100 text-center my-2 fw-bold btn btn-dark p-4"
-            style="font-size: x-large"
+          <span
+            class="fw-bold text-white btn btn-dark rounded-pill px-3 d-inline-flex text-center"
+            role="button"
+            (click)="mode = 3;"
           >
-            Connect
-          </div>
+            <mat-icon class="my-auto me-2"> apps </mat-icon>
+            {{ "My Apps" }}</span
+          >
         </div>
       </div>
     </div>
@@ -67,7 +69,8 @@
       <app-address-dialog [item]="selectedInstall"> </app-address-dialog>
     </div>
     <div class="w-100" *ngIf="mode == 3">
-      <app-app-list-component (selected)="openApp($event)"> </app-app-list-component>
+      <app-app-list-component (selected)="openApp($event)">
+      </app-app-list-component>
     </div>
   </mat-sidenav>
 
@@ -137,9 +140,7 @@
                 *ngIf="!(location.path() | isAdmin)"
                 (click)="mode = 3; drawer.toggle()"
               >
-                <mat-icon class="my-auto me-2">
-                  apps
-                </mat-icon>
+                <mat-icon class="my-auto me-2"> apps </mat-icon>
                 {{ "My Apps" }}</span
               >
               <div
