@@ -8,7 +8,7 @@ import { LoadService } from '../load.service';
   styleUrls: ['./wallet-connect-component.component.scss'],
 })
 export class WalletConnectComponentComponent implements OnInit {
-  @Input() savedProviders: {
+  savedProviders: {
     name: string;
     img: string;
     id: string;
@@ -33,6 +33,7 @@ export class WalletConnectComponentComponent implements OnInit {
       };
     });
   }
+  
 
   @Output() selected = new EventEmitter<
     ethers.providers.Web3Provider | undefined

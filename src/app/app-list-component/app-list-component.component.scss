@@ -1,0 +1,58 @@
+.app-icon:hover {
+  opacity: 0.8;
+}
+
+.truncate {
+  /**Major Properties**/
+  overflow: hidden;
+  line-height: 2rem;
+  max-height: 8rem;
+  -webkit-box-orient: vertical;
+  display: block;
+  display: -webkit-box;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  --color: #761de3;
+
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid var(--color);
+  border-color: var(--color) transparent var(--color) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+::ng-deep .mat-form-field-underline {
+    display: none;
+  }
+  
+  :host ::ng-deep .mat-form-field-wrapper {
+    margin: 0 !important;
+    padding: 0;
+  }
+  
+  
+  .rounded-panel.mat-select-panel{
+      border-radius: 15px !important;
+  
+  }

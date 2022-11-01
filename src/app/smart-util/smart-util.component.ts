@@ -23,7 +23,7 @@ export class SmartUtilComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     let app = this.data.util as Util;
-    console.log(app)
+    console.log(app);
     if (app) {
       this.utilForm.controls['name'].setValue(app.name);
       this.utilForm.controls['description'].setValue(app.description);
@@ -45,6 +45,7 @@ export class SmartUtilComponent implements OnInit {
       this.utilForm.controls['marketingImg'].setValue(app.coverUrl);
       this.utilForm.controls['installWebhook'].setValue(app.installWebhook);
       this.utilForm.controls['uninstallWebhook'].setValue(app.uninstallWebhook);
+      this.utilForm.controls['loadURL'].setValue(app.loadURL ?? null);
     } else {
       this.utilForm.controls['networks'].setValue([
         this.categories[0].chains[0],
@@ -58,7 +59,7 @@ export class SmartUtilComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-   this.cdr.detectChanges()
+    this.cdr.detectChanges();
   }
 
   utilForm = this.fb.group({
@@ -71,6 +72,7 @@ export class SmartUtilComponent implements OnInit {
     marketingImg: [null, Validators.required],
     installWebhook: [null],
     uninstallWebhook: [null],
+    loadURL: [null],
     appFile: [null],
     marketingFile: [null],
   });
@@ -158,7 +160,7 @@ export class SmartUtilComponent implements OnInit {
         let strPrice = ethers.utils.formatEther(ethPrice);
 
         let numPrice = Number(strPrice);
-        let extraFee = 0
+        let extraFee = 0;
 
         let category = 0;
 
@@ -169,16 +171,7 @@ export class SmartUtilComponent implements OnInit {
 
         chains.forEach((chain) => {
           signatures.push(
-            new Signature(
-              id,
-              '',
-              wallet,
-              '',
-              extraFee,
-              ethPrice,
-              chain.id,
-              ''
-            )
+            new Signature(id, '', wallet, '', extraFee, ethPrice, chain.id, '')
           );
         });
 
@@ -193,11 +186,12 @@ export class SmartUtilComponent implements OnInit {
 
         let reviews = 0;
         let rating = 0;
-        let downloads = this.data.util?.downloads ?? 0
+        let downloads = this.data.util?.downloads ?? 0;
 
         let status = this.data.util?.status ?? 0;
         let installWebhook = this.utilForm.controls['installWebhook'].value;
         let uninstallWebhook = this.utilForm.controls['uninstallWebhook'].value;
+        let loadURL = this.utilForm.controls['loadURL'].value ?? null;
 
         let util = new Util(
           id,
@@ -222,7 +216,8 @@ export class SmartUtilComponent implements OnInit {
           coverUrl,
           status,
           installWebhook,
-          uninstallWebhook
+          uninstallWebhook,
+          loadURL
         );
 
         let appFile = this.utilForm.controls[`appFile`].value;

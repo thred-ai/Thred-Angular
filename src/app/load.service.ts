@@ -409,6 +409,33 @@ export class LoadService {
       });
   }
 
+  getItems(ids: string[], callback: (result?: Util[]) => any) {
+    console.log(ids);
+    let sub2 = this.db
+      .collectionGroup(`Items`, (ref) => ref.where('id', 'in', ids))
+      .valueChanges()
+      .subscribe((docs2) => {
+        sub2.unsubscribe();
+
+        let docs_2 = docs2 as any[];
+
+        let docs = docs_2 ?? [];
+
+        let result: Util[] = [];
+
+        docs.forEach((d) => {
+          let util = d as Util;
+
+          d.chains.forEach((c: any, i: number) => {
+            d.chains[i] = this.chains.find((x) => x.id == c);
+          });
+
+          result.push(util);
+        });
+        callback(result);
+      });
+  }
+
   getNewItems(callback: (result: Util[]) => any) {
     this.db
       .collectionGroup('Items', (ref) =>
@@ -693,7 +720,10 @@ export class LoadService {
   addTags(title: string, imgUrl: string, description: string, url: string) {
     this.metaService.updateTag({ property: 'og:title', content: title });
     this.metaService.updateTag({ property: 'og:image', content: imgUrl });
-    this.metaService.updateTag({property: 'og:image:secure_url', content: imgUrl})
+    this.metaService.updateTag({
+      property: 'og:image:secure_url',
+      content: imgUrl,
+    });
     this.metaService.updateTag({ property: 'og:url', content: url });
     this.metaService.updateTag({
       property: 'og:description',
@@ -704,5 +734,4 @@ export class LoadService {
     // this.metaService.removeTag("name='robots'");
     // this.metaService.removeTag("name='googlebot'");
   }
-
 }

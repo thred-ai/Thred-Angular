@@ -95,6 +95,8 @@ import { SafeUrlPipe } from './safe-url.pipe';
 import { ProfileComponent } from './profile/profile.component';
 import { ViewCoordComponent } from './view-coord/view-coord.component';
 import { WalletConnectComponentComponent } from './wallet-connect-component/wallet-connect-component.component';
+import { AppListComponentComponent } from './app-list-component/app-list-component.component';
+import { AppFrameComponent } from './app-frame/app-frame.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -127,7 +129,9 @@ import { WalletConnectComponentComponent } from './wallet-connect-component/wall
     SmartUtilComponent,
     ProfileComponent,
     ViewCoordComponent,
-    WalletConnectComponentComponent
+    WalletConnectComponentComponent,
+    AppListComponentComponent,
+    AppFrameComponent
   ],
   imports: [
     CommonModule,

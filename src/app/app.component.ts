@@ -19,6 +19,7 @@ import { Util } from './util.model';
 import Web3 from 'web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Meta, Title } from '@angular/platform-browser';
+import { AppFrameComponent } from './app-frame/app-frame.component';
 // import * as AOS from 'aos';
 
 @Component({
@@ -27,8 +28,8 @@ import { Meta, Title } from '@angular/platform-browser';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  openMobileMenu = false;
   expandedSearch = false;
+  mode = 0;
   selectedInstall?: Util;
   localStorage?: Storage;
 
@@ -39,7 +40,7 @@ export class AppComponent {
     public router: ActivatedRoute,
     public location: Location,
     @Inject(PLATFORM_ID) private platformID: Object,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {
     if (!isPlatformBrowser(this.platformID)) {
       this.display = false;
@@ -59,6 +60,7 @@ export class AppComponent {
     if (data && data.install) {
       console.log(data);
       this.selectedInstall = data.install;
+      this.mode = 2;
       this.sidenav?.toggle();
     }
   }
@@ -89,6 +91,23 @@ export class AppComponent {
     });
   }
 
+  openApp(data: {
+    provider?: ethers.providers.Web3Provider;
+    address?: string;
+    app?: Util;
+  }) {
+    if (!data.provider || !data.app || !data.address) {
+      return;
+    }
+    const modalRef = this.dialog.open(AppFrameComponent, {
+      width: '2000px',
+      maxHeight: '100vh',
+      maxWidth: '100vw',
+      panelClass: 'app-full-bleed-sm-dialog',
+      data,
+    });
+  }
+
   viewProfile() {
     this.loadService.currentUser.then((user) => {
       if (user) {
@@ -110,7 +129,7 @@ export class AppComponent {
 
   close() {
     this.sidenav?.close();
-    this.openMobileMenu = false;
+    this.mode = 0;
     this.selectedInstall = undefined;
   }
 
