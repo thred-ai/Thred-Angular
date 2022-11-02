@@ -16,6 +16,82 @@
   <mat-dialog-content style="overflow: hidden">
     <div style="overflow-y: scroll; height: 65vh">
       <form class="mt-3 pb-4 px-0 w-100" [formGroup]="utilForm">
+        <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
+          <h3 class="w-100 mb-4" style="font-size: 20px">Display Images</h3>
+
+          <div class="rounded-15 border w-100" style="aspect-ratio: 1.5">
+            <div
+              class="position-relative w-100 h-100 animate__animated animate__fadeIn zoom"
+            >
+              <div
+                class="m-img-input position-relative h-100 w-100 bg-purple rounded-15 shadow d-flex justify-content-center align-content-center"
+                role="button"
+                (click)="marketingImgInput.click()"
+              >
+                <img
+                  class="h-100 w-100 m-img-input-display"
+                  style="object-fit: cover"
+                  [src]="utilForm.controls['marketingImg'].value | safeUrl"
+                  role="button"
+                />
+                <input
+                  #marketingImgInput
+                  type="file"
+                  (change)="fileChangeEvent($event, 0)"
+                  style="display: none"
+                />
+                <mat-icon
+                  class="text-white shadow fw-bolder position-absolute"
+                  style="z-index: 48; top: 50%"
+                  >upload
+                </mat-icon>
+              </div>
+
+              <div
+                class="position-absolute w-md-auto bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
+                style="
+                  object-fit: contain;
+                  aspect-ratio: 1;
+                  height: 20%;
+                  bottom: 10px;
+                  right: 10px;
+                  overflow: hidden;
+                "
+              >
+                <div
+                  class="m-auto position-relative img-input"
+                  style="height: 90%; width: 90%; overflow: hidden"
+                  role="button"
+                  (click)="appImgInput.click()"
+                >
+                  <img
+                    class="w-100 h-100 position-absolute"
+                    style="z-index: 50; object-fit: contain"
+                    [src]="utilForm.controls['appImg'].value | safeUrl"
+                  />
+                  <div
+                    class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
+                    style="z-index: 51; opacity: 0.5"
+                  >
+                    <mat-icon class="m-auto">upload </mat-icon>
+                  </div>
+                  <input
+                    #appImgInput
+                    type="file"
+                    (change)="fileChangeEvent($event, 1)"
+                    style="display: none"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-100 py-5 text-purple text-center fw-bold">
+          <i><span style="font-size: small">Images</span></i>
+          <hr class="fw-bolder border-1" />
+        </div>
+
         <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
           <h3 class="w-100 mb-4" style="font-size: 20px">Display Name</h3>
 
@@ -481,82 +557,6 @@
 
         <div class="w-100 py-5 text-purple text-center fw-bold">
           <i><span style="font-size: small">Financial</span></i>
-          <hr class="fw-bolder border-1" />
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Display Images</h3>
-
-          <div class="rounded-15 border w-100" style="aspect-ratio: 1.5">
-            <div
-              class="position-relative w-100 h-100 animate__animated animate__fadeIn zoom"
-            >
-              <div
-                class="m-img-input position-relative h-100 w-100 bg-purple rounded-15 shadow d-flex justify-content-center align-content-center"
-                role="button"
-                (click)="marketingImgInput.click()"
-              >
-                <img
-                  class="h-100 w-100 m-img-input-display"
-                  style="object-fit: cover"
-                  [src]="utilForm.controls['marketingImg'].value | safeUrl"
-                  role="button"
-                />
-                <input
-                  #marketingImgInput
-                  type="file"
-                  (change)="fileChangeEvent($event, 0)"
-                  style="display: none"
-                />
-                <mat-icon
-                  class="text-white shadow fw-bolder position-absolute"
-                  style="z-index: 48; top: 50%"
-                  >upload
-                </mat-icon>
-              </div>
-
-              <div
-                class="position-absolute w-md-auto bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
-                style="
-                  object-fit: contain;
-                  aspect-ratio: 1;
-                  height: 20%;
-                  bottom: 10px;
-                  right: 10px;
-                  overflow: hidden;
-                "
-              >
-                <div
-                  class="m-auto position-relative img-input"
-                  style="height: 90%; width: 90%; overflow: hidden"
-                  role="button"
-                  (click)="appImgInput.click()"
-                >
-                  <img
-                    class="w-100 h-100 position-absolute"
-                    style="z-index: 50; object-fit: contain"
-                    [src]="utilForm.controls['appImg'].value | safeUrl"
-                  />
-                  <div
-                    class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
-                    style="z-index: 51; opacity: 0.5"
-                  >
-                    <mat-icon class="m-auto">upload </mat-icon>
-                  </div>
-                  <input
-                    #appImgInput
-                    type="file"
-                    (change)="fileChangeEvent($event, 1)"
-                    style="display: none"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="w-100 py-5 text-purple text-center fw-bold">
-          <i><span style="font-size: small">Marketing</span></i>
           <hr class="fw-bolder border-1" />
         </div>
 
