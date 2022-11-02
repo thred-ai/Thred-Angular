@@ -180,6 +180,7 @@ export class SmartUtilComponent implements OnInit {
               ethPrice,
               chain.id,
               new Date().getTime(),
+              true,
               ''
             )
           );

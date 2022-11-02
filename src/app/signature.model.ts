@@ -9,6 +9,7 @@ export class Signature {
   price!: ethers.BigNumber;
   chainId!: number;
   version!: number;
+  listed!: boolean;
   signature!: string;
 
   constructor(
@@ -20,6 +21,7 @@ export class Signature {
     price: ethers.BigNumber,
     chainId: number,
     version: number,
+    listed: boolean,
     signature: string
   ) {
     this.id = id;
@@ -30,6 +32,7 @@ export class Signature {
     this.price = price;
     this.chainId = chainId;
     this.version = version;
+    this.listed = listed;
     this.signature = signature;
   }
 }
