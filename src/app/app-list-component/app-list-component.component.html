@@ -81,25 +81,18 @@
       <div
         class="w-100 row row-cols-3 row-cols-md-4 justify-content-start gx-1"
       >
-        <div
-          class="col p-2 text-center"
-          style="aspect-ratio: 1"
-          *ngFor="let app of apps ?? []"
-        >
-          <div
-            class="w-100 h-100 bg-white rounded-icon shadow d-flex justify-content-center align-items-center app-icon mb-2"
-            style="object-fit: contain; overflow: hidden"
-            role="button"
-            (click)="open(app)"
-          >
+        <div class="col text-center p-2" *ngFor="let app of apps ?? []">
+          <div class="w-100 app-icon rounded-15 shadow p-1" style="overflow: hidden; aspect-ratio: 1">
             <img
-              class="m-auto"
-              style="object-fit: contain; height: 90%; width: 90%"
+              class="p-1"
+              role="button"
+              (click)="open(app)"
+              style="object-fit: contain; aspect-ratio: 1; width: 100%"
               [src]="app.displayUrls[0]"
             />
           </div>
           <p
-            class="text-center mt-2 text-truncate w-100"
+            class="text-center mt-2 text-truncate w-100 pb-2"
             style="font-size: small"
           >
             {{ app.name }}
