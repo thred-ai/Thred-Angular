@@ -1,8 +1,6 @@
-<div class="w-100 h-100">
-  <div class="p-0" style="height: 100vh; max-height: -webkit-fill-available; width: 100vw; overflow: hidden">
+  <div class="p-0 frame-container">
     <div
-      class="d-flex pt-2 px-3 justify-content-between align-items-center w-100"
-      style="height: 5vh"
+      class="d-flex pt-2 px-3 justify-content-between align-items-center frame-header"
     >
       <h2 class="big-design-input-title text-center">{{ app?.name }}</h2>
       <a role="button" (click)="close()">
@@ -14,7 +12,7 @@
         </mat-icon>
       </a>
     </div>
-    <div class="w-100" style="height: 95vh">
+    <div class="frame-body">
       <iframe
         class="w-100 h-100"
         style="overflow: hidden"
@@ -30,4 +28,3 @@
       ></iframe>
     </div>
   </div>
-</div>

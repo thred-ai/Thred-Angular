@@ -176,7 +176,13 @@ export class AppComponent {
     this.loadService.openHome();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    window.addEventListener('resize', () => {
+      // We execute the same script as before
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+  }
 
   // async readData(){
   //   const sdk = new ThirdwebSDK('polygon');

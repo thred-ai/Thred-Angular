@@ -1,9 +1,18 @@
+.frame-container {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+}
 
+.frame-header {
+  width: 100vw;
+  height: 5vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 5);
+}
 
-.max-height{
-    padding: 0;
-    width: 100vw;
-    min-height: 100vh;
-    height: fill-available;
-    height: -webkit-fill-available;
+.frame-body {
+  width: 100vw;
+  height: 95vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 95);
 }
