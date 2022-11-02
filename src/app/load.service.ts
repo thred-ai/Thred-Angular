@@ -439,7 +439,7 @@ export class LoadService {
   getNewItems(callback: (result: Util[]) => any) {
     this.db
       .collectionGroup('Items', (ref) =>
-        ref.orderBy('created', 'desc').limit(6)
+        ref.orderBy('created', 'desc')
       )
       .valueChanges()
       .subscribe((docs) => {
