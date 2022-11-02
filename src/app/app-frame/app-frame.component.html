@@ -1,34 +1,33 @@
-<div
-  class="p-0"
-  style="height: 100vh; width: 100vw; overflow: hidden"
->
-  <div
-    class="d-flex pt-2 px-3 justify-content-between align-items-center w-100"
-    style="height: 5vh"
-  >
-    <h2 class="big-design-input-title text-center">{{ app?.name }}</h2>
-    <a role="button" (click)="close()">
-      <mat-icon
-        class="d-inline-flex justify-content-center align-items-center fw-bolder h-100"
-        style="aspect-ratio: 1; font-size: xx-large; z-index: 50"
-      >
-        close
-      </mat-icon>
-    </a>
-  </div>
-  <div class="w-100" style="height: 95vh">
-    <iframe
-      class="w-100 h-100"
-      style="overflow: hidden"
-      [src]="
-        (app?.loadURL ?? '') +
-          ('/?session=' +
-            sessionKey +
-            '&address=' +
-            address +
-            '&chain=' +
-            chain) | safeUrl
-      "
-    ></iframe>
+<div class="w-100 h-100">
+  <div class="p-0" style="height: 100vh; width: 100vw; overflow: hidden">
+    <div
+      class="d-flex pt-2 px-3 justify-content-between align-items-center w-100"
+      style="height: 5vh"
+    >
+      <h2 class="big-design-input-title text-center">{{ app?.name }}</h2>
+      <a role="button" (click)="close()">
+        <mat-icon
+          class="d-inline-flex justify-content-center align-items-center fw-bolder h-100"
+          style="aspect-ratio: 1; font-size: xx-large; z-index: 50"
+        >
+          close
+        </mat-icon>
+      </a>
+    </div>
+    <div class="w-100" style="height: 95vh">
+      <iframe
+        class="w-100 h-100"
+        style="overflow: hidden"
+        [src]="
+          (app?.loadURL ?? '') +
+            ('/?session=' +
+              sessionKey +
+              '&address=' +
+              address +
+              '&chain=' +
+              chain) | safeUrl
+        "
+      ></iframe>
+    </div>
   </div>
 </div>
