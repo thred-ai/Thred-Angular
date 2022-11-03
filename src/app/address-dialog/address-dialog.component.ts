@@ -100,6 +100,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
               let address = result.address;
 
               let signer = provider?.getSigner();
+              let walletAddress = await signer.getAddress();
 
               let contract = new ethers.Contract(address, abi, signer);
 
@@ -107,18 +108,28 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
                 (s) => s.chainId == chain?.id
               );
 
-              try {
-                let tx = await contract['buySmartUtil'](util, {
-                  value: this.item.etherPrice,
-                });
-                await tx.wait();
-                this.loading = 3;
-                setTimeout(() => {
-                  this.loading = 0;
-                }, 5000);
-              } catch (error) {
-                console.log(error);
-                this.loading = 4;
+              if (
+                util?.listed ||
+                this.item.whitelist?.find((a) => a == walletAddress)
+              ) {
+                try {
+                  let tx = await contract['buySmartUtil'](util, {
+                    value: this.item.etherPrice,
+                  });
+                  await tx.wait();
+                  this.loading = 3;
+                  setTimeout(() => {
+                    this.loading = 0;
+                  }, 5000);
+                } catch (error) {
+                  console.log(error);
+                  this.loading = 4;
+                  setTimeout(() => {
+                    this.loading = 0;
+                  }, 5000);
+                }
+              } else {
+                this.loading = 5;
                 setTimeout(() => {
                   this.loading = 0;
                 }, 5000);

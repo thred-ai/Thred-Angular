@@ -120,7 +120,13 @@
 
         <button
           class="btn bg-{{
-            loading == 3 ? 'light-success' : loading == 4 ? 'danger' : 'purple'
+            loading == 3
+              ? 'light-success'
+              : loading == 4
+              ? 'danger'
+              : loading == 5
+              ? 'danger'
+              : 'purple'
           }} text-white rounded-pill px-5 py-3 my-3 mt-3 fw-bold w-100"
           role="button"
           [disabled]="loading > 0"
@@ -135,7 +141,9 @@
               ? "Installing"
               : loading == 3
               ? "Installed"
-              : "Install Failed"
+              : loading == 4
+              ? "Install Failed"
+              : "Not Available"
           }}
           <span
             *ngIf="loading > 0 && loading < 3"
