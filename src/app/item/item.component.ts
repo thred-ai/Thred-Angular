@@ -110,7 +110,7 @@ export class ItemComponent implements OnInit, OnDestroy {
   }
 
   installItem() {
-    if (this.item?.status == 1) {
+    if (this.item?.available == false) {
       return;
     }
     this.install.emit({ install: this.item });

@@ -47,7 +47,7 @@ export class DeveloperProfileComponent implements OnInit, OnDestroy {
 
     console.log(uid);
     if (uid) {
-      this.loadService.getUserInfo(uid, true, (dev) => {
+      this.loadService.getUserInfo(uid, true, true, (dev) => {
         if (dev){
           this.dev = dev;
           this.loadService.addTags(

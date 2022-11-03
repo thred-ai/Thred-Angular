@@ -394,7 +394,7 @@ export class LoadService {
             d.chains[i] = this.chains.find((x) => x.id == c);
           });
           if (getProfiles) {
-            this.getUserInfo(d.creator, false, (result) => {
+            this.getUserInfo(d.creator, false, false, (result) => {
               if (result) {
                 util.creatorName = result.name;
               }
@@ -503,6 +503,7 @@ export class LoadService {
   getUserInfo(
     uid: string,
     fetchItems = true,
+    fetchOnlyAvailableItems = true,
     callback: (result?: Developer) => any
   ) {
     var query = this.db.collection('Developers', (ref) =>
@@ -527,22 +528,26 @@ export class LoadService {
         let developer = new Developer(name, uid, [], joined, url, email);
 
         if (fetchItems) {
-          let sub2 = this.db
-            .collection(`Developers/${uid}/Items`)
-            .valueChanges()
-            .subscribe((docs2) => {
-              let docs_2 = docs2 as any[];
+          let q = this.db.collection(`Developers/${uid}/Items`);
 
-              docs_2.forEach((d) => {
-                d.chains.forEach((c: any, i: number) => {
-                  d.chains[i] = this.chains.find((x) => x.id == c);
-                });
+          if (fetchOnlyAvailableItems) {
+            q = this.db.collection(`Developers/${uid}/Items`, (ref) =>
+              ref.where('status', '==', 0)
+            );
+          }
+          let sub2 = q.valueChanges().subscribe((docs2) => {
+            let docs_2 = docs2 as any[];
+
+            docs_2.forEach((d) => {
+              d.chains.forEach((c: any, i: number) => {
+                d.chains[i] = this.chains.find((x) => x.id == c);
               });
-              developer.utils = (docs_2 as Util[]) ?? [];
-
-              callback(developer);
-              sub2.unsubscribe();
             });
+            developer.utils = (docs_2 as Util[]) ?? [];
+
+            callback(developer);
+            sub2.unsubscribe();
+          });
         } else {
           callback(developer);
         }
