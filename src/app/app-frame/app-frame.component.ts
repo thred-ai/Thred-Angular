@@ -14,7 +14,6 @@ export class AppFrameComponent implements OnInit {
   provider?: ethers.providers.Web3Provider;
   address?: string
   app?: Util;
-  sessionKey = '12345';
   chain = 1
 
   constructor(
@@ -30,7 +29,7 @@ export class AppFrameComponent implements OnInit {
 
     //Unique session key for the active app instance
 
-    protocolSDK.setAppListener(this.sessionKey, async (data) => {
+    protocolSDK.setAppListener(data.app.id ?? "1", async (data) => {
       //Contract Details
       const contractData = data.contract;
       const address = contractData.address;
