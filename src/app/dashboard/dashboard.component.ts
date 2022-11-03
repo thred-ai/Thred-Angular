@@ -97,7 +97,8 @@ export class DashboardComponent implements OnInit {
 
   openUtil(
     util?: Util,
-    index: number = this.dev?.utils.findIndex((app) => app.id == util?.id) ?? -1
+    index: number = this.dev?.utils.findIndex((app) => app.id == util?.id) ?? -1,
+    mode = 0
   ) {
     const modalRef = this.dialog.open(SmartUtilComponent, {
       width: '750px',
@@ -107,6 +108,7 @@ export class DashboardComponent implements OnInit {
 
       data: {
         util,
+        mode
       },
     });
 

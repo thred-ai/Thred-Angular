@@ -40,8 +40,8 @@ export class HomeComponent implements OnInit {
       this.loadService.getNewItems((result) => {
         this.utilCategories[0].utils = result.slice(0, 6);
       });
-      this.loadService.getNewItems((result) => {
-        this.utilCategories[1].utils = result.reverse().slice(0, 6);
+      this.loadService.getPopularItems((result) => {
+        this.utilCategories[1].utils = result.slice(0, 6);
       });
     } else {
       this.display = false;

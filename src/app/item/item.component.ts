@@ -76,6 +76,7 @@ export class ItemComponent implements OnInit, OnDestroy {
       (result) => {
         this.item = result;
         if (result) {
+          console.log(result)
           this.loadService.addTags(
             `${result.name} - ${result.creatorName}`,
             result.coverUrl ?? result.displayUrls[0],

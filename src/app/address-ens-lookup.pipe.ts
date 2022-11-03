@@ -14,11 +14,14 @@ export class AddressEnsLookupPipe implements PipeTransform {
   transform(value: string) {
     if (isPlatformBrowser(this.platformID)) {
       try {
-        return (this.loadService.providers as any)['1']?.lookupAddress(value);
+        console.log(value)
+        return this.loadService.providers['1']?.ethers.lookupAddress(value);
       } catch (error) {
         console.log(error);
         return null;
       }
+    } else {
+      return null;
     }
   }
 }

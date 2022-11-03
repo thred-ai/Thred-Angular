@@ -27,6 +27,7 @@ export class Util {
   installWebhook!: string;
   uninstallWebhook!: string;
   loadURL?: string | null;
+  whitelist?: string[];
 
   constructor(
     id: string,
@@ -52,7 +53,8 @@ export class Util {
     status?: number,
     installWebhook?: string,
     uninstallWebhook?: string,
-    loadURL?: string
+    loadURL?: string,
+    whitelist?: string[]
   ) {
     this.id = id;
     this.creator = creator;
@@ -78,5 +80,6 @@ export class Util {
     this.installWebhook = installWebhook ?? '';
     this.uninstallWebhook = uninstallWebhook ?? '';
     this.loadURL = loadURL ?? null;
+    this.whitelist = whitelist ?? [];
   }
 }

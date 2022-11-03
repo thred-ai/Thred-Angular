@@ -1,11 +1,29 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { ENTER, COMMA, T } from '@angular/cdk/keycodes';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { ethers } from 'ethers';
 import { CurrencyMaskInputMode } from 'ngx-currency';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { AddressEnsLookupPipe } from '../address-ens-lookup.pipe';
+import { AddressValidatePipe } from '../address-validate.pipe';
 import { Chain } from '../chain.model';
 import { LoadService } from '../load.service';
+import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
 import { Signature } from '../signature.model';
 import { Util } from '../util.model';
 
@@ -14,20 +32,23 @@ import { Util } from '../util.model';
   templateUrl: './smart-util.component.html',
   styleUrls: ['./smart-util.component.scss'],
 })
-export class SmartUtilComponent implements OnInit {
+export class SmartUtilComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private loadService: LoadService,
     public dialogRef: MatDialogRef<SmartUtilComponent>,
+    @Inject(PLATFORM_ID) private platformID: Object,
     private cdr: ChangeDetectorRef
   ) {
+    this.mode = this.data.mode ?? 0;
     let app = this.data.util as Util;
-    console.log(app);
+
     if (app) {
       this.utilForm.controls['name'].setValue(app.name);
       this.utilForm.controls['description'].setValue(app.description);
       this.utilForm.controls['price'].setValue(app.price);
+      this.utilForm.controls['available'].setValue(app.available);
 
       var chains: Chain[] = [];
 
@@ -39,6 +60,7 @@ export class SmartUtilComponent implements OnInit {
         });
       });
       this.utilForm.controls['networks'].setValue(chains);
+      this.selectedChain = this.loadService.chains.find((c) => c.id == 1);
 
       this.utilForm.controls['wallet'].setValue(app.signatures[0]?.payAddress);
       this.utilForm.controls['appImg'].setValue(app.displayUrls[0]);
@@ -57,9 +79,42 @@ export class SmartUtilComponent implements OnInit {
         'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png'
       );
     }
+
+    this.filteredAddresses = this.addressCtrl.valueChanges.pipe(
+      startWith(null),
+      map((address: string | null) =>
+        address ? this._filter(address) : this.addresses.slice()
+      )
+    );
   }
-  ngOnInit(): void {
-    this.cdr.detectChanges();
+  ngOnDestroy(): void {
+    window.onclick = null;
+  }
+  async ngOnInit() {
+    if (this.data.util) {
+      console.log(this.data.util.whitelist)
+      this.selectedAddresses = await this.getENS(
+        this.data.util.whitelist ?? []
+      ) ?? [];
+      console.log(this.selectedAddresses)
+    }
+    window.onclick = (e) => {
+      if ((e.target as any)?.id == 'removeBtn') {
+        return;
+      }
+
+      if (isPlatformBrowser(this.platformID)) {
+        this.selectedAddresses.forEach((_, index: number) => {
+          if (document.getElementsByClassName(`menu-${index}`).length > 0) {
+            (
+              Object.values(
+                document.getElementsByClassName(`close-${index}`)
+              )[0] as HTMLElement
+            )?.click();
+          }
+        });
+      }
+    };
   }
 
   utilForm = this.fb.group({
@@ -75,9 +130,11 @@ export class SmartUtilComponent implements OnInit {
     loadURL: [null],
     appFile: [null],
     marketingFile: [null],
+    available: [false],
   });
 
   loading = false;
+  mode = 0;
 
   customCurrencyMaskConfig = {
     align: 'left',
@@ -111,6 +168,122 @@ export class SmartUtilComponent implements OnInit {
       ],
     },
   ];
+
+  selectedAddresses: string[] = [];
+  selectable = true;
+  removable = true;
+  addressCtrl = new FormControl();
+  filteredAddresses: Observable<any[]>;
+  addresses: any[] = [];
+  selectedChain?: Chain;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  @ViewChild('addressInput') addressInput?: ElementRef<HTMLInputElement>;
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedAddresses.push(event.option.value);
+
+    this.addressInput!.nativeElement.value = '';
+
+    this.addressCtrl.setValue(null);
+  }
+
+  private _filter(value: string): any[] {
+    console.log(value);
+    const filterValue = value.toLowerCase();
+
+    let newAddresses = this.addresses.filter((p) =>
+      p.toLowerCase().includes(filterValue)
+    );
+
+    var returnArr = new Array<any>();
+
+    newAddresses.forEach((p) => {
+      returnArr.push(p);
+    });
+
+    return returnArr;
+  }
+
+  async add(event: MatChipInputEvent) {
+    const value = event.value || '';
+
+    this.selectedAddresses.push(value);
+
+    // Clear the input value
+    event.chipInput!.clear();
+    this.addressCtrl.setValue(null);
+  }
+
+  async checkValidAddress(address: string, chain = 1) {
+    let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
+    let addressPipe = new AddressValidatePipe(this.platformID);
+
+    let validAddress = addressPipe.transform(address);
+    let validName = await ensPipe.transform(address);
+
+    let isValid =
+      chain == 1 ? (validAddress ? validAddress : validName) : validAddress;
+
+    return isValid;
+  }
+
+  async getAddresses(finalAddresses = this.selectedAddresses ?? []) {
+    let addresses: string[] = [];
+
+    let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
+
+    await Promise.all(
+      finalAddresses.map(async (f) => {
+        var address: string | null = null;
+
+        try {
+          address = ethers.utils.getAddress(f);
+        } catch (error) {
+          address = await ensPipe.transform(f);
+        }
+
+        if (address) {
+          addresses.push(address);
+        }
+      })
+    );
+
+    return addresses;
+  }
+
+  async getENS(finalAddresses = this.selectedAddresses ?? []) {
+    let addresses: string[] = [];
+
+    let ensPipe = new AddressEnsLookupPipe(this.loadService, this.platformID);
+
+    await Promise.all(
+      finalAddresses.map(async (f) => {
+        var address: string | null = null;
+
+        try {
+          address = await ensPipe.transform(f) ?? f;
+          console.log(address)
+        } catch (error) {
+          address = ethers.utils.getAddress(f);
+        }
+
+        if (address) {
+          addresses.push(address);
+        }
+      })
+    );
+
+    return addresses;
+  }
+
+  remove(address: string, isValid: boolean): void {
+    const index = this.selectedAddresses.indexOf(address);
+
+    if (index >= 0) {
+      this.selectedAddresses.splice(index, 1);
+    }
+  }
 
   async fileChangeEvent(event: any, type = 0): Promise<void> {
     console.log(event);
@@ -169,6 +342,13 @@ export class SmartUtilComponent implements OnInit {
         let created = this.data.util?.created ?? new Date().getTime();
         let modified = created;
 
+        let available = this.utilForm.controls['available'].value ?? false;
+        let whitelist = this.selectedAddresses ?? [];
+
+        let addresses = await this.getAddresses(whitelist);
+
+        let status = available ? 0 : 1;
+
         chains.forEach((chain) => {
           signatures.push(
             new Signature(
@@ -180,7 +360,7 @@ export class SmartUtilComponent implements OnInit {
               ethPrice,
               chain.id,
               new Date().getTime(),
-              true,
+              available || addresses.length > 0,
               ''
             )
           );
@@ -192,14 +372,12 @@ export class SmartUtilComponent implements OnInit {
         let metaUrl = '';
         let description = this.utilForm.controls['description'].value;
 
-        let available = true;
         let verified = false;
 
         let reviews = 0;
         let rating = 0;
         let downloads = this.data.util?.downloads ?? 0;
 
-        let status = this.data.util?.status ?? 0;
         let installWebhook = this.utilForm.controls['installWebhook'].value;
         let uninstallWebhook = this.utilForm.controls['uninstallWebhook'].value;
         let loadURL = this.utilForm.controls['loadURL'].value ?? null;
@@ -228,7 +406,8 @@ export class SmartUtilComponent implements OnInit {
           status,
           installWebhook,
           uninstallWebhook,
-          loadURL
+          loadURL,
+          addresses
         );
 
         let appFile = this.utilForm.controls[`appFile`].value;
@@ -272,6 +451,11 @@ export class SmartUtilComponent implements OnInit {
     console.log(event.value);
     this.utilForm.controls['networks'].setValue(event.value);
 
+    return undefined;
+  }
+
+  async networkChanged(event: MatSelectChange) {
+    this.selectedChain = event.value;
     return undefined;
   }
 }

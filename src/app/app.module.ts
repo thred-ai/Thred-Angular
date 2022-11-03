@@ -97,6 +97,8 @@ import { ViewCoordComponent } from './view-coord/view-coord.component';
 import { WalletConnectComponentComponent } from './wallet-connect-component/wallet-connect-component.component';
 import { AppListComponentComponent } from './app-list-component/app-list-component.component';
 import { AppFrameComponent } from './app-frame/app-frame.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -131,7 +133,7 @@ import { AppFrameComponent } from './app-frame/app-frame.component';
     ViewCoordComponent,
     WalletConnectComponentComponent,
     AppListComponentComponent,
-    AppFrameComponent
+    AppFrameComponent,
   ],
   imports: [
     CommonModule,
@@ -154,7 +156,7 @@ import { AppFrameComponent } from './app-frame/app-frame.component';
     HttpClientModule,
     FormsModule,
     NgxCurrencyModule,
-    // ApplicationPipesModule,
+    MatSlideToggleModule,
     MatAutocompleteModule,
     MatChipsModule,
     AngularFireFunctionsModule,

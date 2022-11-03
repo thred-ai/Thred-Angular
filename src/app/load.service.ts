@@ -439,12 +439,28 @@ export class LoadService {
   getNewItems(callback: (result: Util[]) => any) {
     this.db
       .collectionGroup('Items', (ref) =>
-        ref.orderBy('created', 'desc')
+        ref.where('status', '==', 0).orderBy('created', 'desc')
       )
       .valueChanges()
       .subscribe((docs) => {
         let docs_2 = (docs as any[]) ?? [];
-        var counter = 0;
+        docs_2.forEach((d, index) => {
+          d.chains.forEach((c: any, i: number) => {
+            d.chains[i] = this.chains.find((x) => x.id == c);
+          });
+        });
+        callback(docs_2);
+      });
+  }
+
+  getPopularItems(callback: (result: Util[]) => any) {
+    this.db
+      .collectionGroup('Items', (ref) =>
+        ref.where('status', '==', 0).orderBy('views', 'desc')
+      )
+      .valueChanges()
+      .subscribe((docs) => {
+        let docs_2 = (docs as any[]) ?? [];
         docs_2.forEach((d, index) => {
           d.chains.forEach((c: any, i: number) => {
             d.chains[i] = this.chains.find((x) => x.id == c);

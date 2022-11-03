@@ -158,8 +158,8 @@
                     class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
                   >
                     <!-- [mdbPopover]="template"
-                    placement="bottom"
-                    trigger="hover" -->
+                      placement="bottom"
+                      trigger="hover" -->
                     <div
                       class="position-relative"
                       style="width: 95px; height: 47.5px"
@@ -180,7 +180,7 @@
                           class="m-auto rounded-circle"
                           style="object-fit: contain; height: 85%; width: 85%"
                           [src]="
-                            (utilForm.controls['networks'].value ?? [])[0].url
+                            (utilForm.controls['networks'].value ?? [])[0]?.url
                           "
                           role="button"
                         />
@@ -252,9 +252,9 @@
                         "
                       >
                         <!-- <img
-                        class="m-auto rounded-circle bg-purple"
-                        style="object-fit: contain; height: 85%; width: 85%"
-                      /> -->
+                          class="m-auto rounded-circle bg-purple"
+                          style="object-fit: contain; height: 85%; width: 85%"
+                        /> -->
                         <mat-icon
                           class="m-auto rounded-circle bg-purple text-white"
                           style="object-fit: contain; height: 85%; width: 85%"
@@ -465,7 +465,7 @@
                 </mat-icon>
               </div>
             </div>
-            
+
             <ng-template #webhook3Template>
               <div class="popover-body-padding">
                 <b class="fw-bolder mb-4 text-light-success"
@@ -550,13 +550,186 @@
                 formControlName="wallet"
                 placeholder="Payout Address"
               />
-              <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
             </mat-form-field>
           </div>
         </div>
 
         <div class="w-100 py-5 text-purple text-center fw-bold">
           <i><span style="font-size: small">Financial</span></i>
+          <hr class="fw-bolder border-1" />
+        </div>
+
+        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+          <h3 class="w-100 mb-4" style="font-size: 20px">Availability</h3>
+          <mat-slide-toggle class="mb-4" formControlName="available">
+            {{ utilForm.controls["available"].value ? "Listed" : "Not Listed" }}
+          </mat-slide-toggle>
+        </div>
+
+        <div
+          class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
+          [hidden]="utilForm.controls['available'].value"
+        >
+          <h3 class="w-100 mb-4" style="font-size: 20px">Install Whitelist</h3>
+          <div
+            class="rounded-pill border w-100 pb-2 px-4 mb-4"
+            *ngIf="15 as threshold"
+          >
+            <mat-form-field
+              class="w-100"
+              appearance="legacy"
+              floatLabel="never"
+            >
+              <mat-chip-list #chipList aria-label="Product selection">
+                <ng-container
+                  *ngFor="let address of selectedAddresses ?? []; index as i"
+                >
+                  <ng-container
+                    *ngIf="
+                      (address | addressValidate) ? 'y' : 'n' as validAddress
+                    "
+                  >
+                    <ng-container
+                      *ngIf="
+                        (
+                          selectedChain?.id == 1
+                            ? validAddress == 'y'
+                              ? validAddress == 'y'
+                              : (address | nameEnsLookup | async)
+                            : validAddress == 'y'
+                        )
+                          ? 'y'
+                          : 'n' as result
+                      "
+                    >
+                      <mat-chip
+                        [selectable]="selectable"
+                        class="bg-{{
+                          result == 'y' ? 'light-success' : 'light-danger'
+                        }} close-{{ i }}"
+                        [mdbPopover]="template"
+                        placement="right"
+                        trigger="click"
+                        style="cursor: pointer"
+                        *ngIf="
+                          address
+                            | address
+                              : false
+                              : address.length > threshold as displayAddress
+                        "
+                      >
+                        <div class="category-chip__text text-white">
+                          {{ displayAddress }}
+                        </div>
+                        <div
+                          matChipRemove
+                          class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-{{
+                            result == 'y' ? 'light-success' : 'light-danger'
+                          }} text-white fw-bolder"
+                          style="
+                            width: fit-content;
+                            aspect-ratio: 1/1;
+                            opacity: 1;
+                            pointer-events: none;
+                          "
+                        >
+                          <mat-icon>
+                            {{ result == "y" ? "check_circle" : "error" }}
+                          </mat-icon>
+                        </div>
+                        <ng-template #template>
+                          <div
+                            class="w-100 h-100 popover-menu menu-{{
+                              i
+                            }} popover-body-padding"
+                          >
+                            <ng-container *ngIf="result == 'y'">
+                              <b class="fw-bolder mb-4 text-light-success"
+                                >Verified Address</b
+                              >
+                              <br />
+                              The address exists and will be whitelisted for
+                              this app.
+                            </ng-container>
+                            <ng-container *ngIf="result != 'y'">
+                              <b class="fw-bolder mb-4 text-light-danger"
+                                >Invalid Address</b
+                              >
+                              <br />
+                              The address does not exist and will not be
+                              whitelisted for this app.
+                            </ng-container>
+                            <br />
+                            <div class="w-100 h-100 mt-3">
+                              <button
+                                (click)="remove(address, result == 'y')"
+                                id="removeBtn"
+                                class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </mat-chip>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+
+                <input
+                  class="h-100 text-dark"
+                  [placeholder]="
+                    selectedChain?.id == 1 ? 'Ex. thred.eth' : 'Ex. 0x56...78'
+                  "
+                  #addressInput
+                  [formControl]="addressCtrl"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="add($event)"
+                />
+              </mat-chip-list>
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selected($event)"
+              >
+                <cdk-virtual-scroll-viewport
+                  class="autocomplete-test-viewport"
+                  [ngStyle]="{
+                    height:
+                      ((filteredAddresses | async) ?? []).length > 0
+                        ? '150px'
+                        : '0px'
+                  }"
+                  itemSize="35"
+                >
+                  <mat-option
+                    *cdkVirtualFor="let address of filteredAddresses | async"
+                    [value]="address"
+                  >
+                    <ng-container
+                      *ngIf="
+                        address
+                          | address
+                            : false
+                            : address.length > threshold as displayAddress
+                      "
+                    >
+                      <div
+                        class="d-flex justify-content-start align-items-center w-100"
+                      >
+                        {{ displayAddress }}
+                      </div>
+                    </ng-container>
+                  </mat-option>
+                </cdk-virtual-scroll-viewport>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="w-100 py-5 text-purple text-center fw-bold">
+          <i><span style="font-size: small">Installation</span></i>
           <hr class="fw-bolder border-1" />
         </div>
 

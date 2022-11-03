@@ -22,36 +22,39 @@ import { Util } from '../util.model';
 export class CollectionTableComponent
   implements OnInit, AfterViewInit, OnChanges
 {
-
-  @Output() clicked = new EventEmitter<{app: Util, index: number}>();
+  @Output() clicked = new EventEmitter<{ app: Util; index: number, mode: number }>();
 
   @Input() set utils(utils: Util[]) {
-
-    this.dataSource = new MatTableDataSource<Util>(
-      utils
-    );
-    console.log(this.dataSource)
+    this.dataSource = new MatTableDataSource<Util>(utils);
+    console.log(this.dataSource);
     setTimeout(() => {
       this.dataSource!.paginator = this.paginator1!;
-      this.cdr.detectChanges()
+      this.cdr.detectChanges();
     }, 200);
   }
 
   @Input() count: number = 0;
-  
 
-  open(app: Util, index: number){
-    this.clicked.emit({app, index})
+  open(
+    app: Util,
+    index: number = (this.dataSource?.data ?? []).findIndex(
+      (d) => d.id == app.id
+    ),
+    mode = 0
+  ) {
+    this.clicked.emit({ app, index, mode });
   }
+
+
   dataSource?: MatTableDataSource<Util>;
 
   displayedColumns2: string[] = [
     'image',
     'downloads',
-    'status',
     'price',
     'chains',
-    'action',
+    'status',
+    'action'
   ];
 
   chains(util: Util) {
@@ -59,10 +62,8 @@ export class CollectionTableComponent
   }
 
   ngOnChanges() {
-
     this.cdr.detectChanges();
   }
-
 
   @ViewChild(MatPaginator) paginator1?: MatPaginator;
 

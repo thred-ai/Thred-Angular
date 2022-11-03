@@ -90,28 +90,6 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
     try {
       let chain = this.selectedChain;
 
-      // let addresses: string[] = [];
-
-      // console.log(provider);
-
-      // let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
-
-      // await Promise.all(
-      //   this.finalAddresses.map(async (f) => {
-      //     var address: string | null = null;
-
-      //     try {
-      //       address = ethers.utils.getAddress(f);
-      //     } catch (error) {
-      //       address = await ensPipe.transform(f);
-      //     }
-
-      //     if (address) {
-      //       addresses.push(address);
-      //     }
-      //   })
-      // );
-
       if (provider) {
         this.mode = 0;
         this.loadService.checkChain(chain?.id ?? 1, provider).then(() => {
@@ -139,7 +117,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
                   this.loading = 0;
                 }, 5000);
               } catch (error) {
-                console.log(error)
+                console.log(error);
                 this.loading = 4;
                 setTimeout(() => {
                   this.loading = 0;
