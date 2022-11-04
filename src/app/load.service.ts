@@ -413,21 +413,22 @@ export class LoadService {
     console.log(ids);
     let sub2 = this.db
       .collectionGroup(`Items`, (ref) => ref.where('id', 'in', ids))
-      .valueChanges()
-      .subscribe((docs2) => {
-        sub2.unsubscribe();
-
-        let docs_2 = docs2 as any[];
-
-        let docs = docs_2 ?? [];
+      .get()
+      .toPromise()
+      .then((docs3) => {
+        console.log(docs3)
+        let docs = docs3.docs.map(d => d.data())
 
         let result: Util[] = [];
 
+        console.log(docs);
+
         docs.forEach((d) => {
           let util = d as Util;
+          console.log(d)
 
-          d.chains.forEach((c: any, i: number) => {
-            d.chains[i] = this.chains.find((x) => x.id == c);
+          util.chains.forEach((c: any, i: number) => {
+            util.chains[i] = this.chains.find((x) => x.id == c)!;
           });
 
           result.push(util);

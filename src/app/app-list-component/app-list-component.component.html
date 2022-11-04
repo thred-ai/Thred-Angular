@@ -82,9 +82,8 @@
         class="w-100 row row-cols-3 row-cols-md-4 justify-content-start gx-1"
       >
         <div class="col text-center p-2" *ngFor="let app of apps ?? []">
-          <div class="w-100 app-icon rounded-15 shadow p-1" style="overflow: hidden; aspect-ratio: 1">
+          <div class="w-100 app-icon rounded-15 shadow p-0" style="overflow: hidden; aspect-ratio: 1">
             <img
-              class="p-1"
               role="button"
               (click)="open(app)"
               style="object-fit: contain; aspect-ratio: 1; width: 100%"

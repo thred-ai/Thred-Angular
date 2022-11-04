@@ -47,6 +47,7 @@ export class AppListComponentComponent implements OnInit {
     let signer = provider?.getSigner();
     let user = await signer?.getAddress();
     this.address = user;
+    console.log(user)
 
     this.loadApps();
   }
@@ -67,8 +68,9 @@ export class AppListComponentComponent implements OnInit {
 
           let data = (await contract['fetchAppsForUser'](user)) as string[];
 
-          let filtered = data.filter((d) => d != '');
+          let filtered = [...new Set(data.filter((d) => d != ''))];
 
+          console.log(filtered)
           this.loadService.getItems(filtered, (apps) => {
             this.loading = false;
             this.mode = 1;
