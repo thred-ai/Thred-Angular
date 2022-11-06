@@ -165,6 +165,34 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
     return isValid;
   }
 
+  async checkInstalled(prov?: ethers.providers.Web3Provider) {
+    let chain = this.selectedChain;
+    let provider = this.loadService.providers[chain!.id].ethers;
+    let signerAddress = await (prov?.getSigner())?.getAddress()
+
+    if (signerAddress){
+      this.mode = 0;
+      this.loadService.getCoreABI(async (result) => {
+        if (result) {
+          let abi = result.abi;
+          let address = result.address;
+  
+          let contract = new ethers.Contract(address, abi, provider);
+  
+          let util = this.item.signatures.find((s) => s.chainId == chain?.id);
+  
+          if (util) {
+            let data = await contract['appInstalled'](util.id, util.signer, signerAddress);
+
+            if (data == true){
+              this.loading = 3
+            }
+          }
+        }
+      });
+    }
+  }
+
   @ViewChild('addressInput') addressInput?: ElementRef<HTMLInputElement>;
 
   get item(): Util {

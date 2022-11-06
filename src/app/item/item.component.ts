@@ -78,7 +78,7 @@ export class ItemComponent implements OnInit, OnDestroy {
         if (result) {
           console.log(result)
           this.loadService.addTags(
-            `${result.name} - ${result.creatorName}`,
+            `${result.name} - by ${result.creatorName}`,
             result.coverUrl ?? result.displayUrls[0],
             result.description ?? '',
             'thredapps.io'
