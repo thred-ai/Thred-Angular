@@ -173,7 +173,10 @@ export class LoadService {
     }
   }
 
-  getCoreABI(callback: (result?: { address: string; abi: any[] }) => any) {
+  getCoreABI(
+    chainId = 1,
+    callback: (result?: { address: string; abi: any[] }) => any
+  ) {
     var query = this.db.collection('Protocol');
 
     let sub = query.valueChanges().subscribe((docs) => {
@@ -181,7 +184,10 @@ export class LoadService {
       let doc = docs[0] as DocumentData;
 
       if (doc) {
-        let address = doc['Address'] as string;
+        let addresses = doc['Addresses'] as any[];
+
+        let address = addresses.find((a) => a.id == chainId).address as string;
+
         let abi = doc['ABI'] as any[];
         callback({ address, abi });
       } else {
@@ -416,8 +422,8 @@ export class LoadService {
       .get()
       .toPromise()
       .then((docs3) => {
-        console.log(docs3)
-        let docs = docs3.docs.map(d => d.data())
+        console.log(docs3);
+        let docs = docs3.docs.map((d) => d.data());
 
         let result: Util[] = [];
 
@@ -425,7 +431,7 @@ export class LoadService {
 
         docs.forEach((d) => {
           let util = d as Util;
-          console.log(d)
+          console.log(d);
 
           util.chains.forEach((c: any, i: number) => {
             util.chains[i] = this.chains.find((x) => x.id == c)!;

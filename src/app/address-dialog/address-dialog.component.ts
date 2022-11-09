@@ -93,7 +93,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
       if (provider) {
         this.mode = 0;
         this.loadService.checkChain(chain?.id ?? 1, provider).then(() => {
-          this.loadService.getCoreABI(async (result) => {
+          this.loadService.getCoreABI(chain?.id, async (result) => {
             if (result) {
               this.loading = 2;
               let abi = result.abi;
@@ -172,7 +172,7 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
 
     if (signerAddress){
       this.mode = 0;
-      this.loadService.getCoreABI(async (result) => {
+      this.loadService.getCoreABI(chain?.id, async (result) => {
         if (result) {
           let abi = result.abi;
           let address = result.address;

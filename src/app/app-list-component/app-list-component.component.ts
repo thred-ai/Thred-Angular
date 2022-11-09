@@ -58,7 +58,7 @@ export class AppListComponentComponent implements OnInit {
     user = this.address
   ) {
     this.loading = true;
-    this.loadService.getCoreABI(async (result) => {
+    this.loadService.getCoreABI(chain.id, async (result) => {
       if (result) {
         let abi = result.abi;
         let address = result.address;
