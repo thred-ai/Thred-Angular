@@ -86,7 +86,7 @@ export class AppListComponentComponent implements OnInit {
   }
 
   open(app: Util) {
-    if (this.chainId && this.provider) {
+    if (this.chainId && this.provider && app.loadURL) {
       this.loadService.checkChain(this.chainId?.id, this.provider).then(() => {
         this.selected.emit({
           provider: this.provider,
