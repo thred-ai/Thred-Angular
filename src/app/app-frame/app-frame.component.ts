@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ethers } from 'ethers';
 import { LoadService } from '../load.service';
@@ -71,7 +71,12 @@ export class AppFrameComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    
+  }
+
+  @ViewChild('frame') public frame?: ElementRef;
+
 
   close() {
     this.dialogRef.close();

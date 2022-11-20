@@ -252,7 +252,7 @@ export class LoadService {
 
     try {
       await this.db
-        .collection(`Developers/${uid}/Items`)
+        .collection(`Users/${uid}/Items`)
         .doc(id)
         .set(uploadData, { merge: true });
       callback(data);
@@ -293,7 +293,7 @@ export class LoadService {
 
     try {
       await this.db
-        .collection('Developers')
+        .collection('Users')
         .doc(uid)
         .set(userInfo, { merge: true });
 
@@ -319,7 +319,7 @@ export class LoadService {
     let url =
       'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_profile.png';
 
-    let userRef = this.db.collection('Developers').doc(uid);
+    let userRef = this.db.collection('Users').doc(uid);
 
     let data = {
       name,
@@ -359,7 +359,7 @@ export class LoadService {
         });
 
         let sub3 = this.db
-          .collectionGroup(`Developers`, (ref) =>
+          .collectionGroup(`Users`, (ref) =>
             ref
               .where('search_name', '>=', term)
               .where('search_name', '<=', term + '\uf8ff')
@@ -513,7 +513,7 @@ export class LoadService {
     fetchOnlyAvailableItems = true,
     callback: (result?: Developer) => any
   ) {
-    var query = this.db.collection('Developers', (ref) =>
+    var query = this.db.collection('Users', (ref) =>
       ref.where(firebase.firestore.FieldPath.documentId(), '==', uid)
     );
 
@@ -535,10 +535,10 @@ export class LoadService {
         let developer = new Developer(name, uid, [], joined, url, email);
 
         if (fetchItems) {
-          let q = this.db.collection(`Developers/${uid}/Items`);
+          let q = this.db.collection(`Users/${uid}/Items`);
 
           if (fetchOnlyAvailableItems) {
-            q = this.db.collection(`Developers/${uid}/Items`, (ref) =>
+            q = this.db.collection(`Users/${uid}/Items`, (ref) =>
               ref.where('status', '==', 0)
             );
           }
@@ -582,7 +582,7 @@ export class LoadService {
       String(time.getHours());
 
     return this.db
-      .collection('Developers/' + uid + '/Daily_Info')
+      .collection('Users/' + uid + '/Daily_Info')
       .doc(`V${docName}`)
       .set(
         {
@@ -608,7 +608,7 @@ export class LoadService {
     var views: Dict<any>[] = [];
 
     let sub = this.db
-      .collection('Developers/' + uid + '/Daily_Info/', (ref) =>
+      .collection('Users/' + uid + '/Daily_Info/', (ref) =>
         ref
           .where('timestamp', '>=', date1)
           .where('timestamp', '<=', new Date(date2.setHours(23, 59, 59, 999)))
@@ -679,14 +679,19 @@ export class LoadService {
     if (isPlatformBrowser(this.platformID)) {
       let w = window as any;
       if (mode == 0 && w && w.ethereum) {
+        console.log(w.ethereum)
         const provider = new ethers.providers.Web3Provider(w.ethereum, 'any');
-        try {
-          await provider.send('eth_requestAccounts', []);
-        } catch (error: any) {
-          if (error.code === 4001) {
-            return undefined;
-          }
-        }
+        console.log(provider)
+        // try {
+          let accounts = await provider.send('eth_requestAccounts', []);
+          console.log(accounts)
+        // } catch (error: any) {
+        //   console.log(error)
+        //   if (error.code === 4001) {
+            
+        //     return undefined;
+        //   }
+        // }
         return provider;
       } else if (mode == 1) {
         const options = {
@@ -719,6 +724,7 @@ export class LoadService {
 
   async checkChain(chainId: number, provider: ethers.providers.Web3Provider) {
     let network = await provider.getNetwork();
+    console.log(network)
     if (network.chainId !== chainId) {
       try {
         await provider.send('wallet_switchEthereumChain', [
