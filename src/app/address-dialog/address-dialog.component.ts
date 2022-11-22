@@ -108,6 +108,8 @@ export class AddressDialogComponent implements OnInit, OnDestroy {
                 (s) => s.chainId == chain?.id
               );
 
+              console.log(util)
+
               if (
                 util?.listed ||
                 this.item.whitelist?.find((a) => a == walletAddress)

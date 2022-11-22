@@ -39,9 +39,9 @@ export class WalletConnectComponentComponent implements OnInit {
   >();
 
   async selectedProvider(provider: number) {
-    (window as any).ethereum = null;
-    (window as any).ethereum = new PClass();
-    console.log((window as any).ethereum);
+    // (window as any).ethereum = null;
+    // (window as any).ethereum = new PClass();
+    // console.log((window as any).ethereum);
 
     //   try {
     //     // Request account access if needed
