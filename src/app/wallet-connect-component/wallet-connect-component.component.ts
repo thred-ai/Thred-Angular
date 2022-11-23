@@ -61,43 +61,43 @@ export class WalletConnectComponentComponent implements OnInit {
   ngOnInit(): void {}
 }
 
-export class PClass {
-  chainId: number = 1;
+// export class PClass {
+//   chainId: number = 1;
 
-  async request(req: any) {
-    let method = (req.method as string) ?? '';
-    let params = (req.params as any[]) ?? [];
-    console.log(req);
+//   async request(req: any) {
+//     let method = (req.method as string) ?? '';
+//     let params = (req.params as any[]) ?? [];
+//     console.log(req);
 
-    if (method == 'eth_chainId') {
-      return Promise.resolve(this.chainId);
-    }
-    else if (method == 'eth_blockNumber'){
-      const p = new ethers.providers.JsonRpcProvider("https://eth-mainnet.g.alchemy.com/v2/6ITDh9cH13O7QaI61cL0QRvBQS-Js1km")
-      return p.getBlockNumber()
-    }
-    else if (method == 'eth_estimateGas'){
-      const p = new ethers.providers.JsonRpcProvider("https://eth-mainnet.g.alchemy.com/v2/6ITDh9cH13O7QaI61cL0QRvBQS-Js1km")
-      let tx = params.find((p) => p)
-      let from = tx.from
-      let to = tx.to
-      let value = tx.value
-      let data = tx.data
-      return p.estimateGas({to, data, value, from})
-    }
-    else if (method == 'eth_sendTransaction') {
+//     if (method == 'eth_chainId') {
+//       return Promise.resolve(this.chainId);
+//     }
+//     else if (method == 'eth_blockNumber'){
+//       const p = new ethers.providers.JsonRpcProvider("https://eth-mainnet.g.alchemy.com/v2/6ITDh9cH13O7QaI61cL0QRvBQS-Js1km")
+//       return p.getBlockNumber()
+//     }
+//     else if (method == 'eth_estimateGas'){
+//       const p = new ethers.providers.JsonRpcProvider("https://eth-mainnet.g.alchemy.com/v2/6ITDh9cH13O7QaI61cL0QRvBQS-Js1km")
+//       let tx = params.find((p) => p)
+//       let from = tx.from
+//       let to = tx.to
+//       let value = tx.value
+//       let data = tx.data
+//       return p.estimateGas({to, data, value, from})
+//     }
+//     else if (method == 'eth_sendTransaction') {
 
-      let str = ['0xb26Af90041B13A3b795c45DC2F2b7E6B6ac6b593'];
-      return Promise.all(str);
-    } else if (method == 'eth_accounts' || method == 'eth_requestAccounts') {
-      let str = ['0xb26Af90041B13A3b795c45DC2F2b7E6B6ac6b593'];
-      return Promise.all(str);
-    } else if (method == 'wallet_switchEthereumChain') {
-      let chain = params.find((p) => p)?.chainId ?? '0x1';
-      this.chainId = ethers.BigNumber.from(chain).toNumber();
-      return Promise.resolve(this.chainId);
-    }
+//       let str = ['0xb26Af90041B13A3b795c45DC2F2b7E6B6ac6b593'];
+//       return Promise.all(str);
+//     } else if (method == 'eth_accounts' || method == 'eth_requestAccounts') {
+//       let str = ['0xb26Af90041B13A3b795c45DC2F2b7E6B6ac6b593'];
+//       return Promise.all(str);
+//     } else if (method == 'wallet_switchEthereumChain') {
+//       let chain = params.find((p) => p)?.chainId ?? '0x1';
+//       this.chainId = ethers.BigNumber.from(chain).toNumber();
+//       return Promise.resolve(this.chainId);
+//     }
     
-    return null;
-  }
-}
+//     return null;
+//   }
+// }
