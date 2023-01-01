@@ -1,17 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
-import { CategoryComponent } from './category/category.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
-import { HomeComponent } from './home/home.component';
-import { ItemComponent } from './item/item.component';
 
 const routes: Routes = [
-  { path: 'apps/:app', component: ItemComponent, pathMatch: 'full' },
-  { path: 'utils/:app', redirectTo: 'apps/:app', pathMatch: 'full' },
-  { path: 'groups/:group', component: CategoryComponent, pathMatch: 'full' },
-  { path: 'developers/:dev', component: DeveloperProfileComponent, pathMatch: 'full' },
   { path: 'account', component: AuthComponent, pathMatch: 'full' },
 
   {
@@ -19,9 +11,8 @@ const routes: Routes = [
     component: DashboardComponent,
     pathMatch: 'full',
   },
-  { path: 'home', component: HomeComponent, pathMatch: 'full' },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: ':any', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/account', pathMatch: 'full' },
+  { path: ':any', redirectTo: '/account', pathMatch: 'full' },
 ];
 
 @NgModule({

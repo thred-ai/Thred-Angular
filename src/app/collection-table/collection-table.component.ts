@@ -12,7 +12,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Util } from '../util.model';
+import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-collection-table',
@@ -22,10 +22,10 @@ import { Util } from '../util.model';
 export class CollectionTableComponent
   implements OnInit, AfterViewInit, OnChanges
 {
-  @Output() clicked = new EventEmitter<{ app: Util; index: number, mode: number }>();
+  @Output() clicked = new EventEmitter<{ app: Wallet; index: number, mode: number }>();
 
-  @Input() set utils(utils: Util[]) {
-    this.dataSource = new MatTableDataSource<Util>(utils);
+  @Input() set utils(utils: Wallet[]) {
+    this.dataSource = new MatTableDataSource<Wallet>(utils);
     console.log(this.dataSource);
     setTimeout(() => {
       this.dataSource!.paginator = this.paginator1!;
@@ -36,7 +36,7 @@ export class CollectionTableComponent
   @Input() count: number = 0;
 
   open(
-    app: Util,
+    app: Wallet,
     index: number = (this.dataSource?.data ?? []).findIndex(
       (d) => d.id == app.id
     ),
@@ -46,18 +46,17 @@ export class CollectionTableComponent
   }
 
 
-  dataSource?: MatTableDataSource<Util>;
+  dataSource?: MatTableDataSource<Wallet>;
 
   displayedColumns2: string[] = [
     'image',
     'downloads',
-    'price',
     'chains',
     'status',
     'action'
   ];
 
-  chains(util: Util) {
+  chains(util: Wallet) {
     return util.chains.map((c) => c.name).join(', ');
   }
 

@@ -101,3 +101,7 @@
 .rounded-10 {
   border-radius: 10px;
 }
+
+::ng-deep .mat-tab-body-wrapper {
+  flex: 1 1 100%;
+}

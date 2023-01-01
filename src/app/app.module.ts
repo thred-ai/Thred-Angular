@@ -38,14 +38,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HomeComponent } from './home/home.component';
-import { ItemComponent } from './item/item.component';
 import { AuthComponent } from './auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { CategoryComponent } from './category/category.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
-import { FeaturedComponent } from './featured/featured.component';
-import { SectionComponent } from './section/section.component';
-import { AddressDialogComponent } from './address-dialog/address-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -71,7 +66,6 @@ import { AddressEnsLookupPipe } from './address-ens-lookup.pipe';
 import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
 import { FormatEtherPipe } from './format-ether.pipe';
 import { TypeNumberPipe } from './type-number.pipe';
-import { DeveloperProfileComponent } from './developer-profile/developer-profile.component';
 import { IsAdminPipe } from './is-admin.pipe';
 import { CollectionTableComponent } from './collection-table/collection-table.component';
 import { MatTableModule } from '@angular/material/table';
@@ -95,45 +89,61 @@ import { SafeUrlPipe } from './safe-url.pipe';
 import { ProfileComponent } from './profile/profile.component';
 import { ViewCoordComponent } from './view-coord/view-coord.component';
 import { WalletConnectComponentComponent } from './wallet-connect-component/wallet-connect-component.component';
-import { AppListComponentComponent } from './app-list-component/app-list-component.component';
-import { AppFrameComponent } from './app-frame/app-frame.component';
+
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { LayoutBuilderComponent } from './layout-builder/layout-builder.component';
+import { VideoPipePipe } from './video-pipe.pipe';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { StoreThemePipe } from './store-theme.pipe';
+import { SafeTextRowsPipe } from './safe-text-rows.pipe';
+import { nftPipe } from './nft.pipe';
+import { NFTTableComponent } from './nft-table/nft-table.component';
+import {MatSliderModule} from '@angular/material/slider';
+import { NgxSliderModule } from "@angular-slider/ngx-slider";
+import { LoaderComponent } from './loader/loader.component';
+import { AngularResizeEventModule } from 'angular-resize-event';
+import { AddNftComponent } from './add-nft/add-nft.component';
+import { SharedDialogComponent } from './shared-dialog/shared-dialog.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ItemComponent,
     AuthComponent,
     DashboardComponent,
-    CategoryComponent,
     SearchBarComponent,
-    FeaturedComponent,
-    SectionComponent,
-    AddressDialogComponent,
     AddressValidatePipe,
     AddressPipe,
     AddressEnsLookupPipe,
     NameEnsLookupPipe,
     FormatEtherPipe,
     TypeNumberPipe,
-    DeveloperProfileComponent,
     CollectionTableComponent,
     StatusComponent,
     DataTableComponent,
     NotificationComponent,
     IsAdminPipe,
     ViewsPipe,
+    VideoPipePipe,
     LocationPipe,
     LiveEarthViewPipePipe,
     safeHtmlPipe,
     SafeUrlPipe,
+    nftPipe,
+    StoreThemePipe,
+    SafeTextRowsPipe,
     SmartUtilComponent,
     ProfileComponent,
     ViewCoordComponent,
     WalletConnectComponentComponent,
-    AppListComponentComponent,
-    AppFrameComponent,
+    LayoutBuilderComponent,
+    NFTTableComponent,
+    LoaderComponent,
+    AddNftComponent,
+    SharedDialogComponent
   ],
   imports: [
     CommonModule,
@@ -152,11 +162,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSnackBarModule,
     DragScrollModule,
     MatDialogModule,
+    MatExpansionModule,
     InViewportModule,
     HttpClientModule,
     FormsModule,
     NgxCurrencyModule,
     MatSlideToggleModule,
+    MatSliderModule,
     MatAutocompleteModule,
     MatChipsModule,
     AngularFireFunctionsModule,
@@ -189,6 +201,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MdbValidationModule,
     MatDatepickerModule,
     MatPaginatorModule,
+
+    DragDropModule,
+    ColorPickerModule,
+    NgxSliderModule,
+    AngularResizeEventModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

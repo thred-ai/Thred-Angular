@@ -12,7 +12,7 @@ import { Category } from '../category.model';
 import { Chain } from '../chain.model';
 import { LoadService } from '../load.service';
 import { Signature } from '../signature.model';
-import { Util } from '../util.model';
+import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-home',
@@ -27,20 +27,20 @@ export class HomeComponent implements OnInit {
     new Category('Most Popular', '2', [], 4),
   ];
 
-  featuredUtil?: Util;
+  featuredUtil?: Wallet;
   display = true;
   constructor(
     @Inject(PLATFORM_ID) private platformID: Object,
     private loadService: LoadService
   ) {
     if (isPlatformBrowser(this.platformID)) {
-      this.loadService.getFeaturedItem((result) => {
+      this.loadService.getFeaturedWallet((result) => {
         this.featuredUtil = result;
       });
-      this.loadService.getNewItems((result) => {
+      this.loadService.getNewWallets((result) => {
         this.utilCategories[0].utils = result.slice(0, 6);
       });
-      this.loadService.getPopularItems((result) => {
+      this.loadService.getPopularWallets((result) => {
         this.utilCategories[1].utils = result.slice(0, 6);
       });
     } else {

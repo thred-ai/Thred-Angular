@@ -8,13 +8,13 @@ export const environment = {
   production: false,
 
   firebase: {
-    apiKey: 'AIzaSyCCV1HUWCeM0kaSVM7FcpDyHrTanse6BAk',
-    authDomain: 'thred-protocol.firebaseapp.com',
-    projectId: 'thred-protocol',
-    storageBucket: 'thred-protocol.appspot.com',
-    messagingSenderId: '313615470277',
-    appId: '1:313615470277:web:76f4e51ce27c1338aa2aac',
-    measurementId: 'G-4NPVBWK3NK',
+    apiKey: 'AIzaSyDSTB8RQYdW9SpIslSoF3PpPQKqGvSGOYU',
+    authDomain: 'thred-design.firebaseapp.com',
+    projectId: 'thred-design',
+    storageBucket: 'thred-design.appspot.com',
+    messagingSenderId: '455647344707',
+    appId: '1:455647344707:web:ac12decf7b87daee447cf6',
+    measurementId: 'G-D29CWGZ4Z1',
   },
 
   rpc: {

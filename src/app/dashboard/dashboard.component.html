@@ -1,8 +1,8 @@
 <div
-  class="w-100 bg-light animate__animated animate__fadeIn bg-info"
+  class="w-100 bg-light animate__animated animate__fadeIn"
   style="min-height: 92.5vh"
 >
-  <div class="w-100 bg-light h-100">
+  <div class="w-100 bg-light h-100" *ngIf="chains">
     <div id="content" class="tab w-100">
       <mat-tab-group
         mat-stretch-tabs
@@ -279,9 +279,9 @@
         </mat-tab>
         <mat-tab class="tab">
           <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon text-dark"> token</mat-icon>
+            <mat-icon class="example-tab-icon text-dark"> account_balance_wallet</mat-icon>
             <span class="ms-2 text-dark big-design-body fw-bold">
-              Develop
+              Wallets
             </span>
           </ng-template>
           <div class="h-100 w-100 bg-light">
@@ -300,7 +300,7 @@
                       line-height: 2.5rem;
                     "
                   >
-                    Develop
+                    Wallets
                   </p>
                   <p
                     class="btn rounded-pill fw-bold bg-purple text-white d-flex justify-content-between align-content-center px-3 py-2"

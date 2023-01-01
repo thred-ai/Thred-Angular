@@ -11,13 +11,20 @@ import { Developer } from './developer.model';
 import { first } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
 import { Alchemy, AlchemyProvider } from 'alchemy-sdk';
-import { Util } from './util.model';
+import { Wallet } from './wallet.model';
 import { Chain } from './chain.model';
 import { Category } from './category.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Meta, Title } from '@angular/platform-browser';
+import { Page } from './page.model';
+import { Block } from './block.model';
+import { v4 as uuid } from 'uuid';
+import { NFT } from './nft.model';
+import { NFTList } from './nft-list.model';
+import { Layout } from './layout.model';
+import { Tab } from './tab.model';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -29,12 +36,7 @@ export interface Dict<T> {
 export class LoadService {
   providers: Dict<{ alchemy: Alchemy; ethers: AlchemyProvider }> = {};
 
-  chains = [
-    new Chain('Ethereum', 1, 'ETH'),
-    new Chain('Polygon', 137, 'MATIC'),
-    new Chain('Ethereum Goerli', 5, 'ETH'),
-    new Chain('Polygon Mumbai', 80001, 'MATIC'),
-  ];
+  chains = [new Chain('Ethereum Goerli', 5, 'ETH', 0)];
 
   defaultCoords = {
     address: {
@@ -115,12 +117,50 @@ export class LoadService {
       });
   }
 
+  loadedChains = new BehaviorSubject<any[]>([]);
+  loadedUser = new BehaviorSubject<Developer | null>(null);
+  loadedNFTs = new BehaviorSubject<any[]>([]);
+
+  getChains(callback: (chains: any[]) => any) {
+    this.functions
+      .httpsCallable('retrieveChains')({})
+      .pipe(first())
+      .subscribe(
+        async (resp) => {
+          this.loadedChains.next(resp);
+          console.log(resp);
+          callback(resp);
+        },
+        (err) => {
+          console.error({ err });
+          callback([]);
+        }
+      );
+  }
+
+  async loadNFTs(nftList: NFTList, callback: (nfts: NFT[]) => any) {
+    this.functions
+      .httpsCallable('retrieveNFTs')({ nftList })
+      .pipe(first())
+      .subscribe(
+        async (resp) => {
+          this.loadedNFTs.next(resp);
+          console.log(resp);
+          callback(resp);
+        },
+        (err) => {
+          console.error({ err });
+          callback([]);
+        }
+      );
+  }
+
   finishPassReset(
     email: string,
     callback: (result: { status: boolean; msg: string }) => any
   ) {}
 
-  openItem(id: string) {
+  openWallet(id: string) {
     this.router.navigateByUrl(`/apps/${id}`);
   }
 
@@ -214,49 +254,63 @@ export class LoadService {
   }
 
   async saveSmartUtil(
-    data: Util,
-    callback: (result?: Util) => any,
+    data: Wallet,
+    callback: (result?: Wallet) => any,
     appImgFile?: File,
     marketingImgFile?: File
   ) {
-    let uid = data.creator;
     let id = data.id;
 
-    if (appImgFile) {
+    let uid = (await this.currentUser)?.uid;
+
+    if (uid) {
+      if (appImgFile) {
+        try {
+          let ref = this.storage.ref(`wallets/${id}/app-${id}.png`);
+          await ref.put(appImgFile, { cacheControl: 'no-cache' });
+          data.displayUrl = await ref.getDownloadURL().toPromise();
+        } catch (error) {
+          console.log('app');
+          callback(undefined);
+        }
+      }
+
+      if (marketingImgFile) {
+        try {
+          let ref = this.storage.ref(`wallets/${id}/marketing-${id}.png`);
+          await ref.put(marketingImgFile, { cacheControl: 'no-cache' });
+          data.coverUrl = await ref.getDownloadURL().toPromise();
+        } catch (error) {
+          console.log('marketing');
+          callback(undefined);
+        }
+      }
+
+      let uploadData = JSON.parse(JSON.stringify(data));
+      uploadData.search_name = uploadData.name?.toLowerCase();
+      uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
+
+      delete uploadData.layouts;
+
+      if (uploadData.downloads > 0) {
+        delete uploadData.downloads;
+      }
+
+      console.log(uploadData);
+
+      console.log(data);
+
       try {
-        let ref = this.storage.ref(`smart-utils/${id}/app-${id}.png`);
-        await ref.put(appImgFile, { cacheControl: 'no-cache' });
-        data.displayUrls[0] = await ref.getDownloadURL().toPromise();
+        await this.db
+          .collection(`Users/${uid}/wallets`)
+          .doc(id)
+          .set(uploadData, { merge: true });
+        callback(data);
       } catch (error) {
+        console.log(error);
         callback(undefined);
       }
-    }
-
-    if (marketingImgFile) {
-      try {
-        let ref = this.storage.ref(`smart-utils/${id}/marketing-${id}.png`);
-        await ref.put(marketingImgFile, { cacheControl: 'no-cache' });
-        data.coverUrl = await ref.getDownloadURL().toPromise();
-      } catch (error) {
-        callback(undefined);
-      }
-    }
-
-    let uploadData = JSON.parse(JSON.stringify(data));
-    uploadData.search_name = uploadData.name?.toLowerCase();
-    uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
-
-    if (uploadData.downloads > 0) {
-      delete uploadData.downloads;
-    }
-
-    try {
-      await this.db
-        .collection(`Users/${uid}/Items`)
-        .doc(id)
-        .set(uploadData, { merge: true });
-      callback(data);
-    } catch (error) {
+    } else {
       callback(undefined);
     }
   }
@@ -292,10 +346,7 @@ export class LoadService {
     };
 
     try {
-      await this.db
-        .collection('Users')
-        .doc(uid)
-        .set(userInfo, { merge: true });
+      await this.db.collection('Users').doc(uid).set(userInfo, { merge: true });
 
       localStorage['url'] = url;
       localStorage['name'] = name;
@@ -338,7 +389,7 @@ export class LoadService {
   search(term: string) {
     console.log(term);
     let sub2 = this.db
-      .collectionGroup(`Items`, (ref) =>
+      .collectionGroup(`wallets`, (ref) =>
         ref
           .where('search_name', '>=', term)
           .where('search_name', '<=', term + '\uf8ff')
@@ -349,11 +400,11 @@ export class LoadService {
         sub2.unsubscribe();
         let returnVal: any[] = [];
 
-        (docs2 as Util[])?.forEach((d: Util) => {
+        (docs2 as Wallet[])?.forEach((d: Wallet) => {
           returnVal.push({
             name: d.name,
             type: 1,
-            img: d.displayUrls[0],
+            img: d.displayUrl,
             id: d.id,
           });
         });
@@ -381,10 +432,14 @@ export class LoadService {
       });
   }
 
-  getItem(id: string, callback: (result?: Util) => any, getProfiles = false) {
+  getWallet(
+    id: string,
+    callback: (result?: Wallet) => any,
+    getProfiles = false
+  ) {
     console.log(id);
     let sub2 = this.db
-      .collectionGroup(`Items`, (ref) => ref.where('id', '==', id))
+      .collectionGroup(`wallets`, (ref) => ref.where('id', '==', id))
       .valueChanges()
       .subscribe((docs2) => {
         sub2.unsubscribe();
@@ -394,10 +449,18 @@ export class LoadService {
         let d = docs_2[0];
 
         if (d) {
-          let util = d as Util;
+          let util = d as Wallet;
+
+          util.layouts.forEach((la) => {
+            la.pages.forEach((pa) => {
+              if (!pa.tab) {
+                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0, 0);
+              }
+            });
+          });
 
           d.chains.forEach((c: any, i: number) => {
-            d.chains[i] = this.chains.find((x) => x.id == c);
+            d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
           });
           if (getProfiles) {
             this.getUserInfo(d.creator, false, false, (result) => {
@@ -415,26 +478,36 @@ export class LoadService {
       });
   }
 
-  getItems(ids: string[], callback: (result?: Util[]) => any) {
+  getWallets(ids: string[], callback: (result?: Wallet[]) => any) {
     console.log(ids);
     let sub2 = this.db
-      .collectionGroup(`Items`, (ref) => ref.where('id', 'in', ids))
+      .collectionGroup(`wallets`, (ref) => ref.where('id', 'in', ids))
       .get()
       .toPromise()
       .then((docs3) => {
         console.log(docs3);
         let docs = docs3.docs.map((d) => d.data());
 
-        let result: Util[] = [];
+        let result: Wallet[] = [];
 
         console.log(docs);
 
         docs.forEach((d) => {
-          let util = d as Util;
+          let util = d as Wallet;
           console.log(d);
 
+          util.layouts.forEach((la) => {
+            la.pages.forEach((pa) => {
+              if (!pa.tab) {
+                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0, 0);
+              }
+            });
+          });
+
+          console.log(util.layouts);
+
           util.chains.forEach((c: any, i: number) => {
-            util.chains[i] = this.chains.find((x) => x.id == c)!;
+            util.chains[i] = this.loadedChains.value?.find((x) => x.id == c)!;
           });
 
           result.push(util);
@@ -443,9 +516,9 @@ export class LoadService {
       });
   }
 
-  getNewItems(callback: (result: Util[]) => any) {
+  getNewWallets(callback: (result: Wallet[]) => any) {
     this.db
-      .collectionGroup('Items', (ref) =>
+      .collectionGroup('Wallets', (ref) =>
         ref.where('status', '==', 0).orderBy('created', 'desc')
       )
       .valueChanges()
@@ -453,16 +526,16 @@ export class LoadService {
         let docs_2 = (docs as any[]) ?? [];
         docs_2.forEach((d, index) => {
           d.chains.forEach((c: any, i: number) => {
-            d.chains[i] = this.chains.find((x) => x.id == c);
+            d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
           });
         });
         callback(docs_2);
       });
   }
 
-  getPopularItems(callback: (result: Util[]) => any) {
+  getPopularWallets(callback: (result: Wallet[]) => any) {
     this.db
-      .collectionGroup('Items', (ref) =>
+      .collectionGroup('Wallets', (ref) =>
         ref.where('status', '==', 0).orderBy('views', 'desc')
       )
       .valueChanges()
@@ -470,7 +543,7 @@ export class LoadService {
         let docs_2 = (docs as any[]) ?? [];
         docs_2.forEach((d, index) => {
           d.chains.forEach((c: any, i: number) => {
-            d.chains[i] = this.chains.find((x) => x.id == c);
+            d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
           });
         });
         callback(docs_2);
@@ -481,7 +554,7 @@ export class LoadService {
     return this.db.createId();
   }
 
-  getFeaturedItem(callback: (result?: Util) => any) {
+  getFeaturedWallet(callback: (result?: Wallet) => any) {
     let sub2 = this.db
       .collectionGroup(`Engage`)
       .valueChanges()
@@ -494,7 +567,7 @@ export class LoadService {
 
         if (d) {
           let featured = d['Featured'] as string;
-          this.getItem(
+          this.getWallet(
             featured,
             (result) => {
               callback(result);
@@ -509,10 +582,10 @@ export class LoadService {
 
   getUserInfo(
     uid: string,
-    fetchItems = true,
-    fetchOnlyAvailableItems = true,
+    fetchwallets = true,
+    fetchOnlyAvailablewallets = true,
     callback: (result?: Developer) => any
-  ) {
+  ): void {
     var query = this.db.collection('Users', (ref) =>
       ref.where(firebase.firestore.FieldPath.documentId(), '==', uid)
     );
@@ -534,23 +607,33 @@ export class LoadService {
         }
         let developer = new Developer(name, uid, [], joined, url, email);
 
-        if (fetchItems) {
-          let q = this.db.collection(`Users/${uid}/Items`);
+        this.checkLoadedUser(developer);
 
-          if (fetchOnlyAvailableItems) {
-            q = this.db.collection(`Users/${uid}/Items`, (ref) =>
+        if (fetchwallets) {
+          let q = this.db.collection(`Users/${uid}/wallets`);
+
+          if (fetchOnlyAvailablewallets) {
+            q = this.db.collection(`Users/${uid}/wallets`, (ref) =>
               ref.where('status', '==', 0)
             );
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {
-            let docs_2 = docs2 as any[];
+            let docs_2 = docs2 as Wallet[];
 
             docs_2.forEach((d) => {
+              d.layouts.forEach((la) => {
+                la.pages.forEach((pa) => {
+                  if (!pa.tab) {
+                    pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0, 0);
+                  }
+                });
+              });
               d.chains.forEach((c: any, i: number) => {
-                d.chains[i] = this.chains.find((x) => x.id == c);
+                d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
               });
             });
-            developer.utils = (docs_2 as Util[]) ?? [];
+            developer.utils = (docs_2 as Wallet[]) ?? [];
+            this.checkLoadedUser(developer);
 
             callback(developer);
             sub2.unsubscribe();
@@ -559,10 +642,19 @@ export class LoadService {
           callback(developer);
         }
       } else {
+        this.checkLoadedUser(null);
         callback(undefined);
       }
       sub.unsubscribe();
     });
+  }
+
+  async checkLoadedUser(user: Developer | null) {
+    let uid = (await this.currentUser)?.uid;
+
+    if (uid && (!user || uid == user.id)) {
+      this.loadedUser.next(user);
+    }
   }
 
   async logView(productId: string, uid: string) {
@@ -679,16 +771,16 @@ export class LoadService {
     if (isPlatformBrowser(this.platformID)) {
       let w = window as any;
       if (mode == 0 && w && w.ethereum) {
-        console.log(w.ethereum)
+        console.log(w.ethereum);
         const provider = new ethers.providers.Web3Provider(w.ethereum, 'any');
-        console.log(provider)
+        console.log(provider);
         // try {
-          let accounts = await provider.send('eth_requestAccounts', []);
-          console.log(accounts)
+        let accounts = await provider.send('eth_requestAccounts', []);
+        console.log(accounts);
         // } catch (error: any) {
         //   console.log(error)
         //   if (error.code === 4001) {
-            
+
         //     return undefined;
         //   }
         // }
@@ -724,7 +816,7 @@ export class LoadService {
 
   async checkChain(chainId: number, provider: ethers.providers.Web3Provider) {
     let network = await provider.getNetwork();
-    console.log(network)
+    console.log(network);
     if (network.chainId !== chainId) {
       try {
         await provider.send('wallet_switchEthereumChain', [
@@ -767,5 +859,89 @@ export class LoadService {
     this.metaService.updateTag({ name: 'description', content: description });
     // this.metaService.removeTag("name='robots'");
     // this.metaService.removeTag("name='googlebot'");
+  }
+
+  async addLayout(
+    layout: Layout,
+    wallet: Wallet,
+    callback: (layout: Layout) => any
+  ) {
+    try {
+      // const promises1 = (layout.blocks ?? []).map(
+      //   async (row: Block, mainIndex: number) => {
+      //     const promises2 = (row.imgs ?? []).map(
+      //       async (image, index: number) => {
+      //         if (this.isBase64(image.link?.replace(/^[\w\d;:\/]+base64\,/g, ''))) {
+      //           var url = image.link;
+      //           url = (await this.uploadLayoutImages(
+      //             image.link,
+      //             layout.id +
+      //               '_' +
+      //               mainIndex.toString() +
+      //               '_' +
+      //               index.toString(),
+      //             uid
+      //           )) as string;
+      //           var split = url.split('&token=');
+      //           url = split[0];
+
+      //           ((layout.blocks ?? [])[mainIndex].imgs ?? [])[index].link = url;
+      //         }
+      //       }
+      //     );
+      //     await Promise.all(promises2);
+      //   }
+      // );
+
+      // await Promise.all(promises1);
+
+      let uid = (await this.currentUser)?.uid;
+
+      if (wallet && uid) {
+        let i = wallet.layouts.findIndex((p) => p.type == layout.type);
+
+        if (i > -1) {
+          wallet.layouts[i] = layout;
+        }
+
+        var data = {
+          layouts: JSON.parse(JSON.stringify(wallet.layouts)),
+        };
+
+        if (uid && data) {
+          await this.db
+            .collection(`Users/${uid}/wallets`)
+            .doc(wallet.id)
+            .set(data, { merge: true });
+          callback(layout);
+        } else {
+          callback(layout);
+        }
+      }
+    } catch (error) {
+      callback(layout);
+    }
+  }
+
+  isBase64(str: string) {
+    try {
+      return btoa(atob(str)) == str;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  private async uploadLayoutImages(image: string, type: string, uid?: string) {
+    const filePath = 'users/' + uid + '/layouts/' + type + '.png';
+    let ref = this.storage.ref(filePath);
+
+    const byteArray = Buffer.from(
+      image?.replace(/^[\w\d;:\/]+base64\,/g, ''),
+      'base64'
+    );
+
+    const task = await ref.put(byteArray);
+    const url = await task.ref.getDownloadURL();
+    return url;
   }
 }

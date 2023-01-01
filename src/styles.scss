@@ -699,7 +699,7 @@ progress {
 .frame-container {
   overflow: hidden;
   width: 100vw;
-  height: calc(var(--vh, 1vh) * 100)
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .frame-header {
@@ -723,7 +723,6 @@ progress {
 .mat-slide-toggle.mat-checked .mat-slide-toggle-ripple .mat-ripple-element {
   background-color: #761de3;
 }
-
 
 @media (min-width: 768px) {
   .position-md-static {
@@ -2586,7 +2585,7 @@ textarea.form-control-lg {
   text-shadow: 0 0 0 #212529;
 }
 
-.text-shadow{
+.text-shadow {
   text-shadow: 1px 0 2px #212529;
 }
 
@@ -7173,6 +7172,18 @@ mat-sidenav {
   width: 100vw !important;
 }
 
+.vw-50 {
+  width: 50vw !important;
+}
+
+.vw-75 {
+  width: 75vw !important;
+}
+
+.vw-80 {
+  width: 80vw !important;
+}
+
 .min-vw-100 {
   min-width: 100vw !important;
 }
@@ -7207,6 +7218,10 @@ mat-sidenav {
 
 .vh-60 {
   height: 60vh !important;
+}
+
+.vh-75 {
+  height: 75vh !important;
 }
 
 .vh-50 {
@@ -8901,6 +8916,12 @@ mat-sidenav {
   }
   .w-md-25 {
     width: 25% !important;
+  }
+  .w-md-20 {
+    width: 20% !important;
+  }
+  .w-md-80 {
+    width: 80% !important;
   }
   .w-md-33 {
     --width: 100%;
@@ -11875,9 +11896,16 @@ mat-sidenav {
 }
 
 .big-design-placeholder {
-  background: #3c64f310;
-  border: dotted 3px #3c64f3;
+  background: rgba(156,74,255, 0.1);
+  border: dotted 3px #761de3;
   min-height: 120px;
+  width: 100%;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.big-design-editor {
+  background: rgba(156,74,255, 0.1);
+  border: dotted 3px #761de3;
   width: 100%;
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
@@ -11946,9 +11974,9 @@ mat-sidenav {
   opacity: 0.5;
 }
 
-mat-calendar.no-header{
-  mat-calendar-header{
-    .mat-calendar-header{
+mat-calendar.no-header {
+  mat-calendar-header {
+    .mat-calendar-header {
       display: none;
     }
   }
@@ -12080,3 +12108,36 @@ mat-calendar.no-header{
 .bar-hover:hover {
   background-color: #e9e9e9 !important;
 }
+
+.mat-tab-group.mat-tab-fill-height .mat-tab-body-wrapper {
+  flex: 1 1 100%;
+}
+
+.desktop {
+  height: 75%;
+  aspect-ratio: 1.75 !important;
+}
+
+.mobile {
+  height: 90%;
+  aspect-ratio: 0.5 !important;
+}
+
+.desktop-full {
+  height: 90%;
+  aspect-ratio: 1.75 !important;
+}
+
+.mobile-full {
+  height: 95%;
+  aspect-ratio: 0.5 !important;
+}
+
+.border-preview{
+  border: dashed 3px gray !important;
+}
+
+.remove-border-bottom .mat-tab-header {
+  border-bottom: none;
+}
+

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Util } from '../util.model';
+import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-data-table',
@@ -25,7 +25,7 @@ export class DataTableComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  @Input() utils?: Util[] = undefined
+  @Input() utils?: Wallet[] = undefined
 
   setDataSource(){
     if (this.filter.id == 0){
@@ -43,7 +43,7 @@ export class DataTableComponent implements OnInit {
       id: 0
     },
     {
-      name: 'By Apps',
+      name: 'By Wallets',
       id: 1
     }
   ]

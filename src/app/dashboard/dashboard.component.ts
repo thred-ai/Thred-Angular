@@ -5,10 +5,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ethers } from 'ethers';
 import { Chain } from '../chain.model';
 import { Developer } from '../developer.model';
+import { LayoutBuilderComponent } from '../layout-builder/layout-builder.component';
 import { Dict, LoadService } from '../load.service';
+import { Page } from '../page.model';
 import { Signature } from '../signature.model';
 import { SmartUtilComponent } from '../smart-util/smart-util.component';
-import { Util } from '../util.model';
+import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +37,7 @@ export class DashboardComponent implements OnInit {
   );
 
   viewMapping: { [k: string]: string } = {
-    '=0': 'No Views',
+    '=0': 'No Active Users',
     '=1': '1 View',
     other: '# Views',
   };
@@ -96,31 +98,30 @@ export class DashboardComponent implements OnInit {
   }
 
   openUtil(
-    util?: Util,
-    index: number = this.dev?.utils.findIndex((app) => app.id == util?.id) ?? -1,
+    wallet?: Wallet,
+    index: number = this.dev?.utils.findIndex((app) => app.id == wallet?.id) ?? -1,
     mode = 0
   ) {
     const modalRef = this.dialog.open(SmartUtilComponent, {
-      width: '750px',
-      maxHeight: '80vh',
+      maxHeight: 'calc(var(--vh, 1vh) * 100)',
       maxWidth: '100vw',
-      panelClass: 'app-full-bleed-sm-dialog',
+      panelClass: 'app-full-bleed-dialog',
 
       data: {
-        util,
+        wallet,
         mode
       },
     });
 
     modalRef.afterClosed().subscribe((value) => {
-      if (value && this.dev && (value as Util)) {
+      if (value && this.dev && (value as Wallet)) {
         console.log(index);
         let apps = [...this.dev?.utils];
 
         if (index > -1) {
           apps[index] = Object.assign(this.dev.utils[index], value);
         } else {
-          apps.push(value as Util);
+          apps.push(value as Wallet);
         }
         this.dev.utils = apps;
 
@@ -133,6 +134,7 @@ export class DashboardComponent implements OnInit {
     this.selectedCoord = undefined;
     this.cdr.detectChanges();
   }
+
 
   openCard(coords: Dict<any>) {
     coords['time'] = new Date(coords['time']);
@@ -147,10 +149,17 @@ export class DashboardComponent implements OnInit {
   }
 
   @Input() dev?: Developer = undefined;
+  chains?: Chain[]
 
   async ngOnInit() {
-    this.getProfile();
-    this.loadStats((await this.loadService.currentUser)?.uid);
+    this.loadService.loadedChains.subscribe(chains => {
+      this.chains = chains ?? []
+    })
+    this.loadService.getChains(async chains => {
+      console.log(chains)
+      this.getProfile();
+      this.loadStats((await this.loadService.currentUser)?.uid);
+    })
   }
 
   loadStats(uid?: string) {

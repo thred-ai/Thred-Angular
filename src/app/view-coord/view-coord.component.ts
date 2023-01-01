@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Util } from '../util.model';
+import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-view-coord',
@@ -10,10 +10,10 @@ export class ViewCoordComponent implements OnInit {
 
   @Input() coord?: any;
   @Output() close = new EventEmitter<boolean>();
-  @Output() open = new EventEmitter<Util>();
+  @Output() open = new EventEmitter<Wallet>();
 
   viewMapping:
-      {[k: string]: string} = {'=0': 'No Views', '=1': '1 View', 'other': '# Views'};
+      {[k: string]: string} = {'=0': 'No Users', '=1': '1 View', 'other': '# Views'};
   saleMapping:
       {[k: string]: string} = {'=0': 'No Sales', '=1': '1 Sale', 'other': '# Sales'};
   

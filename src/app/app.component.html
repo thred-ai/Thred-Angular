@@ -1,98 +1,27 @@
-<mat-sidenav-container class="w-100" style="min-height: 100vh">
-  <mat-sidenav
-    class="bg-white w-100 w-md-25 p-3 h-100"
-    [position]="'start'"
-    #drawer
+<div
+  class="w-100 border-bottom bg-white"
+  style="height: 7.5vh; position: fixed; z-index: 50; top: 0"
+  id="top-bar"
+>
+  <div
+    class="w-100 h-100 justify-content-between align-items-center d-{{
+      display ? 'flex' : 'none'
+    }}"
   >
-    <div
-      class="w-100 d-flex justify-content-end align-items-center text-dark px-1"
-      style="height: 40px"
-    >
-      <mat-icon class="fw-bold" (click)="close()" role="button">
-        close
-      </mat-icon>
-    </div>
-    <div
-      class="w-100 d-flex d-md-none flex-column justify-content-center align-items-center bg-white"
-      *ngIf="mode == 1"
-    >
-      <div class="w-100 text-center">
-        <div
-          class="w-100 d-flex flex-column justify-content-center align-items-center"
-        >
-          <img
-            class="w-75"
-            role="button"
-            (click)="routeToHome()"
-            [src]="'assets/logo_light.png'"
-            style="aspect-ratio: 1; object-fit: contain"
-          />
-          <span
-            class="fw-bold text-white btn btn-dark rounded-pill px-3 d-inline-flex text-center mt-5"
-            role="button"
-            (click)="mode = 3"
-          >
-            <mat-icon class="my-auto me-2"> apps </mat-icon>
-            {{ "My Apps" }}</span
-          >
-          <div class="w-100 text-center mt-5">
-            <div
-              class="w-100 text-center my-1"
-              style="font-size: large"
-              role="button"
-              (click)="routeToHome()"
-            >
-              Explore
-            </div>
-            <br />
-            <div
-              class="w-100 text-center my-1"
-              style="font-size: large"
-              role="button"
-              (click)="routeToAuth()"
-            >
-              Developer
-            </div>
-            <br />
-          </div>
-        </div>
+    <div class="d-flex justify-content-start align-items-center h-100">
+      <div class="my-1 mx-0 mx-md-4 h-100 py-2 py-md-3">
+        <img
+          class="h-100 w-auto p-2 ms-2 ms-md-0"
+          [src]="'assets/logo_light.png'"
+          style="object-fit: contain"
+          role="button"
+          (click)="routeToHome()"
+        />
       </div>
-    </div>
-
-    <div class="w-100" *ngIf="mode == 2 && selectedInstall">
-      <app-address-dialog [item]="selectedInstall"> </app-address-dialog>
-    </div>
-    <div class="w-100" *ngIf="mode == 3">
-      <app-app-list-component (selected)="openApp($event)">
-      </app-app-list-component>
-    </div>
-  </mat-sidenav>
-
-  <mat-sidenav-content class="h-100 d-flex flex-column bg-light">
-    <div
-      class="w-100 border-bottom bg-white"
-      style="height: 7.5vh; position: fixed; z-index: 50"
-      id="top-bar"
-    >
       <div
-        class="w-100 h-100 justify-content-between align-items-center d-{{
-          display ? 'flex' : 'none'
-        }}"
+        class="h-100 d-none d-md-flex justify-content-start align-items-center"
       >
-        <div class="d-flex justify-content-start align-items-center h-100">
-          <div class="my-1 mx-0 mx-md-4 h-100 py-2 py-md-3">
-            <img
-              class="h-100 w-auto p-2 ms-2 ms-md-0"
-              [src]="'assets/logo_light.png'"
-              style="object-fit: contain"
-              role="button"
-              (click)="routeToHome()"
-            />
-          </div>
-          <div
-            class="h-100 d-none d-md-flex justify-content-start align-items-center"
-          >
-            <div
+        <!-- <div
               class="h-50 my-1 mx-4"
               [class.search-bar-extend]="expandedSearch"
               [class.search-bar-back]="!expandedSearch"
@@ -103,253 +32,222 @@
                 (inputChanged)="updateBar($event)"
               >
               </app-search-bar>
-            </div>
-            <span
-              class="text-purple-hover mx-4"
-              role="button"
-              (click)="routeToHome()"
-              >Explore</span
-            >
-            <span
-              class="text-purple-hover mx-4"
-              role="button"
-              (click)="routeToAuth()"
-              >Developer Portal</span
-            >
-          </div>
-        </div>
-        <div
-          class="d-flex justify-content-end align-items-center h-100 me-3 mx-md-4"
+            </div> -->
+        <span
+          class="text-purple-hover mx-4"
+          role="button"
+          (click)="routeToAuth()"
+          >Account</span
         >
-          <div
-            class="w-100 h-100 d-none d-md-flex justify-content-end align-items-center"
-          >
-            <div
-              class="d-flex justify-content-end align-items-center"
-              style="height: 40px"
-            >
-              <span
-                class="fw-bold text-white mx-0 btn btn-dark rounded-pill px-3 d-none d-md-flex"
-                role="button"
-                *ngIf="!(location.path() | isAdmin)"
-                (click)="mode = 3; drawer.toggle()"
-              >
-                <mat-icon class="my-auto me-2"> apps </mat-icon>
-                {{ "My Apps" }}</span
-              >
-              <div
-                class="d-flex justify-content-between align-items-center h-100"
-                role="button"
-                [mdbPopover]="template"
-                placement="bottom"
-                [trigger]="'click'"
-                id="profile-toggle"
-                #profileToggle
-                *ngIf="
-                  isBrowser() && !drawer.opened && (location.path() | isAdmin)
-                "
-              >
-                <span class="fw-bold mx-2 text-dark px-2 d-none d-md-block">
-                  {{
-                    localStorage && localStorage["name"]
-                      ? localStorage["name"]
-                      : ""
-                  }}
-                </span>
-                <div
-                  class="rounded-circle h-100 icons bg-pink"
-                  style="
-                    border-style: solid;
-                    border-width: 0.2rem;
-                    border-color: rgb(255, 232, 248);
-                    width: fit-content;
-                  "
-                >
-                  <img
-                    class="h-100 p-0 m-auto rounded-circle"
-                    style="object-fit: contain; aspect-ratio: 1"
-                    [src]="'assets/profile.png'"
-                    *ngIf="localStorage!['url'] == null; else profile"
-                  />
-
-                  <ng-template #profile>
-                    <img
-                      class="h-100 p-0 m-auto rounded-circle"
-                      style="object-fit: contain; aspect-ratio: 1"
-                      [src]="localStorage!['url']"
-                    />
-                  </ng-template>
-
-                  <ng-template #template>
-                    <div
-                      class="popover-body-padding text-center px-3 animate__animated animate__fadeIn"
-                      id="profile-menu"
-                      style="min-width: 250px"
-                    >
-                      <div class="big-design-header" style="height: 40px">
-                        <mat-icon
-                          class="fw-bold text-purple"
-                          role="button"
-                          (click)="profileToggle.click()"
-                        >
-                          close
-                        </mat-icon>
-                      </div>
-                      <b
-                        class="fw-bolder mb-4 text-dark text-center"
-                        style="font-size: medium"
-                        >{{
-                          localStorage!["email"] != null
-                            ? localStorage!["email"]
-                            : "Not Signed In"
-                        }}</b
-                      >
-                      <br />
-                      <div class="w-100 text-start mt-3">
-                        <a
-                          role="button"
-                          class="w-100 btn bg-purple text-white px-1 py-2 fw-bold rounded-pill"
-                          style="font-size: small"
-                          (click)="editProfile()"
-                          *ngIf="localStorage!['email'] != null"
-                        >
-                          Edit Profile
-                        </a>
-                        <a
-                          role="button"
-                          class="w-100 btn bg-black text-white px-1 py-2 mt-2 fw-bold rounded-pill"
-                          style="font-size: small"
-                          (click)="signOut()"
-                          *ngIf="localStorage!['email'] != null"
-                        >
-                          Sign Out
-                        </a>
-                      </div>
-                    </div>
-                  </ng-template>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="w-100 h-100 d-flex justify-content-end align-items-center d-md-none"
-          >
-            <div
-              class="p-1 btn btn-dark d-flex justify-content-center align-items-center"
-              (click)="mode = 1; drawer.toggle()"
-            >
-              <mat-icon> menu </mat-icon>
-            </div>
-          </div>
-        </div>
+        <span
+          class="text-purple-hover mx-4"
+          role="button"
+          (click)="routeToHome()"
+          >Resources</span
+        >
       </div>
     </div>
-    <div class="w-100 bg-white" style="min-height: 92.5vh; margin-top: 7.5vh">
-      <router-outlet
-        (activate)="onActivate($event)"
-        [ngRouterOutletComm]="{
-          type: 'parent',
-          sender: sendToChildEmitter,
-          receiver: onChildEvent.bind(this)
-        }"
-      ></router-outlet>
-
+    <div
+      class="d-flex justify-content-end align-items-center h-100 me-3 mx-md-4"
+    >
       <div
-        class="bg-dark border-top w-100 mt-5"
-        style="min-height: 40vh; z-index: 1"
-        *ngIf="!(location.path() | isAdmin)"
+        class="w-100 h-100 d-none d-md-flex justify-content-end align-items-center"
       >
         <div
-          class="w-100 d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-content-center px-2 px-md-5 py-2 py-md-5"
+          class="d-flex justify-content-end align-items-center"
+          style="height: 40px"
         >
+       
           <div
-            class="w-100 text-center text-md-start text-white px-3 px-md-3 py-5 py-md-3"
+            class="d-flex justify-content-between align-items-center h-100"
+            role="button"
+            [mdbPopover]="template"
+            placement="bottom"
+            [trigger]="'click'"
+            id="profile-toggle"
+            #profileToggle
+            *ngIf="isBrowser() && (location.path() | isAdmin)"
           >
-            <img
-              style="object-fit: contain; height: 40px"
-              [src]="'assets/logo_dark.png'"
-            />
-            <p class="mt-3" style="font-size: 21px">The Web3 App Store</p>
-          </div>
-          <div
-            class="row row-cols-2 row-cols-md-4 justify-content-start justify-content-md-end text-center text-md-justify w-100 text-white px-2 py-5 py-md-3 gx-0 gy-4"
-          >
-            <div class="h-100 col">
-              <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
-                Discover
-              </h3>
-              <div class="w-100 my-3" role="button" (click)="routeToHome()">
-                All Apps
-              </div>
-              <div class="w-100 my-3" role="button">New Arrivals</div>
-              <div class="w-100 my-3" role="button">Multi-Chain</div>
-            </div>
-            <div class="h-100 col">
-              <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
-                Developers
-              </h3>
-              <div class="w-100 my-3" role="button" (click)="routeToAuth()">
-                Dev Portal
-              </div>
-              <div class="w-100 my-3" role="button" (click)="routeToAuth()">
-                Get Started
-              </div>
-              <div class="my-3 w-100">
-                <a
-                  class="w-100 text-white text-decoration-none"
-                  role="button"
-                  [href]="'https://thredapps.com/docs'"
-                  target="_blank"
-                  >Documentation</a
-                >
-              </div>
-            </div>
-            <div class="h-100 col">
-              <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">
-                Company
-              </h3>
-              <div class="my-3 w-100">
-                <a
-                  class="w-100 text-white text-decoration-none"
-                  role="button"
-                  [href]="'https://thredapps.com'"
-                  target="_blank"
-                  >About</a
-                >
-              </div>
-
-              <div class="my-3 w-100">
-                <a
-                  class="w-100 text-white text-decoration-none"
-                  role="button"
-                  [href]="'https://thredapps.com'"
-                  target="_blank"
-                  >Protocol</a
-                >
-              </div>
-
-              <div class="my-3 w-100">
-                <a
-                  class="w-100 text-white text-decoration-none"
-                  role="button"
-                  [href]="'https://thredapps.com/contact'"
-                  target="_blank"
-                  >Contact</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="text-light px-2 px-md-5">
-          <div class="px-3 px-md-3 text-start py-4">
-            <hr class="d-none d-md-block" />
-            <span class="mw-100" style="font-size: small">
-              2021 - 2022 Thred Apps, Inc.
+            <span class="fw-bold mx-2 text-dark px-2 d-none d-md-block">
+              {{
+                localStorage && localStorage["name"] ? localStorage["name"] : ""
+              }}
             </span>
+            <div
+              class="rounded-circle h-100 icons bg-pink"
+              style="
+                border-style: solid;
+                border-width: 0.2rem;
+                border-color: rgb(255, 232, 248);
+                width: fit-content;
+              "
+            >
+              <img
+                class="h-100 p-0 m-auto rounded-circle"
+                style="object-fit: contain; aspect-ratio: 1"
+                [src]="'assets/profile.png'"
+                *ngIf="localStorage!['url'] == null; else profile"
+              />
+
+              <ng-template #profile>
+                <img
+                  class="h-100 p-0 m-auto rounded-circle"
+                  style="object-fit: contain; aspect-ratio: 1"
+                  [src]="localStorage!['url']"
+                />
+              </ng-template>
+
+              <ng-template #template>
+                <div
+                  class="popover-body-padding text-center px-3 animate__animated animate__fadeIn"
+                  id="profile-menu"
+                  style="min-width: 250px"
+                >
+                  <div class="big-design-header" style="height: 40px">
+                    <mat-icon
+                      class="fw-bold text-purple"
+                      role="button"
+                      (click)="profileToggle.click()"
+                    >
+                      close
+                    </mat-icon>
+                  </div>
+                  <b
+                    class="fw-bolder mb-4 text-dark text-center"
+                    style="font-size: medium"
+                    >{{
+                      localStorage!["email"] != null
+                        ? localStorage!["email"]
+                        : "Not Signed In"
+                    }}</b
+                  >
+                  <br />
+                  <div class="w-100 text-start mt-3">
+                    <a
+                      role="button"
+                      class="w-100 btn bg-purple text-white px-1 py-2 fw-bold rounded-pill"
+                      style="font-size: small"
+                      (click)="editProfile()"
+                      *ngIf="localStorage!['email'] != null"
+                    >
+                      Edit Profile
+                    </a>
+                    <a
+                      role="button"
+                      class="w-100 btn bg-black text-white px-1 py-2 mt-2 fw-bold rounded-pill"
+                      style="font-size: small"
+                      (click)="signOut()"
+                      *ngIf="localStorage!['email'] != null"
+                    >
+                      Sign Out
+                    </a>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>
+<div class="w-100 bg-white" style="min-height: 92.5vh; margin-top: 7.5vh">
+  <router-outlet
+    (activate)="onActivate($event)"
+    [ngRouterOutletComm]="{
+      type: 'parent',
+      sender: sendToChildEmitter,
+      receiver: onChildEvent.bind(this)
+    }"
+  ></router-outlet>
+
+  <div
+    class="bg-dark border-top w-100 mt-5"
+    style="min-height: 40vh; z-index: 1"
+    *ngIf="!(location.path() | isAdmin)"
+  >
+    <div
+      class="w-100 d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-content-center px-2 px-md-5 py-2 py-md-5"
+    >
+      <div
+        class="w-100 text-center text-md-start text-white px-3 px-md-3 py-5 py-md-3"
+      >
+        <img
+          style="object-fit: contain; height: 40px"
+          [src]="'assets/logo_dark.png'"
+        />
+        <p class="mt-3" style="font-size: 21px">Your Web3 Identity</p>
+      </div>
+      <div
+        class="row row-cols-2 row-cols-md-4 justify-content-start justify-content-md-end text-center text-md-justify w-100 text-white px-2 py-5 py-md-3 gx-0 gy-4"
+      >
+        <div class="h-100 col">
+          <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Discover</h3>
+          <div class="w-100 my-3" role="button" (click)="routeToHome()">
+            All Apps
+          </div>
+          <div class="w-100 my-3" role="button">New Arrivals</div>
+          <div class="w-100 my-3" role="button">Multi-Chain</div>
+        </div>
+        <div class="h-100 col">
+          <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Developers</h3>
+          <div class="w-100 my-3" role="button" (click)="routeToAuth()">
+            Dev Portal
+          </div>
+          <div class="w-100 my-3" role="button" (click)="routeToAuth()">
+            Get Started
+          </div>
+          <div class="my-3 w-100">
+            <a
+              class="w-100 text-white text-decoration-none"
+              role="button"
+              [href]="'https://thredapps.com/docs'"
+              target="_blank"
+              >Documentation</a
+            >
+          </div>
+        </div>
+        <div class="h-100 col">
+          <h3 class="w-100 fw-bold mb-4" style="font-size: 20px">Company</h3>
+          <div class="my-3 w-100">
+            <a
+              class="w-100 text-white text-decoration-none"
+              role="button"
+              [href]="'https://thredapps.com'"
+              target="_blank"
+              >About</a
+            >
+          </div>
+
+          <div class="my-3 w-100">
+            <a
+              class="w-100 text-white text-decoration-none"
+              role="button"
+              [href]="'https://thredapps.com'"
+              target="_blank"
+              >Protocol</a
+            >
+          </div>
+
+          <div class="my-3 w-100">
+            <a
+              class="w-100 text-white text-decoration-none"
+              role="button"
+              [href]="'https://thredapps.com/contact'"
+              target="_blank"
+              >Contact</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-light px-2 px-md-5">
+      <div class="px-3 px-md-3 text-start py-4">
+        <hr class="d-none d-md-block" />
+        <span class="mw-100" style="font-size: small">
+          2021 - 2022 Thred Apps, Inc.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

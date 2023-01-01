@@ -15,11 +15,10 @@ import { AuthComponent } from './auth/auth.component';
 import { Developer } from './developer.model';
 import { LoadService } from './load.service';
 import { ProfileComponent } from './profile/profile.component';
-import { Util } from './util.model';
+import { Wallet } from './wallet.model';
 import Web3 from 'web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Meta, Title } from '@angular/platform-browser';
-import { AppFrameComponent } from './app-frame/app-frame.component';
 // import * as AOS from 'aos';
 
 @Component({
@@ -30,7 +29,7 @@ import { AppFrameComponent } from './app-frame/app-frame.component';
 export class AppComponent {
   expandedSearch = false;
   mode = 0;
-  selectedInstall?: Util;
+  selectedInstall?: Wallet;
   localStorage?: Storage;
 
   constructor(
@@ -49,7 +48,7 @@ export class AppComponent {
     }
   }
 
-  featuredUtil?: Util;
+  featuredUtil?: Wallet;
   display = true;
   connected?: string = undefined;
 
@@ -63,6 +62,15 @@ export class AppComponent {
       this.mode = 2;
       this.sidenav?.toggle();
     }
+  }
+
+  isMobile() {
+    if (isPlatformBrowser(this.platformID)) {
+      let height = window.innerHeight;
+      let width = window.innerWidth;
+      return width < height;
+    }
+    return false;
   }
 
   @ViewChild('drawer') public sidenav?: MatSidenav;
@@ -91,21 +99,6 @@ export class AppComponent {
     });
   }
 
-  openApp(data: {
-    provider?: ethers.providers.Web3Provider;
-    address?: string;
-    app?: Util;
-  }) {
-    if (!data.provider || !data.app || !data.address) {
-      return;
-    }
-    const modalRef = this.dialog.open(AppFrameComponent, {
-      maxHeight: 'calc(var(--vh, 1vh) * 100)',
-      maxWidth: '100vw',
-      panelClass: 'app-full-bleed-dialog',
-      data,
-    });
-  }
 
   viewProfile() {
     this.loadService.currentUser.then((user) => {

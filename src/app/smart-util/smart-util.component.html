@@ -1,759 +1,1011 @@
-<div style="max-width: 100vw; max-height: 80vh; overflow: hidden">
+<div class="p-0">
   <div
-    mat-dialog-title
-    class="d-flex pt-4 pt-md-0 px-4 px-md-0 justify-content-between align-items-center w-100"
+    class="d-flex px-3 justify-content-between align-items-center frame-header bg-{{
+      mode == 1 ? 'dark' : 'white'
+    }}"
   >
-    <h2 class="big-design-input-title text-center">App Details</h2>
-    <a role="button" (click)="close()">
+    <!-- <a role="button">
       <mat-icon
         class="d-inline-flex justify-content-center align-items-center fw-bolder h-100"
         style="aspect-ratio: 1; font-size: xx-large; z-index: 50"
       >
-        close
+        
       </mat-icon>
-    </a>
+      
+    </a> -->
+    <p
+      class="btn bg-transparent rounded-pill fw-bold text-{{
+        mode == 1 ? 'white' : 'dark'
+      }} border-{{
+        mode == 1 ? 'white' : '0'
+      }} d-flex justify-content-between align-content-center px-{{
+        mode == 1 ? '3' : '2'
+      }} py-2 my-auto"
+      (click)="loading ? null : mode == 0 ? close() : (mode = 0)"
+    >
+      <mat-icon class="me-{{ mode == 1 ? '1' : '0' }}" style="aspect-ratio: 1">
+        {{ mode == 1 ? "arrow_back_ios" : "close" }}
+      </mat-icon>
+      <ng-container *ngIf="mode == 1"> Back </ng-container>
+    </p>
+
+    <!-- <p
+      class="btn bg-purple rounded-pill fw-bold text-white d-flex justify-content-between align-content-center px-3 py-2 my-auto"
+      (click)="mode == 0 ? close() : (mode = 0)"
+    >
+      <ng-container *ngIf="mode == 1"> Save Layout</ng-container>
+      <ng-container *ngIf="mode == 0"> Save Wallet</ng-container>
+      <mat-icon class="fw-bold ms-2" style="aspect-ratio: 1">
+        check_circle
+      </mat-icon>
+    </p> -->
+
+    <button
+      class="btn bg-{{ mode == 0 ? 'purple' : 'transparent' }} border-{{
+        mode == 1 ? 'white' : '0'
+      }} rounded-pill fw-bold text-white d-flex justify-content-between align-content-center px-3 py-2 my-auto"
+      (click)="mode == 0 ? save() : (loading = true); layoutBuilder?.save()"
+      [disabled]="loading"
+    >
+      <ng-container *ngIf="loading; else buttonTitles">
+        Saving
+        <span
+          class="spinner-border spinner-border-sm ms-2 m-auto"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </ng-container>
+
+      <ng-template #buttonTitles>
+        <ng-container *ngIf="mode == 1"> Save Layout</ng-container>
+        <ng-container *ngIf="mode == 0"> Save Wallet</ng-container>
+        <mat-icon class="fw-bold ms-2" style="aspect-ratio: 1">
+          check_circle
+        </mat-icon>
+      </ng-template>
+    </button>
   </div>
-  <mat-dialog-content style="overflow: hidden">
-    <div style="overflow-y: scroll; height: 65vh">
-      <form class="mt-3 pb-4 px-0 w-100" [formGroup]="utilForm">
-        <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Display Images</h3>
+  <div
+    class="frame-body d-flex justify-content-between align-content-center w-100"
+    *ngIf="mode == 0 && wallet"
+  >
+    <div class="p-0 h-100">
+      <div
+        class="p-3 pe-0 d-flex justify-content-center align-content-center w-100 h-100"
+      >
+        <div
+          class="m-auto big-design-card rounded-10 p-3 text-start h-100"
+          style="overflow-y: scroll; width: 35vw"
+        >
+          <div class="big-design-header">
+            <h2 class="big-design-input-title text-start">
+              Wallet Information
+            </h2>
+          </div>
+          <div class="big-design-body">
+            <form class="m-3 pb-4 px-0" [formGroup]="utilForm">
+              <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
+                <h3 class="w-100 mb-4" style="font-size: 20px">
+                  Display Images
+                </h3>
 
-          <div class="rounded-15 border w-100" style="aspect-ratio: 1.5">
-            <div
-              class="position-relative w-100 h-100 animate__animated animate__fadeIn zoom"
-            >
-              <div
-                class="m-img-input position-relative h-100 w-100 bg-purple rounded-15 shadow d-flex justify-content-center align-content-center"
-                role="button"
-                (click)="marketingImgInput.click()"
-              >
-                <img
-                  class="h-100 w-100 m-img-input-display"
-                  style="object-fit: cover"
-                  [src]="utilForm.controls['marketingImg'].value | safeUrl"
-                  role="button"
-                />
-                <input
-                  #marketingImgInput
-                  type="file"
-                  (change)="fileChangeEvent($event, 0)"
-                  style="display: none"
-                />
-                <mat-icon
-                  class="text-white shadow fw-bolder position-absolute"
-                  style="z-index: 48; top: 50%"
-                  >upload
-                </mat-icon>
-              </div>
-
-              <div
-                class="position-absolute w-md-auto bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
-                style="
-                  object-fit: contain;
-                  aspect-ratio: 1;
-                  height: 20%;
-                  bottom: 10px;
-                  right: 10px;
-                  overflow: hidden;
-                "
-              >
-                <div
-                  class="m-auto position-relative img-input"
-                  style="height: 90%; width: 90%; overflow: hidden"
-                  role="button"
-                  (click)="appImgInput.click()"
-                >
-                  <img
-                    class="w-100 h-100 position-absolute"
-                    style="z-index: 50; object-fit: contain"
-                    [src]="utilForm.controls['appImg'].value | safeUrl"
-                  />
+                <div class="rounded-15 border w-100" style="aspect-ratio: 1.5">
                   <div
-                    class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
-                    style="z-index: 51; opacity: 0.5"
+                    class="position-relative w-100 h-100 animate__animated animate__fadeIn zoom"
                   >
-                    <mat-icon class="m-auto">upload </mat-icon>
+                    <div
+                      class="m-img-input position-relative h-100 w-100 bg-purple rounded-15 shadow d-flex justify-content-center align-content-center"
+                      role="button"
+                      (click)="marketingImgInput.click()"
+                    >
+                      <img
+                        class="h-100 w-100 m-img-input-display"
+                        style="object-fit: cover"
+                        [src]="
+                          utilForm.controls['marketingImg'].value | safeUrl
+                        "
+                        role="button"
+                      />
+                      <input
+                        #marketingImgInput
+                        type="file"
+                        (change)="fileChangeEvent($event, 0)"
+                        style="display: none"
+                      />
+                      <mat-icon
+                        class="text-white shadow fw-bolder position-absolute"
+                        style="z-index: 48; top: 50%"
+                        >upload
+                      </mat-icon>
+                    </div>
+
+                    <div
+                      class="position-absolute w-md-auto bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
+                      style="
+                        object-fit: contain;
+                        aspect-ratio: 1;
+                        height: 20%;
+                        bottom: 10px;
+                        right: 10px;
+                        overflow: hidden;
+                      "
+                    >
+                      <div
+                        class="m-auto position-relative img-input"
+                        style="height: 90%; width: 90%; overflow: hidden"
+                        role="button"
+                        (click)="appImgInput.click()"
+                      >
+                        <img
+                          class="w-100 h-100 position-absolute"
+                          style="z-index: 50; object-fit: contain"
+                          [src]="utilForm.controls['appImg'].value | safeUrl"
+                        />
+                        <div
+                          class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
+                          style="z-index: 51; opacity: 0.5"
+                        >
+                          <mat-icon class="m-auto">upload </mat-icon>
+                        </div>
+                        <input
+                          #appImgInput
+                          type="file"
+                          (change)="fileChangeEvent($event, 1)"
+                          style="display: none"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <input
-                    #appImgInput
-                    type="file"
-                    (change)="fileChangeEvent($event, 1)"
-                    style="display: none"
-                  />
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        <div class="w-100 py-5 text-purple text-center fw-bold">
-          <i><span style="font-size: small">Images</span></i>
-          <hr class="fw-bolder border-1" />
-        </div>
+              <div class="w-100 py-5 text-purple text-center fw-bold">
+                <i><span style="font-size: small">Images</span></i>
+                <hr class="fw-bolder border-1" />
+              </div>
 
-        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Display Name</h3>
+              <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                <h3 class="w-100 mb-4" style="font-size: 20px">Display Name</h3>
 
-          <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
-            <mat-form-field
-              class="w-100"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <input
-                matInput
-                class="bg-transparent text-truncate"
-                type="text"
-                name="name"
-                formControlName="name"
-                placeholder="App Name"
-              />
-              <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 mb-0 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Description</h3>
-
-          <div class="rounded-15 border w-100 pb-2 px-4 mb-4">
-            <mat-form-field
-              class="w-100"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <textarea
-                matInput
-                class="bg-transparent bg-info pb-2"
-                type="text"
-                name="name"
-                formControlName="description"
-                placeholder="App Description"
-                style="min-height: 100px"
-              >
-              </textarea>
-              <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Available Networks</h3>
-
-          <div class="rounded-pill border w-100 pe-4 mb-3">
-            <mat-form-field
-              class="w-100"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <mat-select
-                formControlName="networks"
-                (selectionChange)="changed($event)"
-                class="my-auto d-flex justify-content-start align-items-center"
-                multiple
-              >
-                <mat-select-trigger class="text-dark h-100 m-auto bg-danger">
-                  <div
-                    class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+                  <mat-form-field
+                    class="w-100"
+                    appearance="legacy"
+                    floatLabel="never"
                   >
-                    <!-- [mdbPopover]="template"
-                      placement="bottom"
-                      trigger="hover" -->
-                    <div
-                      class="position-relative"
-                      style="width: 95px; height: 47.5px"
-                      role="button"
-                    >
-                      <div
-                        class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                        style="
-                          object-fit: contain;
-                          aspect-ratio: 1;
-                          top: 0px;
-                          left: 0px;
-                          overflow: hidden;
-                          z-index: 50;
-                        "
-                      >
-                        <img
-                          class="m-auto rounded-circle"
-                          style="object-fit: contain; height: 85%; width: 85%"
-                          [src]="
-                            (utilForm.controls['networks'].value ?? [])[0]?.url
-                          "
-                          role="button"
-                        />
-                      </div>
-                      <div
-                        class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute fw-bold"
-                        *ngIf="
-                          ((utilForm.controls['networks'].value ?? []).length ??
-                            0) >
-                          1
-                        "
-                        style="
-                          object-fit: contain;
-                          aspect-ratio: 1;
-                          top: 0px;
-                          left: 25px;
-                          overflow: hidden;
-                          z-index: 49;
-                        "
-                      >
-                        <img
-                          class="m-auto rounded-circle"
-                          style="object-fit: contain; height: 85%; width: 85%"
-                          [src]="
-                            (utilForm.controls['networks'].value ?? [])[1].url
-                          "
-                        />
-                      </div>
+                    <input
+                      matInput
+                      class="bg-transparent text-truncate"
+                      type="text"
+                      name="name"
+                      formControlName="name"
+                      placeholder="Wallet Name"
+                    />
+                    <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
+                  </mat-form-field>
+                </div>
+              </div>
 
-                      <div
-                        class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                        *ngIf="
-                          ((utilForm.controls['networks'].value ?? []).length ??
-                            0) <
-                          2
-                        "
-                        style="
-                          object-fit: contain;
-                          aspect-ratio: 1;
-                          top: 0px;
-                          left: 25px;
-                          overflow: hidden;
-                          z-index: 48;
-                          opacity: 0.5;
-                        "
-                      >
-                        <mat-icon
-                          class="m-auto rounded-circle bg-purple text-white"
-                          style="object-fit: contain; height: 85%; width: 85%"
-                        >
-                        </mat-icon>
-                      </div>
+              <div class="wrap-input1 w-100 pt-3 mb-0 px-4 px-md-5">
+                <h3 class="w-100 mb-4" style="font-size: 20px">Description</h3>
 
-                      <div
-                        class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                        *ngIf="
-                          ((utilForm.controls['networks'].value ?? []).length ??
-                            0) >
-                          2
-                        "
-                        style="
-                          object-fit: contain;
-                          aspect-ratio: 1;
-                          top: 0px;
-                          left: 50px;
-                          overflow: hidden;
-                          z-index: 48;
-                          opacity: 0.5;
-                        "
-                      >
-                        <!-- <img
-                          class="m-auto rounded-circle bg-purple"
-                          style="object-fit: contain; height: 85%; width: 85%"
-                        /> -->
-                        <mat-icon
-                          class="m-auto rounded-circle bg-purple text-white"
-                          style="object-fit: contain; height: 85%; width: 85%"
-                        >
-                        </mat-icon>
-                      </div>
-                    </div>
-                    <span
-                      class="text-start text-truncate w-50 ms-3"
-                      style="font-size: large"
-                    >
-                      {{ chains(utilForm.controls["networks"].value ?? []) }}
-                    </span>
-                  </div>
-                </mat-select-trigger>
-
-                <mat-optgroup
-                  *ngFor="let category of categories"
-                  [label]="category.name"
-                >
-                  <mat-option
-                    *ngFor="let chain of category.chains ?? []"
-                    [value]="chain"
+                <div class="rounded-15 border w-100 pb-2 px-4 mb-4">
+                  <mat-form-field
+                    class="w-100"
+                    appearance="legacy"
+                    floatLabel="never"
                   >
-                    <div
-                      class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                    <textarea
+                      matInput
+                      class="bg-transparent bg-info pb-2"
+                      type="text"
+                      name="name"
+                      formControlName="description"
+                      placeholder="Wallet Description"
+                      style="min-height: 100px"
                     >
-                      <div
-                        class="d-flex justify-content-start align-items-center"
-                        style="height: 22.5px"
+                    </textarea>
+                    <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
+                <h3 class="w-100 mb-4" style="font-size: 20px">
+                  Available Networks
+                </h3>
+
+                <div class="rounded-pill border w-100 pe-4 mb-3">
+                  <mat-form-field
+                    class="w-100"
+                    appearance="legacy"
+                    floatLabel="never"
+                  >
+                    <mat-select
+                      formControlName="networks"
+                      (selectionChange)="changed($event)"
+                      class="my-auto d-flex justify-content-start align-items-center"
+                      multiple
+                    >
+                      <mat-select-trigger
+                        class="text-dark h-100 m-auto bg-danger"
                       >
-                        <img
-                          id="image"
-                          *ngIf="chain?.url"
-                          class="me-2 h-100"
-                          [src]="chain?.url"
-                          style="object-fit: cover; aspect-ratio: 1"
-                        />
-                        <span class="py-1" style="font-size: medium">
-                          {{ chain?.name ?? "No Network Selected" }}
-                        </span>
-                      </div>
-                      <div class="h-100 p-3">
                         <div
-                          class="bg-white border rounded-circle p-1"
-                          style="height: 22.5px; aspect-ratio: 1"
+                          class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
                         >
+                          <!-- [mdbPopover]="template"
+                          placement="bottom"
+                          trigger="hover" -->
                           <div
-                            class="border rounded-circle bg-{{
-                              contains(chain) ? 'purple' : 'light'
-                            }}"
-                            style="aspect-ratio: 1"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </mat-option>
-                </mat-optgroup>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="w-100 py-5 text-purple text-center fw-bold">
-          <i><span style="font-size: small">General</span></i>
-          <hr class="fw-bolder border-1" />
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Listing Price</h3>
-
-          <div
-            class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
-          >
-            <mat-form-field
-              class="mb-0 pe-3 w-75"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <input
-                matInput
-                currencyMask
-                [options]="customCurrencyMaskConfig"
-                class="mb-2 text-truncate"
-                type="text"
-                name="name"
-                formControlName="price"
-                placeholder="Price"
-              />
-            </mat-form-field>
-            <div
-              class="bg-white rounded-circle shadow p-1"
-              style="height: 52.5px !important; width: 52.5px !important"
-              role="button"
-              [mdbPopover]="template"
-              placement="top"
-              [trigger]="'hover'"
-            >
-              <div
-                class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
-                style="aspect-ratio: 1"
-              >
-                <mat-icon class="text-white m-auto" style="font-size: 25px">
-                  smart_toy
-                </mat-icon>
-              </div>
-            </div>
-            <ng-template #template>
-              <div class="popover-body-padding">
-                <b class="fw-bolder mb-4 text-light-success">Relative Prices</b>
-                <br />
-                Prices are relative to the different networks. Ex. 100 ETH, 100
-                MATIC.
-              </div>
-            </ng-template>
-          </div>
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Payout Address</h3>
-
-          <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
-            <mat-form-field
-              class="w-100"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <input
-                matInput
-                class="bg-transparent text-truncate"
-                type="text"
-                name="name"
-                formControlName="wallet"
-                placeholder="Payout Address"
-              />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="w-100 py-5 text-purple text-center fw-bold">
-          <i><span style="font-size: small">Payment</span></i>
-          <hr class="fw-bolder border-1" />
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Install Webhook</h3>
-
-          <div
-            class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
-          >
-            <mat-form-field
-              class="mb-0 pe-3 w-75"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <input
-                matInput
-                class="mb-2 text-truncate"
-                type="text"
-                name="name"
-                formControlName="installWebhook"
-                placeholder="Enter Webhook URL"
-              />
-            </mat-form-field>
-            <div
-              class="bg-white rounded-circle shadow p-1"
-              style="height: 52.5px !important; width: 52.5px !important"
-              role="button"
-              [mdbPopover]="webhook1Template"
-              placement="top"
-              [trigger]="'hover'"
-              (click)="
-                sendTestHook(utilForm.controls['installWebhook'].value, 0)
-              "
-            >
-              <div
-                class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
-                style="aspect-ratio: 1"
-              >
-                <mat-icon class="text-white m-auto" style="font-size: 25px">
-                  smart_toy
-                </mat-icon>
-              </div>
-            </div>
-
-            <ng-template #webhook1Template>
-              <div class="popover-body-padding">
-                <b class="fw-bolder mb-4 text-light-success"
-                  >Fired when App installed</b
-                >
-                <br />
-                Press me to send a sample payload to your webhook!
-              </div>
-            </ng-template>
-          </div>
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Uninstall Webhook</h3>
-
-          <div
-            class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
-          >
-            <mat-form-field
-              class="mb-0 pe-3 w-75"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <input
-                matInput
-                class="mb-2 text-truncate"
-                type="text"
-                name="name"
-                formControlName="uninstallWebhook"
-                placeholder="Enter Webhook URL"
-              />
-            </mat-form-field>
-            <div
-              class="bg-white rounded-circle shadow p-1"
-              style="height: 52.5px !important; width: 52.5px !important"
-              role="button"
-              [mdbPopover]="webhook2Template"
-              placement="top"
-              [trigger]="'hover'"
-              (click)="
-                sendTestHook(utilForm.controls['uninstallWebhook'].value, 1)
-              "
-            >
-              <div
-                class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon danger-hover"
-                style="aspect-ratio: 1"
-              >
-                <mat-icon class="text-white m-auto" style="font-size: 25px">
-                  smart_toy
-                </mat-icon>
-              </div>
-            </div>
-            <ng-template #webhook2Template>
-              <div class="popover-body-padding">
-                <b class="fw-bolder mb-4 text-danger"
-                  >Fired when App uninstalled</b
-                >
-                <br />
-                Press me to send a sample payload to your webhook!
-              </div>
-            </ng-template>
-          </div>
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Load URL</h3>
-
-          <div
-            class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
-          >
-            <mat-form-field
-              class="mb-0 pe-3 w-75"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <input
-                matInput
-                class="mb-2 text-truncate"
-                type="text"
-                name="name"
-                formControlName="loadURL"
-                placeholder="Enter Load URL"
-              />
-            </mat-form-field>
-            <div
-              class="bg-white rounded-circle shadow p-1"
-              style="height: 52.5px !important; width: 52.5px !important"
-              role="button"
-              [mdbPopover]="webhook3Template"
-              placement="top"
-              [trigger]="'hover'"
-            >
-              <div
-                class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
-                style="aspect-ratio: 1"
-              >
-                <mat-icon class="text-white m-auto" style="font-size: 25px">
-                  smart_toy
-                </mat-icon>
-              </div>
-            </div>
-
-            <ng-template #webhook3Template>
-              <div class="popover-body-padding">
-                <b class="fw-bolder mb-4 text-light-success"
-                  >Fired when App Launched</b
-                >
-                <br />
-                This URL is loaded for customers when they launch your app!
-              </div>
-            </ng-template>
-          </div>
-        </div>
-
-        <div class="w-100 py-5 text-purple text-center fw-bold">
-          <i><span style="font-size: small">Technical</span></i>
-          <hr class="fw-bolder border-1" />
-        </div>
-
-        <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-          <h3 class="w-100 mb-4" style="font-size: 20px">Availability</h3>
-          <mat-slide-toggle class="mb-4" formControlName="available">
-            {{ utilForm.controls["available"].value ? "Listed" : "Not Listed" }}
-          </mat-slide-toggle>
-        </div>
-
-        <div
-          class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
-          [hidden]="utilForm.controls['available'].value"
-        >
-          <h3 class="w-100 mb-4" style="font-size: 20px">
-            Developer Whitelist
-          </h3>
-          <div
-            class="rounded-pill border w-100 pb-2 px-4 mb-4"
-            *ngIf="15 as threshold"
-          >
-            <mat-form-field
-              class="w-100"
-              appearance="legacy"
-              floatLabel="never"
-            >
-              <mat-chip-list #chipList aria-label="Product selection">
-                <ng-container
-                  *ngFor="let address of selectedAddresses ?? []; index as i"
-                >
-                  <ng-container
-                    *ngIf="
-                      (address | addressValidate) ? 'y' : 'n' as validAddress
-                    "
-                  >
-                    <ng-container
-                      *ngIf="
-                        (
-                          selectedChain?.id == 1
-                            ? validAddress == 'y'
-                              ? validAddress == 'y'
-                              : (address | nameEnsLookup | async)
-                            : validAddress == 'y'
-                        )
-                          ? 'y'
-                          : 'n' as result
-                      "
-                    >
-                      <mat-chip
-                        [selectable]="selectable"
-                        class="bg-{{
-                          result == 'y' ? 'light-success' : 'light-danger'
-                        }} close-{{ i }}"
-                        [mdbPopover]="template"
-                        placement="right"
-                        trigger="click"
-                        style="cursor: pointer"
-                        *ngIf="
-                          address
-                            | address
-                              : false
-                              : address.length > threshold as displayAddress
-                        "
-                      >
-                        <div class="category-chip__text text-white">
-                          {{ displayAddress }}
-                        </div>
-                        <div
-                          matChipRemove
-                          class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-{{
-                            result == 'y' ? 'light-success' : 'light-danger'
-                          }} text-white fw-bolder"
-                          style="
-                            width: fit-content;
-                            aspect-ratio: 1/1;
-                            opacity: 1;
-                            pointer-events: none;
-                          "
-                        >
-                          <mat-icon>
-                            {{ result == "y" ? "check_circle" : "error" }}
-                          </mat-icon>
-                        </div>
-                        <ng-template #template>
-                          <div
-                            class="w-100 h-100 popover-menu menu-{{
-                              i
-                            }} popover-body-padding"
+                            class="position-relative"
+                            style="width: 95px; height: 47.5px"
+                            role="button"
                           >
-                            <ng-container *ngIf="result == 'y'">
-                              <b class="fw-bolder mb-4 text-light-success"
-                                >Verified Address</b
+                            <div
+                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                              style="
+                                object-fit: contain;
+                                aspect-ratio: 1;
+                                top: 0px;
+                                left: 0px;
+                                overflow: hidden;
+                                z-index: 50;
+                              "
+                            >
+                              <img
+                                class="m-auto rounded-circle"
+                                style="
+                                  object-fit: contain;
+                                  height: 85%;
+                                  width: 85%;
+                                "
+                                [src]="
+                                  (utilForm.controls['networks'].value ?? [])[0]
+                                    ?.url
+                                "
+                                role="button"
+                              />
+                            </div>
+                            <div
+                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute fw-bold"
+                              *ngIf="
+                                ((utilForm.controls['networks'].value ?? [])
+                                  .length ??
+                                  0) >
+                                1
+                              "
+                              style="
+                                object-fit: contain;
+                                aspect-ratio: 1;
+                                top: 0px;
+                                left: 25px;
+                                overflow: hidden;
+                                z-index: 49;
+                              "
+                            >
+                              <img
+                                class="m-auto rounded-circle"
+                                style="
+                                  object-fit: contain;
+                                  height: 85%;
+                                  width: 85%;
+                                "
+                                [src]="
+                                  (utilForm.controls['networks'].value ?? [])[1]
+                                    .url
+                                "
+                              />
+                            </div>
+
+                            <div
+                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                              *ngIf="
+                                ((utilForm.controls['networks'].value ?? [])
+                                  .length ??
+                                  0) <
+                                2
+                              "
+                              style="
+                                object-fit: contain;
+                                aspect-ratio: 1;
+                                top: 0px;
+                                left: 25px;
+                                overflow: hidden;
+                                z-index: 48;
+                                opacity: 0.5;
+                              "
+                            >
+                              <mat-icon
+                                class="m-auto rounded-circle bg-purple text-white"
+                                style="
+                                  object-fit: contain;
+                                  height: 85%;
+                                  width: 85%;
+                                "
                               >
-                              <br />
-                              The address exists and will be whitelisted for
-                              this app.
-                            </ng-container>
-                            <ng-container *ngIf="result != 'y'">
-                              <b class="fw-bolder mb-4 text-light-danger"
-                                >Invalid Address</b
+                              </mat-icon>
+                            </div>
+
+                            <div
+                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                              *ngIf="
+                                ((utilForm.controls['networks'].value ?? [])
+                                  .length ??
+                                  0) >
+                                2
+                              "
+                              style="
+                                object-fit: contain;
+                                aspect-ratio: 1;
+                                top: 0px;
+                                left: 50px;
+                                overflow: hidden;
+                                z-index: 48;
+                                opacity: 0.5;
+                              "
+                            >
+                              <mat-icon
+                                class="m-auto rounded-circle bg-purple text-white"
+                                style="
+                                  object-fit: contain;
+                                  height: 85%;
+                                  width: 85%;
+                                "
                               >
-                              <br />
-                              The address does not exist and will not be
-                              whitelisted for this app.
-                            </ng-container>
-                            <br />
-                            <div class="w-100 h-100 mt-3">
-                              <button
-                                (click)="remove(address, result == 'y')"
-                                id="removeBtn"
-                                class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
-                              >
-                                Remove
-                              </button>
+                              </mat-icon>
                             </div>
                           </div>
-                        </ng-template>
-                      </mat-chip>
-                    </ng-container>
-                  </ng-container>
+                          <span
+                            class="text-start text-truncate w-50 ms-3"
+                            style="font-size: large"
+                          >
+                            {{
+                              chains(utilForm.controls["networks"].value ?? [])
+                            }}
+                          </span>
+                        </div>
+                      </mat-select-trigger>
+
+                      <mat-optgroup
+                        *ngFor="let category of categories"
+                        [label]="category.name"
+                      >
+                        <mat-option
+                          *ngFor="let chain of category.chains ?? []"
+                          [value]="chain"
+                        >
+                          <div
+                            class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                          >
+                            <div
+                              class="d-flex justify-content-start align-items-center"
+                              style="height: 22.5px"
+                            >
+                              <img
+                                id="image"
+                                *ngIf="chain?.url"
+                                class="me-2 h-100 rounded-circle"
+                                [src]="chain?.url"
+                                style="object-fit: cover; aspect-ratio: 1"
+                              />
+                              <span class="py-1" style="font-size: medium">
+                                {{ chain?.name ?? "No Network Selected" }}
+                              </span>
+                            </div>
+                            <div class="h-100 p-3">
+                              <div
+                                class="bg-white border rounded-circle p-1"
+                                style="height: 22.5px; aspect-ratio: 1"
+                              >
+                                <div
+                                  class="border rounded-circle bg-{{
+                                    contains(chain) ? 'purple' : 'light'
+                                  }}"
+                                  style="aspect-ratio: 1"
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                        </mat-option>
+                      </mat-optgroup>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="w-100 py-5 text-purple text-center fw-bold">
+                <i><span style="font-size: small">General</span></i>
+                <hr class="fw-bolder border-1" />
+              </div>
+
+              <!-- <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+              <h3 class="w-100 mb-4" style="font-size: 20px">Listing Price</h3>
+    
+              <div
+                class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
+              >
+                <mat-form-field
+                  class="mb-0 pe-3 w-75"
+                  appearance="legacy"
+                  floatLabel="never"
+                >
+                  <input
+                    matInput
+                    currencyMask
+                    [options]="customCurrencyMaskConfig"
+                    class="mb-2 text-truncate"
+                    type="text"
+                    name="name"
+                    formControlName="price"
+                    placeholder="Price"
+                  />
+                </mat-form-field>
+                <div
+                  class="bg-white rounded-circle shadow p-1"
+                  style="height: 52.5px !important; width: 52.5px !important"
+                  role="button"
+                  [mdbPopover]="template"
+                  placement="top"
+                  [trigger]="'hover'"
+                >
+                  <div
+                    class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
+                    style="aspect-ratio: 1"
+                  >
+                    <mat-icon class="text-white m-auto" style="font-size: 25px">
+                      smart_toy
+                    </mat-icon>
+                  </div>
+                </div>
+                <ng-template #template>
+                  <div class="popover-body-padding">
+                    <b class="fw-bolder mb-4 text-light-success">Relative Prices</b>
+                    <br />
+                    Prices are relative to the different networks. Ex. 100 ETH, 100
+                    MATIC.
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+    
+            <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+              <h3 class="w-100 mb-4" style="font-size: 20px">Payout Address</h3>
+    
+              <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+                <mat-form-field
+                  class="w-100"
+                  appearance="legacy"
+                  floatLabel="never"
+                >
+                  <input
+                    matInput
+                    class="bg-transparent text-truncate"
+                    type="text"
+                    name="name"
+                    formControlName="wallet"
+                    placeholder="Payout Address"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+    
+            <div class="w-100 py-5 text-purple text-center fw-bold">
+              <i><span style="font-size: small">Payment</span></i>
+              <hr class="fw-bolder border-1" />
+            </div> -->
+
+              <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
+                <h3 class="w-100 mb-4" style="font-size: 20px">
+                  Account Generation
+                </h3>
+
+                <div class="rounded-pill border w-100 pe-4 mb-3">
+                  <mat-form-field
+                    class="w-100"
+                    appearance="legacy"
+                    floatLabel="never"
+                  >
+                    <mat-select
+                      formControlName="authStyle"
+                      class="my-auto d-flex justify-content-start align-items-center"
+                      (selectionChange)="authChanged($event)"
+                    >
+                      <mat-select-trigger
+                        class="text-dark h-100 m-auto bg-danger"
+                      >
+                        <div
+                          class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                        >
+                          <div style="height: 47.5px"></div>
+                          <div
+                            class="text-start text-truncate w-50 ms-2"
+                            style="font-size: large"
+                          >
+                            {{
+                              method(utilForm.controls["authStyle"].value ?? 0)
+                            }}
+                          </div>
+                        </div>
+                      </mat-select-trigger>
+
+                      <mat-optgroup
+                        *ngFor="let category of authCategories"
+                        [label]="category.name"
+                      >
+                        <mat-option
+                          *ngFor="let method of category.methods ?? []"
+                          [value]="method.id"
+                        >
+                          <div
+                            class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                          >
+                            <div
+                              class="d-flex justify-content-start align-items-center"
+                              style="height: 22.5px"
+                            >
+                              <span class="py-1" style="font-size: medium">
+                                {{ method?.name ?? "Choose a method" }}
+                              </span>
+                            </div>
+                          </div>
+                        </mat-option>
+                      </mat-optgroup>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <ng-container
+                *ngIf="utilForm.controls['authStyle'].value as auth"
+              >
+                <ng-container *ngIf="auth == 1">
+                  <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                    <h3 class="w-100 mb-4" style="font-size: 20px">
+                      Availability
+                    </h3>
+                    <mat-slide-toggle class="mb-4" formControlName="available">
+                      {{
+                        utilForm.controls["available"].value
+                          ? "Any Email"
+                          : "Whitelisted Domains"
+                      }}
+                    </mat-slide-toggle>
+                  </div>
+
+                  <div
+                    class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
+                    [hidden]="utilForm.controls['available'].value"
+                  >
+                    <h3 class="w-100 mb-4" style="font-size: 20px">
+                      Whitelist
+                    </h3>
+                    <div
+                      class="rounded-pill border w-100 pb-2 px-4 mb-4"
+                      *ngIf="15 as threshold"
+                    >
+                      <mat-form-field
+                        class="w-100"
+                        appearance="legacy"
+                        floatLabel="never"
+                      >
+                        <mat-chip-list #chipList aria-label="Product selection">
+                          <ng-container
+                            *ngFor="
+                              let domain of selectedUsers ?? [];
+                              index as i
+                            "
+                          >
+                            <mat-chip
+                              [selectable]="selectable"
+                              class="bg-light-success close-{{ i }}"
+                              style="cursor: pointer"
+                              [mdbPopover]="template"
+                              placement="right"
+                              trigger="click"
+                            >
+                              <div class="category-chip__text text-white">
+                                {{ domain }}
+                              </div>
+                              <div
+                                matChipRemove
+                                class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-light-success text-white fw-bolder"
+                                style="
+                                  width: fit-content;
+                                  aspect-ratio: 1/1;
+                                  opacity: 1;
+                                  pointer-events: none;
+                                "
+                              >
+                                <mat-icon>
+                                  {{ "check_circle" }}
+                                </mat-icon>
+                              </div>
+                            </mat-chip>
+                            <ng-template #template>
+                              <div
+                                class="w-100 h-100 popover-menu menu-{{
+                                  i
+                                }} popover-body-padding"
+                              >
+                                <ng-container>
+                                  <b class="fw-bolder mb-4 text-light-success"
+                                    >Whitelisted</b
+                                  >
+                                  <br />
+                                  This domain will be whitelisted for this
+                                  wallet.
+                                </ng-container>
+                                <br />
+                                <div class="w-100 h-100 mt-3">
+                                  <button
+                                    (click)="remove(domain, auth)"
+                                    id="removeBtn"
+                                    class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                              </div>
+                            </ng-template>
+                          </ng-container>
+
+                          <input
+                            class="h-100 text-dark"
+                            [placeholder]="'Ex. thredapps.com'"
+                            #addressInput
+                            [formControl]="addressCtrl"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="add($event, auth)"
+                          />
+                        </mat-chip-list>
+                      </mat-form-field>
+                    </div>
+                  </div>
                 </ng-container>
 
-                <input
-                  class="h-100 text-dark"
-                  [placeholder]="
-                    selectedChain?.id == 1 ? 'Ex. thred.eth' : 'Ex. 0x56...78'
-                  "
-                  #addressInput
-                  [formControl]="addressCtrl"
-                  [matAutocomplete]="auto"
-                  [matChipInputFor]="chipList"
-                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                  (matChipInputTokenEnd)="add($event)"
-                />
-              </mat-chip-list>
-              <mat-autocomplete
-                #auto="matAutocomplete"
-                (optionSelected)="selected($event)"
-              >
-                <cdk-virtual-scroll-viewport
-                  class="autocomplete-test-viewport"
-                  [ngStyle]="{
-                    height:
-                      ((filteredAddresses | async) ?? []).length > 0
-                        ? '150px'
-                        : '0px'
-                  }"
-                  itemSize="35"
-                >
-                  <mat-option
-                    *cdkVirtualFor="let address of filteredAddresses | async"
-                    [value]="address"
+                <ng-container *ngIf="auth == 2">
+                  <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                    <h3 class="w-100 mb-4" style="font-size: 20px">
+                      Availability
+                    </h3>
+                    <mat-slide-toggle class="mb-4" formControlName="available">
+                      {{
+                        utilForm.controls["available"].value
+                          ? "Any Address"
+                          : "Whitelisted Address"
+                      }}
+                    </mat-slide-toggle>
+                  </div>
+
+                  <div
+                    class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
+                    [hidden]="utilForm.controls['available'].value"
                   >
-                    <ng-container
-                      *ngIf="
-                        address
-                          | address
-                            : false
-                            : address.length > threshold as displayAddress
-                      "
+                    <h3 class="w-100 mb-4" style="font-size: 20px">
+                      Whitelist
+                    </h3>
+                    <div
+                      class="rounded-pill border w-100 pb-2 px-4 mb-4"
+                      *ngIf="15 as threshold"
                     >
-                      <div
-                        class="d-flex justify-content-start align-items-center w-100"
+                      <mat-form-field
+                        class="w-100"
+                        appearance="legacy"
+                        floatLabel="never"
                       >
-                        {{ displayAddress }}
-                      </div>
-                    </ng-container>
-                  </mat-option>
-                </cdk-virtual-scroll-viewport>
-              </mat-autocomplete>
-            </mat-form-field>
+                        <mat-chip-list #chipList aria-label="Product selection">
+                          <ng-container
+                            *ngFor="
+                              let address of selectedUsers ?? [];
+                              index as i
+                            "
+                          >
+                            <ng-container
+                              *ngIf="
+                                (address | addressValidate)
+                                  ? 'y'
+                                  : 'n' as validAddress
+                              "
+                            >
+                              <ng-container
+                                *ngIf="
+                                  validAddress == 'y' ? 'y' : 'n' as result
+                                "
+                              >
+                                <mat-chip
+                                  [selectable]="selectable"
+                                  class="bg-{{
+                                    result == 'y'
+                                      ? 'light-success'
+                                      : 'light-danger'
+                                  }} close-{{ i }}"
+                                  [mdbPopover]="template"
+                                  placement="right"
+                                  trigger="click"
+                                  style="cursor: pointer"
+                                  *ngIf="
+                                    address
+                                      | address
+                                        : false
+                                        : address.length >
+                                            threshold as displayAddress
+                                  "
+                                >
+                                  <div class="category-chip__text text-white">
+                                    {{ displayAddress }}
+                                  </div>
+                                  <div
+                                    matChipRemove
+                                    class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-{{
+                                      result == 'y'
+                                        ? 'light-success'
+                                        : 'light-danger'
+                                    }} text-white fw-bolder"
+                                    style="
+                                      width: fit-content;
+                                      aspect-ratio: 1/1;
+                                      opacity: 1;
+                                      pointer-events: none;
+                                    "
+                                  >
+                                    <mat-icon>
+                                      {{
+                                        result == "y" ? "check_circle" : "error"
+                                      }}
+                                    </mat-icon>
+                                  </div>
+                                  <ng-template #template>
+                                    <div
+                                      class="w-100 h-100 popover-menu menu-{{
+                                        i
+                                      }} popover-body-padding"
+                                    >
+                                      <ng-container *ngIf="result == 'y'">
+                                        <b
+                                          class="fw-bolder mb-4 text-light-success"
+                                          >Verified Address</b
+                                        >
+                                        <br />
+                                        The address exists and will be
+                                        whitelisted for this wallet.
+                                      </ng-container>
+                                      <ng-container *ngIf="result != 'y'">
+                                        <b
+                                          class="fw-bolder mb-4 text-light-danger"
+                                          >Invalid Address</b
+                                        >
+                                        <br />
+                                        The address does not exist and will not
+                                        be whitelisted for this wallet.
+                                      </ng-container>
+                                      <br />
+                                      <div class="w-100 h-100 mt-3">
+                                        <button
+                                          (click)="remove(address, auth)"
+                                          id="removeBtn"
+                                          class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
+                                        >
+                                          Remove
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </ng-template>
+                                </mat-chip>
+                              </ng-container>
+                            </ng-container>
+                          </ng-container>
+
+                          <input
+                            class="h-100 text-dark"
+                            [placeholder]="'Ex. 0x56...78'"
+                            #addressInput
+                            [formControl]="addressCtrl"
+                            [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="add($event, auth)"
+                          />
+                        </mat-chip-list>
+                        <mat-autocomplete
+                          #auto="matAutocomplete"
+                          (optionSelected)="selected($event)"
+                        >
+                          <cdk-virtual-scroll-viewport
+                            class="autocomplete-test-viewport"
+                            [ngStyle]="{
+                              height:
+                                ((filteredAddresses | async) ?? []).length > 0
+                                  ? '150px'
+                                  : '0px'
+                            }"
+                            itemSize="35"
+                          >
+                            <mat-option
+                              *cdkVirtualFor="
+                                let address of filteredAddresses | async
+                              "
+                              [value]="address"
+                            >
+                              <ng-container
+                                *ngIf="
+                                  address
+                                    | address
+                                      : false
+                                      : address.length >
+                                          threshold as displayAddress
+                                "
+                              >
+                                <div
+                                  class="d-flex justify-content-start align-items-center w-100"
+                                >
+                                  {{ displayAddress }}
+                                </div>
+                              </ng-container>
+                            </mat-option>
+                          </cdk-virtual-scroll-viewport>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+
+              <div class="w-100 py-5 text-purple text-center fw-bold">
+                <i><span style="font-size: small">Accounts</span></i>
+                <hr class="fw-bolder border-1" />
+              </div>
+
+              <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                <h3 class="w-100 mb-4" style="font-size: 20px">
+                  New User Webhook
+                </h3>
+
+                <div
+                  class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
+                >
+                  <mat-form-field
+                    class="mb-0 pe-3 w-75"
+                    appearance="legacy"
+                    floatLabel="never"
+                  >
+                    <input
+                      matInput
+                      class="mb-2 text-truncate"
+                      type="text"
+                      name="name"
+                      formControlName="installWebhook"
+                      placeholder="Enter Webhook URL"
+                    />
+                  </mat-form-field>
+                  <div
+                    class="bg-white rounded-circle shadow p-1"
+                    style="height: 52.5px !important; width: 52.5px !important"
+                    role="button"
+                    [mdbPopover]="webhook1Template"
+                    placement="top"
+                    [trigger]="'hover'"
+                    (click)="
+                      sendTestHook(utilForm.controls['installWebhook'].value, 0)
+                    "
+                  >
+                    <div
+                      class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
+                      style="aspect-ratio: 1"
+                    >
+                      <mat-icon
+                        class="text-white m-auto"
+                        style="font-size: 25px"
+                      >
+                        smart_toy
+                      </mat-icon>
+                    </div>
+                  </div>
+
+                  <ng-template #webhook1Template>
+                    <div class="popover-body-padding">
+                      <b class="fw-bolder mb-4 text-light-success"
+                        >Fired when someone joins your wallet!</b
+                      >
+                      <br />
+                      Press me to send a sample payload to your webhook!
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+
+              <div class="w-100 py-5 text-purple text-center fw-bold">
+                <i><span style="font-size: small">Notifications</span></i>
+                <hr class="fw-bolder border-1" />
+              </div>
+            </form>
           </div>
         </div>
-
-        <div class="w-100 py-5 text-purple text-center fw-bold">
-          <i><span style="font-size: small">Installation</span></i>
-          <hr class="fw-bolder border-1" />
-        </div>
-
-        <div class="wrap-input1 w-100 pt-0 px-4 px-md-5">
-          <button
-            class="px-3 py-3 w-100 btn bg-purple text-white fw-bolder rounded-pill"
-            (click)="save()"
-            [disabled]="loading"
-          >
-            {{ loading ? "Saving" : "Save App" }}
-            <span
-              *ngIf="loading"
-              class="spinner-border spinner-border-sm ms-1"
-              role="status"
-              aria-hidden="true"
-            ></span>
-          </button>
-        </div>
-      </form>
-      <!-- <p *ngIf="err != ''" class="text-danger my-1 text-center fw-bold">
-          {{ err }}
-        </p> -->
+      </div>
     </div>
-  </mat-dialog-content>
+
+    <div class="w-100 p-0 h-100">
+      <div
+        class="p-3 d-flex justify-content-center align-content-center w-100 h-100"
+      >
+        <div
+          class="w-100 big-design-card rounded-10 p-3 text-start d-flex justify-content-between align-content-center flex-column h-100"
+        >
+          <div class="big-design-header w-100">
+            <h2 class="big-design-input-title text-start">Wallet Layouts</h2>
+          </div>
+          <div class="big-design-body h-100 bg-light rounded-10 w-100">
+            <mat-tab-group
+              mat-stretch-tabs
+              #menu
+              class="w-100 h-100"
+              dynamicHeight
+              animationDuration="0ms"
+              *ngIf="wallet"
+              color="transparent"
+              (selectedTabChange)="tabChanged($event)"
+            >
+              <mat-tab *ngFor="let layout of wallet.layouts ?? []">
+                <ng-template mat-tab-label>
+                  <span class="ms-2 text-dark big-design-body fw-bold">
+                    {{ layout.name }}
+                  </span>
+                </ng-template>
+                <div class="w-100 h-100 position-relative">
+                  <div
+                    class="w-100 d-flex justify-content-end align-items-center position-absolute p-3"
+                    style="z-index: 50"
+                  >
+                    <button
+                      class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center me-1 px-3 py-2"
+                      (click)="syncLayouts(layout.type)"
+                      style="font-size: x-small"
+                      [disabled]="sameLayouts()"
+                    >
+                      Copy to {{layout.type == 'mobile' ? 'Desktop' : 'Mobile'}}
+                    </button>
+                    <button
+                      class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center ms-2 px-3 py-2"
+                      (click)="loading ? null : (mode = 1)"
+                      style="font-size: x-small"
+                    >
+                      Edit Layout
+                    </button>
+                  </div>
+                  <div
+                    class="w-100 h-100 d-flex justify-content-center align-items-center"
+                  >
+                    <div class="p-3">
+                      <app-layout-builder
+                        [wallet]="wallet"
+                        [layout]="layout"
+                        [editable]="false"
+                        (clickedCanvas)="mode = 1"
+                        [color]="'transparent'"
+                      ></app-layout-builder>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="frame-body d-flex justify-content-center align-content-center rounded-10 bg-dark rounded-0"
+    *ngIf="mode == 1 && selectedLayout && wallet"
+  >
+    <div class="m-auto p-3 h-100" style="width: 100vw">
+      <app-layout-builder
+        #layoutBuilder
+        [wallet]="wallet"
+        [layout]="selectedLayout"
+        [editable]="true"
+        (layoutSaved)="layoutSaved($event)"
+        [color]="'primary'"
+      ></app-layout-builder>
+    </div>
+  </div>
 </div>

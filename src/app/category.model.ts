@@ -1,14 +1,14 @@
-import { Util } from "./util.model"
+import { Wallet } from "./wallet.model"
 
 
 export class Category{
 
   name!: string
   id!: string
-  utils!: Util[]
+  utils!: Wallet[]
   cols!: number
 
-  constructor(name: string, id: string, utils: Util[], cols: number){
+  constructor(name: string, id: string, utils: Wallet[], cols: number){
     this.name = name ?? "New"
     this.id = id
     this.utils = utils ?? []

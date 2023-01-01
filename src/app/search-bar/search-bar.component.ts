@@ -14,7 +14,7 @@ import { Chain } from '../chain.model';
 import { Developer } from '../developer.model';
 import { LoadService } from '../load.service';
 import { Signature } from '../signature.model';
-import { Util } from '../util.model';
+import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-search-bar',
@@ -41,7 +41,7 @@ export class SearchBarComponent implements OnInit {
     if (type == 0) {
       this.loadService.openDevProfile(id);
     } else if (type == 1) {
-      this.loadService.openItem(id);
+      this.loadService.openWallet(id);
     }
   }
 

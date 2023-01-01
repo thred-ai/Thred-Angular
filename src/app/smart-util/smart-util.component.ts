@@ -15,6 +15,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ethers } from 'ethers';
 import { CurrencyMaskInputMode } from 'ngx-currency';
 import { Observable } from 'rxjs';
@@ -22,10 +23,12 @@ import { map, startWith } from 'rxjs/operators';
 import { AddressEnsLookupPipe } from '../address-ens-lookup.pipe';
 import { AddressValidatePipe } from '../address-validate.pipe';
 import { Chain } from '../chain.model';
+import { LayoutBuilderComponent } from '../layout-builder/layout-builder.component';
+import { Layout } from '../layout.model';
 import { LoadService } from '../load.service';
 import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
 import { Signature } from '../signature.model';
-import { Util } from '../util.model';
+import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-smart-util',
@@ -33,6 +36,8 @@ import { Util } from '../util.model';
   styleUrls: ['./smart-util.component.scss'],
 })
 export class SmartUtilComponent implements OnInit, OnDestroy {
+  wallet?: Wallet;
+
   constructor(
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -41,34 +46,50 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformID: Object,
     private cdr: ChangeDetectorRef
   ) {
-    this.mode = this.data.mode ?? 0;
-    let app = this.data.util as Util;
+    this.filteredAddresses = this.addressCtrl.valueChanges.pipe(
+      startWith(null),
+      map((address: string | null) =>
+        address ? this._filter(address) : this.addresses.slice()
+      )
+    );
+  }
 
+  ngOnDestroy(): void {
+    window.onclick = null;
+  }
+  async ngOnInit() {
+    this.mode = this.data.mode ?? 0;
+    let app = this.data.wallet as Wallet;
+
+    console.log(app);
     if (app) {
+      this.wallet = app;
       this.utilForm.controls['name'].setValue(app.name);
       this.utilForm.controls['description'].setValue(app.description);
-      this.utilForm.controls['price'].setValue(app.price);
-      this.utilForm.controls['available'].setValue(app.available);
+      this.selectedUsers = (await this.getENS(app.whitelist ?? [])) ?? [];
 
-      var chains: Chain[] = [];
+      this.loadService.loadedChains.subscribe((chains) => {
+        this.categories[0].chains = chains ?? [];
 
-      this.categories.forEach((c) => {
-        c.chains.forEach((a) => {
-          if (app.chains.find((x) => x.id == a.id)) {
-            chains.push(a);
-          }
+        var chains: any[] = [];
+
+        this.categories.forEach((c) => {
+          c.chains.forEach((a) => {
+            if (app.chains.find((x) => x.id == a.id)) {
+              chains.push(a);
+            }
+          });
         });
+        this.utilForm.controls['networks'].setValue(chains);
       });
-      this.utilForm.controls['networks'].setValue(chains);
-      this.selectedChain = this.loadService.chains.find((c) => c.id == 1);
 
-      this.utilForm.controls['wallet'].setValue(app.signatures[0]?.payAddress);
-      this.utilForm.controls['appImg'].setValue(app.displayUrls[0]);
+      this.utilForm.controls['appImg'].setValue(app.displayUrl);
       this.utilForm.controls['marketingImg'].setValue(app.coverUrl);
       this.utilForm.controls['installWebhook'].setValue(app.installWebhook);
-      this.utilForm.controls['uninstallWebhook'].setValue(app.uninstallWebhook);
-      this.utilForm.controls['loadURL'].setValue(app.loadURL ?? null);
     } else {
+      this.loadService.loadedChains.subscribe((chains) => {
+        this.categories[0].chains = chains ?? [];
+      });
       this.utilForm.controls['networks'].setValue([
         this.categories[0].chains[0],
       ]);
@@ -80,31 +101,19 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.filteredAddresses = this.addressCtrl.valueChanges.pipe(
-      startWith(null),
-      map((address: string | null) =>
-        address ? this._filter(address) : this.addresses.slice()
-      )
-    );
-  }
-  ngOnDestroy(): void {
-    window.onclick = null;
-  }
-  async ngOnInit() {
-    if (this.data.util) {
-      console.log(this.data.util.whitelist)
-      this.selectedAddresses = await this.getENS(
-        this.data.util.whitelist ?? []
-      ) ?? [];
-      console.log(this.selectedAddresses)
-    }
+    this.wallet = this.composeWallet();
+
+    this.selectedLayout = this.wallet.layouts[0];
+
+    this.cdr.detectChanges();
+
     window.onclick = (e) => {
       if ((e.target as any)?.id == 'removeBtn') {
         return;
       }
 
       if (isPlatformBrowser(this.platformID)) {
-        this.selectedAddresses.forEach((_, index: number) => {
+        this.selectedUsers.forEach((_, index: number) => {
           if (document.getElementsByClassName(`menu-${index}`).length > 0) {
             (
               Object.values(
@@ -117,20 +126,36 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     };
   }
 
+  sameLayouts() {
+    return (
+      (this.wallet?.layouts[0]?.pages ?? []) ==
+        (this.wallet?.layouts[1]?.pages ?? []) ?? false
+    );
+  }
+
+  syncLayouts(id: string) {
+    let layout = this.wallet?.layouts.find(layout => layout.type == id)?.pages ?? []
+    if (id == 'mobile'){
+      this.wallet!.layouts[0].pages = layout
+    }
+    else if (id == 'desktop'){
+      this.wallet!.layouts[1].pages = layout
+    }
+  }
+
   utilForm = this.fb.group({
     name: [null, Validators.required],
     description: [null, Validators.required],
-    price: [null, Validators.required],
     networks: [[], Validators.required],
-    wallet: [null, Validators.required],
+
     appImg: [null, Validators.required],
     marketingImg: [null, Validators.required],
+
     installWebhook: [null],
-    uninstallWebhook: [null],
-    loadURL: [null],
     appFile: [null],
     marketingFile: [null],
     available: [false],
+    authStyle: [1, Validators.required],
   });
 
   loading = false;
@@ -155,37 +180,110 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   }[] = [
     {
       name: 'Mainnets',
-      chains: [
-        new Chain('Ethereum', 1, 'ETH'),
-        new Chain('Polygon', 137, 'MATIC'),
+      chains: [],
+    },
+  ];
+
+  authCategories: {
+    name: string;
+    methods: any[];
+  }[] = [
+    {
+      name: 'Simple',
+      methods: [
+        {
+          name: 'Email/Password',
+          id: 1,
+        },
       ],
     },
     {
-      name: 'Testnets',
-      chains: [
-        new Chain('Ethereum Goerli', 5, 'ETH'),
-        new Chain('Polygon Mumbai', 80001, 'MATIC'),
+      name: 'Web3',
+      methods: [
+        {
+          name: 'Private Key/Secret Phrase',
+          id: 2,
+        },
       ],
     },
   ];
 
-  selectedAddresses: string[] = [];
+  // {
+  //   name: 'Testnets',
+  //   chains: [
+  //     new Chain('Ethereum Goerli', 5, 'ETH', 0),
+  //     new Chain('Polygon Mumbai', 80001, 'MATIC', 0),
+  //   ],
+  // },
+
+  selectedUsers: string[] = [];
+
   selectable = true;
   removable = true;
   addressCtrl = new FormControl();
   filteredAddresses: Observable<any[]>;
   addresses: any[] = [];
-  selectedChain?: Chain;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChild('addressInput') addressInput?: ElementRef<HTMLInputElement>;
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedAddresses.push(event.option.value);
+    this.selectedUsers.push(event.option.value);
 
     this.addressInput!.nativeElement.value = '';
 
     this.addressCtrl.setValue(null);
+  }
+
+  composeWallet() {
+    let name = this.utilForm.controls['name'].value;
+    let id = this.wallet?.id ?? this.loadService.newUtilID;
+    console.log(id);
+
+    let chains = (this.utilForm.controls['networks'].value as Chain[]) ?? [];
+
+    let created = this.wallet?.created ?? new Date().getTime();
+    let modified = created;
+
+    let available = this.utilForm.controls['available'].value ?? false;
+    let status = available ? 0 : 1;
+
+    let creatorName = '';
+    let displayUrl: string = this.utilForm.controls['appImg'].value;
+    let coverUrl: string = this.utilForm.controls['marketingImg'].value;
+    let description = this.utilForm.controls['description'].value;
+
+    let verified = false;
+
+    let reviews = 0;
+    let rating = 0;
+    let downloads = this.wallet?.downloads ?? 0;
+
+    let installWebhook = this.utilForm.controls['installWebhook'].value;
+    let whitelist = this.selectedUsers ?? [];
+    let authStyle = this.utilForm.controls['authStyle'].value;
+
+    return new Wallet(
+      id,
+      '',
+      created,
+      modified,
+      creatorName,
+      name,
+      displayUrl,
+      description,
+      verified,
+      reviews,
+      rating,
+      downloads,
+      chains,
+      coverUrl,
+      status,
+      installWebhook,
+      whitelist,
+      authStyle,
+      this.wallet?.layouts
+    );
   }
 
   private _filter(value: string): any[] {
@@ -205,10 +303,14 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return returnArr;
   }
 
-  async add(event: MatChipInputEvent) {
+  async add(event: MatChipInputEvent, authStyle: number) {
     const value = event.value || '';
 
-    this.selectedAddresses.push(value);
+    if (authStyle == 1) {
+      this.selectedUsers.push(value);
+    } else if (authStyle == 2) {
+      this.selectedUsers.push(value);
+    }
 
     // Clear the input value
     event.chipInput!.clear();
@@ -228,7 +330,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return isValid;
   }
 
-  async getAddresses(finalAddresses = this.selectedAddresses ?? []) {
+  async getAddresses(finalAddresses = this.selectedUsers ?? []) {
     let addresses: string[] = [];
 
     let ensPipe = new NameEnsLookupPipe(this.loadService, this.platformID);
@@ -252,7 +354,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return addresses;
   }
 
-  async getENS(finalAddresses = this.selectedAddresses ?? []) {
+  async getENS(finalAddresses = this.selectedUsers ?? []) {
     let addresses: string[] = [];
 
     let ensPipe = new AddressEnsLookupPipe(this.loadService, this.platformID);
@@ -262,8 +364,8 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         var address: string | null = null;
 
         try {
-          address = await ensPipe.transform(f) ?? f;
-          console.log(address)
+          address = (await ensPipe.transform(f)) ?? f;
+          console.log(address);
         } catch (error) {
           address = ethers.utils.getAddress(f);
         }
@@ -277,11 +379,19 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return addresses;
   }
 
-  remove(address: string, isValid: boolean): void {
-    const index = this.selectedAddresses.indexOf(address);
+  remove(address: string, authStyle: number): void {
+    if (authStyle == 1) {
+      const index = this.selectedUsers.indexOf(address);
 
-    if (index >= 0) {
-      this.selectedAddresses.splice(index, 1);
+      if (index >= 0) {
+        this.selectedUsers.splice(index, 1);
+      }
+    } else if (authStyle == 2) {
+      const index = this.selectedUsers.indexOf(address);
+
+      if (index >= 0) {
+        this.selectedUsers.splice(index, 1);
+      }
     }
   }
 
@@ -313,112 +423,30 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return networks.map((c) => c.name).join(', ');
   }
 
+  method(id: number) {
+    return (
+      this.authCategories.flatMap((c) => c.methods).find((m) => m.id == id)
+        ?.name ?? ''
+    );
+  }
+
   async save() {
     if (this.utilForm.valid) {
       this.loading = true;
 
       try {
-        let name = this.utilForm.controls['name'].value;
-        let id = this.data.util?.id ?? this.loadService.newUtilID;
-        let creator = (await this.loadService.currentUser)?.uid!;
+        let wallet = this.composeWallet();
 
-        let chains =
-          (this.utilForm.controls['networks'].value as Chain[]) ?? [];
-
-        let wallet = this.utilForm.controls['wallet'].value;
-
-        let price = String(this.utilForm.controls['price'].value) as string;
-
-        let ethPrice = ethers.utils.parseEther(price);
-        let strPrice = ethers.utils.formatEther(ethPrice);
-
-        let numPrice = Number(strPrice);
-        let extraFee = 0;
-
-        let category = 0;
-
-        let signatures: Signature[] = [];
-
-        let created = this.data.util?.created ?? new Date().getTime();
-        let modified = created;
-
-        let available = this.utilForm.controls['available'].value ?? false;
-        let whitelist = this.selectedAddresses ?? [];
-
-        let addresses = await this.getAddresses(whitelist);
-
-        let status = available ? 0 : 1;
-
-        chains.forEach((chain) => {
-          signatures.push(
-            new Signature(
-              id,
-              '',
-              wallet,
-              '',
-              extraFee,
-              ethPrice,
-              chain.id,
-              new Date().getTime(),
-              available || addresses.length > 0,
-              ''
-            )
-          );
-        });
-
-        let creatorName = '';
-        let displayUrls: string[] = [this.utilForm.controls['appImg'].value];
-        let coverUrl: string = this.utilForm.controls['marketingImg'].value;
-        let metaUrl = '';
-        let description = this.utilForm.controls['description'].value;
-
-        let verified = false;
-
-        let reviews = 0;
-        let rating = 0;
-        let downloads = this.data.util?.downloads ?? 0;
-
-        let installWebhook = this.utilForm.controls['installWebhook'].value;
-        let uninstallWebhook = this.utilForm.controls['uninstallWebhook'].value;
-        let loadURL = this.utilForm.controls['loadURL'].value ?? null;
-
-        let util = new Util(
-          id,
-          creator,
-          signatures,
-          created,
-          modified,
-          creatorName,
-          name,
-          displayUrls,
-          metaUrl,
-          description,
-          numPrice,
-          ethPrice,
-          category,
-          available,
-          verified,
-          reviews,
-          rating,
-          downloads,
-          chains,
-          coverUrl,
-          status,
-          installWebhook,
-          uninstallWebhook,
-          loadURL,
-          addresses
-        );
-
+        console.log(wallet);
         let appFile = this.utilForm.controls[`appFile`].value;
         let marketingFile = this.utilForm.controls[`marketingFile`].value;
 
         this.loadService.saveSmartUtil(
-          util,
+          wallet,
           (result) => {
             console.log(result);
             this.loading = false;
-            this.dialogRef.close(util);
+            this.dialogRef.close(wallet);
           },
           appFile,
           marketingFile
@@ -428,6 +456,22 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       }
     } else {
       console.log('masuk');
+    }
+  }
+
+  @ViewChild('layoutBuilder') layoutBuilder?: LayoutBuilderComponent;
+
+  layoutSaved(layout: Layout) {
+    let index =
+      this.wallet?.layouts.findIndex(
+        (l) => l.name.toLowerCase() == layout.name.toLowerCase()
+      ) ?? -1;
+    this.loading = false;
+    this.mode = 0;
+    if (this.wallet && index > -1) {
+      this.wallet.layouts[index] = layout;
+      this.selectedLayout = layout;
+      //toast
     }
   }
 
@@ -447,6 +491,16 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
+  tabChanged(event: MatTabChangeEvent) {
+    let index = event.index;
+    let layout = this.wallet?.layouts[index];
+    if (layout) {
+      this.selectedLayout = layout;
+    }
+  }
+
+  selectedLayout?: Layout;
+
   async changed(event: MatSelectChange) {
     console.log(event.value);
     this.utilForm.controls['networks'].setValue(event.value);
@@ -454,8 +508,13 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
+  async authChanged(event: MatSelectChange) {
+    this.selectedUsers = [];
+    this.selectedUsers = [];
+    this.utilForm.controls['available'].setValue(false);
+  }
+
   async networkChanged(event: MatSelectChange) {
-    this.selectedChain = event.value;
     return undefined;
   }
 }

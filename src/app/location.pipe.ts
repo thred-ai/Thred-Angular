@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Dict } from './load.service';
-import { Util } from './util.model';
+import { Wallet } from './wallet.model';
 
 @Pipe({
   name: 'location',
 })
 export class LocationPipe implements PipeTransform {
-  transform(value?: Dict<any>[], filterVal?: string, mode = 0, utils?: Util[]) {
+  transform(value?: Dict<any>[], filterVal?: string, mode = 0, utils?: Wallet[]) {
     var x = value ?? [];
 
     if (filterVal) {
@@ -79,7 +79,7 @@ export class LocationPipe implements PipeTransform {
     return [];
   }
 
-  assetName(id: string, items: Util[] = []) {
+  assetName(id: string, items: Wallet[] = []) {
     let col = items.find((c) => c.id == id);
     if (col) {
       return col.name;
