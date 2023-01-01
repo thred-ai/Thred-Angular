@@ -173,16 +173,21 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.onclick = null;
+    if (isPlatformBrowser(this.platformID)){
+      window.onclick = null;
+    }
   }
 
   ngOnInit(): void {
-    window.onclick = (e) => {
-      if (isPlatformBrowser(this.platformID)) {
-        if ((e.target as any).id != 'continue') {
-          this.err = undefined;
+    if (isPlatformBrowser(this.platformID)){
+      window.onclick = (e) => {
+        if (isPlatformBrowser(this.platformID)) {
+          if ((e.target as any).id != 'continue') {
+            this.err = undefined;
+          }
         }
-      }
-    };
+      };
+    }
+    
   }
 }
