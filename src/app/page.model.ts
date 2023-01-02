@@ -1,3 +1,4 @@
+import { Bar } from './bar.model';
 import { Block } from './block.model';
 import { SEO } from './seo.model';
 import { Tab } from './tab.model';
@@ -13,8 +14,11 @@ export class Page {
   blocks?: Array<Block>;
   seo?: SEO;
   tab: Tab;
+  bar: Bar;
+  position: number;
   backgroundColor?: string;
   detailColor?: string;
+  icon: string
 
   constructor(
     name?: string,
@@ -27,8 +31,11 @@ export class Page {
     loader?: boolean,
     seo?: SEO,
     tab?: Tab,
+    bar?: Bar,
+    position?: number,
     backgroundColor?: string,
-    detailColor?: string
+    detailColor?: string,
+    icon?: string
   ) {
     this.name = name;
     this.title = title;
@@ -39,8 +46,11 @@ export class Page {
     this.fullscreen = fullscreen ?? false;
     this.loader = loader ?? true;
     this.seo = seo;
-    this.tab = tab ?? new Tab('#FFFFFF', '#000000', '#000000', 0, 0);
+    this.tab = tab ?? new Tab('#FFFFFF', '#000000', '#000000', 0);
+    this.bar = bar ?? new Bar('#FFFFFF', '#000000', '#000000', 0, true)
+    this.position = position ?? 0
     this.backgroundColor = backgroundColor ?? '#FFFFFF';
     this.detailColor = detailColor ?? '#000000';
+    this.icon = icon ?? 'radio_button_unchecked'
   }
 }

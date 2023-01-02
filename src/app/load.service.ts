@@ -25,6 +25,7 @@ import { NFT } from './nft.model';
 import { NFTList } from './nft-list.model';
 import { Layout } from './layout.model';
 import { Tab } from './tab.model';
+import { Bar } from './bar.model';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -454,7 +455,13 @@ export class LoadService {
           util.layouts.forEach((la) => {
             la.pages.forEach((pa) => {
               if (!pa.tab) {
-                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0, 0);
+                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0);
+              }
+              if (!pa.bar){
+                pa.bar = new Bar('#FFFFFF', '#000000', '#000000', 0, true)
+              }
+              if (!pa.icon) {
+                pa.icon = 'radio_button_unchecked';
               }
             });
           });
@@ -499,7 +506,13 @@ export class LoadService {
           util.layouts.forEach((la) => {
             la.pages.forEach((pa) => {
               if (!pa.tab) {
-                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0, 0);
+                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0);
+              }
+              if (!pa.bar){
+                pa.bar = new Bar('#FFFFFF', '#000000', '#000000', 0, true)
+              }
+              if (!pa.icon) {
+                pa.icon = 'radio_button_unchecked';
               }
             });
           });
@@ -624,7 +637,13 @@ export class LoadService {
               d.layouts.forEach((la) => {
                 la.pages.forEach((pa) => {
                   if (!pa.tab) {
-                    pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0, 0);
+                    pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0);
+                  }
+                  if (!pa.bar){
+                    pa.bar = new Bar('#FFFFFF', '#000000', '#000000', 0, true)
+                  }
+                  if (!pa.icon) {
+                    pa.icon = 'radio_button_unchecked';
                   }
                 });
               });
@@ -647,6 +666,22 @@ export class LoadService {
       }
       sub.unsubscribe();
     });
+  }
+
+  getIcons(callback: (data: any) => any) {
+    this.functions
+      .httpsCallable('retrieveIcons')({})
+      .pipe(first())
+      .subscribe(
+        async (resp) => {
+          console.log(resp);
+          callback(resp);
+        },
+        (err) => {
+          console.error({ err });
+          callback([]);
+        }
+      );
   }
 
   async checkLoadedUser(user: Developer | null) {

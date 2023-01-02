@@ -106,6 +106,7 @@ import { AngularResizeEventModule } from 'angular-resize-event';
 import { AddNftComponent } from './add-nft/add-nft.component';
 import { SharedDialogComponent } from './shared-dialog/shared-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { ColorShadePipe } from './color-shade.pipe';
 
 
 @NgModule({
@@ -143,7 +144,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     NFTTableComponent,
     LoaderComponent,
     AddNftComponent,
-    SharedDialogComponent
+    SharedDialogComponent,
+    ColorShadePipe
   ],
   imports: [
     CommonModule,

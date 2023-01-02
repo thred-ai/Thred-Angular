@@ -11,7 +11,6 @@
     #tabGroup
     [color]="color"
   >
-    <!-- (selectedTabChange)="tabChanged($event)" -->
     <mat-tab
       class="py-0"
       *ngFor="
@@ -21,9 +20,6 @@
       "
     >
       <ng-template mat-tab-label>
-        <!-- <span class="p-0 m-0 text-purple fw-bold">
-          {{ page.title }}
-        </span> -->
         <div
           (cdkDropListDropped)="onDropTab($event)"
           [cdkDropListConnectedTo]="(childMenuIds$ | async)!"
@@ -90,7 +86,7 @@
                   >
                     <mat-expansion-panel-header>
                       <mat-panel-title class="fw-bold text-dark">
-                        Page Info
+                        General
                       </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="wrap-input1 w-100 pt-3">
@@ -117,61 +113,7 @@
                     </div>
 
                     <div class="wrap-input1 w-100 pt-3">
-                      <p class="w-100 mb-4 text">Background Color</p>
-                      <div class="px-3 w-100">
-                        <div class="rounded-pill border w-100 px-2 mb-3">
-                          <a
-                            role="button"
-                            class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
-                            [cpPositionRelativeToArrow]="false"
-                            (colorPickerSelect)="
-                              editableLayout!.pages[p]!.backgroundColor =
-                                $event;
-                              syncBlockAndPageColors(p, $event)
-                            "
-                            [cpOutputFormat]="'rgba'"
-                            [cpOKButton]="true"
-                            [cpOKButtonText]="'SET COLOR'"
-                            [cpOKButtonClass]="'big-design-alt-button'"
-                            [cpSaveClickOutside]="false"
-                            [colorPicker]="page.backgroundColor ?? '#FFFFFF'"
-                            style="height: 40px"
-                          >
-                            <p
-                              class="big-design-input-text my-auto p-0"
-                              style="font-size: 14px"
-                            >
-                              {{ page.backgroundColor }}
-                            </p>
-                            <div
-                              class="rounded-circle border border-secondary"
-                              style="height: 20px; aspect-ratio: 1"
-                              [style.background-color]="
-                                page.backgroundColor ?? '#FFFFFF'
-                              "
-                            ></div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      class="w-100 pt-3 pb-0 text-purple text-center fw-bold"
-                    >
-                      <i><span style="font-size: small">Page Info</span></i>
-                    </div>
-                  </mat-expansion-panel>
-
-                  <mat-expansion-panel class="shadow-0 border-bottom">
-                    <mat-expansion-panel-header>
-                      <mat-panel-title class="fw-bold text-dark">
-                        Tab Bar
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-
-                    <div class="wrap-input1 w-100 pt-3">
-                      <p class="w-100 mb-4 text">Bar Position</p>
+                      <p class="w-100 mb-4 text">Position</p>
                       <div class="px-3 w-100">
                         <div class="rounded-pill border w-100 pe-4 mb-3">
                           <mat-form-field
@@ -180,13 +122,13 @@
                             floatLabel="never"
                           >
                             <mat-select
-                              [(ngModel)]="page.tab.position"
+                              [(ngModel)]="page.position"
                               (selectionChange)="changed(undefined, $event)"
                               class="my-auto d-flex justify-content-start align-items-center"
                             >
                               <mat-select-trigger
                                 class="text-dark h-100 m-auto"
-                                *ngIf="matchingTabType(page.tab.position ?? 0)"
+                                *ngIf="matchingTabType(page.position ?? 0)"
                               >
                                 <div
                                   class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
@@ -195,9 +137,7 @@
                                   <div
                                     class="text-start text-truncate w-50 ms-2"
                                   >
-                                    {{
-                                      matchingTabType(page.tab.position)!.name
-                                    }}
+                                    {{ matchingTabType(page.position)!.name }}
                                   </div>
                                 </div>
                               </mat-select-trigger>
@@ -228,6 +168,319 @@
                     </div>
 
                     <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Background Color</p>
+                      <div class="px-3 w-100">
+                        <div class="rounded-pill border w-100 px-2 mb-3">
+                          <a
+                            role="button"
+                            class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                            [cpPosition]="'bottom'"
+                            [cpPositionRelativeToArrow]="false"
+                            (colorPickerSelect)="
+                              editableLayout!.pages[p]!.backgroundColor =
+                                $event;
+                              syncBlockAndPageColors(p, $event)
+                            "
+                            [cpOutputFormat]="'hex'"
+                            [cpOKButton]="true"
+                            [cpOKButtonText]="'SET COLOR'"
+                            [cpOKButtonClass]="'big-design-alt-button'"
+                            [cpSaveClickOutside]="false"
+                            [colorPicker]="page.backgroundColor ?? '#FFFFFF'"
+                            style="height: 40px"
+                          >
+                            <p
+                              class="big-design-input-text my-auto p-0"
+                              style="font-size: 14px"
+                            >
+                              {{ page.backgroundColor }}
+                            </p>
+                            <div
+                              class="rounded-circle border border-secondary"
+                              style="height: 20px; aspect-ratio: 1"
+                              [style.background-color]="
+                                page.backgroundColor ?? '#FFFFFF'
+                              "
+                            ></div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="w-100 pt-3 pb-0 text-purple text-center fw-bold"
+                    >
+                      <i><span style="font-size: small">General</span></i>
+                    </div>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel class="shadow-0 border-bottom">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title class="fw-bold text-dark">
+                        Navigation Bar
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Availability</p>
+                      <mat-slide-toggle
+                        class="mb-3"
+                        [(ngModel)]="page.bar.visible"
+                      >
+                        {{ page.bar.visible ? "Visible" : "Hidden" }}
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Content Type</p>
+                      <div class="px-3 w-100">
+                        <div class="rounded-pill border w-100 pe-4 mb-3">
+                          <mat-form-field
+                            class="w-100 text"
+                            appearance="legacy"
+                            floatLabel="never"
+                          >
+                            <mat-select
+                              [(ngModel)]="page.bar.mode"
+                              (selectionChange)="changed(undefined, $event)"
+                              class="my-auto d-flex justify-content-start align-items-center"
+                            >
+                              <mat-select-trigger
+                                class="text-dark h-100 m-auto"
+                                *ngIf="matchingBarType(page.bar.mode ?? 0)"
+                              >
+                                <div
+                                  class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                                >
+                                  <div style="height: 40px"></div>
+                                  <div
+                                    class="text-start text-truncate w-50 ms-2"
+                                  >
+                                    {{ matchingBarType(page.bar.mode)!.name }}
+                                  </div>
+                                </div>
+                              </mat-select-trigger>
+
+                              <mat-option
+                                *ngFor="let type of navBarTypes ?? []"
+                                [value]="type.code"
+                              >
+                                <div
+                                  class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                                >
+                                  <div
+                                    class="d-flex justify-content-start align-items-center"
+                                  >
+                                    <span
+                                      class="py-1"
+                                      style="font-size: medium"
+                                    >
+                                      {{
+                                        type?.name ?? "Choose a content type"
+                                      }}
+                                    </span>
+                                  </div>
+                                </div>
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Bar Color</p>
+                      <div class="px-3 w-100">
+                        <div class="rounded-pill border w-100 px-2 mb-3">
+                          <a
+                            role="button"
+                            class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                            [cpPosition]="'bottom'"
+                            [cpPositionRelativeToArrow]="false"
+                            (colorPickerSelect)="
+                              page.bar.backgroundColor = $event
+                            "
+                            [cpOutputFormat]="'hex'"
+                            [cpOKButton]="true"
+                            [cpOKButtonText]="'SET COLOR'"
+                            [cpOKButtonClass]="'big-design-alt-button'"
+                            [cpSaveClickOutside]="false"
+                            [colorPicker]="page.bar.backgroundColor"
+                            style="height: 40px"
+                          >
+                            <p
+                              class="big-design-input-text my-auto p-0"
+                              style="font-size: 14px"
+                            >
+                              {{ page.bar.backgroundColor }}
+                            </p>
+                            <div
+                              class="rounded-circle border border-secondary"
+                              style="height: 20px; aspect-ratio: 1"
+                              [style.background-color]="
+                                page.bar.backgroundColor
+                              "
+                            ></div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Bar Text Color</p>
+                      <div class="px-3 w-100">
+                        <div class="rounded-pill border w-100 px-2 mb-3">
+                          <a
+                            role="button"
+                            class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                            [cpPosition]="'bottom'"
+                            [cpPositionRelativeToArrow]="false"
+                            (colorPickerSelect)="page.bar.textColor = $event"
+                            [cpOutputFormat]="'hex'"
+                            [cpOKButton]="true"
+                            [cpOKButtonText]="'SET COLOR'"
+                            [cpOKButtonClass]="'big-design-alt-button'"
+                            [cpSaveClickOutside]="false"
+                            [colorPicker]="page.bar.textColor"
+                            style="height: 40px"
+                          >
+                            <p
+                              class="big-design-input-text my-auto p-0"
+                              style="font-size: 14px"
+                            >
+                              {{ page.bar.textColor }}
+                            </p>
+                            <div
+                              class="rounded-circle border border-secondary"
+                              style="height: 20px; aspect-ratio: 1"
+                              [style.background-color]="page.bar.textColor"
+                            ></div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Bar Detail Color</p>
+                      <div class="px-3 w-100">
+                        <div class="rounded-pill border w-100 px-2 mb-3">
+                          <a
+                            role="button"
+                            class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                            [cpPosition]="'bottom'"
+                            [cpPositionRelativeToArrow]="false"
+                            (colorPickerSelect)="page.bar.detailColor = $event"
+                            [cpOutputFormat]="'hex'"
+                            [cpOKButton]="true"
+                            [cpOKButtonText]="'SET COLOR'"
+                            [cpOKButtonClass]="'big-design-alt-button'"
+                            [cpSaveClickOutside]="false"
+                            [colorPicker]="page.bar.detailColor"
+                            style="height: 40px"
+                          >
+                            <p
+                              class="big-design-input-text my-auto p-0"
+                              style="font-size: 14px"
+                            >
+                              {{ page.bar.detailColor }}
+                            </p>
+                            <div
+                              class="rounded-circle border border-secondary"
+                              style="height: 20px; aspect-ratio: 1"
+                              [style.background-color]="page.bar.detailColor"
+                            ></div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="w-100 pt-3 pb-0 text-purple text-center fw-bold"
+                    >
+                      <i
+                        ><span style="font-size: small">Navigation Bar</span></i
+                      >
+                    </div>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel class="shadow-0 border-bottom">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title class="fw-bold text-dark">
+                        Tab Bar
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Tab Icon</p>
+
+                      <div class="px-3 w-100">
+                        <div
+                          class="rounded-pill border w-100 py-0 px-3 ps-4 mb-4"
+                        >
+                          <mat-form-field
+                            class="w-100 text h-100 py-0"
+                            appearance="legacy"
+                            floatLabel="never"
+                          >
+                            <input
+                              type="text"
+                              placeholder="Tab Icon"
+                              class="bg-transparent text-truncate mb-2"
+                              matInput
+                              [ngModel]="page.icon"
+                              (ngModelChange)="filterCodes($event)"
+                              [matAutocomplete]="auto"
+                            />
+
+                            <mat-autocomplete
+                              #auto="matAutocomplete"
+                              [displayWith]="formattedName.bind(this)"
+                            >
+                              <cdk-virtual-scroll-viewport
+                                class="autocomplete-test-viewport"
+                                [ngStyle]="{ height: height }"
+                                itemSize="35"
+                              >
+                                <mat-optgroup
+                                  style="display: block"
+                                  *cdkVirtualFor="
+                                    let iconGroup of filteredIcons | async
+                                  "
+                                  [label]="iconGroup.category | uppercase"
+                                >
+                                  <mat-option
+                                    class="not-empty-select autocomplete-item"
+                                    *ngFor="let icon of iconGroup.icons"
+                                    [value]="icon"
+                                    (click)="selectIcon(icon, page)"
+                                  >
+                                    <mat-icon class="me-2 my-auto">{{
+                                      icon
+                                    }}</mat-icon>
+                                    {{ formattedName(icon) | titlecase }}
+                                  </mat-option>
+                                  <!-- [selected]="icon == theme" -->
+                                </mat-optgroup>
+                              </cdk-virtual-scroll-viewport>
+
+                              <!-- <mat-option
+                                *ngFor="let feeCode of filteredFeeCodes | async"
+                                [value]="feeCode.code"
+                                >{{ feeCode.code }}
+                              </mat-option> -->
+                            </mat-autocomplete>
+
+                            <div matSuffix>
+                              <mat-icon class="pb-2 me-1">{{
+                                page.icon
+                              }}</mat-icon>
+                            </div>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="wrap-input1 w-100 pt-3">
                       <p class="w-100 mb-4 text">Bar Color</p>
                       <div class="px-3 w-100">
                         <div class="rounded-pill border w-100 px-2 mb-3">
@@ -239,7 +492,7 @@
                             (colorPickerSelect)="
                               page.tab.backgroundColor = $event
                             "
-                            [cpOutputFormat]="'rgba'"
+                            [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
                             [cpOKButtonText]="'SET COLOR'"
                             [cpOKButtonClass]="'big-design-alt-button'"
@@ -275,7 +528,7 @@
                             [cpPosition]="'bottom'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="page.tab.textColor = $event"
-                            [cpOutputFormat]="'rgba'"
+                            [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
                             [cpOKButtonText]="'SET COLOR'"
                             [cpOKButtonClass]="'big-design-alt-button'"
@@ -309,7 +562,7 @@
                             [cpPosition]="'bottom'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="page.tab.detailColor = $event"
-                            [cpOutputFormat]="'rgba'"
+                            [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
                             [cpOKButtonText]="'SET COLOR'"
                             [cpOKButtonClass]="'big-design-alt-button'"
@@ -347,7 +600,7 @@
                   >
                     <mat-expansion-panel-header>
                       <mat-panel-title class="fw-bold text-dark">
-                        Page Body
+                        Body
                       </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="wrap-input1 w-100 pt-3 px-0 mb-3">
@@ -734,7 +987,7 @@
                     <div
                       class="w-100 pt-3 pb-0 text-purple text-center fw-bold"
                     >
-                      <i><span style="font-size: small">Page Body</span></i>
+                      <i><span style="font-size: small">Body</span></i>
                     </div>
                   </mat-expansion-panel>
                 </mat-accordion>
@@ -837,7 +1090,7 @@
                           (colorPickerSelect)="
                             activeBlock.block.backgroundColor = $event
                           "
-                          [cpOutputFormat]="'rgba'"
+                          [cpOutputFormat]="'hex'"
                           [cpOKButton]="true"
                           [cpOKButtonText]="'SET COLOR'"
                           [cpOKButtonClass]="'big-design-alt-button'"
@@ -1126,7 +1379,7 @@
                                   border.id
                                 ].color = $event
                               "
-                              [cpOutputFormat]="'rgba'"
+                              [cpOutputFormat]="'hex'"
                               [cpOKButton]="true"
                               [cpOKButtonText]="'SET COLOR'"
                               [cpOKButtonClass]="'big-design-alt-button'"
@@ -1203,7 +1456,7 @@
                                 activeBlock.block.borders[border.id].color =
                                   $event
                               "
-                              [cpOutputFormat]="'rgba'"
+                              [cpOutputFormat]="'hex'"
                               [cpOKButton]="true"
                               [cpOKButtonText]="'SET COLOR'"
                               [cpOKButtonClass]="'big-design-alt-button'"
@@ -1430,12 +1683,26 @@
             }} {{
               editable ? editableLayout.type + '-full' : editableLayout.type
             }} p-0 d-flex justify-content-between align-content-center flex-column{{
-              page.tab.position == 0 ? '' : '-reverse'
+              page.position == 0 ? '' : '-reverse'
             }}"
             role="button"
             (click)="editable ? null : clickedCanvas.emit(true)"
             style="overflow: hidden"
           >
+            <div
+              *ngIf="page.bar.visible"
+              class="w-100 shadow"
+              [style.background-color]="page.bar.backgroundColor"
+              [style.border-style]="'solid'"
+              [style.color]="page.bar.detailColor"
+              [style.border-color]="page.bar.detailColor"
+              [style.border-top-width.px]="page.position == 1 ? 1 : 0"
+              [style.border-bottom-width.px]="page.position == 0 ? 1 : 0"
+              [style.border-left-width.px]="0"
+              [style.border-right-width.px]="0"
+              [style.height.px]="100"
+            ></div>
+
             <div
               class="w-100 h-100 big-design-body p-0"
               style="overflow-y: scroll"
@@ -1753,28 +2020,51 @@
                 </div>
               </section>
             </div>
+
             <div
-              class="w-100 d-flex justify-content-between align-items-center shadow"
+              class="w-100 shadow"
               [style.background-color]="page.tab.backgroundColor"
               [style.border-style]="'solid'"
               [style.color]="page.tab.detailColor"
-              [style.border-top-color]="page.tab.detailColor"
-              [style.border-top-width.px]="1"
-              [style.border-bottom-width.px]="0"
+              [style.border-color]="page.tab.detailColor"
+              [style.border-top-width.px]="page.position == 0 ? 1 : 0"
+              [style.border-bottom-width.px]="page.position == 1 ? 1 : 0"
               [style.border-left-width.px]="0"
               [style.border-right-width.px]="0"
               [style.height.px]="75"
             >
-              
-
               <div
-                *ngFor="let page2 of editableLayout.pages ?? []"
-                style="font-size: 12px"
-                class="d-flex justify-content-center align-items-center flex-column w-100 fw-bold"
-                [style.color]="page.tab.textColor"
+                class="w-100 h-100 row row-cols-{{
+                  editableLayout.pages.length
+                }} gx-0 justify-content-center"
               >
-                {{ page2.title }}
-                
+                <div
+                  *ngFor="
+                    let page2 of editableLayout.pages ?? [];
+                    index as tabIndex
+                  "
+                  class="col h-100 px-{{
+                    tabIndex != 0 && tabIndex != editableLayout.pages.length - 1
+                      ? 'bar'
+                      : '0'
+                  }}"
+                  [style.background-color]="page.tab.detailColor"
+                  (click)="tabGroup.selectedIndex = tabIndex"
+                >
+                  <div
+                    class="d-flex justify-content-center align-items-center flex-column fw-bold h-100"
+                    [style.background-color]="page.tab.backgroundColor"
+                    [style.color]="
+                      tabGroup.selectedIndex == tabIndex
+                        ? (page.tab.textColor | colorShade: 50)
+                        : page.tab.textColor
+                    "
+                    style="font-size: 12px"
+                  >
+                    <mat-icon> {{ page2.icon }} </mat-icon>
+                    {{ page2.title }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

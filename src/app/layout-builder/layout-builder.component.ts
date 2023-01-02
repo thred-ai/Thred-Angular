@@ -10,7 +10,7 @@ import {
   EventEmitter,
   Output,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import {
@@ -20,7 +20,7 @@ import {
   CdkDragExit,
   CDK_DRAG_CONFIG,
 } from '@angular/cdk/drag-drop';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
@@ -38,6 +38,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { SharedDialogComponent } from '../shared-dialog/shared-dialog.component';
 import { NFTTableComponent } from '../nft-table/nft-table.component';
 import { Grid } from '../grid.model';
+import { takeUntil } from 'rxjs/operators';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -299,11 +300,22 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
   tabPosTypes = [
     {
-      name: 'Top',
+      name: 'Reverse',
       code: 1,
     },
     {
-      name: 'Bottom',
+      name: 'Standard',
+      code: 0,
+    },
+  ];
+
+  navBarTypes = [
+    {
+      name: 'Image',
+      code: 1,
+    },
+    {
+      name: 'Title',
       code: 0,
     },
   ];
@@ -403,13 +415,21 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
   matchingTabType(type: number) {
     return this.tabPosTypes.find((t) => {
-      return t.code == type;
+      return t.code == (type ?? 0);
+    });
+  }
+
+  matchingBarType(type: number) {
+    return this.navBarTypes.find((t) => {
+      return t.code == (type ?? 0);
     });
   }
 
   ngOnDestroy(): void {
     this.activeBlock.index = undefined;
     this.activeBlock.block = undefined;
+    this.OnDestroy.next();
+    this.OnDestroy.complete();
     // this.blockForm.reset();
     // this.layoutForm.reset();
   }
@@ -417,9 +437,14 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   selectedTheme: Dict<any> = {};
 
   async ngOnInit() {
+    this.loadService.getIcons((icons) => {
+      this.icons = icons ?? [];
+    });
+
     if (this.editableLayout) {
       await Promise.all(
         this.editableLayout.pages?.map((page, index) => {
+          console.log(page.icon);
           if (page.blocks) {
             return Promise.all(
               page.blocks!.map((block) => {
@@ -745,6 +770,78 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     block: undefined,
     index: undefined,
   };
+
+  icons = new Array<any>();
+  OnDestroy = new Subject<void>();
+
+  filteredIcons: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(
+    []
+  );
+
+  filterCodes(icon: string) {
+    if (!this.icons) {
+      return;
+    }
+    let search = icon;
+
+    if (!search) {
+      this.filteredIcons.next(this.icons.slice());
+
+      // this.bannerForm.controls.icon.setValue(undefined)
+      this.height = '400px';
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+
+    let filt = new Array<any>();
+
+    let i = this.icons.filter((icon) =>
+      icon.icons.filter((i: string) => i.toLowerCase().indexOf(search) > -1)
+    );
+
+    i.forEach((ic) => {
+      let newIc = { category: ic.category, icons: new Array<any>() };
+      ic.icons.forEach((ico: any) => {
+        if (ico.toLowerCase().indexOf(search) > -1) {
+          newIc.icons.push(ico);
+        }
+      });
+      if (newIc.icons.length > 0) {
+        filt.push(newIc);
+      }
+    });
+
+    this.filteredIcons.next(filt);
+
+    if (this.filteredIcons.value?.length < 10) {
+      let total = 0;
+      this.filteredIcons.value.forEach((icon: any) => {
+        total += 40;
+        total += icon.icons.length * 56;
+      });
+      this.height = total + 'px';
+    } else {
+      this.height = '400px';
+    }
+  }
+
+  height = '0px';
+
+  selectIcon(icon: string, page: Page) {
+    console.log(icon);
+    page.icon = icon;
+    // this.bannerForm.controls.icon.setValue(icon)
+  }
+
+  formattedName(name: string) {
+    let str = name
+      ?.replace('_', ' ')
+      .replace('_', ' ')
+      .replace('_', ' ')
+      .replace('_', ' ');
+    return str;
+  }
 
   copyBlock(block: Block) {
     let newBlock = Object.assign({}, JSON.parse(JSON.stringify(block)));
@@ -1096,18 +1193,19 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   onAddChildControl(event: MouseEvent): void {
     event.stopPropagation();
     let index = (this.editableLayout?.pages.length ?? 0) + 1;
-    let page = new Page(
-      `new page ${index}`,
-      `New Page ${index}`,
-      undefined,
-      `${index}`,
-      `new-page-${index}`,
-      [],
-      undefined,
-      undefined,
-      undefined,
-      undefined
-    );
+
+    let oldIndex = (this.editableLayout?.pages.length ?? 0) - 1;
+
+    let oldPage = this.editableLayout?.pages[oldIndex];
+
+    let page = Object.assign({}, JSON.parse(JSON.stringify(oldPage))) as Page
+
+    page.name = `new page ${index}`
+    page.title = `New Page ${index}`
+    page.id = `${index}`
+    page.url = `new-page-${index}`
+    page.blocks = []
+    page.icon = 'radio_button_unchecked'
 
     this.editableLayout?.pages.push(page);
     this.recalculateUniqIdsForDragDrop();
