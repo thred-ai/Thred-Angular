@@ -2034,22 +2034,28 @@
               [style.height.px]="75"
             >
               <div
-                class="w-100 h-100 row row-cols-{{
-                  editableLayout.pages.length
-                }} gx-0 justify-content-center"
+                class="w-100 h-100 d-flex justify-content-between align-items-center justify-content-center p-0"
+                cdkDropList
+                [cdkDropListData]="editableLayout.pages"
+                (cdkDropListDropped)="onDropPage($event)"
+                [cdkDropListOrientation]="'horizontal'"
+                #tabParent
               >
                 <div
                   *ngFor="
                     let page2 of editableLayout.pages ?? [];
                     index as tabIndex
                   "
-                  class="col h-100 px-{{
+                  class="px-{{
                     tabIndex != 0 && tabIndex != editableLayout.pages.length - 1
                       ? 'bar'
                       : '0'
-                  }}"
+                  }} m-0"
+                  [style.width.%]="100 / editableLayout.pages.length"
+                  [style.height.px]="tabParent.clientHeight"
                   [style.background-color]="page.tab.detailColor"
                   (click)="tabGroup.selectedIndex = tabIndex"
+                  cdkDrag
                 >
                   <div
                     class="d-flex justify-content-center align-items-center flex-column fw-bold h-100"

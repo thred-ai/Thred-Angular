@@ -1167,6 +1167,15 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     this.showDragWrapper(event);
   }
 
+  onDropPage(event: CdkDragDrop<Page[]>): void {
+    let arr = this.editableLayout?.pages ?? []
+    moveItemInArray(arr, event.previousIndex, event.currentIndex);
+    if (this.editingBlock?.pageIndex == event.previousIndex) {
+      this.editingBlock.pageIndex = event.currentIndex;
+    }
+    
+  }
+
   onDragEntered(event: CdkDragEnter): void {
     console.log(event);
     this.hideDragWrapper(event);
