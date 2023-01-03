@@ -62,10 +62,9 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   };
 
   items = {};
-  margins: { id: 'left' | 'right' | 'top' | 'bottom'; options: Options }[] = [];
-  borders: { id: 'left' | 'right' | 'top' | 'bottom'; options: Options }[] = [];
-  gridBorders: { id: 'left' | 'right' | 'top' | 'bottom'; options: Options }[] =
-    [];
+  margins: { id: 'left' | 'right' | 'top' | 'bottom' }[] = [];
+  borders: { id: 'left' | 'right' | 'top' | 'bottom' }[] = [];
+  gridBorders: { id: 'left' | 'right' | 'top' | 'bottom' }[] = [];
 
   // Dict<{
   //   nft: NFT;
@@ -487,6 +486,22 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
+  removeSliderListener(id: string) {
+    const $slider = document.getElementById(id);
+
+    if ($slider) {
+      $slider.removeAllListeners!('change');
+    }
+  }
+
+  addSliderListener(id: string, callback: (data: number) => any) {
+    const $slider = document.getElementById(id);
+
+    $slider?.addEventListener('change', (evt: any) => {
+      callback(evt.detail.value ?? 0);
+    });
+  }
+
   async edit(blockIndex: number, pageIndex: number) {
     if (
       this.editingBlock?.blockIndex == blockIndex &&
@@ -494,6 +509,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     ) {
       return;
     }
+
     this.editingBlock = {
       blockIndex,
       pageIndex,
@@ -516,17 +532,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         | 'bottom'
       )[]
     ).map((id) => {
-      let options: Options = {
-        floor: 0,
-        ceil: 10,
-        getPointerColor: (value: number): string => {
-          return '#9c4aff';
-        },
-      };
-
       return {
         id,
-        options,
       };
     });
 
@@ -538,17 +545,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         | 'bottom'
       )[]
     ).map((id) => {
-      let options: Options = {
-        floor: 0,
-        ceil: 10,
-        getPointerColor: (value: number): string => {
-          return '#9c4aff';
-        },
-      };
-
       return {
         id,
-        options,
       };
     });
 
@@ -560,21 +558,14 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         | 'bottom'
       )[]
     ).map((id) => {
-      let options: Options = {
-        floor: 0,
-        ceil: 10,
-        getPointerColor: (value: number): string => {
-          return '#9c4aff';
-        },
-      };
-
       return {
         id,
-        options,
       };
     });
 
     this.cdr.detectChanges();
+
+    this.syncListeners(true);
 
     setTimeout(async () => {
       let p = document.getElementById('p-' + blockIndex);
@@ -646,6 +637,64 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         return img.isActive;
       }).length > 1
     );
+  }
+
+  syncListeners(add = true) {
+    this.margins.forEach((margin) => {
+      this.removeSliderListener('block-margin-' + margin.id);
+      if (add) {
+        this.addSliderListener('block-margin-' + margin.id, (data) => {
+          if (this.activeBlock.block) {
+            this.activeBlock.block.padding[margin.id] = data;
+          }
+        });
+      }
+    });
+
+    this.borders.forEach((border) => {
+      this.removeSliderListener('block-border-' + border.id);
+      if (add) {
+        this.addSliderListener('block-border-' + border.id, (data) => {
+          if (this.activeBlock.block) {
+            this.activeBlock.block.borders[border.id].width = data;
+          }
+        });
+      }
+    });
+
+    this.gridBorders.forEach((border) => {
+      this.removeSliderListener('grid-border-' + border.id);
+      if (add) {
+        this.addSliderListener('grid-border-' + border.id, (data) => {
+          if (this.activeBlock.block) {
+            this.activeBlock.block.grid.borders[border.id].width = data;
+          }
+        });
+      }
+    });
+
+    this.removeSliderListener('grid-corners');
+    this.removeSliderListener('grid-spacing');
+
+    this.removeSliderListener('block-corners');
+
+    if (add) {
+      this.addSliderListener('grid-corners', (data) => {
+        if (this.activeBlock.block) {
+          this.activeBlock.block.grid.corners = data;
+        }
+      });
+      this.addSliderListener('grid-spacing', (data) => {
+        if (this.activeBlock.block) {
+          this.activeBlock.block.grid.spacing = data;
+        }
+      });
+      this.addSliderListener('block-corners', (data) => {
+        if (this.activeBlock.block) {
+          this.activeBlock.block.corners = data;
+        }
+      });
+    }
   }
 
   changed(event?: any, event2?: any) {
@@ -728,6 +777,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   deleting = false;
 
   finishedEditing(mode = 0) {
+    this.syncListeners(false);
+
     if (this.editingBlock == undefined) {
       return;
     }
@@ -1168,12 +1219,11 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   }
 
   onDropPage(event: CdkDragDrop<Page[]>): void {
-    let arr = this.editableLayout?.pages ?? []
+    let arr = this.editableLayout?.pages ?? [];
     moveItemInArray(arr, event.previousIndex, event.currentIndex);
     if (this.editingBlock?.pageIndex == event.previousIndex) {
       this.editingBlock.pageIndex = event.currentIndex;
     }
-    
   }
 
   onDragEntered(event: CdkDragEnter): void {
@@ -1207,14 +1257,14 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
     let oldPage = this.editableLayout?.pages[oldIndex];
 
-    let page = Object.assign({}, JSON.parse(JSON.stringify(oldPage))) as Page
+    let page = Object.assign({}, JSON.parse(JSON.stringify(oldPage))) as Page;
 
-    page.name = `new page ${index}`
-    page.title = `New Page ${index}`
-    page.id = `${index}`
-    page.url = `new-page-${index}`
-    page.blocks = []
-    page.icon = 'radio_button_unchecked'
+    page.name = `new page ${index}`;
+    page.title = `New Page ${index}`;
+    page.id = `${index}`;
+    page.url = `new-page-${index}`;
+    page.blocks = [];
+    page.icon = 'radio_button_unchecked';
 
     this.editableLayout?.pages.push(page);
     this.recalculateUniqIdsForDragDrop();

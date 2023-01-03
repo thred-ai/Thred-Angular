@@ -37,6 +37,7 @@ import { Wallet } from '../wallet.model';
 })
 export class SmartUtilComponent implements OnInit, OnDestroy {
   wallet?: Wallet;
+  selectedIndex = 0
 
   constructor(
     private fb: FormBuilder,

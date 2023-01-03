@@ -107,6 +107,7 @@ import { AddNftComponent } from './add-nft/add-nft.component';
 import { SharedDialogComponent } from './shared-dialog/shared-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ColorShadePipe } from './color-shade.pipe';
+import { SliderValuePipe } from './slider-value.pipe';
 
 
 @NgModule({
@@ -145,7 +146,8 @@ import { ColorShadePipe } from './color-shade.pipe';
     LoaderComponent,
     AddNftComponent,
     SharedDialogComponent,
-    ColorShadePipe
+    ColorShadePipe,
+    SliderValuePipe
   ],
   imports: [
     CommonModule,

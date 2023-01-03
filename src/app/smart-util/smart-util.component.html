@@ -943,6 +943,7 @@
               animationDuration="0ms"
               *ngIf="wallet"
               color="transparent"
+              [(selectedIndex)]="selectedIndex"
               (selectedTabChange)="tabChanged($event)"
             >
               <mat-tab *ngFor="let layout of wallet.layouts ?? []">

@@ -1133,10 +1133,13 @@
                     <p class="w-100 mb-4 text">Corner Radius</p>
                     <div class="px-3 w-100">
                       <div class="w-100 mb-3">
-                        <ngx-slider
-                          [(value)]="activeBlock.block.corners"
-                          [options]="blockBorderRadiusOptions"
-                        ></ngx-slider>
+                        <tc-range-slider
+                          animate-onclick="2s"
+                          [value]="activeBlock.block.corners"
+                          generate-labels="true"
+                          id="block-corners"
+                          round="0"
+                        ></tc-range-slider>
                       </div>
                     </div>
                   </div>
@@ -1161,10 +1164,13 @@
                     </p>
                     <div class="px-3 w-100">
                       <div class="w-100 mb-3">
-                        <ngx-slider
-                          [(value)]="activeBlock.block.padding![margin.id]"
-                          [options]="margin.options"
-                        ></ngx-slider>
+                        <tc-range-slider
+                          animate-onclick="2s"
+                          [value]="activeBlock.block.padding![margin.id]"
+                          generate-labels="true"
+                          id="block-margin-{{ margin.id }}"
+                          round="0"
+                        ></tc-range-slider>
                       </div>
                     </div>
                   </div>
@@ -1314,10 +1320,13 @@
                     <p class="w-100 mb-4 text">Spacing</p>
                     <div class="px-3 w-100">
                       <div class="w-100 mb-3">
-                        <ngx-slider
-                          [(value)]="activeBlock.block.grid.spacing"
-                          [options]="options"
-                        ></ngx-slider>
+                        <tc-range-slider
+                          animate-onclick="2s"
+                          [value]="activeBlock.block.grid.spacing"
+                          generate-labels="true"
+                          id="grid-spacing"
+                          round="0"
+                        ></tc-range-slider>
                       </div>
                     </div>
                   </div>
@@ -1326,10 +1335,13 @@
                     <p class="w-100 mb-4 text">Corners</p>
                     <div class="px-3 w-100">
                       <div class="w-100 mb-3">
-                        <ngx-slider
-                          [(value)]="activeBlock.block.grid.corners"
-                          [options]="blockGridBorderRadiusOptions"
-                        ></ngx-slider>
+                        <tc-range-slider
+                          animate-onclick="2s"
+                          [value]="activeBlock.block.grid.corners"
+                          generate-labels="true"
+                          id="grid-corners"
+                          round="0"
+                        ></tc-range-slider>
                       </div>
                     </div>
                   </div>
@@ -1353,12 +1365,15 @@
                         </p>
                         <div class="px-3 w-100">
                           <div class="w-100 mb-3">
-                            <ngx-slider
-                              [(value)]="
+                            <tc-range-slider
+                              animate-onclick="2s"
+                              [value]="
                                 activeBlock.block.grid.borders[border.id].width
                               "
-                              [options]="border.options"
-                            ></ngx-slider>
+                              generate-labels="true"
+                              id="grid-border-{{ border.id }}"
+                              round="0"
+                            ></tc-range-slider>
                           </div>
                         </div>
                       </div>
@@ -1431,12 +1446,15 @@
                         </p>
                         <div class="px-3 w-100">
                           <div class="w-100 mb-3">
-                            <ngx-slider
-                              [(value)]="
+                            <tc-range-slider
+                              animate-onclick="2s"
+                              [value]="
                                 activeBlock.block.borders[border.id].width
                               "
-                              [options]="border.options"
-                            ></ngx-slider>
+                              generate-labels="true"
+                              id="block-border-{{ border.id }}"
+                              round="0"
+                            ></tc-range-slider>
                           </div>
                         </div>
                       </div>
@@ -1734,10 +1752,18 @@
                       [class.highlight]="
                         hoverIndex != undefined && hoverIndex == i
                       "
-                      [style.padding-top.px]="block.padding.top * 10"
-                      [style.padding-right.px]="block.padding.right * 10"
-                      [style.padding-bottom.px]="block.padding.bottom * 10"
-                      [style.padding-left.px]="block.padding.left * 10"
+                      [style.padding-top.%]="
+                        mainFrame.clientWidth * (block.padding.top * 0.0005)
+                      "
+                      [style.padding-right.%]="
+                        mainFrame.clientWidth * (block.padding.right * 0.0005)
+                      "
+                      [style.padding-bottom.%]="
+                        mainFrame.clientWidth * (block.padding.bottom * 0.0005)
+                      "
+                      [style.padding-left.%]="
+                        mainFrame.clientWidth * (block.padding.left * 0.0005)
+                      "
                     >
                       <div
                         class="p-0 w-100"
