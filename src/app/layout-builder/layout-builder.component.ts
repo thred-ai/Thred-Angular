@@ -1265,6 +1265,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     page.url = `new-page-${index}`;
     page.blocks = [];
     page.icon = 'radio_button_unchecked';
+    page.type = 0
 
     this.editableLayout?.pages.push(page);
     this.recalculateUniqIdsForDragDrop();

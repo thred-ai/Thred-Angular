@@ -85,7 +85,7 @@ export class Wallet {
     //       );
 
     let pages = [
-      new Page('home', 'Home', undefined, '1', 'home', []),
+      new Page('1', 'Home', 'home', [], 0, ''),
     ];
 
     this.layouts = layouts ?? [

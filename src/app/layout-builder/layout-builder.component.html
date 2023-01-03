@@ -186,7 +186,7 @@
                             [cpOKButtonText]="'SET COLOR'"
                             [cpOKButtonClass]="'big-design-alt-button'"
                             [cpSaveClickOutside]="false"
-                            [colorPicker]="page.backgroundColor ?? '#FFFFFF'"
+                            [colorPicker]="page.backgroundColor"
                             style="height: 40px"
                           >
                             <p
@@ -199,7 +199,7 @@
                               class="rounded-circle border border-secondary"
                               style="height: 20px; aspect-ratio: 1"
                               [style.background-color]="
-                                page.backgroundColor ?? '#FFFFFF'
+                                page.backgroundColor
                               "
                             ></div>
                           </a>
@@ -607,11 +607,11 @@
                       <div
                         class="w-100"
                         cdkDropList
-                        [cdkDropListData]="page.blocks ?? []"
+                        [cdkDropListData]="page.blocks"
                         (cdkDropListDropped)="drop($event, p)"
                       >
                         <ng-container
-                          *ngFor="let b of page.blocks ?? []; index as i"
+                          *ngFor="let b of page.blocks; index as i"
                         >
                           <div
                             cdkDrag
@@ -1099,7 +1099,7 @@
                             activeBlock.block.backgroundColor &&
                             activeBlock.block.backgroundColor != ''
                               ? activeBlock.block.backgroundColor
-                              : page.backgroundColor ?? '#FFFFFF'
+                              : page.backgroundColor
                           "
                           style="height: 40px"
                         >
@@ -1111,7 +1111,7 @@
                               activeBlock.block.backgroundColor &&
                               activeBlock.block.backgroundColor != ""
                                 ? activeBlock.block.backgroundColor
-                                : page.backgroundColor ?? "#FFFFFF"
+                                : page.backgroundColor
                             }}
                           </p>
                           <div
@@ -1121,7 +1121,7 @@
                               activeBlock.block.backgroundColor &&
                               activeBlock.block.backgroundColor != ''
                                 ? activeBlock.block.backgroundColor
-                                : page.backgroundColor ?? '#FFFFFF'
+                                : page.backgroundColor
                             "
                           ></div>
                         </a>
