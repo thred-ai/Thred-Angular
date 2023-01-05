@@ -13,32 +13,50 @@
       </mat-icon>
       
     </a> -->
-    <p
-      class="btn bg-transparent rounded-pill fw-bold text-{{
-        mode == 1 ? 'white' : 'dark'
-      }} border-{{
-        mode == 1 ? 'white' : '0'
-      }} d-flex justify-content-between align-content-center px-{{
-        mode == 1 ? '3' : '2'
-      }} py-2 my-auto"
-      (click)="loading ? null : mode == 0 ? close() : (mode = 0)"
-    >
-      <mat-icon class="me-{{ mode == 1 ? '1' : '0' }}" style="aspect-ratio: 1">
-        {{ mode == 1 ? "arrow_back_ios" : "close" }}
-      </mat-icon>
-      <ng-container *ngIf="mode == 1"> Back </ng-container>
-    </p>
 
-    <!-- <p
-      class="btn bg-purple rounded-pill fw-bold text-white d-flex justify-content-between align-content-center px-3 py-2 my-auto"
-      (click)="mode == 0 ? close() : (mode = 0)"
-    >
-      <ng-container *ngIf="mode == 1"> Save Layout</ng-container>
-      <ng-container *ngIf="mode == 0"> Save Wallet</ng-container>
-      <mat-icon class="fw-bold ms-2" style="aspect-ratio: 1">
-        check_circle
-      </mat-icon>
-    </p> -->
+    <div class="d-flex justify-content-center align-items-center my-auto">
+      <p
+        class="btn bg-transparent rounded-pill fw-bold text-{{
+          mode == 1 ? 'white' : 'dark'
+        }} border-{{
+          mode == 1 ? 'white' : '0'
+        }} d-flex justify-content-between align-content-center px-{{
+          mode == 1 ? '3' : '2'
+        }} py-2 my-auto"
+        (click)="loading ? null : mode == 0 ? close() : (mode = 0)"
+      >
+        <mat-icon
+          class="me-{{ mode == 1 ? '1' : '0' }}"
+          style="aspect-ratio: 1"
+        >
+          {{ mode == 1 ? "arrow_back_ios" : "close" }}
+        </mat-icon>
+        <ng-container *ngIf="mode == 1"> Back </ng-container>
+      </p>
+
+      <button
+        class="btn bg-transparent shadow-0 rounded-pill fw-bold border-0 text-light-purple d-flex justify-content-between align-content-center ms-4 px-3 py-2 my-auto"
+        (click)="save()"
+        style="pointer-events: none;"
+        *ngIf="mode == 1"
+      >
+        <ng-container *ngIf="loadingMode == 1; else buttonTitles">
+          Saving
+          <span
+            class="spinner-border spinner-border-sm ms-2 m-auto"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </ng-container>
+
+        <ng-template #buttonTitles>
+          <ng-container *ngIf="loadingMode == 0"> Saved</ng-container>
+          <mat-icon *ngIf="loadingMode == 0" class="fw-bold ms-2" style="aspect-ratio: 1">
+            check_circle
+          </mat-icon>
+        </ng-template>
+      </button>
+    </div>
 
     <button
       class="btn bg-purple border-0 rounded-pill fw-bold text-white d-flex justify-content-between align-content-center px-3 py-2 my-auto"
@@ -961,7 +979,8 @@
                       style="font-size: x-small"
                       [disabled]="sameLayouts()"
                     >
-                      Copy to {{layout.type == 'mobile' ? 'Desktop' : 'Mobile'}}
+                      Copy to
+                      {{ layout.type == "mobile" ? "Desktop" : "Mobile" }}
                     </button>
                     <button
                       class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center ms-2 px-3 py-2"

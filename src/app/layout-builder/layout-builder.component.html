@@ -105,7 +105,7 @@
                               type="text"
                               name="name"
                               [ngModel]="page.title"
-                              (ngModelChange)="page.title = $event; saveLayout()"
+                              (ngModelChange)="page.title = $event; saveLayout(0)"
                               placeholder="Name"
                             />
                           </mat-form-field>
@@ -125,7 +125,7 @@
                             <mat-select
                               [ngModel]="page.position"
                               (ngModelChange)="
-                                page.position = $event; saveLayout()
+                                page.position = $event; saveLayout(0)
                               "
                               class="my-auto d-flex justify-content-start align-items-center"
                             >
@@ -183,7 +183,7 @@
                               editableLayout!.pages[p]!.backgroundColor =
                                 $event;
                               syncBlockAndPageColors(p, $event);
-                              saveLayout()
+                              saveLayout(0)
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -228,7 +228,7 @@
                       <mat-slide-toggle
                         class="mb-3"
                         [ngModel]="page.bar.visible"
-                        (ngModelChange)="page.bar.visible = $event; saveLayout()"
+                        (ngModelChange)="page.bar.visible = $event; saveLayout(0)"
                       >
                         {{ page.bar.visible ? "Visible" : "Hidden" }}
                       </mat-slide-toggle>
@@ -246,7 +246,7 @@
                             <mat-select
                               [ngModel]="page.bar.mode"
                               (ngModelChange)="
-                                page.bar.mode = $event; saveLayout()
+                                page.bar.mode = $event; saveLayout(0)
                               "
                               class="my-auto d-flex justify-content-start align-items-center"
                             >
@@ -303,7 +303,7 @@
                             [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.bar.backgroundColor = $event; saveLayout()
+                              page.bar.backgroundColor = $event; saveLayout(0)
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -341,7 +341,7 @@
                             [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.bar.textColor = $event; saveLayout()
+                              page.bar.textColor = $event; saveLayout(0)
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -377,7 +377,7 @@
                             [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.bar.detailColor = $event; saveLayout()
+                              page.bar.detailColor = $event; saveLayout(0)
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -492,7 +492,7 @@
                             [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.tab.backgroundColor = $event; saveLayout()
+                              page.tab.backgroundColor = $event; saveLayout(0)
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -530,7 +530,7 @@
                             [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.tab.textColor = $event; saveLayout()
+                              page.tab.textColor = $event; saveLayout(0)
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -566,7 +566,7 @@
                             [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.tab.detailColor = $event; saveLayout()
+                              page.tab.detailColor = $event; saveLayout(0)
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -990,7 +990,7 @@
                 style="overflow-y: scroll"
               >
                 <div
-                  class="wrap-input1 w-100 py-2 px-3 d-flex justify-content-between align-content-center"
+                  class="wrap-input1 w-100 py-2 px-3 d-flex justify-content-end align-content-center"
                 >
                   <a
                     role="button"
@@ -998,15 +998,7 @@
                     class="text-purple fw-bold p-0 my-auto"
                   >
                     <mat-icon> close </mat-icon>
-                  </a>
-
-                  <a
-                    role="button"
-                    (click)="finishedEditing(0)"
-                    class="btn bg-purple rounded-pill text-white text fw-bold px-3 py-1 my-auto"
-                  >
-                    Save
-                  </a>
+                  </a>                  
                 </div>
 
                 <mat-expansion-panel

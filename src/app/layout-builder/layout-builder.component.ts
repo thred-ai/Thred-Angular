@@ -180,7 +180,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   @Input() wallet!: Wallet;
   @Input() color!: string;
 
-  @Output() layoutSaved = new EventEmitter<Layout>();
+  @Output() layoutSaved = new EventEmitter<{time: number, layout?: Layout}>();
   @Output() clickedCanvas = new EventEmitter<boolean>();
 
   @Input() set layout(value: Layout) {
@@ -426,7 +426,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
   removeBlocks(index: number, pageIndex: number) {
     this.editableLayout?.pages[pageIndex]?.blocks?.splice(index, 1);
-    this.saveLayout(750);
+    this.saveLayout(0);
 
     this.cdr.detectChanges();
   }
@@ -736,7 +736,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.saveLayout();
+    this.saveLayout(0);
   }
 
   saveLayout(delay = 750) {
@@ -758,12 +758,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     if (blocks[this.editingBlock.blockIndex] != undefined) {
       switch (mode) {
         // @ts-ignore
-
-        case 0:
-          blocks[this.editingBlock.blockIndex] = this.copyBlock(
-            this.activeBlock.block!
-          );
-          break;
         case 1:
           this.removeBlocks(
             this.editingBlock.blockIndex,
@@ -851,7 +845,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   selectIcon(icon: string, page: Page) {
     console.log(icon);
     page.icon = icon;
-    this.saveLayout(750);
+    this.saveLayout(0);
   }
 
   formattedName(name: string) {
@@ -914,7 +908,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.saveLayout(750);
+    this.saveLayout(0);
 
     this.edit(rows.length - 1, pageIndex);
   }
@@ -953,8 +947,10 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
   async save() {
     if (this.editableLayout) {
+      let time = new Date().getTime()
+      this.layoutSaved.emit({time})
       this.loadService.addLayout(this.editableLayout, this.wallet, (layout) => {
-        this.layoutSaved.emit(layout);
+        this.layoutSaved.emit({time, layout})
       });
     }
   }
@@ -969,7 +965,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     if (this.activeBlock.index == event.previousIndex) {
       this.activeBlock.index = event.currentIndex;
     }
-    this.saveLayout(750);
+    this.saveLayout(0);
   }
 
   @ViewChild('nftTable') nftTable?: NFTTableComponent;
@@ -1018,7 +1014,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         }
         this.cdr.detectChanges();
       }
-      this.saveLayout(750);
+      this.saveLayout(0);
     });
   }
 
@@ -1044,7 +1040,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     console.log(event);
     moveItemInArray(this.editableLayout?.pages ?? [], previousIndex, newIndex);
     this.showDragWrapper(event);
-    this.saveLayout(750);
+    this.saveLayout(0);
   }
 
   onDropPage(event: CdkDragDrop<Page[]>): void {
@@ -1053,7 +1049,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     if (this.editingBlock?.pageIndex == event.previousIndex) {
       this.editingBlock.pageIndex = event.currentIndex;
     }
-    this.saveLayout(750);
+    this.saveLayout(0);
   }
 
   onDragEntered(event: CdkDragEnter): void {
@@ -1077,7 +1073,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         (this.childTabGroup?.selectedIndex ?? -1) - 1;
     }
     this.recalculateUniqIdsForDragDrop();
-    this.saveLayout(750);
+    this.saveLayout(0);
   }
 
   onAddChildControl(event: MouseEvent): void {
@@ -1100,7 +1096,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
     this.editableLayout?.pages.push(page);
     this.recalculateUniqIdsForDragDrop();
-    this.saveLayout(750);
+    this.saveLayout(0);
   }
 
   private showDragWrapper(event: CdkDragExit | CdkDragDrop<string[]>): void {

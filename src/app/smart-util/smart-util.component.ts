@@ -37,7 +37,7 @@ import { Wallet } from '../wallet.model';
 })
 export class SmartUtilComponent implements OnInit, OnDestroy {
   wallet?: Wallet;
-  selectedIndex = 0
+  selectedIndex = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -135,12 +135,12 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   }
 
   syncLayouts(id: string) {
-    let layout = this.wallet?.layouts.find(layout => layout.type == id)?.pages ?? []
-    if (id == 'mobile'){
-      this.wallet!.layouts[0].pages = layout
-    }
-    else if (id == 'desktop'){
-      this.wallet!.layouts[1].pages = layout
+    let layout =
+      this.wallet?.layouts.find((layout) => layout.type == id)?.pages ?? [];
+    if (id == 'mobile') {
+      this.wallet!.layouts[0].pages = layout;
+    } else if (id == 'desktop') {
+      this.wallet!.layouts[1].pages = layout;
     }
   }
 
@@ -461,17 +461,33 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   }
 
   @ViewChild('layoutBuilder') layoutBuilder?: LayoutBuilderComponent;
+  saves: number[] = [];
+  loadingMode = 0;
 
-  layoutSaved(layout: Layout) {
-    let index =
-      this.wallet?.layouts.findIndex(
-        (l) => l.name.toLowerCase() == layout.name.toLowerCase()
-      ) ?? -1;
-    this.loading = false;
-    if (this.wallet && index > -1) {
-      this.wallet.layouts[index] = layout;
-      this.selectedLayout = layout;
-      //toast
+  layoutSaved(data: { time: number; layout?: Layout }) {
+    if (data.time) {
+      if (data.layout) {
+        let i = this.saves.indexOf(data.time);
+        if (i > -1) {
+          this.saves.splice(i, 1);
+        }
+        let index =
+          this.wallet?.layouts.findIndex(
+            (l) => l.name.toLowerCase() == data.layout!.name.toLowerCase()
+          ) ?? -1;
+        this.loading = false;
+        if (this.wallet && index > -1) {
+          this.wallet.layouts[index] = data.layout;
+          this.selectedLayout = data.layout;
+          //toast
+          if (this.saves.length == 0) {
+            this.loadingMode = 0;
+          }
+        }
+      } else {
+        this.loadingMode = 1;
+        this.saves.push(data.time);
+      }
     }
   }
 
