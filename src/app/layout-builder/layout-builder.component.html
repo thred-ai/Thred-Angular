@@ -66,14 +66,46 @@
       <div
         class="w-100 h-100 d-block d-md-flex justify-content-between align-items-top border-{{
           editable ? 'top' : 'none'
-        }}"
+        }} position-{{ openBar ? 'static' : 'relative' }}"
       >
         <div
           class="d-none d-md-block w-100 w-md-20 h-100 big-design-card rounded-0 bg-white shadow-0 p-0 border-end"
-          *ngIf="editable"
+          *ngIf="editable && openBar"
         >
-          <div class="h-100 w-100 py-2">
-            <div class="h-100 w-100" id="label">
+          <div class="h-100 w-100 pb-2">
+            <div
+              class="h-100 w-100 d-flex justify-content-between align-content-center flex-column"
+              id="label"
+            >
+              <div
+                class="wrap-input1 w-100 p-3 border-bottom py-auto d-flex justify-content-{{
+                  editingBlock != undefined && activeBlock.block
+                    ? 'between'
+                    : 'end'
+                }} align-content-center"
+              >
+                <div
+                  class="shadow-0 border-0 p-0 fw-bold my-auto text-purple d-inline-flex justify-content-between align-content-center"
+                  role="button"
+                  *ngIf="editingBlock != undefined && activeBlock.block"
+                  (click)="finishedEditing(3)"
+                >
+                  <mat-icon class="me-0" style="aspect-ratio: 1">
+                    arrow_back_ios
+                  </mat-icon>
+                  Back
+                </div>
+
+                <div
+                  class="shadow-0 border-0 p-0 fw-bold my-auto text-purple d-inline-flex justify-content-between align-content-center"
+                  role="button"
+                  (click)="openBar = false"
+                >
+                  <mat-icon class="me-0" style="aspect-ratio: 1">
+                    close
+                  </mat-icon>
+                </div>
+              </div>
               <div
                 *ngIf="editingBlock == undefined"
                 class="w-100 h-100"
@@ -105,7 +137,9 @@
                               type="text"
                               name="name"
                               [ngModel]="page.title"
-                              (ngModelChange)="page.title = $event; saveLayout(0)"
+                              (ngModelChange)="
+                                page.title = $event; saveLayout(0)
+                              "
                               placeholder="Name"
                             />
                           </mat-form-field>
@@ -228,7 +262,9 @@
                       <mat-slide-toggle
                         class="mb-3"
                         [ngModel]="page.bar.visible"
-                        (ngModelChange)="page.bar.visible = $event; saveLayout(0)"
+                        (ngModelChange)="
+                          page.bar.visible = $event; saveLayout(0)
+                        "
                       >
                         {{ page.bar.visible ? "Visible" : "Hidden" }}
                       </mat-slide-toggle>
@@ -437,7 +473,7 @@
                               class="bg-transparent text-truncate mb-2"
                               matInput
                               [ngModel]="page.icon"
-                              (ngModelChange)="page.icon = $event;"
+                              (ngModelChange)="page.icon = $event"
                               (ngModelChange)="filterCodes($event)"
                               [matAutocomplete]="auto"
                             />
@@ -989,18 +1025,6 @@
                 class="w-100 h-100"
                 style="overflow-y: scroll"
               >
-                <div
-                  class="wrap-input1 w-100 py-2 px-3 d-flex justify-content-end align-content-center"
-                >
-                  <a
-                    role="button"
-                    (click)="finishedEditing(3)"
-                    class="text-purple fw-bold p-0 my-auto"
-                  >
-                    <mat-icon> close </mat-icon>
-                  </a>                  
-                </div>
-
                 <mat-expansion-panel
                   class="shadow-0 border-bottom"
                   [expanded]="true"
@@ -1856,10 +1880,29 @@
             </div>
           </div>
         </div>
+
+        <div
+          class="h-100 d-flex justify-content-center align-items-center px-0 h-100 bg-white border-end position-{{
+            openBar ? 'static' : 'absolute'
+          }}"
+          *ngIf="editable && !openBar"
+          style="z-index: 500"
+        >
+          <div
+            class="my-auto p-2 text-purple"
+            role="button"
+            (click)="openBar = true"
+          >
+            <mat-icon> arrow_forward_ios </mat-icon>
+          </div>
+        </div>
+
         <div
           class="w-100 w-md-{{
-            editable ? '80' : '100'
-          }} h-100 d-flex justify-content-center align-content-center bg-light"
+            editable && openBar ? '80' : '100'
+          }} h-100 d-flex justify-content-center align-content-center bg-light position-{{
+            openBar ? 'static' : 'absolute'
+          }}"
         >
           <div
             class="big-design-card m-auto {{

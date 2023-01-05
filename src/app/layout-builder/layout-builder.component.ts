@@ -745,6 +745,9 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     }, delay);
   }
 
+  openBar = true
+
+
   finishedEditing(mode = 0) {
     // this.syncListeners(false);
 

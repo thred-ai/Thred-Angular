@@ -4,16 +4,6 @@
       mode == 1 ? 'dark' : 'white'
     }}"
   >
-    <!-- <a role="button">
-      <mat-icon
-        class="d-inline-flex justify-content-center align-items-center fw-bolder h-100"
-        style="aspect-ratio: 1; font-size: xx-large; z-index: 50"
-      >
-        
-      </mat-icon>
-      
-    </a> -->
-
     <div class="d-flex justify-content-center align-items-center my-auto">
       <p
         class="btn bg-transparent rounded-pill fw-bold text-{{
@@ -199,7 +189,6 @@
                       [(ngModel)]="wallet.name"
                       placeholder="Wallet Name"
                     />
-                    <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
                   </mat-form-field>
                 </div>
               </div>
@@ -219,11 +208,10 @@
                       type="text"
                       name="name"
                       [(ngModel)]="wallet.description"
-                      placeholder="Wallet Description"
+                      placeholder="Wallet Description (Optional)"
                       style="min-height: 100px"
                     >
                     </textarea>
-                    <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
                   </mat-form-field>
                 </div>
               </div>
@@ -413,82 +401,6 @@
                 <i><span style="font-size: small">General</span></i>
                 <hr class="fw-bolder border-1" />
               </div>
-
-              <!-- <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-              <h3 class="w-100 mb-4" style="font-size: 20px">Listing Price</h3>
-    
-              <div
-                class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
-              >
-                <mat-form-field
-                  class="mb-0 pe-3 w-75"
-                  appearance="legacy"
-                  floatLabel="never"
-                >
-                  <input
-                    matInput
-                    currencyMask
-                    [options]="customCurrencyMaskConfig"
-                    class="mb-2 text-truncate"
-                    type="text"
-                    name="name"
-                    formControlName="price"
-                    placeholder="Price"
-                  />
-                </mat-form-field>
-                <div
-                  class="bg-white rounded-circle shadow p-1"
-                  style="height: 52.5px !important; width: 52.5px !important"
-                  role="button"
-                  [mdbPopover]="template"
-                  placement="top"
-                  [trigger]="'hover'"
-                >
-                  <div
-                    class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
-                    style="aspect-ratio: 1"
-                  >
-                    <mat-icon class="text-white m-auto" style="font-size: 25px">
-                      smart_toy
-                    </mat-icon>
-                  </div>
-                </div>
-                <ng-template #template>
-                  <div class="popover-body-padding">
-                    <b class="fw-bolder mb-4 text-light-success">Relative Prices</b>
-                    <br />
-                    Prices are relative to the different networks. Ex. 100 ETH, 100
-                    MATIC.
-                  </div>
-                </ng-template>
-              </div>
-            </div>
-    
-            <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-              <h3 class="w-100 mb-4" style="font-size: 20px">Payout Address</h3>
-    
-              <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
-                <mat-form-field
-                  class="w-100"
-                  appearance="legacy"
-                  floatLabel="never"
-                >
-                  <input
-                    matInput
-                    class="bg-transparent text-truncate"
-                    type="text"
-                    name="name"
-                    formControlName="wallet"
-                    placeholder="Payout Address"
-                  />
-                </mat-form-field>
-              </div>
-            </div>
-    
-            <div class="w-100 py-5 text-purple text-center fw-bold">
-              <i><span style="font-size: small">Payment</span></i>
-              <hr class="fw-bolder border-1" />
-            </div> -->
 
               <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
                 <h3 class="w-100 mb-4" style="font-size: 20px">

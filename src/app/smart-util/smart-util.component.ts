@@ -92,13 +92,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       this.loadService.loadedChains.subscribe((chains) => {
         this.categories[0].chains = chains ?? [];
       });
-
-      // this.utilForm.controls['appImg'].setValue(
-      //   'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png'
-      // );
-      // this.utilForm.controls['marketingImg'].setValue(
-      //   'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png'
-      // );
       this.wallet = new Wallet(
         this.loadService.newUtilID,
         '',
@@ -161,24 +154,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       this.wallet!.layouts[1].pages = layout;
     }
   }
-
-  // utilForm = this.fb.group({
-  //   name: [null, Validators.required],
-  //   description: [null, Validators.required],
-  //   networks: [[], Validators.required],
-
-  //   appImg: [null, Validators.required],
-  //   marketingImg: [null, Validators.required],
-
-  //   installWebhook: [null],
-  //   appFile: [null],
-  //   marketingFile: [null],
-  //   available: [true],
-  //   authStyle: [1, Validators.required],
-  //   tracking: [false, Validators.required],
-  //   displayedLayouts: [[], Validators.required],
-
-  // });
 
   loading = false;
   mode = 0;
@@ -256,61 +231,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
     this.addressCtrl.setValue(null);
   }
-
-  // composeWallet() {
-  //   let name = this.utilForm.controls['name'].value;
-  //   let id = this.wallet?.id ?? this.loadService.newUtilID;
-  //   console.log(id);
-
-  //   let chains = (this.utilForm.controls['networks'].value as Chain[]) ?? [];
-
-  //   let created = this.wallet?.created ?? new Date().getTime();
-  //   let modified = created;
-
-  //   let available = this.utilForm.controls['available'].value ?? false;
-  //   let status = available ? 0 : 1;
-
-  //   let creatorName = '';
-  //   let displayUrl: string = this.utilForm.controls['appImg'].value;
-  //   let coverUrl: string = this.utilForm.controls['marketingImg'].value;
-  //   let description = this.utilForm.controls['description'].value;
-
-  //   let verified = false;
-
-  //   let reviews = 0;
-  //   let rating = 0;
-  //   let downloads = this.wallet?.downloads ?? 0;
-
-  //   let installWebhook = this.utilForm.controls['installWebhook'].value;
-  //   let whitelist = this.selectedUsers ?? [];
-  //   let authStyle = this.utilForm.controls['authStyle'].value;
-  //   let tracking = this.utilForm.controls['tracking'].value;
-  //   let displayedLayouts = this.utilForm.controls['displayedLayouts'].value;
-
-  //   return new Wallet(
-  //     id,
-  //     '',
-  //     created,
-  //     modified,
-  //     creatorName,
-  //     name,
-  //     displayUrl,
-  //     description,
-  //     verified,
-  //     reviews,
-  //     rating,
-  //     downloads,
-  //     chains,
-  //     coverUrl,
-  //     status,
-  //     installWebhook,
-  //     whitelist,
-  //     authStyle,
-  //     this.wallet?.layouts,
-  //     tracking,
-  //     displayedLayouts
-  //   );
-  // }
 
   private _filter(value: string): any[] {
     console.log(value);
@@ -462,11 +382,10 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
   get isValid(): boolean {
     if (this.wallet) {
-      let textFields = ['name', 'displayUrl', 'coverUrl', 'description'] as (
+      let textFields = ['name', 'displayUrl', 'coverUrl'] as (
         | 'name'
         | 'displayUrl'
         | 'coverUrl'
-        | 'description'
       )[];
 
       let arrayFields = ['displayedLayouts', 'chains'] as (
@@ -474,23 +393,25 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         | 'chains'
       )[];
 
-      let invalidText =
-        textFields.map(
+      let validText =
+        textFields.filter(
           (field) =>
             this.wallet![field] == undefined ||
             this.wallet![field] == null ||
             this.wallet![field]?.trim() == ''
-        ).length > 0;
+        ).length == 0;
 
-      let invalidArray =
-        arrayFields.map(
+        console.log(validText)
+
+      let validArray =
+        arrayFields.filter(
           (field) =>
             this.wallet![field] == undefined ||
             this.wallet![field] == null ||
             (this.wallet![field]?.length ?? 0) == 0
-        ).length > 0;
+        ).length == 0;
 
-      return invalidText && invalidArray;
+      return validText && validArray;
     }
 
     return false;

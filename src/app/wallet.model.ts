@@ -61,9 +61,9 @@ export class Wallet {
     this.created = created;
     this.modified = modified ?? created;
     this.creatorName = creatorName ?? 'Unknown Developer';
-    this.name = name ?? 'My App';
-    this.displayUrl = displayUrl ?? 'add_thred_default_later';
-    this.description = description ?? 'No Description Available';
+    this.name = name ?? 'My New Wallet';
+    this.displayUrl = displayUrl ?? '';
+    this.description = description ?? '';
     this.verified = verified ?? false;
     this.reviews = reviews ?? 0;
     this.rating = rating ?? 0;

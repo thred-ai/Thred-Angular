@@ -628,8 +628,8 @@ export class LoadService {
     });
   }
 
-  syncPages(layouts: Layout[]) {
-    return layouts.map((layout) => {
+  syncPages(layouts?: Layout[]) {
+    return layouts?.map((layout) => {
       return new Layout(
         layout.name,
         layout.type,
