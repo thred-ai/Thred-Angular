@@ -453,10 +453,7 @@ export class LoadService {
         let d = docs_2[0];
 
         if (d) {
-          let util = d as Wallet;
-
-          let layouts = this.syncPages(util.layouts);
-          util.layouts = layouts;
+          let util = this.syncWallet(d as Wallet)
 
           d.chains.forEach((c: any, i: number) => {
             d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
@@ -492,13 +489,8 @@ export class LoadService {
         console.log(docs);
 
         docs.forEach((d) => {
-          let util = d as Wallet;
+          let util = this.syncWallet(d as Wallet);
           console.log(d);
-
-          let layouts = this.syncPages(util.layouts);
-          util.layouts = layouts;
-
-          console.log(util.layouts);
 
           util.chains.forEach((c: any, i: number) => {
             util.chains[i] = this.loadedChains.value?.find((x) => x.id == c)!;
@@ -612,10 +604,8 @@ export class LoadService {
             );
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {
-            let docs_2 = docs2 as Wallet[];
+            let docs_2 = (docs2 as Wallet[]).map(wallet => this.syncWallet(wallet));
             docs_2.forEach((d) => {
-              let layouts = this.syncPages(d.layouts);
-              d.layouts = layouts;
 
               d.chains.forEach((c: any, i: number) => {
                 d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
@@ -768,6 +758,32 @@ export class LoadService {
         })
       );
     });
+  }
+
+  syncWallet(wallet: Wallet) {
+    return new Wallet(
+      wallet.id,
+      wallet.creatorId,
+      wallet.created,
+      wallet.modified,
+      wallet.creatorName,
+      wallet.name,
+      wallet.displayUrl,
+      wallet.description,
+      wallet.verified,
+      wallet.reviews,
+      wallet.rating,
+      wallet.downloads,
+      wallet.chains,
+      wallet.coverUrl,
+      wallet.status,
+      wallet.installWebhook,
+      wallet.whitelist,
+      wallet.authStyle,
+      this.syncPages(wallet.layouts),
+      wallet.tracking,
+      wallet.displayedLayouts
+    );
   }
 
   getIcons(callback: (data: any) => any) {

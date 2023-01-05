@@ -37,7 +37,13 @@ import { Wallet } from '../wallet.model';
 })
 export class SmartUtilComponent implements OnInit, OnDestroy {
   wallet?: Wallet;
+  imgs: {
+    coverFile?: File;
+    logoFile?: File;
+  } = {};
   selectedIndex = 0;
+
+  layouts = ['desktop', 'mobile'];
 
   constructor(
     private fb: FormBuilder,
@@ -65,8 +71,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     console.log(app);
     if (app) {
       this.wallet = app;
-      this.utilForm.controls['name'].setValue(app.name);
-      this.utilForm.controls['description'].setValue(app.description);
+
       this.selectedUsers = (await this.getENS(app.whitelist ?? [])) ?? [];
 
       this.loadService.loadedChains.subscribe((chains) => {
@@ -81,30 +86,43 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
             }
           });
         });
-        this.utilForm.controls['networks'].setValue(chains);
+        this.wallet!.chains = chains;
       });
-
-      this.utilForm.controls['appImg'].setValue(app.displayUrl);
-      this.utilForm.controls['marketingImg'].setValue(app.coverUrl);
-      this.utilForm.controls['installWebhook'].setValue(app.installWebhook);
     } else {
       this.loadService.loadedChains.subscribe((chains) => {
         this.categories[0].chains = chains ?? [];
       });
-      this.utilForm.controls['networks'].setValue([
-        this.categories[0].chains[0],
-      ]);
-      this.utilForm.controls['appImg'].setValue(
-        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png'
-      );
-      this.utilForm.controls['marketingImg'].setValue(
-        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png'
+
+      // this.utilForm.controls['appImg'].setValue(
+      //   'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png'
+      // );
+      // this.utilForm.controls['marketingImg'].setValue(
+      //   'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png'
+      // );
+      this.wallet = new Wallet(
+        this.loadService.newUtilID,
+        '',
+        0,
+        undefined,
+        undefined,
+        undefined,
+        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        [this.categories[0].chains[0]],
+        'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png',
+        0,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined
       );
     }
-
-    this.wallet = this.composeWallet();
-
-    this.selectedLayout = this.wallet.layouts[0];
 
     this.cdr.detectChanges();
 
@@ -144,20 +162,23 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     }
   }
 
-  utilForm = this.fb.group({
-    name: [null, Validators.required],
-    description: [null, Validators.required],
-    networks: [[], Validators.required],
+  // utilForm = this.fb.group({
+  //   name: [null, Validators.required],
+  //   description: [null, Validators.required],
+  //   networks: [[], Validators.required],
 
-    appImg: [null, Validators.required],
-    marketingImg: [null, Validators.required],
+  //   appImg: [null, Validators.required],
+  //   marketingImg: [null, Validators.required],
 
-    installWebhook: [null],
-    appFile: [null],
-    marketingFile: [null],
-    available: [false],
-    authStyle: [1, Validators.required],
-  });
+  //   installWebhook: [null],
+  //   appFile: [null],
+  //   marketingFile: [null],
+  //   available: [true],
+  //   authStyle: [1, Validators.required],
+  //   tracking: [false, Validators.required],
+  //   displayedLayouts: [[], Validators.required],
+
+  // });
 
   loading = false;
   mode = 0;
@@ -236,56 +257,60 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     this.addressCtrl.setValue(null);
   }
 
-  composeWallet() {
-    let name = this.utilForm.controls['name'].value;
-    let id = this.wallet?.id ?? this.loadService.newUtilID;
-    console.log(id);
+  // composeWallet() {
+  //   let name = this.utilForm.controls['name'].value;
+  //   let id = this.wallet?.id ?? this.loadService.newUtilID;
+  //   console.log(id);
 
-    let chains = (this.utilForm.controls['networks'].value as Chain[]) ?? [];
+  //   let chains = (this.utilForm.controls['networks'].value as Chain[]) ?? [];
 
-    let created = this.wallet?.created ?? new Date().getTime();
-    let modified = created;
+  //   let created = this.wallet?.created ?? new Date().getTime();
+  //   let modified = created;
 
-    let available = this.utilForm.controls['available'].value ?? false;
-    let status = available ? 0 : 1;
+  //   let available = this.utilForm.controls['available'].value ?? false;
+  //   let status = available ? 0 : 1;
 
-    let creatorName = '';
-    let displayUrl: string = this.utilForm.controls['appImg'].value;
-    let coverUrl: string = this.utilForm.controls['marketingImg'].value;
-    let description = this.utilForm.controls['description'].value;
+  //   let creatorName = '';
+  //   let displayUrl: string = this.utilForm.controls['appImg'].value;
+  //   let coverUrl: string = this.utilForm.controls['marketingImg'].value;
+  //   let description = this.utilForm.controls['description'].value;
 
-    let verified = false;
+  //   let verified = false;
 
-    let reviews = 0;
-    let rating = 0;
-    let downloads = this.wallet?.downloads ?? 0;
+  //   let reviews = 0;
+  //   let rating = 0;
+  //   let downloads = this.wallet?.downloads ?? 0;
 
-    let installWebhook = this.utilForm.controls['installWebhook'].value;
-    let whitelist = this.selectedUsers ?? [];
-    let authStyle = this.utilForm.controls['authStyle'].value;
+  //   let installWebhook = this.utilForm.controls['installWebhook'].value;
+  //   let whitelist = this.selectedUsers ?? [];
+  //   let authStyle = this.utilForm.controls['authStyle'].value;
+  //   let tracking = this.utilForm.controls['tracking'].value;
+  //   let displayedLayouts = this.utilForm.controls['displayedLayouts'].value;
 
-    return new Wallet(
-      id,
-      '',
-      created,
-      modified,
-      creatorName,
-      name,
-      displayUrl,
-      description,
-      verified,
-      reviews,
-      rating,
-      downloads,
-      chains,
-      coverUrl,
-      status,
-      installWebhook,
-      whitelist,
-      authStyle,
-      this.wallet?.layouts
-    );
-  }
+  //   return new Wallet(
+  //     id,
+  //     '',
+  //     created,
+  //     modified,
+  //     creatorName,
+  //     name,
+  //     displayUrl,
+  //     description,
+  //     verified,
+  //     reviews,
+  //     rating,
+  //     downloads,
+  //     chains,
+  //     coverUrl,
+  //     status,
+  //     installWebhook,
+  //     whitelist,
+  //     authStyle,
+  //     this.wallet?.layouts,
+  //     tracking,
+  //     displayedLayouts
+  //   );
+  // }
 
   private _filter(value: string): any[] {
     console.log(value);
@@ -409,11 +434,11 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     reader.onload = (event: any) => {
       var base64 = event.target.result;
       if (type == 0) {
-        this.utilForm.controls['marketingImg'].setValue(base64);
-        this.utilForm.controls[`marketingFile`].setValue(file);
+        this.wallet!.coverUrl = base64;
+        this.imgs.coverFile = file;
       } else if (type == 1) {
-        this.utilForm.controls['appImg'].setValue(base64);
-        this.utilForm.controls[`appFile`].setValue(file);
+        this.wallet!.displayUrl = base64;
+        this.imgs.logoFile = file;
       }
     };
 
@@ -424,6 +449,10 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return networks.map((c) => c.name).join(', ');
   }
 
+  displayedLayouts(layouts: string[]) {
+    return layouts.join(', ');
+  }
+
   method(id: number) {
     return (
       this.authCategories.flatMap((c) => c.methods).find((m) => m.id == id)
@@ -431,16 +460,50 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isValid(): boolean {
+    if (this.wallet) {
+      let textFields = ['name', 'displayUrl', 'coverUrl', 'description'] as (
+        | 'name'
+        | 'displayUrl'
+        | 'coverUrl'
+        | 'description'
+      )[];
+
+      let arrayFields = ['displayedLayouts', 'chains'] as (
+        | 'displayedLayouts'
+        | 'chains'
+      )[];
+
+      let invalidText =
+        textFields.map(
+          (field) =>
+            this.wallet![field] == undefined ||
+            this.wallet![field] == null ||
+            this.wallet![field]?.trim() == ''
+        ).length > 0;
+
+      let invalidArray =
+        arrayFields.map(
+          (field) =>
+            this.wallet![field] == undefined ||
+            this.wallet![field] == null ||
+            (this.wallet![field]?.length ?? 0) == 0
+        ).length > 0;
+
+      return invalidText && invalidArray;
+    }
+
+    return false;
+  }
+
   async save() {
-    if (this.utilForm.valid) {
+    if (this.wallet && this.isValid) {
       this.loading = true;
 
       try {
-        let wallet = this.composeWallet();
-
-        console.log(wallet);
-        let appFile = this.utilForm.controls[`appFile`].value;
-        let marketingFile = this.utilForm.controls[`marketingFile`].value;
+        let wallet = this.wallet;
+        let appFile = this.imgs.logoFile;
+        let marketingFile = this.imgs.coverFile;
 
         this.loadService.saveSmartUtil(
           wallet,
@@ -478,7 +541,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         this.loading = false;
         if (this.wallet && index > -1) {
           this.wallet.layouts[index] = data.layout;
-          this.selectedLayout = data.layout;
           //toast
           if (this.saves.length == 0) {
             this.loadingMode = 0;
@@ -497,8 +559,16 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
   contains(chain: Chain) {
     return (
-      ((this.utilForm.controls['networks'].value as Chain[]) ?? []).findIndex(
+      ((this.wallet?.chains as Chain[]) ?? []).findIndex(
         (n) => n.id == chain.id
+      ) >= 0
+    );
+  }
+
+  containsLayout(layout: string) {
+    return (
+      ((this.wallet?.displayedLayouts as string[]) ?? []).findIndex(
+        (n) => n == layout
       ) >= 0
     );
   }
@@ -507,19 +577,22 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  tabChanged(event: MatTabChangeEvent) {
-    let index = event.index;
-    let layout = this.wallet?.layouts[index];
-    if (layout) {
-      this.selectedLayout = layout;
+  async changed(event: MatSelectChange) {
+    if (event.value.length == 0) {
+      event.source.writeValue(this.wallet!.chains)
+      return undefined
     }
+    this.wallet!.chains = event.value;
+
+    return undefined;
   }
 
-  selectedLayout?: Layout;
-
-  async changed(event: MatSelectChange) {
-    console.log(event.value);
-    this.utilForm.controls['networks'].setValue(event.value);
+  async layoutChanged(event: MatSelectChange) {
+    if (event.value.length == 0) {
+      event.source.writeValue(this.wallet!.displayedLayouts)
+      return undefined
+    }
+    this.wallet!.displayedLayouts = event.value;
 
     return undefined;
   }
@@ -527,7 +600,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   async authChanged(event: MatSelectChange) {
     this.selectedUsers = [];
     this.selectedUsers = [];
-    this.utilForm.controls['available'].setValue(false);
+    this.wallet!.status = 0;
   }
 
   async networkChanged(event: MatSelectChange) {

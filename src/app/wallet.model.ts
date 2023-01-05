@@ -30,6 +30,8 @@ export class Wallet {
 
   layouts!: Layout[];
   authStyle!: number;
+  tracking!: boolean
+  displayedLayouts?: string[]
 
   constructor(
     id: string,
@@ -50,7 +52,9 @@ export class Wallet {
     installWebhook?: string,
     whitelist?: string[],
     authStyle?: number,
-    layouts?: Layout[]
+    layouts?: Layout[],
+    tracking?: boolean,
+    displayedLayouts?: string[]
   ) {
     this.id = id;
     this.creatorId = creatorId;
@@ -70,6 +74,10 @@ export class Wallet {
     this.installWebhook = installWebhook ?? '';
     this.whitelist = whitelist ?? [];
     this.authStyle = authStyle ?? 1;
+    this.tracking = tracking ?? false
+    this.displayedLayouts = displayedLayouts ?? [
+      'mobile',
+    ]
 
     // this.colorStyle =
     //   colorStyle && (colorStyle?.name ?? '').trim() != ''
