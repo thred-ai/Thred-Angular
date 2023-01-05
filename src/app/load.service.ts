@@ -26,6 +26,9 @@ import { NFTList } from './nft-list.model';
 import { Layout } from './layout.model';
 import { Tab } from './tab.model';
 import { Bar } from './bar.model';
+import { Border } from './border.model';
+import { Grid } from './grid.model';
+import { Shadow } from './shadow.model';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -452,19 +455,8 @@ export class LoadService {
         if (d) {
           let util = d as Wallet;
 
-          util.layouts.forEach((la) => {
-            la.pages.forEach((pa) => {
-              if (!pa.tab) {
-                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0);
-              }
-              if (!pa.bar){
-                pa.bar = new Bar('#FFFFFF', '#000000', '#000000', 0, true)
-              }
-              if (!pa.icon) {
-                pa.icon = 'radio_button_unchecked';
-              }
-            });
-          });
+          let layouts = this.syncPages(util.layouts);
+          util.layouts = layouts;
 
           d.chains.forEach((c: any, i: number) => {
             d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
@@ -503,19 +495,8 @@ export class LoadService {
           let util = d as Wallet;
           console.log(d);
 
-          util.layouts.forEach((la) => {
-            la.pages.forEach((pa) => {
-              if (!pa.tab) {
-                pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0);
-              }
-              if (!pa.bar){
-                pa.bar = new Bar('#FFFFFF', '#000000', '#000000', 0, true)
-              }
-              if (!pa.icon) {
-                pa.icon = 'radio_button_unchecked';
-              }
-            });
-          });
+          let layouts = this.syncPages(util.layouts);
+          util.layouts = layouts;
 
           console.log(util.layouts);
 
@@ -632,21 +613,10 @@ export class LoadService {
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {
             let docs_2 = docs2 as Wallet[];
-
             docs_2.forEach((d) => {
-              d.layouts.forEach((la) => {
-                la.pages.forEach((pa) => {
-                  if (!pa.tab) {
-                    pa.tab = new Tab('#FFFFFF', '#000000', '#000000', 0);
-                  }
-                  if (!pa.bar){
-                    pa.bar = new Bar('#FFFFFF', '#000000', '#000000', 0, true)
-                  }
-                  if (!pa.icon) {
-                    pa.icon = 'radio_button_unchecked';
-                  }
-                });
-              });
+              let layouts = this.syncPages(d.layouts);
+              d.layouts = layouts;
+
               d.chains.forEach((c: any, i: number) => {
                 d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
               });
@@ -665,6 +635,138 @@ export class LoadService {
         callback(undefined);
       }
       sub.unsubscribe();
+    });
+  }
+
+  syncPages(layouts: Layout[]) {
+    return layouts.map((layout) => {
+      return new Layout(
+        layout.name,
+        layout.type,
+        layout.pages.map((page) => {
+          return new Page(
+            page.id,
+            page.title,
+            page.name,
+            page.blocks?.map((block) => {
+              return new Block(
+                new NFTList(
+                  block.nftList?.type,
+                  block.nftList?.nfts?.map((nft) => {
+                    return new NFT(
+                      nft.title,
+                      nft.description,
+                      nft.img,
+                      nft.address,
+                      nft.tokenId,
+                      nft.chainId,
+                      nft.type
+                    );
+                  })
+                ),
+                block.type,
+                block.imgs,
+                new Grid(
+                  block.grid?.spacing,
+                  block.grid?.rows,
+                  block.grid?.corners,
+                  block.grid?.alignment,
+                  block.grid?.backgroundColor,
+                  block.grid?.detailColor,
+                  block.grid?.textColor,
+                  new Shadow(
+                    block.grid?.shadow?.color,
+                    block.grid?.shadow?.blur,
+                    block.grid?.shadow?.direction
+                  ),
+                  {
+                    left: new Border(
+                      block.grid?.borders?.left?.name,
+                      block.grid?.borders?.left?.color,
+                      block.grid?.borders?.left?.width
+                    ),
+                    right: new Border(
+                      block.grid?.borders?.right?.name,
+                      block.grid?.borders?.right?.color,
+                      block.grid?.borders?.right?.width
+                    ),
+                    top: new Border(
+                      block.grid?.borders?.top?.name,
+                      block.grid?.borders?.top?.color,
+                      block.grid?.borders?.top?.width
+                    ),
+                    bottom: new Border(
+                      block.grid?.borders?.bottom?.name,
+                      block.grid?.borders?.bottom?.color,
+                      block.grid?.borders?.bottom?.width
+                    ),
+                  }
+                ),
+                block.html,
+                block.backgroundColor,
+                block.corners,
+                block.animations,
+                block.imgLinks,
+                block.vids,
+                block.htmlTemplate,
+                block.fontName,
+                block.padding,
+                block.detailColor,
+                block.textColor,
+                {
+                  left: new Border(
+                    block.borders?.left?.name,
+                    block.borders?.left?.color,
+                    block.borders?.left?.width
+                  ),
+                  right: new Border(
+                    block.borders?.right?.name,
+                    block.borders?.right?.color,
+                    block.borders?.right?.width
+                  ),
+                  top: new Border(
+                    block.borders?.top?.name,
+                    block.borders?.top?.color,
+                    block.borders?.top?.width
+                  ),
+                  bottom: new Border(
+                    block.borders?.bottom?.name,
+                    block.borders?.bottom?.color,
+                    block.borders?.bottom?.width
+                  ),
+                },
+                new Shadow(
+                  block.shadow?.color,
+                  block.shadow?.blur,
+                  block.shadow?.direction
+                )
+              );
+            }),
+            page.type,
+            page.url,
+            new Tab(
+              page.tab?.backgroundColor,
+              page.tab?.detailColor,
+              page.tab?.textColor,
+              page.tab?.corners
+            ),
+            new Bar(
+              page.bar?.backgroundColor,
+              page.bar?.detailColor,
+              page.bar?.textColor,
+              page.bar?.corners,
+              page.bar?.visible,
+              page.bar?.font,
+              page.bar?.content,
+              page.bar?.mode
+            ),
+            page.position,
+            page.backgroundColor,
+            page.detailColor,
+            page.icon
+          );
+        })
+      );
     });
   }
 

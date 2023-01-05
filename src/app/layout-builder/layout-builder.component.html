@@ -104,7 +104,8 @@
                               class="bg-transparent text-truncate"
                               type="text"
                               name="name"
-                              [(ngModel)]="page.title"
+                              [ngModel]="page.title"
+                              (ngModelChange)="page.title = $event; saveLayout()"
                               placeholder="Name"
                             />
                           </mat-form-field>
@@ -113,7 +114,7 @@
                     </div>
 
                     <div class="wrap-input1 w-100 pt-3">
-                      <p class="w-100 mb-4 text">Layout</p>
+                      <p class="w-100 mb-4 text">Style</p>
                       <div class="px-3 w-100">
                         <div class="rounded-pill border w-100 pe-4 mb-3">
                           <mat-form-field
@@ -122,8 +123,10 @@
                             floatLabel="never"
                           >
                             <mat-select
-                              [(ngModel)]="page.position"
-                              (selectionChange)="changed(undefined, $event)"
+                              [ngModel]="page.position"
+                              (ngModelChange)="
+                                page.position = $event; saveLayout()
+                              "
                               class="my-auto d-flex justify-content-start align-items-center"
                             >
                               <mat-select-trigger
@@ -174,12 +177,13 @@
                           <a
                             role="button"
                             class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
+                            [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
                               editableLayout!.pages[p]!.backgroundColor =
                                 $event;
-                              syncBlockAndPageColors(p, $event)
+                              syncBlockAndPageColors(p, $event);
+                              saveLayout()
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -198,9 +202,7 @@
                             <div
                               class="rounded-circle border border-secondary"
                               style="height: 20px; aspect-ratio: 1"
-                              [style.background-color]="
-                                page.backgroundColor
-                              "
+                              [style.background-color]="page.backgroundColor"
                             ></div>
                           </a>
                         </div>
@@ -225,7 +227,8 @@
                       <p class="w-100 mb-4 text">Availability</p>
                       <mat-slide-toggle
                         class="mb-3"
-                        [(ngModel)]="page.bar.visible"
+                        [ngModel]="page.bar.visible"
+                        (ngModelChange)="page.bar.visible = $event; saveLayout()"
                       >
                         {{ page.bar.visible ? "Visible" : "Hidden" }}
                       </mat-slide-toggle>
@@ -241,8 +244,10 @@
                             floatLabel="never"
                           >
                             <mat-select
-                              [(ngModel)]="page.bar.mode"
-                              (selectionChange)="changed(undefined, $event)"
+                              [ngModel]="page.bar.mode"
+                              (ngModelChange)="
+                                page.bar.mode = $event; saveLayout()
+                              "
                               class="my-auto d-flex justify-content-start align-items-center"
                             >
                               <mat-select-trigger
@@ -295,10 +300,10 @@
                           <a
                             role="button"
                             class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
+                            [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.bar.backgroundColor = $event
+                              page.bar.backgroundColor = $event; saveLayout()
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -333,9 +338,11 @@
                           <a
                             role="button"
                             class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
+                            [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
-                            (colorPickerSelect)="page.bar.textColor = $event"
+                            (colorPickerSelect)="
+                              page.bar.textColor = $event; saveLayout()
+                            "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
                             [cpOKButtonText]="'SET COLOR'"
@@ -367,9 +374,11 @@
                           <a
                             role="button"
                             class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
+                            [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
-                            (colorPickerSelect)="page.bar.detailColor = $event"
+                            (colorPickerSelect)="
+                              page.bar.detailColor = $event; saveLayout()
+                            "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
                             [cpOKButtonText]="'SET COLOR'"
@@ -428,6 +437,7 @@
                               class="bg-transparent text-truncate mb-2"
                               matInput
                               [ngModel]="page.icon"
+                              (ngModelChange)="page.icon = $event;"
                               (ngModelChange)="filterCodes($event)"
                               [matAutocomplete]="auto"
                             />
@@ -462,18 +472,10 @@
                                   <!-- [selected]="icon == theme" -->
                                 </mat-optgroup>
                               </cdk-virtual-scroll-viewport>
-
-                              <!-- <mat-option
-                                *ngFor="let feeCode of filteredFeeCodes | async"
-                                [value]="feeCode.code"
-                                >{{ feeCode.code }}
-                              </mat-option> -->
                             </mat-autocomplete>
 
                             <div matSuffix>
-                              <mat-icon class="pb-2 me-1">{{
-                                page.icon
-                              }}</mat-icon>
+                              <mat-icon class="pb-2 me-1">search</mat-icon>
                             </div>
                           </mat-form-field>
                         </div>
@@ -487,10 +489,10 @@
                           <a
                             role="button"
                             class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
+                            [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
                             (colorPickerSelect)="
-                              page.tab.backgroundColor = $event
+                              page.tab.backgroundColor = $event; saveLayout()
                             "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
@@ -525,9 +527,11 @@
                           <a
                             role="button"
                             class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
+                            [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
-                            (colorPickerSelect)="page.tab.textColor = $event"
+                            (colorPickerSelect)="
+                              page.tab.textColor = $event; saveLayout()
+                            "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
                             [cpOKButtonText]="'SET COLOR'"
@@ -559,9 +563,11 @@
                           <a
                             role="button"
                             class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                            [cpPosition]="'bottom'"
+                            [cpPosition]="'top'"
                             [cpPositionRelativeToArrow]="false"
-                            (colorPickerSelect)="page.tab.detailColor = $event"
+                            (colorPickerSelect)="
+                              page.tab.detailColor = $event; saveLayout()
+                            "
                             [cpOutputFormat]="'hex'"
                             [cpOKButton]="true"
                             [cpOKButtonText]="'SET COLOR'"
@@ -610,9 +616,7 @@
                         [cdkDropListData]="page.blocks"
                         (cdkDropListDropped)="drop($event, p)"
                       >
-                        <ng-container
-                          *ngFor="let b of page.blocks; index as i"
-                        >
+                        <ng-container *ngFor="let b of page.blocks; index as i">
                           <div
                             cdkDrag
                             (click)="edit(i, p)"
@@ -633,7 +637,7 @@
                               <div class="px-3 py-2 h-100 w-100">
                                 <div
                                   #col
-                                  class="big-design-card h-100 shadow w-100 zoom m-0 p-0"
+                                  class="big-design-card h-100 w-100 zoom m-0 p-0"
                                   role="button"
                                   (mouseover)="changeStyle($event, i)"
                                   (mouseout)="changeStyle($event, i)"
@@ -672,49 +676,21 @@
                                   "
                                   [style.border-style]="'solid'"
                                   [style.color]="block.textColor"
-                                >
-                                  <!-- <div class="block">
-                                <div
-                                  *ngIf="
-                                    (
-                                      (activeBlock.index == i
-                                        ? activeBlock?.block
-                                        : undefined
-                                      )?.text ??
-                                      block.text ??
-                                      ''
-                                    ).trim() != ''
+                                  [style.box-shadow]="
+                                    col.clientWidth *
+                                      (block.shadow.direction.horizontal *
+                                        0.0005) +
+                                    'px ' +
+                                    col.clientWidth *
+                                      (block.shadow.direction.vertical *
+                                        0.0005) +
+                                    'px ' +
+                                    col.clientWidth *
+                                      (block.shadow.blur * 0.0005) +
+                                    'px ' +
+                                    block.shadow.color
                                   "
-                                  class="d-flex align-items-center justify-content-center"
-                                  style="
-                                    max-height: 50px;
-                                    font-weight: bold;
-                                    font-size: 4px;
-                                    pointer-events: none;
-                                  "
-                                  style.color="{{ selectedTheme!['color'] }}"
                                 >
-                                  <p
-                                    class="text-center text-dark"
-                                    style="line-height: 1.2em"
-                                    [style.font-size.px]="
-                                      fontSize(
-                                        (activeBlock.index == i
-                                          ? activeBlock.block
-                                          : undefined) ?? block
-                                      )
-                                    "
-                                  >
-                                    {{
-                                      (activeBlock.index == i
-                                        ? activeBlock.block
-                                        : undefined
-                                      )?.text ?? block.text
-                                    }}
-                                  </p>
-                                </div>
-                              </div> -->
-
                                   <div
                                     class="row mx-0 row-cols-1 row-cols-md-{{
                                       block.grid.rows
@@ -734,7 +710,7 @@
                                       #col
                                     >
                                       <div
-                                        class="bg-white shadow"
+                                        class="bg-white"
                                         style="overflow: hidden"
                                         [style.border-radius.%]="
                                           block.grid.corners
@@ -771,6 +747,22 @@
                                         "
                                         [style.border-style]="'solid'"
                                         [style.color]="block.grid.textColor"
+                                        [style.box-shadow]="
+                                          col.clientWidth *
+                                            (block.grid.shadow.direction
+                                              .horizontal *
+                                              0.01) +
+                                          'px ' +
+                                          col.clientWidth *
+                                            (block.grid.shadow.direction
+                                              .vertical *
+                                              0.01) +
+                                          'px ' +
+                                          col.clientWidth *
+                                            (block.grid.shadow.blur * 0.01) +
+                                          'px ' +
+                                          block.grid.shadow.color
+                                        "
                                       >
                                         <div class="pb-0 w-100">
                                           <a role="button" class="w-100">
@@ -1036,8 +1028,10 @@
                           floatLabel="never"
                         >
                           <mat-select
-                            [(ngModel)]="activeBlock.block.type"
-                            (selectionChange)="changed(undefined, $event)"
+                            [ngModel]="activeBlock.block.type"
+                            (ngModelChange)="
+                              activeBlock.block.type = $event; setValue()
+                            "
                             class="my-auto d-flex justify-content-start align-items-center"
                           >
                             <mat-select-trigger
@@ -1085,10 +1079,11 @@
                         <a
                           role="button"
                           class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                          [cpPosition]="'bottom'"
+                          [cpPosition]="'top'"
                           [cpPositionRelativeToArrow]="false"
                           (colorPickerSelect)="
-                            activeBlock.block.backgroundColor = $event
+                            activeBlock.block.backgroundColor = $event;
+                            setValue()
                           "
                           [cpOutputFormat]="'hex'"
                           [cpOKButton]="true"
@@ -1149,6 +1144,39 @@
                   </div>
                 </mat-expansion-panel>
 
+                <mat-expansion-panel
+                  class="shadow-0 border-bottom"
+                  [expanded]="true"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="fw-bold text-dark">
+                      {{ matchingType(activeBlock.block.type)!.name }}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div
+                    class="wrap-input1 w-100 pt-3"
+                    *ngIf="activeBlock.block?.type == 0"
+                  >
+                    <p class="w-100 mb-4 text">Displayed NFTs</p>
+                    <div class="px-3 w-100 mb-3">
+                      <app-nft-table
+                        #nftTable
+                        [nfts]="activeBlock.block.nftList.nfts ?? []"
+                        [count]="(activeBlock.block.nftList.nfts ?? []).length"
+                        (clicked)="openNFT($event?.nft, $event?.index)"
+                      >
+                      </app-nft-table>
+                    </div>
+                  </div>
+                  <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+                    <i
+                      ><span style="font-size: small"
+                        >{{ matchingType(activeBlock.block.type)!.name }}
+                      </span></i
+                    >
+                  </div>
+                </mat-expansion-panel>
+
                 <mat-expansion-panel class="shadow-0 border-bottom">
                   <mat-expansion-panel-header>
                     <mat-panel-title class="fw-bold text-dark">
@@ -1197,7 +1225,7 @@
                     [class.absolute]="codeMode"
                     ngDefaultControl
                     [options]="editorOptions"
-                    [(ngModel)]="activeBlock.block!.html"
+                    [ngModel]="activeBlock.block!.html"
                   >
                   </ngx-monaco-editor>
 
@@ -1220,8 +1248,10 @@
                           floatLabel="never"
                         >
                           <mat-select
-                            [(ngModel)]="activeBlock.block.grid!.rows"
-                            (selectionChange)="changed($event)"
+                            [ngModel]="activeBlock.block.grid!.rows"
+                            (ngModelChange)="
+                              activeBlock.block.grid!.rows = $event; setValue()
+                            "
                             class="my-auto d-flex justify-content-start align-items-center"
                           >
                             <mat-select-trigger
@@ -1271,8 +1301,11 @@
                           floatLabel="never"
                         >
                           <mat-select
-                            [(ngModel)]="activeBlock.block.grid!.alignment"
-                            (selectionChange)="changed($event)"
+                            [ngModel]="activeBlock.block.grid!.alignment"
+                            (ngModelChange)="
+                              activeBlock.block.grid!.alignment = $event;
+                              setValue()
+                            "
                             class="my-auto d-flex justify-content-start align-items-center"
                           >
                             <mat-select-trigger
@@ -1387,12 +1420,13 @@
                             <a
                               role="button"
                               class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                              [cpPosition]="'bottom'"
+                              [cpPosition]="'top'"
                               [cpPositionRelativeToArrow]="false"
                               (colorPickerSelect)="
                                 activeBlock.block.grid.borders[
                                   border.id
-                                ].color = $event
+                                ].color = $event;
+                                setValue()
                               "
                               [cpOutputFormat]="'hex'"
                               [cpOKButton]="true"
@@ -1435,6 +1469,177 @@
                 <mat-expansion-panel class="shadow-0 border-bottom">
                   <mat-expansion-panel-header>
                     <mat-panel-title class="fw-bold text-dark">
+                      Block Shadow
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="wrap-input1 w-100 py-4">
+                    <p class="w-100 mb-4 text">Shadow Color</p>
+                    <div class="px-3 w-100">
+                      <div class="rounded-pill border w-100 px-2 mb-3">
+                        <a
+                          role="button"
+                          class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                          [cpPosition]="'top'"
+                          [cpPositionRelativeToArrow]="false"
+                          (colorPickerSelect)="
+                            activeBlock.block.shadow.color = $event; setValue()
+                          "
+                          [cpOutputFormat]="'hex'"
+                          [cpOKButton]="true"
+                          [cpOKButtonText]="'SET COLOR'"
+                          [cpOKButtonClass]="'big-design-alt-button'"
+                          [cpSaveClickOutside]="false"
+                          [colorPicker]="activeBlock.block.shadow.color"
+                          style="height: 40px"
+                        >
+                          <p
+                            class="big-design-input-text my-auto p-0"
+                            style="font-size: 14px"
+                          >
+                            {{ activeBlock.block.shadow.color }}
+                          </p>
+                          <div
+                            class="rounded-circle border border-secondary"
+                            style="height: 20px; aspect-ratio: 1"
+                            [style.background-color]="
+                              activeBlock.block.shadow.color
+                            "
+                          ></div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="wrap-input1 w-100 py-4">
+                    <p class="w-100 mb-4 text">Shadow Blur</p>
+                    <div class="px-3 w-100">
+                      <div class="w-100 mb-3">
+                        <tc-range-slider
+                          animate-onclick="2s"
+                          [value]="activeBlock.block.shadow.blur"
+                          generate-labels="true"
+                          id="block-shadow-blur"
+                          round="0"
+                        ></tc-range-slider>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngFor="let shadow of blockShadowDirection">
+                    <div class="w-100 py-4">
+                      <div class="wrap-input1 w-100">
+                        <p class="w-100 mb-4 text">
+                          {{ shadow.id | titlecase }} Position
+                        </p>
+                        <div class="px-3 w-100">
+                          <div class="w-100 mb-3">
+                            <tc-range-slider
+                              animate-onclick="2s"
+                              [value]="
+                                activeBlock.block.shadow.direction[shadow.id]
+                              "
+                              generate-labels="true"
+                              id="block-shadow-direction-{{ shadow.id }}"
+                              round="0"
+                            ></tc-range-slider>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+                    <i><span style="font-size: small">Block Shadow</span></i>
+                  </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="shadow-0 border-bottom">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="fw-bold text-dark">
+                      Item Shadow
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="wrap-input1 w-100 py-4">
+                    <p class="w-100 mb-4 text">Shadow Color</p>
+                    <div class="px-3 w-100">
+                      <div class="rounded-pill border w-100 px-2 mb-3">
+                        <a
+                          role="button"
+                          class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                          [cpPosition]="'top'"
+                          [cpPositionRelativeToArrow]="false"
+                          (colorPickerSelect)="
+                            activeBlock.block.grid.shadow.color = $event;
+                            setValue()
+                          "
+                          [cpOutputFormat]="'hex'"
+                          [cpOKButton]="true"
+                          [cpOKButtonText]="'SET COLOR'"
+                          [cpOKButtonClass]="'big-design-alt-button'"
+                          [cpSaveClickOutside]="false"
+                          [colorPicker]="activeBlock.block.grid.shadow.color"
+                          style="height: 40px"
+                        >
+                          <p
+                            class="big-design-input-text my-auto p-0"
+                            style="font-size: 14px"
+                          >
+                            {{ activeBlock.block.grid.shadow.color }}
+                          </p>
+                          <div
+                            class="rounded-circle border border-secondary"
+                            style="height: 20px; aspect-ratio: 1"
+                            [style.background-color]="
+                              activeBlock.block.grid.shadow.color
+                            "
+                          ></div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="wrap-input1 w-100 py-4">
+                    <p class="w-100 mb-4 text">Shadow Blur</p>
+                    <div class="px-3 w-100">
+                      <div class="w-100 mb-3">
+                        <tc-range-slider
+                          animate-onclick="2s"
+                          [value]="activeBlock.block.grid.shadow.blur"
+                          generate-labels="true"
+                          id="grid-shadow-blur"
+                          round="0"
+                        ></tc-range-slider>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngFor="let shadow of gridShadowDirection">
+                    <div class="w-100 py-4">
+                      <div class="wrap-input1 w-100">
+                        <p class="w-100 mb-4 text">
+                          {{ shadow.id | titlecase }} Position
+                        </p>
+                        <div class="px-3 w-100">
+                          <div class="w-100 mb-3">
+                            <tc-range-slider
+                              animate-onclick="2s"
+                              [value]="
+                                activeBlock.block.grid.shadow.direction[
+                                  shadow.id
+                                ]
+                              "
+                              generate-labels="true"
+                              id="grid-shadow-direction-{{ shadow.id }}"
+                              round="0"
+                            ></tc-range-slider>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+                    <i><span style="font-size: small"> Item Shadow</span></i>
+                  </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="shadow-0 border-bottom">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title class="fw-bold text-dark">
                       Block Borders
                     </mat-panel-title>
                   </mat-expansion-panel-header>
@@ -1468,11 +1673,12 @@
                             <a
                               role="button"
                               class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
-                              [cpPosition]="'bottom'"
+                              [cpPosition]="'top'"
                               [cpPositionRelativeToArrow]="false"
                               (colorPickerSelect)="
                                 activeBlock.block.borders[border.id].color =
-                                  $event
+                                  $event;
+                                setValue()
                               "
                               [cpOutputFormat]="'hex'"
                               [cpOKButton]="true"
@@ -1568,7 +1774,7 @@
                           type="text"
                           matInput
                           [ngModelOptions]="{ standalone: true }"
-                          [(ngModel)]="image.link"
+                          [ngModel]="image.link"
                           style="font-size: small"
                           placeholder="Image Click URL"
                           class="text-dark big-design-input-text"
@@ -1631,7 +1837,7 @@
                           type="text"
                           matInput
                           [ngModelOptions]="{ standalone: true }"
-                          [(ngModel)]="vid.link"
+                          [ngModel]="vid.link"
                           (keyup)="vidChangeEvent($event, vid)"
                           style="font-size: small"
                           placeholder="Video URL"
@@ -1642,36 +1848,6 @@
                     </div>
                   </div>
                 </div> -->
-
-                <mat-expansion-panel class="shadow-0 border-bottom">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title class="fw-bold text-dark">
-                      {{ matchingType(activeBlock.block.type)!.name }}
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <div
-                    class="wrap-input1 w-100 pt-3"
-                    *ngIf="activeBlock.block?.type == 0"
-                  >
-                    <p class="w-100 mb-4 text">Displayed NFTs</p>
-                    <div class="px-3 w-100 mb-3">
-                      <app-nft-table
-                        #nftTable
-                        [nfts]="activeBlock.block.nftList.nfts ?? []"
-                        [count]="(activeBlock.block.nftList.nfts ?? []).length"
-                        (clicked)="openNFT($event?.nft, $event?.index)"
-                      >
-                      </app-nft-table>
-                    </div>
-                  </div>
-                  <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
-                    <i
-                      ><span style="font-size: small"
-                        >{{ matchingType(activeBlock.block.type)!.name }}
-                      </span></i
-                    >
-                  </div>
-                </mat-expansion-panel>
 
                 <div
                   class="px-3 d-flex justify-content-center align-content-center py-4"
@@ -1790,6 +1966,17 @@
                         [style.border-style]="'solid'"
                         [style.color]="block.textColor"
                         [style.border-radius.%]="block.corners"
+                        [style.box-shadow]="
+                          col.clientWidth *
+                            (block.shadow.direction.horizontal * 0.0005) +
+                          'px ' +
+                          col.clientWidth *
+                            (block.shadow.direction.vertical * 0.0005) +
+                          'px ' +
+                          col.clientWidth * (block.shadow.blur * 0.0005) +
+                          'px ' +
+                          block.shadow.color
+                        "
                       >
                         <!-- <div
                     *ngIf="
@@ -1828,7 +2015,7 @@
                               #col
                             >
                               <div
-                                class="bg-white shadow"
+                                class="bg-white"
                                 style="overflow: hidden"
                                 [style.border-radius.%]="block.grid.corners"
                                 [style.border-left-width.px]="
@@ -1861,6 +2048,20 @@
                                 "
                                 [style.border-style]="'solid'"
                                 [style.color]="block.grid.textColor"
+                                [style.box-shadow]="
+                                  col.clientWidth *
+                                    (block.grid.shadow.direction.horizontal *
+                                      0.01) +
+                                  'px ' +
+                                  col.clientWidth *
+                                    (block.grid.shadow.direction.vertical *
+                                      0.01) +
+                                  'px ' +
+                                  col.clientWidth *
+                                    (block.grid.shadow.blur * 0.01) +
+                                  'px ' +
+                                  block.grid.shadow.color
+                                "
                               >
                                 <div class="p-0 w-100">
                                   <img
@@ -2084,7 +2285,7 @@
                   cdkDrag
                 >
                   <div
-                    class="d-flex justify-content-center align-items-center flex-column fw-bold h-100"
+                    class="d-flex justify-content-center align-items-center flex-column fw-bolder h-100"
                     [style.background-color]="page.tab.backgroundColor"
                     [style.color]="
                       tabGroup.selectedIndex == tabIndex

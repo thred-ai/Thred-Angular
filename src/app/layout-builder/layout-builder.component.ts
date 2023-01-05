@@ -65,6 +65,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   margins: { id: 'left' | 'right' | 'top' | 'bottom' }[] = [];
   borders: { id: 'left' | 'right' | 'top' | 'bottom' }[] = [];
   gridBorders: { id: 'left' | 'right' | 'top' | 'bottom' }[] = [];
+  gridShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
+  blockShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
 
   // Dict<{
   //   nft: NFT;
@@ -116,39 +118,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     let val = event.value;
 
     this.buttons[index].submit = val;
-    this.setBlock();
     this.cdr.detectChanges();
   }
-
-  // layoutForm = this.fb.group({
-  //   rows: [[]],
-  //   name: [null, [Validators.required]],
-  //   url: [null, [Validators.required]],
-  //   isFullscreen: [null, [Validators.required]],
-  //   isLoader: [null, [Validators.required]],
-
-  //   // seoTitle: [null, [Validators.required]],
-  //   // seoDesc: [null, [Validators.required]],
-  //   // seoTags: [[], [Validators.required]],
-
-  //   // metaTitle: [null, [Validators.required]],
-  //   // metaDesc: [null, [Validators.required]],
-  //   // metaURL: [null, [Validators.required]],
-  //   // metaPic: [null, [Validators.required]],
-  // });
-
-  // rowForm = this.fb.group({
-  //   title: [null],
-  //   htmlText: [null],
-  //   html: [null],
-  //   backgroundColor: [null],
-  //   corners: ['0'],
-  //   imgs: [[]],
-  //   type: [null],
-  //   grid: [null],
-  //   buttons: [null],
-  //   animations: [null],
-  // });
 
   config: SummernoteOptions = {
     placeholder: '',
@@ -198,17 +169,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     }
   }
 
-  // productName(id: any) {
-  //   if (id === '1') {
-  //     return 'HOTTEST PRODUCTS';
-  //   } else if (id === '0') {
-  //     return 'NEWEST PRODUCTS';
-  //   } else if (id === '2') {
-  //     return 'ALL PRODUCTS';
-  //   }
-  //   return this.items[id]?.nft.name ?? 'NFT';
-  // }
-
   syncBlockAndPageColors(pageIndex: number, value: string) {
     this.editableLayout!.pages[pageIndex]?.blocks?.forEach((block) => {
       if (block.backgroundColor == '') {
@@ -236,34 +196,19 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   editableLayout: Layout | undefined = undefined;
 
   constructor(
-    private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformID: Object,
     private loadService: LoadService,
     private dialog: MatDialog
   ) {
-    // this.spinner.show('loader');
     this.mode = 1;
 
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < 7; i++) {
       this.grid.push({
         name: String(i),
         block: i,
       });
     }
-
-    // this.filteredProducts = this.productCtrl.valueChanges.pipe(
-    //   startWith(null),
-    //   map((fruit: string | null) =>
-    //     fruit
-    //       ? this._filter(fruit)
-    //       : Object.values(this.items)
-    //           .map((c) => c.nft)
-    //           .slice()
-    //   )
-    // );
   }
 
   types = [
@@ -429,8 +374,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     this.activeBlock.block = undefined;
     this.OnDestroy.next();
     this.OnDestroy.complete();
-    // this.blockForm.reset();
-    // this.layoutForm.reset();
   }
 
   selectedTheme: Dict<any> = {};
@@ -483,6 +426,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
   removeBlocks(index: number, pageIndex: number) {
     this.editableLayout?.pages[pageIndex]?.blocks?.splice(index, 1);
+    this.saveLayout(750);
+
     this.cdr.detectChanges();
   }
 
@@ -563,6 +508,28 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       };
     });
 
+    this.blockShadowDirection = (
+      Object.keys(this.activeBlock.block?.shadow.direction ?? {}) as (
+        | 'vertical'
+        | 'horizontal'
+      )[]
+    ).map((id) => {
+      return {
+        id,
+      };
+    });
+
+    this.gridShadowDirection = (
+      Object.keys(this.activeBlock.block?.grid.shadow.direction ?? {}) as (
+        | 'vertical'
+        | 'horizontal'
+      )[]
+    ).map((id) => {
+      return {
+        id,
+      };
+    });
+
     this.cdr.detectChanges();
 
     this.syncListeners(true);
@@ -585,7 +552,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     img.isActive = false;
 
     let index = this.images.indexOf(img);
-    this.setBlock();
     moveItemInArray(this.images, index, this.images.length - 1);
   }
 
@@ -620,8 +586,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   ): void {
     vid.link = event.target.value;
     vid.isActive = event.target.value && event.target.value.trim() != '';
-
-    this.setBlock();
   }
 
   canCancel(isBtn = false) {
@@ -646,6 +610,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         this.addSliderListener('block-margin-' + margin.id, (data) => {
           if (this.activeBlock.block) {
             this.activeBlock.block.padding[margin.id] = data;
+            this.setValue();
           }
         });
       }
@@ -657,6 +622,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         this.addSliderListener('block-border-' + border.id, (data) => {
           if (this.activeBlock.block) {
             this.activeBlock.block.borders[border.id].width = data;
+            this.setValue();
           }
         });
       }
@@ -668,6 +634,34 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         this.addSliderListener('grid-border-' + border.id, (data) => {
           if (this.activeBlock.block) {
             this.activeBlock.block.grid.borders[border.id].width = data;
+            this.setValue();
+          }
+        });
+      }
+    });
+
+    this.blockShadowDirection.forEach((shadow) => {
+      this.removeSliderListener('block-shadow-direction-' + shadow.id);
+      if (add) {
+        this.addSliderListener(
+          'block-shadow-direction-' + shadow.id,
+          (data) => {
+            if (this.activeBlock.block) {
+              this.activeBlock.block.shadow.direction[shadow.id] = data;
+              this.setValue();
+            }
+          }
+        );
+      }
+    });
+
+    this.gridShadowDirection.forEach((shadow) => {
+      this.removeSliderListener('grid-shadow-direction-' + shadow.id);
+      if (add) {
+        this.addSliderListener('grid-shadow-direction-' + shadow.id, (data) => {
+          if (this.activeBlock.block) {
+            this.activeBlock.block.grid.shadow.direction[shadow.id] = data;
+            this.setValue();
           }
         });
       }
@@ -675,91 +669,43 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
     this.removeSliderListener('grid-corners');
     this.removeSliderListener('grid-spacing');
+    this.removeSliderListener('grid-shadow-blur');
 
     this.removeSliderListener('block-corners');
+    this.removeSliderListener('block-shadow-blur');
 
     if (add) {
       this.addSliderListener('grid-corners', (data) => {
         if (this.activeBlock.block) {
           this.activeBlock.block.grid.corners = data;
+          this.setValue();
         }
       });
       this.addSliderListener('grid-spacing', (data) => {
         if (this.activeBlock.block) {
           this.activeBlock.block.grid.spacing = data;
+          this.setValue();
+        }
+      });
+      this.addSliderListener('grid-shadow-blur', (data) => {
+        if (this.activeBlock.block) {
+          this.activeBlock.block.grid.shadow.blur = data;
+          this.setValue();
         }
       });
       this.addSliderListener('block-corners', (data) => {
         if (this.activeBlock.block) {
           this.activeBlock.block.corners = data;
+          this.setValue();
+        }
+      });
+      this.addSliderListener('block-shadow-blur', (data) => {
+        if (this.activeBlock.block) {
+          this.activeBlock.block.shadow.blur = data;
+          this.setValue();
         }
       });
     }
-  }
-
-  changed(event?: any, event2?: any) {
-    // let type = this.blockForm.controls['type'].value ?? event2.value;
-    // let grid = this.blockForm.controls['grid'].value ?? event.value;
-    // if (type == undefined) {
-    //   type = event2?.value;
-    // }
-    // if (grid == undefined) {
-    //   grid = event.value;
-    // }
-    // if (type == 1) {
-    //   let matchGrid = this.grid.find((g) => g.name == grid);
-    //   let newSize = matchGrid?.block ?? 1;
-    //   if (newSize > this.images.length) {
-    //     for (let i = 0; i < newSize; i++) {
-    //       if (!this.images[i]) {
-    //         this.images.push({
-    //           isActive: false,
-    //           img: '',
-    //           link: '',
-    //         });
-    //       }
-    //     }
-    //   } else if (newSize < this.images.length) {
-    //     this.images = this.images.slice(0, newSize);
-    //   }
-    // } else if (type == 4) {
-    //   let matchGrid = this.grid.find((g) => g.name == grid);
-    //   let newSize = matchGrid?.block ?? 1;
-    //   if (newSize > this.videos.length) {
-    //     for (let i = 0; i < newSize; i++) {
-    //       if (!this.videos[i]) {
-    //         this.videos.push({
-    //           isActive: false,
-    //           link: '',
-    //         });
-    //       }
-    //     }
-    //   } else if (newSize < this.videos.length) {
-    //     this.videos = this.videos.slice(0, newSize);
-    //   }
-    // } else if (type == 3) {
-    //   // let matchGrid = this.grid.find((g) => g.name == grid);
-    //   // let newSize = matchGrid?.block ?? 1;
-    //   // if (newSize > this.buttons.length) {
-    //   //   for (let i = 0; i < newSize; i++) {
-    //   //     if (!this.buttons[i]) {
-    //   //       this.buttons.push(
-    //   //         new Button(
-    //   //           this.selectedTheme.bg_color,
-    //   //           '',
-    //   //           this.selectedTheme.color,
-    //   //           0,
-    //   //           '',
-    //   //           12
-    //   //         )
-    //   //       );
-    //   //     }
-    //   //   }
-    //   // } else if (newSize < this.buttons.length) {
-    //   //   this.buttons = this.buttons.slice(0, newSize);
-    //   // }
-    // }
-    // this.setBlock();
   }
 
   editorOptions = {
@@ -776,8 +722,31 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
   deleting = false;
 
+  setValue() {
+    if (this.editingBlock == undefined) {
+      return;
+    }
+
+    let blocks =
+      this.editableLayout?.pages[this.editingBlock.pageIndex].blocks ?? [];
+
+    if (blocks[this.editingBlock.blockIndex] != undefined) {
+      blocks[this.editingBlock.blockIndex] = this.copyBlock(
+        this.activeBlock.block!
+      );
+    }
+
+    this.saveLayout();
+  }
+
+  saveLayout(delay = 750) {
+    setTimeout(() => {
+      this.save();
+    }, delay);
+  }
+
   finishedEditing(mode = 0) {
-    this.syncListeners(false);
+    // this.syncListeners(false);
 
     if (this.editingBlock == undefined) {
       return;
@@ -882,7 +851,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   selectIcon(icon: string, page: Page) {
     console.log(icon);
     page.icon = icon;
-    // this.bannerForm.controls.icon.setValue(icon)
+    this.saveLayout(750);
   }
 
   formattedName(name: string) {
@@ -916,60 +885,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     return JSON.parse(JSON.stringify(newBlock)) as Block;
   }
 
-  setBlock(gridVal?: string) {
-    // let name = (this.blockForm.controls['title'].value as string) ?? '';
-    // let type = (this.blockForm.controls['type'].value as number) ?? 0;
-    // let html = (this.blockForm.controls['htmlText'].value ?? '').replace(
-    //   /style="/g,
-    //   'style="overflow-wrap: break-word;'
-    // );
-    // let backgroundColor =
-    //   this.blockForm.controls['backgroundColor'].value ?? '#FFFFFF';
-    // let corners = this.blockForm.controls['corners'].value ?? '0';
-    // console.log(backgroundColor);
-    // let imgs = (this.images ?? [])
-    //   .filter((i) => i.img != undefined && i.img.trim() != '')
-    //   .map((i) => i.img);
-    // let vids = (this.videos ?? [])
-    //   .filter((i) => i.link != undefined && i.link.trim() != '')
-    //   .map((i) => i.link);
-    // let imgLinks = (this.images ?? [])
-    //   .filter((i) => i.link != undefined && i.link.trim() != '')
-    //   .map((i) => i.link);
-    // let htmlTemplate = this.blockForm.controls['html'].value ?? '';
-    // let btns = this.buttons ?? [];
-    // let products = this.prods ?? [];
-    // let grid =
-    //   gridVal ?? (this.blockForm.controls['grid'].value as string) ?? '1';
-    // let matchGrid = this.grid.find((g) => g.name == grid)?.block;
-    // let row = new Block(
-    //   name,
-    //   Object.assign([], products),
-    //   undefined,
-    //   type,
-    //   Object.assign([], imgs),
-    //   matchGrid,
-    //   html,
-    //   backgroundColor,
-    //   corners,
-    //   '',
-    //   imgLinks,
-    //   btns,
-    //   vids,
-    //   htmlTemplate
-    // );
-    // if (
-    //   products.find((i) => i == '0') ||
-    //   products.find((i) => i == '1') ||
-    //   products.find((i) => i == '2')
-    // ) {
-    //   row.products = [];
-    //   row.smart_products = parseInt(products[0]);
-    // }
-    // this.activeBlock.block = row;
-    // this.activeBlock.index = this.editingBlock;
-  }
-
   resizeIframe(index: number) {
     let obj = document.getElementById('frame' + index) as HTMLIFrameElement;
     let c = document.getElementById('c' + index) as HTMLElement;
@@ -998,6 +913,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         ''
       )
     );
+
+    this.saveLayout(750);
 
     this.edit(rows.length - 1, pageIndex);
   }
@@ -1052,6 +969,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     if (this.activeBlock.index == event.previousIndex) {
       this.activeBlock.index = event.currentIndex;
     }
+    this.saveLayout(750);
   }
 
   @ViewChild('nftTable') nftTable?: NFTTableComponent;
@@ -1100,99 +1018,9 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         }
         this.cdr.detectChanges();
       }
+      this.saveLayout(750);
     });
   }
-
-  fontSize(block: Block) {
-    // if (this.rootComponent?.isMobile() || (row.grid_row ?? 1) >= 2) {
-    //   return 12;
-    // }
-    return (0.5 / (block.grid?.rows ?? 1)) * 100;
-  }
-
-  titleFontSize(block: Block) {
-    // if (this.rootComponent?.isMobile() || (row.grid_row ?? 1) >= 2) {
-    //   return 12;
-    // }
-    return (0.3 / (block.grid?.rows ?? 1)) * 100;
-  }
-
-  // products(smartProducts?: number, products?: Array<String>) {
-  //   if (smartProducts !== undefined) {
-  //     if (smartProducts == 0) {
-  //       return this.newArrivalProducts();
-  //     } else if (smartProducts == 1) {
-  //       return this.featuredProducts();
-  //     }
-  //   }
-  //   var prod = Array<NFT>();
-  //   products?.forEach((p) => {
-  //     let pro = Object.values(
-  //       this?.collections?.find((pr) => {
-  //         let k = Object.values(pr.NFTs)?.find((n) => {
-  //           return n.docID == p;
-  //         });
-  //         return k;
-  //       })?.NFTs ?? {}
-  //     )?.find((n) => {
-  //       return n.docID == p;
-  //     });
-  //     if (pro) {
-  //       prod.push(pro);
-  //     }
-  //   });
-  //   return prod;
-  // }
-
-  // selectedThemeFn() {
-  //   let co = this.wallet.colorStyle?.btn_color;
-  //   let bco = this.wallet.colorStyle?.bg_color;
-  //   let name = this.wallet.colorStyle?.name;
-
-  //   let color = 'rgba(' + co[0] + ',' + co[1] + ',' + co[2] + ',' + co[3] + ')';
-
-  //   let bg_color =
-  //     'rgba(' + bco[0] + ',' + bco[1] + ',' + bco[2] + ',' + bco[3] + ')';
-
-  //   var theme: Dict<string> = {
-  //     name: name,
-  //     color: color,
-  //     bg_color: bg_color,
-  //   };
-  //   return theme;
-  // }
-
-  // newArrivalProducts() {
-  //   return Object.values((this?.collections ?? [])[0].NFTs)
-  //     ?.sort(function (a, b) {
-  //       // if (a.timestamp > b.timestamp) {
-  //       //   return -1;
-  //       // }
-  //       // if (a.timestamp < b.timestamp) {
-  //       //   return 1;
-  //       // }
-  //       return 1;
-  //     })
-  //     .slice(0, 4);
-  // }
-
-  // featuredProducts() {
-  //   return Object.values((this?.collections ?? [])[0].NFTs)
-  //     ?.sort(function (a, b) {
-  //       // if (a.likes > b.likes) {
-  //       //   return -1;
-  //       // }
-  //       // if (a.likes < b.likes) {
-  //       //   return 1;
-  //       // }
-  //       return 1;
-  //     })
-  //     .slice(0, 4);
-  // }
-
-  // allProducts() {
-  //   return this.wallet?.collections;
-  // }
 
   @ViewChild('tabGroup', { static: false }) childTabGroup!: MatTabGroup;
 
@@ -1216,6 +1044,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     console.log(event);
     moveItemInArray(this.editableLayout?.pages ?? [], previousIndex, newIndex);
     this.showDragWrapper(event);
+    this.saveLayout(750);
   }
 
   onDropPage(event: CdkDragDrop<Page[]>): void {
@@ -1224,6 +1053,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     if (this.editingBlock?.pageIndex == event.previousIndex) {
       this.editingBlock.pageIndex = event.currentIndex;
     }
+    this.saveLayout(750);
   }
 
   onDragEntered(event: CdkDragEnter): void {
@@ -1247,6 +1077,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         (this.childTabGroup?.selectedIndex ?? -1) - 1;
     }
     this.recalculateUniqIdsForDragDrop();
+    this.saveLayout(750);
   }
 
   onAddChildControl(event: MouseEvent): void {
@@ -1265,10 +1096,11 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     page.url = `new-page-${index}`;
     page.blocks = [];
     page.icon = 'radio_button_unchecked';
-    page.type = 0
+    page.type = 0;
 
     this.editableLayout?.pages.push(page);
     this.recalculateUniqIdsForDragDrop();
+    this.saveLayout(750);
   }
 
   private showDragWrapper(event: CdkDragExit | CdkDragDrop<string[]>): void {

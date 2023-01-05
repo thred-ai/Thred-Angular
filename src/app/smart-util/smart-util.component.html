@@ -41,11 +41,10 @@
     </p> -->
 
     <button
-      class="btn bg-{{ mode == 0 ? 'purple' : 'transparent' }} border-{{
-        mode == 1 ? 'white' : '0'
-      }} rounded-pill fw-bold text-white d-flex justify-content-between align-content-center px-3 py-2 my-auto"
-      (click)="mode == 0 ? save() : (loading = true); layoutBuilder?.save()"
+      class="btn bg-purple border-0 rounded-pill fw-bold text-white d-flex justify-content-between align-content-center px-3 py-2 my-auto"
+      (click)="save()"
       [disabled]="loading"
+      *ngIf="mode == 0"
     >
       <ng-container *ngIf="loading; else buttonTitles">
         Saving
@@ -57,8 +56,7 @@
       </ng-container>
 
       <ng-template #buttonTitles>
-        <ng-container *ngIf="mode == 1"> Save Layout</ng-container>
-        <ng-container *ngIf="mode == 0"> Save Wallet</ng-container>
+        <ng-container> Save Wallet</ng-container>
         <mat-icon class="fw-bold ms-2" style="aspect-ratio: 1">
           check_circle
         </mat-icon>
@@ -71,7 +69,7 @@
   >
     <div class="p-0 h-100">
       <div
-        class="p-3 pe-0 d-flex justify-content-center align-content-center w-100 h-100"
+        class="p-3 pe-0 pt-0 d-flex justify-content-center align-content-center w-100 h-100"
       >
         <div
           class="m-auto big-design-card rounded-10 p-3 text-start h-100"
@@ -926,7 +924,7 @@
 
     <div class="w-100 p-0 h-100">
       <div
-        class="p-3 d-flex justify-content-center align-content-center w-100 h-100"
+        class="p-3 pt-0 d-flex justify-content-center align-content-center w-100 h-100"
       >
         <div
           class="w-100 big-design-card rounded-10 p-3 text-start d-flex justify-content-between align-content-center flex-column h-100"
@@ -998,7 +996,7 @@
     class="frame-body d-flex justify-content-center align-content-center rounded-10 bg-dark rounded-0"
     *ngIf="mode == 1 && selectedLayout && wallet"
   >
-    <div class="m-auto p-3 h-100" style="width: 100vw">
+    <div class="m-auto p-3 pt-0 h-100" style="width: 100vw">
       <app-layout-builder
         #layoutBuilder
         [wallet]="wallet"

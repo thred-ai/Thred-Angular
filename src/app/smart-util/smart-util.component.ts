@@ -468,7 +468,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         (l) => l.name.toLowerCase() == layout.name.toLowerCase()
       ) ?? -1;
     this.loading = false;
-    this.mode = 0;
     if (this.wallet && index > -1) {
       this.wallet.layouts[index] = layout;
       this.selectedLayout = layout;
