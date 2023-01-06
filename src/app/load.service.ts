@@ -696,7 +696,6 @@ export class LoadService {
                 block.backgroundColor,
                 block.corners,
                 block.animations,
-                block.imgLinks,
                 block.vids,
                 block.htmlTemplate,
                 block.fontName,

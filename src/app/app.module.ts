@@ -110,6 +110,7 @@ import { ColorShadePipe } from './color-shade.pipe';
 import { SliderValuePipe } from './slider-value.pipe';
 import { LayoutsPipe } from './layouts.pipe';
 import { LayoutIndexPipe } from './layout-index.pipe';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 @NgModule({
@@ -209,7 +210,7 @@ import { LayoutIndexPipe } from './layout-index.pipe';
     MdbValidationModule,
     MatDatepickerModule,
     MatPaginatorModule,
-
+    NgxDropzoneModule,
     DragDropModule,
     ColorPickerModule,
     NgxSliderModule,

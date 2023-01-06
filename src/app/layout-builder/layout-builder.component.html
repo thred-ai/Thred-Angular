@@ -1184,6 +1184,34 @@
                       </app-nft-table>
                     </div>
                   </div>
+                  <ng-container *ngIf="activeBlock.block?.type == 1">
+                    <div class="wrap-input1 w-100 pt-3">
+                      <p class="w-100 mb-4 text">Displayed Images</p>
+                      <div class="px-3 w-100 mb-3">
+                        <ngx-dropzone
+                          class="w-100 h-100 d-flex justify-content-center align-content-center flex-column"
+                          style="border-color: #a328ea"
+                          (change)="dropped($event)"
+                          [multiple]="false"
+                        >
+                          <ngx-dropzone-label
+                            class="big-design-title text-dark py-3"
+                          >
+                            <p class="my-auto" style="font-size: small">
+                              <b class-fw-bold style="font-size: medium">
+                                Drop Image Here
+                              </b>
+                              <br />
+
+                              ({{ acceptedTypes }})
+                            </p>
+                        
+                          </ngx-dropzone-label>
+                        </ngx-dropzone>
+                      </div>
+                    </div>
+                  </ng-container>
+
                   <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
                     <i
                       ><span style="font-size: small"
@@ -1946,9 +1974,11 @@
                   class="ms-0 mb-0 h-100"
                   (cdkDropListDropped)="drop($event, p)"
                 >
+                
                   <ng-container *ngFor="let b of page.blocks ?? []; index as i">
                     <div
                       class="block"
+                      [style.background-color]="page.backgroundColor"
                       *ngIf="
                         (activeBlock.index == i
                           ? activeBlock.block
@@ -1957,25 +1987,25 @@
                       id="p-{{ i }}"
                       #col
                       cdkDrag
-                      role="button"
                       (click)="edit(i, p)"
                       [class.big-design-editor]="activeBlock.index == i"
                       [class.highlight]="
                         hoverIndex != undefined && hoverIndex == i
                       "
-                      [style.padding-top.%]="
-                        mainFrame.clientWidth * (block.padding.top * 0.0005)
+                      [style.padding-top.px]="
+                        mainFrame.clientWidth * (block.padding.top * 0.0025)
                       "
-                      [style.padding-right.%]="
-                        mainFrame.clientWidth * (block.padding.right * 0.0005)
+                      [style.padding-right.px]="
+                        mainFrame.clientWidth * (block.padding.right * 0.0025)
                       "
-                      [style.padding-bottom.%]="
-                        mainFrame.clientWidth * (block.padding.bottom * 0.0005)
+                      [style.padding-bottom.px]="
+                        mainFrame.clientWidth * (block.padding.bottom * 0.0025)
                       "
-                      [style.padding-left.%]="
-                        mainFrame.clientWidth * (block.padding.left * 0.0005)
+                      [style.padding-left.px]="
+                        mainFrame.clientWidth * (block.padding.left * 0.0025)
                       "
                     >
+                    
                       <div
                         class="p-0 w-100"
                         style="overflow: hidden"
@@ -2035,6 +2065,7 @@
                       }}
                     </p>
                   </div> -->
+
                         <div class="w-100" *ngIf="block.type == 0">
                           <div
                             class="row mx-0 row-cols-1 row-cols-md-{{

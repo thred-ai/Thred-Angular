@@ -39,12 +39,23 @@ import { SharedDialogComponent } from '../shared-dialog/shared-dialog.component'
 import { NFTTableComponent } from '../nft-table/nft-table.component';
 import { Grid } from '../grid.model';
 import { takeUntil } from 'rxjs/operators';
+import { SafeUrlPipe } from '../safe-url.pipe';
 
 const DragConfig = {
   dragStartThreshold: 0,
   pointerDirectionChangeThreshold: 5,
   zIndex: 10001,
 };
+
+class SafeObjectUrl {
+  url: any;
+  constructor(url: string) {
+    this.url = url;
+  }
+  get unsafeUrl() {
+    return this.url;
+  }
+}
 
 @Component({
   selector: 'app-layout-builder',
@@ -180,7 +191,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   @Input() wallet!: Wallet;
   @Input() color!: string;
 
-  @Output() layoutSaved = new EventEmitter<{time: number, layout?: Layout}>();
+  @Output() layoutSaved = new EventEmitter<{ time: number; layout?: Layout }>();
   @Output() clickedCanvas = new EventEmitter<boolean>();
 
   @Input() set layout(value: Layout) {
@@ -322,6 +333,60 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       id: 'between',
     },
   ];
+
+  acceptedTypes = '.png,.jpeg,.gif';
+
+  public async dropped(files: any) {
+    for (const file of files.addedFiles) {
+      var type = file.type;
+
+      var acceptedFiles = this.acceptedTypes;
+      let arrs = acceptedFiles.replace(/\./g, '').split(',');
+
+      if (type == '') {
+        arrs.forEach((t) => {
+          if (file.name.indexOf(t) > -1) {
+            type = t;
+            return;
+          }
+        });
+        if (type == '') {
+          return;
+        }
+      } else {
+        let match = arrs.find((j) => {
+          return type.indexOf(j) > -1;
+        });
+        if (!match) {
+          return;
+        }
+      }
+
+      console.log(file);
+      const unsafeUrl = await this.createBlobUrlFromEnvironmentImage(file);
+
+      this.activeBlock.block?.imgs.push(unsafeUrl);
+      // this.fileDisplay = safe;
+      this.cdr.detectChanges();
+    }
+  }
+
+  async createBlobUrlFromEnvironmentImage(file: File) {
+    const arrayBuffer = await file.arrayBuffer();
+    const safeObjectUrl = this.createSafeObjectUrlFromArrayBuffer(arrayBuffer);
+    const unsafeUrl = file.name.match(/\.(hdr)$/i)
+      ? safeObjectUrl.unsafeUrl + '#.hdr'
+      : safeObjectUrl.unsafeUrl;
+    return unsafeUrl;
+  }
+
+  createSafeObjectURL(blob: Blob) {
+    return new SafeObjectUrl(URL.createObjectURL(blob));
+  }
+
+  createSafeObjectUrlFromArrayBuffer(contents: ArrayBuffer) {
+    return this.createSafeObjectURL(new Blob([new Uint8Array(contents)]));
+  }
 
   alignment(id: string) {
     return this.gridAlignment.find((a) => a.id == id);
@@ -745,8 +810,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     }, delay);
   }
 
-  openBar = true
-
+  openBar = true;
 
   finishedEditing(mode = 0) {
     // this.syncListeners(false);
@@ -906,7 +970,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         0,
         '',
         [],
-        [],
         ''
       )
     );
@@ -950,10 +1013,10 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
   async save() {
     if (this.editableLayout) {
-      let time = new Date().getTime()
-      this.layoutSaved.emit({time})
+      let time = new Date().getTime();
+      this.layoutSaved.emit({ time });
       this.loadService.addLayout(this.editableLayout, this.wallet, (layout) => {
-        this.layoutSaved.emit({time, layout})
+        this.layoutSaved.emit({ time, layout });
       });
     }
   }
@@ -970,6 +1033,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     }
     this.saveLayout(0);
   }
+
+
 
   @ViewChild('nftTable') nftTable?: NFTTableComponent;
 

@@ -6,20 +6,13 @@ import { Shadow } from './shadow.model';
 export class Block {
   nftList: NFTList;
   type: number;
-  imgs: Array<{
-    isActive: boolean;
-    link: string;
-  }>;
-  imgLinks: Array<string>;
+  imgs: string[];
   grid: Grid;
   html: string;
   backgroundColor: string;
   corners: number;
   animations: string;
-  vids: Array<{
-    isActive: boolean;
-    link: string;
-  }>;
+  vids: string[];
   htmlTemplate: string;
   fontName: string;
   padding: {
@@ -41,20 +34,13 @@ export class Block {
   constructor(
     nftList?: NFTList,
     type?: number,
-    imgs?: Array<{
-      isActive: boolean;
-      link: string;
-    }>,
+    imgs?: string[],
     grid?: Grid,
     html?: string,
     backgroundColor?: string,
     corners?: number,
     animations?: string,
-    imgLinks?: Array<string>,
-    vids?: Array<{
-      isActive: boolean;
-      link: string;
-    }>,
+    vids?: string[],
     htmlTemplate?: string,
     fontName?: string,
     padding?: {
@@ -83,7 +69,6 @@ export class Block {
     this.backgroundColor = backgroundColor ?? '';
     this.corners = corners ?? 0;
     this.animations = animations ?? '';
-    this.imgLinks = imgLinks ?? [];
     this.vids = vids ?? [];
     this.htmlTemplate = htmlTemplate ?? '';
     this.fontName = fontName ?? 'Montserrat';
