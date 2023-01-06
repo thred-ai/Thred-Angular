@@ -453,7 +453,7 @@ export class LoadService {
         let d = docs_2[0];
 
         if (d) {
-          let util = this.syncWallet(d as Wallet)
+          let util = this.syncWallet(d as Wallet);
 
           d.chains.forEach((c: any, i: number) => {
             d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
@@ -604,9 +604,10 @@ export class LoadService {
             );
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {
-            let docs_2 = (docs2 as Wallet[]).map(wallet => this.syncWallet(wallet));
+            let docs_2 = (docs2 as Wallet[]).map((wallet) =>
+              this.syncWallet(wallet)
+            );
             docs_2.forEach((d) => {
-
               d.chains.forEach((c: any, i: number) => {
                 d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
               });
@@ -783,6 +784,24 @@ export class LoadService {
       wallet.tracking,
       wallet.displayedLayouts
     );
+  }
+
+  async updateBlockImage(id: string, imgId: string, file?: File) {
+    if (file) {
+      try {
+        let ref = this.storage.ref(`wallets/${id}/img-${imgId}.png`);
+        await ref.put(file, { cacheControl: 'no-cache' });
+        let displayUrl = await ref.getDownloadURL().toPromise();
+        return displayUrl as string;
+      } catch (error) {
+        console.log('app');
+        return undefined;
+      }
+    } else {
+      let ref = this.storage.ref(`wallets/${id}/img-${imgId}.png`);
+      await ref.delete().toPromise();
+      return undefined;
+    }
   }
 
   getIcons(callback: (data: any) => any) {

@@ -662,11 +662,7 @@
                                 : undefined) ?? b as block
                             "
                           >
-                            <div
-                              class="example-custom-placeholder"
-                              *cdkDragPlaceholder
-                            ></div>
-
+                          
                             <div
                               class="w-100 d-flex justify-content-between align-items-center"
                             >
@@ -681,7 +677,7 @@
                                   [style.background-color]="
                                     block.backgroundColor
                                   "
-                                  [style.border-radius.%]="block.corners"
+                                  [style.border-radius.px]="block.corners"
                                   [style.border-left-width.px]="
                                     col.clientWidth *
                                     (block.borders.left.width * 0.0005)
@@ -727,105 +723,7 @@
                                     block.shadow.color
                                   "
                                 >
-                                  <div
-                                    class="row mx-0 row-cols-1 row-cols-md-{{
-                                      block.grid.rows
-                                    }} justify-content-{{
-                                      block.grid.alignment
-                                    }}"
-                                    style="pointer-events: none"
-                                    *ngIf="block.type == 0"
-                                    [style.padding.%]="block.grid.spacing"
-                                  >
-                                    <div
-                                      class="col"
-                                      *ngFor="
-                                        let nft of block.nftList.nfts ?? []
-                                      "
-                                      [style.padding.%]="block.grid.spacing"
-                                      #col
-                                    >
-                                      <div
-                                        class="bg-white"
-                                        style="overflow: hidden"
-                                        [style.border-radius.%]="
-                                          block.grid.corners
-                                        "
-                                        [style.border-left-width.px]="
-                                          col.clientWidth *
-                                          (block.grid.borders.left.width * 0.01)
-                                        "
-                                        [style.border-right-width.px]="
-                                          col.clientWidth *
-                                          (block.grid.borders.right.width *
-                                            0.01)
-                                        "
-                                        [style.border-top-width.px]="
-                                          col.clientWidth *
-                                          (block.grid.borders.top.width * 0.01)
-                                        "
-                                        [style.border-bottom-width.px]="
-                                          col.clientWidth *
-                                          (block.grid.borders.bottom.width *
-                                            0.01)
-                                        "
-                                        [style.border-left-color]="
-                                          block.grid.borders.left.color
-                                        "
-                                        [style.border-right-color]="
-                                          block.grid.borders.right.color
-                                        "
-                                        [style.border-top-color]="
-                                          block.grid.borders.top.color
-                                        "
-                                        [style.border-bottom-color]="
-                                          block.grid.borders.bottom.color
-                                        "
-                                        [style.border-style]="'solid'"
-                                        [style.color]="block.grid.textColor"
-                                        [style.box-shadow]="
-                                          col.clientWidth *
-                                            (block.grid.shadow.direction
-                                              .horizontal *
-                                              0.01) +
-                                          'px ' +
-                                          col.clientWidth *
-                                            (block.grid.shadow.direction
-                                              .vertical *
-                                              0.01) +
-                                          'px ' +
-                                          col.clientWidth *
-                                            (block.grid.shadow.blur * 0.01) +
-                                          'px ' +
-                                          block.grid.shadow.color
-                                        "
-                                      >
-                                        <div class="pb-0 w-100">
-                                          <a role="button" class="w-100">
-                                            <img
-                                              loading="lazy"
-                                              id="image"
-                                              class="h-100 w-100"
-                                              [useSrcset]="true"
-                                              [defaultImage]="
-                                                '/assets/default.png'
-                                              "
-                                              [lazyLoad]="
-                                                nft.img != ''
-                                                  ? nft.img
-                                                  : '/assets/default.png'
-                                              "
-                                              alt="ok"
-                                              style="
-                                                object-fit: cover;
-                                                aspect-ratio: 1;
-                                              "
-                                            />
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+                                <app-grid [block]="block"></app-grid>
 
                                   <!-- <div
                                 class="row gx-0 row-cols-{{
@@ -1180,34 +1078,30 @@
                         [nfts]="activeBlock.block.nftList.nfts ?? []"
                         [count]="(activeBlock.block.nftList.nfts ?? []).length"
                         (clicked)="openNFT($event?.nft, $event?.index)"
+                        (uploaded)="
+                          activeBlock.block.nftList.nfts = $event; setValue()
+                        "
                       >
                       </app-nft-table>
                     </div>
                   </div>
                   <ng-container *ngIf="activeBlock.block?.type == 1">
-                    <div class="wrap-input1 w-100 pt-3">
-                      <p class="w-100 mb-4 text">Displayed Images</p>
+                    <div
+                      class="wrap-input1 w-100 pt-3"
+                      *ngIf="activeBlock.block?.type == 1"
+                    >
+                      <p class="w-100 mb-4 text">Display Images</p>
                       <div class="px-3 w-100 mb-3">
-                        <ngx-dropzone
-                          class="w-100 h-100 d-flex justify-content-center align-content-center flex-column"
-                          style="border-color: #a328ea"
-                          (change)="dropped($event)"
-                          [multiple]="false"
+                        <app-media-table
+                          #mediaTable
+                          [id]="wallet.id"
+                          [media]="activeBlock.block.imgs"
+                          [count]="activeBlock.block.imgs.length"
+                          (uploaded)="
+                            activeBlock.block.imgs = $event; setValue()
+                          "
                         >
-                          <ngx-dropzone-label
-                            class="big-design-title text-dark py-3"
-                          >
-                            <p class="my-auto" style="font-size: small">
-                              <b class-fw-bold style="font-size: medium">
-                                Drop Image Here
-                              </b>
-                              <br />
-
-                              ({{ acceptedTypes }})
-                            </p>
-                        
-                          </ngx-dropzone-label>
-                        </ngx-dropzone>
+                        </app-media-table>
                       </div>
                     </div>
                   </ng-container>
@@ -1974,7 +1868,6 @@
                   class="ms-0 mb-0 h-100"
                   (cdkDropListDropped)="drop($event, p)"
                 >
-                
                   <ng-container *ngFor="let b of page.blocks ?? []; index as i">
                     <div
                       class="block"
@@ -2005,12 +1898,10 @@
                         mainFrame.clientWidth * (block.padding.left * 0.0025)
                       "
                     >
-                    
                       <div
                         class="p-0 w-100"
                         style="overflow: hidden"
                         [style.background-color]="block.backgroundColor"
-                        [style.border-radius.%]="block.grid.corners"
                         [style.border-left-width.px]="
                           col.clientWidth * (block.borders.left.width * 0.0005)
                         "
@@ -2030,7 +1921,7 @@
                         [style.border-bottom-color]="block.borders.bottom.color"
                         [style.border-style]="'solid'"
                         [style.color]="block.textColor"
-                        [style.border-radius.%]="block.corners"
+                        [style.border-radius.px]="block.corners"
                         [style.box-shadow]="
                           col.clientWidth *
                             (block.shadow.direction.horizontal * 0.0005) +
@@ -2066,88 +1957,8 @@
                     </p>
                   </div> -->
 
-                        <div class="w-100" *ngIf="block.type == 0">
-                          <div
-                            class="row mx-0 row-cols-1 row-cols-md-{{
-                              block.grid.rows
-                            }} justify-content-{{ block.grid.alignment }}"
-                            style="pointer-events: none"
-                            [style.padding.%]="block.grid.spacing"
-                          >
-                            <div
-                              class="col"
-                              *ngFor="let nft of block.nftList.nfts ?? []"
-                              [style.padding.%]="block.grid.spacing"
-                              #col
-                            >
-                              <div
-                                class="bg-white"
-                                style="overflow: hidden"
-                                [style.border-radius.%]="block.grid.corners"
-                                [style.border-left-width.px]="
-                                  col.clientWidth *
-                                  (block.grid.borders.left.width * 0.01)
-                                "
-                                [style.border-right-width.px]="
-                                  col.clientWidth *
-                                  (block.grid.borders.right.width * 0.01)
-                                "
-                                [style.border-top-width.px]="
-                                  col.clientWidth *
-                                  (block.grid.borders.top.width * 0.01)
-                                "
-                                [style.border-bottom-width.px]="
-                                  col.clientWidth *
-                                  (block.grid.borders.bottom.width * 0.01)
-                                "
-                                [style.border-left-color]="
-                                  block.grid.borders.left.color
-                                "
-                                [style.border-right-color]="
-                                  block.grid.borders.right.color
-                                "
-                                [style.border-top-color]="
-                                  block.grid.borders.top.color
-                                "
-                                [style.border-bottom-color]="
-                                  block.grid.borders.bottom.color
-                                "
-                                [style.border-style]="'solid'"
-                                [style.color]="block.grid.textColor"
-                                [style.box-shadow]="
-                                  col.clientWidth *
-                                    (block.grid.shadow.direction.horizontal *
-                                      0.01) +
-                                  'px ' +
-                                  col.clientWidth *
-                                    (block.grid.shadow.direction.vertical *
-                                      0.01) +
-                                  'px ' +
-                                  col.clientWidth *
-                                    (block.grid.shadow.blur * 0.01) +
-                                  'px ' +
-                                  block.grid.shadow.color
-                                "
-                              >
-                                <div class="p-0 w-100">
-                                  <img
-                                    loading="lazy"
-                                    id="image"
-                                    class="h-100 w-100"
-                                    [useSrcset]="true"
-                                    [defaultImage]="'/assets/default.png'"
-                                    [lazyLoad]="
-                                      nft.img != ''
-                                        ? nft.img
-                                        : '/assets/default.png'
-                                    "
-                                    alt="ok"
-                                    style="object-fit: cover; aspect-ratio: 1"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        <div class="w-100">
+                          <app-grid [block]="block"></app-grid>
                         </div>
 
                         <!-- <div

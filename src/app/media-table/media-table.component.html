@@ -1,15 +1,20 @@
-<div
+<ngx-dropzone
   class="big-design-body d-flex justify-content-{{
     loading == 0 ? 'between' : 'center'
-  }} align-items-center flex-column rounded-15 border w-100"
+  }} align-items-center flex-column rounded-15 w-100"
   style="
     overflow: auto;
     resize: vertical;
     box-sizing: border-box;
     min-height: 400px;
+    border-color: #a328ea;
   "
   (resized)="resize($event)"
-  #parent
+  (change)="dropped($event)"
+  [multiple]="false"
+  [disableClick]="true"
+  
+  #dropzone
 >
   <div class="w-100 h-100" #frame [hidden]="loading != 0">
     <table
@@ -28,9 +33,9 @@
           style="background-color: rgb(240, 226, 253)"
         >
           <button
-            (click)="open()"
             class="text-purple fw-bolder"
             mat-icon-button
+            (click)="dropzone.showFileSelector()"
           >
             <mat-icon>add</mat-icon>
           </button>
@@ -41,13 +46,6 @@
           class="big-design-body d-flex justify-content-center align-items-center flex-column"
           [style.width.px]="frame.scrollWidth"
           [style.height.px]="70"
-          (click)="
-            open({
-              nft: element,
-              index:
-                i + (paginator1?.pageIndex ?? 0) * (paginator1?.pageSize ?? 0)
-            })
-          "
         >
           <div
             class="d-flex justify-content-between align-items-center my-auto w-100"
@@ -68,7 +66,7 @@
                 <img
                   class="m-auto"
                   style="object-fit: contain; height: 90%; width: 90%"
-                  [src]="element.img | safeUrl"
+                  [src]="element.url | safeUrl"
                   role="button"
                 />
               </div>
@@ -78,22 +76,13 @@
               </p>
             </div>
             <div>
-              <div
-                class="rounded-circle bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
-                style="
-                  object-fit: contain;
-                  aspect-ratio: 1;
-                  height: 25px;
-                  overflow: hidden;
-                "
+              <button
+                class="text-purple fw-bolder"
+                mat-icon-button
+                (click)="remove(element)"
               >
-                <img
-                  class="m-auto rounded-circle"
-                  style="object-fit: contain; height: 90%; width: 90%"
-                  [src]="chains[element.chainId]?.url | safeUrl"
-                  role="button"
-                />
-              </div>
+                <mat-icon>close</mat-icon>
+              </button>
             </div>
           </div>
         </td>
@@ -118,7 +107,7 @@
           [attr.colspan]="displayedColumns2.length"
         >
           <p class="w-100 text-center big-design-title my-2 text">
-            No NFTs in this block.
+            Drop an image file here.
           </p>
         </td>
       </tr>
@@ -141,4 +130,4 @@
   <ng-container *ngIf="loading == 1">
     <app-loader [mode]="'dark'"></app-loader>
   </ng-container>
-</div>
+</ngx-dropzone>

@@ -1,18 +1,19 @@
 import { Border } from './border.model';
 import { Grid } from './grid.model';
+import { Media } from './media.model';
 import { NFTList } from './nft-list.model';
 import { Shadow } from './shadow.model';
 
 export class Block {
   nftList: NFTList;
   type: number;
-  imgs: string[];
+  imgs: Media[];
   grid: Grid;
   html: string;
   backgroundColor: string;
   corners: number;
   animations: string;
-  vids: string[];
+  vids: Media[];
   htmlTemplate: string;
   fontName: string;
   padding: {
@@ -34,13 +35,13 @@ export class Block {
   constructor(
     nftList?: NFTList,
     type?: number,
-    imgs?: string[],
+    imgs?: Media[],
     grid?: Grid,
     html?: string,
     backgroundColor?: string,
     corners?: number,
     animations?: string,
-    vids?: string[],
+    vids?: Media[],
     htmlTemplate?: string,
     fontName?: string,
     padding?: {

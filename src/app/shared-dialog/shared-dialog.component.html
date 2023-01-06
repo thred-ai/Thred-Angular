@@ -15,9 +15,6 @@
   </div>
   <mat-dialog-content style="overflow: hidden" *ngIf="data">
     <div style="overflow-y: scroll; height: 65vh">
-      <!-- <p *ngIf="err != ''" class="text-danger my-1 text-center fw-bold">
-            {{ err }}
-          </p> -->
       <app-add-nft [data]="data.payload" (saved)="saved($event)" *ngIf="data.mode == 0"></app-add-nft>
     </div>
   </mat-dialog-content>

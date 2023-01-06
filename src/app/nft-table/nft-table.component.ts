@@ -27,6 +27,8 @@ export class NFTTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() clicked = new EventEmitter<
     { nft: NFT; index: number } | undefined
   >();
+  @Output() uploaded = new EventEmitter<NFT[]>();
+
   @ViewChild(MatTable) table!: MatTable<any>;
   data: NFT[] = [];
 
@@ -112,6 +114,7 @@ export class NFTTableComponent implements OnInit, AfterViewInit, OnChanges {
     // }
     this.dataSource = new MatTableDataSource<NFT>(this.data);
 
+    this.uploaded.emit(this.data)
     setTimeout(() => {
       this.loading = 0; //
 

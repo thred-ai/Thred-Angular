@@ -1,16 +1,13 @@
 import {
   Component,
   OnInit,
-  Inject,
   ViewChild,
   OnDestroy,
   ChangeDetectorRef,
-  PLATFORM_ID,
   Input,
   EventEmitter,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import {
@@ -23,7 +20,6 @@ import {
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { Button } from '../button.model';
 import { LoadService, Dict } from '../load.service';
@@ -38,24 +34,14 @@ import { Options } from '@angular-slider/ngx-slider';
 import { SharedDialogComponent } from '../shared-dialog/shared-dialog.component';
 import { NFTTableComponent } from '../nft-table/nft-table.component';
 import { Grid } from '../grid.model';
-import { takeUntil } from 'rxjs/operators';
-import { SafeUrlPipe } from '../safe-url.pipe';
+import { Media } from '../media.model';
+import { MediaTableComponent } from '../media-table/media-table.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
   pointerDirectionChangeThreshold: 5,
   zIndex: 10001,
 };
-
-class SafeObjectUrl {
-  url: any;
-  constructor(url: string) {
-    this.url = url;
-  }
-  get unsafeUrl() {
-    return this.url;
-  }
-}
 
 @Component({
   selector: 'app-layout-builder',
@@ -334,59 +320,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     },
   ];
 
-  acceptedTypes = '.png,.jpeg,.gif';
-
-  public async dropped(files: any) {
-    for (const file of files.addedFiles) {
-      var type = file.type;
-
-      var acceptedFiles = this.acceptedTypes;
-      let arrs = acceptedFiles.replace(/\./g, '').split(',');
-
-      if (type == '') {
-        arrs.forEach((t) => {
-          if (file.name.indexOf(t) > -1) {
-            type = t;
-            return;
-          }
-        });
-        if (type == '') {
-          return;
-        }
-      } else {
-        let match = arrs.find((j) => {
-          return type.indexOf(j) > -1;
-        });
-        if (!match) {
-          return;
-        }
-      }
-
-      console.log(file);
-      const unsafeUrl = await this.createBlobUrlFromEnvironmentImage(file);
-
-      this.activeBlock.block?.imgs.push(unsafeUrl);
-      // this.fileDisplay = safe;
-      this.cdr.detectChanges();
-    }
-  }
-
-  async createBlobUrlFromEnvironmentImage(file: File) {
-    const arrayBuffer = await file.arrayBuffer();
-    const safeObjectUrl = this.createSafeObjectUrlFromArrayBuffer(arrayBuffer);
-    const unsafeUrl = file.name.match(/\.(hdr)$/i)
-      ? safeObjectUrl.unsafeUrl + '#.hdr'
-      : safeObjectUrl.unsafeUrl;
-    return unsafeUrl;
-  }
-
-  createSafeObjectURL(blob: Blob) {
-    return new SafeObjectUrl(URL.createObjectURL(blob));
-  }
-
-  createSafeObjectUrlFromArrayBuffer(contents: ArrayBuffer) {
-    return this.createSafeObjectURL(new Blob([new Uint8Array(contents)]));
-  }
 
   alignment(id: string) {
     return this.gridAlignment.find((a) => a.id == id);
@@ -1034,9 +967,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     this.saveLayout(0);
   }
 
-
-
   @ViewChild('nftTable') nftTable?: NFTTableComponent;
+  @ViewChild('mediaTable') mediaTable?: MediaTableComponent;
 
   openNFT(nft?: NFT, index?: number) {
     console.log(nft);
@@ -1082,7 +1014,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         }
         this.cdr.detectChanges();
       }
-      this.saveLayout(0);
+      this.setValue();
     });
   }
 

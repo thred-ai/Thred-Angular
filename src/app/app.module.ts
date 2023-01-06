@@ -111,7 +111,10 @@ import { SliderValuePipe } from './slider-value.pipe';
 import { LayoutsPipe } from './layouts.pipe';
 import { LayoutIndexPipe } from './layout-index.pipe';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-
+import { MediaTableComponent } from './media-table/media-table.component';
+import { GridComponent } from './grid/grid.component';
+import { GridItemComponent } from './grid-item/grid-item.component';
+import { NgxDefaultImageModule } from "ngx-default-image";
 
 @NgModule({
   declarations: [
@@ -152,7 +155,10 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     ColorShadePipe,
     SliderValuePipe,
     LayoutsPipe,
-    LayoutIndexPipe
+    LayoutIndexPipe,
+    MediaTableComponent,
+    GridComponent,
+    GridItemComponent
   ],
   imports: [
     CommonModule,
@@ -214,7 +220,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     DragDropModule,
     ColorPickerModule,
     NgxSliderModule,
-    AngularResizeEventModule
+    AngularResizeEventModule,
+    NgxDefaultImageModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
