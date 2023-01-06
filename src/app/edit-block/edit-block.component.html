@@ -1,0 +1,22 @@
+<div class="w-100 d-flex justify-content-between align-items-center">
+  <div class="p-3 h-100 w-100">
+    <div
+      #col
+      class="big-design-card rounded-15 h-100 w-100 zoom m-0 p-0"
+      role="button"
+      (mouseover)="hoverOn.emit()"
+      (mouseout)="hoverOff.emit()"
+      style="position: relative; min-height: 25px; overflow: hidden"
+    >
+      <app-block
+        [id]="id"
+        [block]="block"
+        [active]="active"
+        [mainFrame]="mainFrame"
+        [page]="page"
+        (clicked)="clicked.emit()"
+      >
+      </app-block>
+    </div>
+  </div>
+</div>

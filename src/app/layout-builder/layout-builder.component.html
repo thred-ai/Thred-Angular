@@ -1,7 +1,7 @@
 <div
   *ngIf="editableLayout"
   class="bg-light p-0 {{
-    editable ? 'big-design-card shadow w-100 h-100' : 'vh-75 vw-50'
+    editable ? 'big-design-card rounded-15 shadow w-100 h-100' : 'vh-75 vw-50'
   }}"
   style="overflow: hidden"
 >
@@ -652,235 +652,26 @@
                         [cdkDropListData]="page.blocks"
                         (cdkDropListDropped)="drop($event, p)"
                       >
-                        <ng-container *ngFor="let b of page.blocks; index as i">
-                          <div
-                            cdkDrag
-                            (click)="edit(i, p)"
-                            *ngIf="
+                        <div
+                          *ngFor="let b of page.blocks ?? []; index as i"
+                          cdkDrag
+                        >
+                          <app-edit-block
+                            [id]="'p-' + i"
+                            [block]="
                               (activeBlock.index == i
                                 ? activeBlock.block
-                                : undefined) ?? b as block
+                                : undefined) ?? b
                             "
+                            [active]="activeBlock.index == i"
+                            [mainFrame]="mainFrame"
+                            [page]="page"
+                            (clicked)="edit(i, p)"
+                            (hoverOn)="changeStyle($event, i)"
+                            (hoverOff)="changeStyle($event, i)"
                           >
-                          
-                            <div
-                              class="w-100 d-flex justify-content-between align-items-center"
-                            >
-                              <div class="px-3 py-2 h-100 w-100">
-                                <div
-                                  #col
-                                  class="big-design-card h-100 w-100 zoom m-0 p-0"
-                                  role="button"
-                                  (mouseover)="changeStyle($event, i)"
-                                  (mouseout)="changeStyle($event, i)"
-                                  style="position: relative; min-height: 25px"
-                                  [style.background-color]="
-                                    block.backgroundColor
-                                  "
-                                  [style.border-radius.px]="block.corners"
-                                  [style.border-left-width.px]="
-                                    col.clientWidth *
-                                    (block.borders.left.width * 0.0005)
-                                  "
-                                  [style.border-right-width.px]="
-                                    col.clientWidth *
-                                    (block.borders.right.width * 0.0005)
-                                  "
-                                  [style.border-top-width.px]="
-                                    col.clientWidth *
-                                    (block.borders.top.width * 0.0005)
-                                  "
-                                  [style.border-bottom-width.px]="
-                                    col.clientWidth *
-                                    (block.borders.bottom.width * 0.0005)
-                                  "
-                                  [style.border-left-color]="
-                                    block.borders.left.color
-                                  "
-                                  [style.border-right-color]="
-                                    block.borders.right.color
-                                  "
-                                  [style.border-top-color]="
-                                    block.borders.top.color
-                                  "
-                                  [style.border-bottom-color]="
-                                    block.borders.bottom.color
-                                  "
-                                  [style.border-style]="'solid'"
-                                  [style.color]="block.textColor"
-                                  [style.box-shadow]="
-                                    col.clientWidth *
-                                      (block.shadow.direction.horizontal *
-                                        0.0005) +
-                                    'px ' +
-                                    col.clientWidth *
-                                      (block.shadow.direction.vertical *
-                                        0.0005) +
-                                    'px ' +
-                                    col.clientWidth *
-                                      (block.shadow.blur * 0.0005) +
-                                    'px ' +
-                                    block.shadow.color
-                                  "
-                                >
-                                <app-grid [block]="block"></app-grid>
-
-                                  <!-- <div
-                                class="row gx-0 row-cols-{{
-                                  editableLayout.type == 'desktop' &&
-                                    ((activeBlock.index == i
-                                      ? activeBlock.block
-                                      : undefined
-                                    )?.grid?.rows ?? block.grid.rows)
-                                }} justify-content-center w-100 mx-0"
-                                *ngIf="
-                                  ((activeBlock.index == i
-                                    ? activeBlock?.block
-                                    : undefined
-                                  )?.type ??
-                                    block.type) ==
-                                  1
-                                "
-                                style="pointer-events: none"
-                              >
-                                <div
-                                  class="col"
-                                  *ngFor="
-                                    let img of (activeBlock.index == i
-                                      ? activeBlock?.block
-                                      : undefined
-                                    )?.imgs ??
-                                      block.imgs ??
-                                      []
-                                  "
-                                  style="
-                                    margin-bottom: 1px;
-                                    padding-left: 0.5px;
-                                    padding-right: 0.5px;
-                                  "
-                                >
-                                  <div
-                                    class="d-block align-items-center text-center text-sm-start w-100"
-                                  >
-                                    <a class="ms-0 me-0" role="button">
-                                      <img
-                                        loading="lazy"
-                                        class="h-auto w-100 white"
-                                        [useSrcset]="true"
-                                        [defaultImage]="'/assets/default.png'"
-                                        [lazyLoad]="img.link"
-                                        alt="ok"
-                                      />
-                                    </a>
-                                  </div>
-                                </div>
-                              </div> -->
-                                  <!-- 
-                              <div
-                                class="row gx-0 row-cols-{{
-                                  editableLayout.type == 'desktop' &&
-                                    ((activeBlock.index == i
-                                      ? activeBlock.block
-                                      : undefined
-                                    )?.grid?.rows ?? block.grid.rows)
-                                }} justify-content-center w-100 mx-0"
-                                *ngIf="
-                                  ((activeBlock.index == i
-                                    ? activeBlock.block
-                                    : undefined
-                                  )?.type ??
-                                    block.type) ==
-                                  4
-                                "
-                              >
-                                <div
-                                  class="col mb-1"
-                                  *ngFor="
-                                    let vid of (
-                                      (activeBlock.index == i
-                                        ? activeBlock?.block
-                                        : undefined) ?? block
-                                    ).vids ?? [];
-                                    index as i
-                                  "
-                                >
-                                  <div
-                                    class="d-block align-items-center text-center text-sm-start w-100"
-                                  >
-                                    <a class="ms-0 me-0" role="button">
-                                      <iframe
-                                        [src]="vid.link | videoPipe | safeUrl"
-                                        width="100%"
-                                        style="aspect-ratio: 16/9"
-                                      ></iframe>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div> -->
-
-                                  <!-- <div
-                                class="w-100 mx-0"
-                                *ngIf="
-                                  ((activeBlock.index == i
-                                    ? activeBlock?.block
-                                    : undefined
-                                  )?.type ??
-                                    block.type) ==
-                                  2
-                                "
-                                style="pointer-events: none"
-                              >
-                                <div
-                                  class="m-1 w-100 px-0"
-                                  style="
-                                    text-overflow: ellipsis;
-                                    line-height: 2em;
-                                    font-size: 3px;
-                                    word-break: break-all;
-                                    padding-right: 2px;
-                                  "
-                                  style.color="{{ selectedTheme!['color'] }}"
-                                  [innerHTML]="
-                                    (
-                                      (activeBlock.index == i
-                                        ? activeBlock.block
-                                        : undefined) ?? block
-                                    ).html | safeTextRows: true
-                                  "
-                                ></div>
-                              </div> -->
-
-                                  <!-- <div
-                                class="w-100 mx-0"
-                                *ngIf="
-                                  ((activeBlock.index == i
-                                    ? activeBlock?.block
-                                    : undefined
-                                  )?.type ??
-                                    block.type) ==
-                                  7
-                                "
-                                style="pointer-events: none"
-                                c
-                              >
-                                <h1 class="m-2 text-center fw-bolder">
-                                  CUSTOM HTML
-                                </h1>
-                              </div> -->
-
-                                  <!-- <div
-                                class="w-100 h-100"
-                                style="
-                                  position: absolute;
-                                  pointer-events: all;
-                                  cursor: grab;
-                                "
-                              ></div> -->
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </ng-container>
+                          </app-edit-block>
+                        </div>
                       </div>
 
                       <div
@@ -888,7 +679,7 @@
                       >
                         <div class="mt-1 px-3 w-100">
                           <div
-                            class="card zoom container-fluid d-flex justify-content-center align-items-center big-design-placeholder mt-1"
+                            class="card rounded-15 zoom container-fluid d-flex justify-content-center align-items-center big-design-placeholder mt-1"
                             role="button"
                             (click)="addBlock(p)"
                             matTooltip="Add New Content Block"
@@ -1827,7 +1618,7 @@
           }}"
         >
           <div
-            class="big-design-card m-auto {{
+            class="big-design-card rounded-15 m-auto {{
               editable
                 ? 'shadow border border-1 border-dark'
                 : 'shadow-0 border-preview'
@@ -1864,263 +1655,26 @@
             >
               <section class="py-0 w-100 mb-0">
                 <div
-                  cdkDropList
                   class="ms-0 mb-0 h-100"
+                  cdkDropList
+                  [cdkDropListData]="page.blocks"
                   (cdkDropListDropped)="drop($event, p)"
                 >
-                  <ng-container *ngFor="let b of page.blocks ?? []; index as i">
-                    <div
-                      class="block"
-                      [style.background-color]="page.backgroundColor"
-                      *ngIf="
+                  <div *ngFor="let b of page.blocks ?? []; index as i" cdkDrag>
+                    <app-block
+                      [id]="'p-' + i"
+                      [block]="
                         (activeBlock.index == i
                           ? activeBlock.block
-                          : undefined) ?? b as block
+                          : undefined) ?? b
                       "
-                      id="p-{{ i }}"
-                      #col
-                      cdkDrag
-                      (click)="edit(i, p)"
-                      [class.big-design-editor]="activeBlock.index == i"
-                      [class.highlight]="
-                        hoverIndex != undefined && hoverIndex == i
-                      "
-                      [style.padding-top.px]="
-                        mainFrame.clientWidth * (block.padding.top * 0.0025)
-                      "
-                      [style.padding-right.px]="
-                        mainFrame.clientWidth * (block.padding.right * 0.0025)
-                      "
-                      [style.padding-bottom.px]="
-                        mainFrame.clientWidth * (block.padding.bottom * 0.0025)
-                      "
-                      [style.padding-left.px]="
-                        mainFrame.clientWidth * (block.padding.left * 0.0025)
-                      "
+                      [active]="activeBlock.index == i"
+                      [mainFrame]="mainFrame"
+                      [page]="page"
+                      (clicked)="edit(i, p)"
                     >
-                      <div
-                        class="p-0 w-100"
-                        style="overflow: hidden"
-                        [style.background-color]="block.backgroundColor"
-                        [style.border-left-width.px]="
-                          col.clientWidth * (block.borders.left.width * 0.0005)
-                        "
-                        [style.border-right-width.px]="
-                          col.clientWidth * (block.borders.right.width * 0.0005)
-                        "
-                        [style.border-top-width.px]="
-                          col.clientWidth * (block.borders.top.width * 0.0005)
-                        "
-                        [style.border-bottom-width.px]="
-                          col.clientWidth *
-                          (block.borders.bottom.width * 0.0005)
-                        "
-                        [style.border-left-color]="block.borders.left.color"
-                        [style.border-right-color]="block.borders.right.color"
-                        [style.border-top-color]="block.borders.top.color"
-                        [style.border-bottom-color]="block.borders.bottom.color"
-                        [style.border-style]="'solid'"
-                        [style.color]="block.textColor"
-                        [style.border-radius.px]="block.corners"
-                        [style.box-shadow]="
-                          col.clientWidth *
-                            (block.shadow.direction.horizontal * 0.0005) +
-                          'px ' +
-                          col.clientWidth *
-                            (block.shadow.direction.vertical * 0.0005) +
-                          'px ' +
-                          col.clientWidth * (block.shadow.blur * 0.0005) +
-                          'px ' +
-                          block.shadow.color
-                        "
-                      >
-                        <!-- <div
-                    *ngIf="
-                      ((activeBlock.index == i ? activeBlock?.block : undefined)
-                        ?.text ??
-                        block.text ??
-                        '') !=
-                      ''
-                    "
-                    class="d-flex align-items-center justify-content-center py-2 m-0"
-                    style="height: 50px; font-weight: bold; font-size: 30px"
-                    style.color="{{ selectedTheme!['color'] }}"
-                  >
-                    <p
-                      class="text-center text-dark"
-                      style="line-height: 1.2em"
-                    >
-                      {{
-                        (activeBlock.index == i ? activeBlock.block : undefined)
-                          ?.text ?? block.text
-                      }}
-                    </p>
-                  </div> -->
-
-                        <div class="w-100">
-                          <app-grid [block]="block"></app-grid>
-                        </div>
-
-                        <!-- <div
-                      class="row gx-0 row-cols-{{
-                        editableLayout.type == 'desktop' &&
-                          ((activeBlock.index == i
-                            ? activeBlock.block
-                            : undefined
-                          )?.grid?.rows ?? block.grid.rows)
-                      }} justify-content-center w-100 mx-0"
-                      *ngIf="
-                        ((activeBlock.index == i
-                          ? activeBlock?.block
-                          : undefined
-                        )?.type ??
-                          block.type) ==
-                        1
-                      "
-                      style="pointer-events: none"
-                    >
-                      <div
-                        class="col"
-                        style="margin-bottom: 2px"
-                        *ngFor="
-                          let img of (activeBlock.index == i
-                            ? activeBlock?.block
-                            : undefined
-                          )?.imgs ??
-                            block.imgs ??
-                            []
-                        "
-                      >
-                        <div
-                          class="d-block align-items-center text-center text-sm-start w-100"
-                        >
-                          <a class="mx-0" role="button">
-                            <img
-                              class="h-auto w-100"
-                              style="object-fit: contain"
-                              [src]="img"
-                              alt="ok"
-                            />
-                          </a>
-                        </div>
-                      </div>
-                    </div> -->
-
-                        <!-- <div
-                      class="row gx-0 row-cols-{{
-                        editableLayout.type == 'desktop' &&
-                          ((activeBlock.index == i
-                            ? activeBlock.block
-                            : undefined
-                          )?.grid?.rows ?? block.grid.rows)
-                      }} justify-content-center w-100 px-3 mb-1"
-                      *ngIf="
-                        ((activeBlock.index == i
-                          ? activeBlock?.block
-                          : undefined
-                        )?.type ??
-                          block.type) ==
-                        3
-                      "
-                      style="pointer-events: none"
-                    ></div> -->
-
-                        <!-- <div
-                      class="row gx-0 row-cols-{{
-                        editableLayout.type == 'desktop' &&
-                          ((activeBlock.index == i
-                            ? activeBlock.block
-                            : undefined
-                          )?.grid?.rows ?? block.grid.rows)
-                      }} justify-content-center w-100 mx-0"
-                      *ngIf="
-                        ((activeBlock.index == i
-                          ? activeBlock?.block
-                          : undefined
-                        )?.type ??
-                          block.type) ==
-                        4
-                      "
-                    >
-                      <div
-                        class="col mb-1"
-                        *ngFor="
-                          let vid of (
-                            (activeBlock.index == i
-                              ? activeBlock?.block
-                              : undefined) ?? block
-                          ).vids ?? [];
-                          index as i
-                        "
-                      >
-                        <div
-                          class="d-block align-items-center text-center text-sm-start w-100"
-                        >
-                          <a class="ms-0 me-0" role="button">
-                            <iframe
-                              [src]="vid.link | videoPipe | safeUrl"
-                              width="100%"
-                              style="aspect-ratio: 16/9"
-                            ></iframe>
-                          </a>
-                        </div>
-                      </div>
-                    </div> -->
-
-                        <!-- <div
-                      class="w-100 mx-0"
-                      *ngIf="
-                        ((activeBlock.index == i
-                          ? activeBlock?.block
-                          : undefined
-                        )?.type ??
-                          block.type) ==
-                        2
-                      "
-                      style="pointer-events: none"
-                    >
-                      <div
-                        class="p-3 h-100"
-                        style.color="{{ selectedTheme!['color'] }}"
-                        [innerHTML]="
-                          (
-                            (activeBlock.index == i
-                              ? activeBlock.block
-                              : undefined) ?? block
-                          ).html | safeTextRows
-                        "
-                      ></div>
-                    </div> -->
-
-                        <!-- <div
-                      class="w-100 mx-0"
-                      id="c{{ i }}"
-                      *ngIf="
-                        (
-                          (activeBlock.index == i
-                            ? activeBlock?.block
-                            : undefined) ?? block
-                        ).type == 7
-                      "
-                      style="pointer-events: none"
-                    >
-                      <iframe
-                        width="100%"
-                        id="frame{{ i }}"
-                        height="100%"
-                        (load)="resizeIframe(i)"
-                        [srcdoc]="
-                          (
-                            (activeBlock.index == i
-                              ? activeBlock.block
-                              : undefined) ?? block
-                          ).htmlTemplate | safeHtml
-                        "
-                      ></iframe>
-                    </div> -->
-                      </div>
-                    </div>
-                  </ng-container>
+                    </app-block>
+                  </div>
                 </div>
               </section>
             </div>

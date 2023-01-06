@@ -115,6 +115,8 @@ import { MediaTableComponent } from './media-table/media-table.component';
 import { GridComponent } from './grid/grid.component';
 import { GridItemComponent } from './grid-item/grid-item.component';
 import { NgxDefaultImageModule } from "ngx-default-image";
+import { BlockComponent } from './block/block.component';
+import { EditBlockComponent } from './edit-block/edit-block.component';
 
 @NgModule({
   declarations: [
@@ -158,7 +160,9 @@ import { NgxDefaultImageModule } from "ngx-default-image";
     LayoutIndexPipe,
     MediaTableComponent,
     GridComponent,
-    GridItemComponent
+    GridItemComponent,
+    BlockComponent,
+    EditBlockComponent
   ],
   imports: [
     CommonModule,
