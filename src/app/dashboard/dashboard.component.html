@@ -20,7 +20,7 @@
             </span>
           </ng-template>
 
-          <div class="px-2 bg-light">
+          <div class="px-2 bg-light" *ngIf="dev; else loader">
             <div class="w-100 pt-1 bg-light px-4">
               <div
                 class="d-flex justify-content-between align-items-center py-3"
@@ -121,7 +121,7 @@
                   <div class="my-2 mt-md-0">
                     <app-notification
                       [canClose]="false"
-                      [title]="'Welcome, ' + dev?.name"
+                      [title]="'Welcome, ' + dev.name"
                       [subtitle]="'You have new updates!'"
                       [icon]="'smart_toy'"
                       [iconColor]="'purple'"
@@ -149,13 +149,11 @@
                         name: 'Activity',
                         locData: (views | location),
                         nftData:
-                          (views | location: undefined:1:dev?.utils ?? [])
+                          (views | location: undefined:1:dev.utils)
                       }"
-                      [utils]="dev?.utils ?? []"
+                      [utils]="dev.utils"
                       (clicked)="
-                        $event.mode == 0
-                          ? scrollToLocation($event.data)
-                          : ''
+                        $event.mode == 0 ? scrollToLocation($event.data) : ''
                       "
                     ></app-data-table>
                   </div>
@@ -279,12 +277,14 @@
         </mat-tab>
         <mat-tab class="tab">
           <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon text-dark"> account_balance_wallet</mat-icon>
+            <mat-icon class="example-tab-icon text-dark">
+              account_balance_wallet</mat-icon
+            >
             <span class="ms-2 text-dark big-design-body fw-bold">
               Wallets
             </span>
           </ng-template>
-          <div class="h-100 w-100 bg-light">
+          <div class="h-100 w-100 bg-light" *ngIf="dev?.utils; else loader">
             <div class="px-2 mt-0 pt-0 w-100">
               <div class="w-100 h-100 py-5 pb-1 pt-3 px-4">
                 <div
@@ -315,7 +315,7 @@
                 </div>
               </div>
             </div>
-            <div class="px-3 w-100" *ngIf="dev?.utils">
+            <div class="px-3 w-100">
               <div class="w-100 h-100 p-4 pt-0 px-3">
                 <div class="w-100 big-design-card rounded-15">
                   <app-collection-table
@@ -328,6 +328,17 @@
               </div>
             </div>
           </div>
+          <ng-template #loader>
+            <div
+              class="w-100 d-flex flex-column justify-content-center align-items-center"
+              style="height: 85vh"
+            >
+              <app-loader
+                [mode]="'dark'"
+                [text]="'Initializing...'"
+              ></app-loader>
+            </div>
+          </ng-template>
         </mat-tab>
 
         <!-- <mat-tab class="tab">

@@ -8,7 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
 export class LoaderComponent implements OnInit {
 
   @Input() mode: 'light' | 'dark' = 'light'
-  
+  @Input() text?: string
+
+
   constructor() { }
 
   ngOnInit(): void {

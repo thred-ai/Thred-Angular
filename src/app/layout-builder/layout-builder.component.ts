@@ -209,34 +209,34 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   }
 
   types = [
-    {
-      name: 'Text',
-      code: 2,
-    },
+    // {
+    //   name: 'Text',
+    //   code: 2,
+    // },
     {
       name: 'Image',
       code: 1,
     },
-    {
-      name: 'Video',
-      code: 4,
-    },
+    // {
+    //   name: 'Video',
+    //   code: 4,
+    // },
     {
       name: 'NFT Display',
       code: 0,
     },
-    {
-      name: 'NFT Collection',
-      code: 5,
-    },
-    {
-      name: 'NFT Wallet',
-      code: 6,
-    },
-    {
-      name: 'Multi Block',
-      code: 3,
-    },
+    // {
+    //   name: 'NFT Collection',
+    //   code: 5,
+    // },
+    // {
+    //   name: 'NFT Wallet',
+    //   code: 6,
+    // },
+    // {
+    //   name: 'Multi Block',
+    //   code: 3,
+    // },
   ];
 
   tabPosTypes = [
