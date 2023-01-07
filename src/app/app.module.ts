@@ -122,6 +122,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 import { PageComponent } from './page/page.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { DragBlockComponent } from './drag-block/drag-block.component';
+import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -172,7 +173,8 @@ import { DragBlockComponent } from './drag-block/drag-block.component';
     NavigationBarComponent,
     PageComponent,
     EditPageComponent,
-    DragBlockComponent
+    DragBlockComponent,
+    LayoutSidebarComponent
   ],
   imports: [
     CommonModule,
