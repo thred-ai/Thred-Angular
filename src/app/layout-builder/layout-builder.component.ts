@@ -149,7 +149,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     // this.color = $event.type == 'mouseover' ? 'yellow' : 'red';
     let p = document.getElementById('p-' + index);
 
-    if ($event.type == 'mouseover') {
+    if ($event?.type == 'mouseover') {
       this.hoverIndex = index;
       setTimeout(async () => {
         if (p) {
@@ -320,7 +320,6 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     },
   ];
 
-
   alignment(id: string) {
     return this.gridAlignment.find((a) => a.id == id);
   }
@@ -368,8 +367,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activeBlock.index = undefined;
-    this.activeBlock.block = undefined;
+    this.activeBlock = undefined
     this.OnDestroy.next();
     this.OnDestroy.complete();
   }
@@ -457,18 +455,22 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       blockIndex,
       pageIndex,
     };
-    this.activeBlock.block = Object.assign(
-      {},
-      JSON.parse(
-        JSON.stringify(
-          this.editableLayout?.pages[pageIndex].blocks![blockIndex]
-        )
-      )
-    );
 
-    this.activeBlock.index = blockIndex;
+    this.activeBlock = {
+      block: Object.assign(
+        {},
+        JSON.parse(
+          JSON.stringify(
+            this.editableLayout?.pages[pageIndex].blocks![blockIndex]
+          )
+        )
+      ),
+      index: blockIndex
+    }
+
+
     this.margins = (
-      Object.keys(this.activeBlock.block?.padding ?? {}) as (
+      Object.keys(this.activeBlock?.block?.padding ?? {}) as (
         | 'left'
         | 'right'
         | 'top'
@@ -481,7 +483,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     });
 
     this.borders = (
-      Object.keys(this.activeBlock.block?.borders ?? {}) as (
+      Object.keys(this.activeBlock?.block?.borders ?? {}) as (
         | 'left'
         | 'right'
         | 'top'
@@ -494,7 +496,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     });
 
     this.gridBorders = (
-      Object.keys(this.activeBlock.block?.grid.borders ?? {}) as (
+      Object.keys(this.activeBlock?.block?.grid.borders ?? {}) as (
         | 'left'
         | 'right'
         | 'top'
@@ -507,7 +509,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     });
 
     this.blockShadowDirection = (
-      Object.keys(this.activeBlock.block?.shadow.direction ?? {}) as (
+      Object.keys(this.activeBlock?.block?.shadow.direction ?? {}) as (
         | 'vertical'
         | 'horizontal'
       )[]
@@ -518,7 +520,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     });
 
     this.gridShadowDirection = (
-      Object.keys(this.activeBlock.block?.grid.shadow.direction ?? {}) as (
+      Object.keys(this.activeBlock?.block?.grid.shadow.direction ?? {}) as (
         | 'vertical'
         | 'horizontal'
       )[]
@@ -606,7 +608,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       this.removeSliderListener('block-margin-' + margin.id);
       if (add) {
         this.addSliderListener('block-margin-' + margin.id, (data) => {
-          if (this.activeBlock.block) {
+          if (this.activeBlock?.block) {
             this.activeBlock.block.padding[margin.id] = data;
             this.setValue();
           }
@@ -618,7 +620,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       this.removeSliderListener('block-border-' + border.id);
       if (add) {
         this.addSliderListener('block-border-' + border.id, (data) => {
-          if (this.activeBlock.block) {
+          if (this.activeBlock?.block) {
             this.activeBlock.block.borders[border.id].width = data;
             this.setValue();
           }
@@ -630,7 +632,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       this.removeSliderListener('grid-border-' + border.id);
       if (add) {
         this.addSliderListener('grid-border-' + border.id, (data) => {
-          if (this.activeBlock.block) {
+          if (this.activeBlock?.block) {
             this.activeBlock.block.grid.borders[border.id].width = data;
             this.setValue();
           }
@@ -644,7 +646,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
         this.addSliderListener(
           'block-shadow-direction-' + shadow.id,
           (data) => {
-            if (this.activeBlock.block) {
+            if (this.activeBlock?.block) {
               this.activeBlock.block.shadow.direction[shadow.id] = data;
               this.setValue();
             }
@@ -657,7 +659,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       this.removeSliderListener('grid-shadow-direction-' + shadow.id);
       if (add) {
         this.addSliderListener('grid-shadow-direction-' + shadow.id, (data) => {
-          if (this.activeBlock.block) {
+          if (this.activeBlock?.block) {
             this.activeBlock.block.grid.shadow.direction[shadow.id] = data;
             this.setValue();
           }
@@ -674,31 +676,31 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
     if (add) {
       this.addSliderListener('grid-corners', (data) => {
-        if (this.activeBlock.block) {
+        if (this.activeBlock?.block) {
           this.activeBlock.block.grid.corners = data;
           this.setValue();
         }
       });
       this.addSliderListener('grid-spacing', (data) => {
-        if (this.activeBlock.block) {
+        if (this.activeBlock?.block) {
           this.activeBlock.block.grid.spacing = data;
           this.setValue();
         }
       });
       this.addSliderListener('grid-shadow-blur', (data) => {
-        if (this.activeBlock.block) {
+        if (this.activeBlock?.block) {
           this.activeBlock.block.grid.shadow.blur = data;
           this.setValue();
         }
       });
       this.addSliderListener('block-corners', (data) => {
-        if (this.activeBlock.block) {
+        if (this.activeBlock?.block) {
           this.activeBlock.block.corners = data;
           this.setValue();
         }
       });
       this.addSliderListener('block-shadow-blur', (data) => {
-        if (this.activeBlock.block) {
+        if (this.activeBlock?.block) {
           this.activeBlock.block.shadow.blur = data;
           this.setValue();
         }
@@ -730,7 +732,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
 
     if (blocks[this.editingBlock.blockIndex] != undefined) {
       blocks[this.editingBlock.blockIndex] = this.copyBlock(
-        this.activeBlock.block!
+        this.activeBlock?.block!
       );
     }
 
@@ -773,16 +775,12 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     this.videos = [];
     this.buttons = [];
     this.editingBlock = undefined;
-    this.activeBlock.block = undefined;
-    this.activeBlock.index = undefined;
+    this.activeBlock = undefined
   }
 
-  activeBlock: {
-    block?: Block;
-    index?: number;
-  } = {
-    block: undefined,
-    index: undefined,
+  activeBlock?: {
+    block: Block;
+    index: number;
   };
 
   icons = new Array<any>();
@@ -958,10 +956,10 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     // this.loadService.openSnackBar(m);
   }
 
-  drop(event: any, pageIndex: number, isImage = false, isButton = false) {
+  drop(event: any, pageIndex: number) {
     let arr = this.editableLayout?.pages[pageIndex].blocks ?? [];
     moveItemInArray(arr, event.previousIndex, event.currentIndex);
-    if (this.activeBlock.index == event.previousIndex) {
+    if (this.activeBlock && this.activeBlock?.index == event.previousIndex) {
       this.activeBlock.index = event.currentIndex;
     }
     this.saveLayout(0);
@@ -988,7 +986,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     modalRef.afterClosed().subscribe((value) => {
       //
 
-      if (this.activeBlock.block) {
+      if (this.activeBlock?.block) {
         if (
           !this.activeBlock.block.nftList ||
           !this.activeBlock.block.nftList.nfts
@@ -1043,12 +1041,15 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     this.saveLayout(0);
   }
 
-  onDropPage(event: CdkDragDrop<Page[]>): void {
-    let arr = this.editableLayout?.pages ?? [];
-    moveItemInArray(arr, event.previousIndex, event.currentIndex);
+  updatePages(event: CdkDragDrop<Page[]>) {
+
+    console.log(event)
+    moveItemInArray(this.editableLayout?.pages ?? [], event.previousIndex, event.currentIndex);
+
     if (this.editingBlock?.pageIndex == event.previousIndex) {
       this.editingBlock.pageIndex = event.currentIndex;
     }
+
     this.saveLayout(0);
   }
 

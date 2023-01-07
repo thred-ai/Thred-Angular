@@ -117,6 +117,11 @@ import { GridItemComponent } from './grid-item/grid-item.component';
 import { NgxDefaultImageModule } from "ngx-default-image";
 import { BlockComponent } from './block/block.component';
 import { EditBlockComponent } from './edit-block/edit-block.component';
+import { TabBarComponent } from './tab-bar/tab-bar.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { PageComponent } from './page/page.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { DragBlockComponent } from './drag-block/drag-block.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +167,12 @@ import { EditBlockComponent } from './edit-block/edit-block.component';
     GridComponent,
     GridItemComponent,
     BlockComponent,
-    EditBlockComponent
+    EditBlockComponent,
+    TabBarComponent,
+    NavigationBarComponent,
+    PageComponent,
+    EditPageComponent,
+    DragBlockComponent
   ],
   imports: [
     CommonModule,

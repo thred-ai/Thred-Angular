@@ -12,7 +12,7 @@
     [color]="color"
   >
     <mat-tab
-      class="py-0"
+      class="py-0 w-100"
       *ngFor="
         let page of editableLayout.pages ?? [];
         index as p;
@@ -79,15 +79,13 @@
             >
               <div
                 class="wrap-input1 w-100 p-3 border-bottom py-auto d-flex justify-content-{{
-                  editingBlock != undefined && activeBlock.block
-                    ? 'between'
-                    : 'end'
+                  editingBlock != undefined && activeBlock ? 'between' : 'end'
                 }} align-content-center"
               >
                 <div
                   class="shadow-0 border-0 p-0 fw-bold my-auto text-purple d-inline-flex justify-content-between align-content-center"
                   role="button"
-                  *ngIf="editingBlock != undefined && activeBlock.block"
+                  *ngIf="editingBlock != undefined && activeBlock"
                   (click)="finishedEditing(3)"
                 >
                   <mat-icon class="me-0" style="aspect-ratio: 1">
@@ -651,6 +649,7 @@
                         cdkDropList
                         [cdkDropListData]="page.blocks"
                         (cdkDropListDropped)="drop($event, p)"
+                        #mainFrame
                       >
                         <div
                           *ngFor="let b of page.blocks ?? []; index as i"
@@ -659,11 +658,11 @@
                           <app-edit-block
                             [id]="'p-' + i"
                             [block]="
-                              (activeBlock.index == i
-                                ? activeBlock.block
+                              (activeBlock?.index == i
+                                ? activeBlock?.block
                                 : undefined) ?? b
                             "
-                            [active]="activeBlock.index == i"
+                            [active]="activeBlock?.index == i"
                             [mainFrame]="mainFrame"
                             [page]="page"
                             (clicked)="edit(i, p)"
@@ -710,7 +709,7 @@
                 </mat-accordion>
               </div>
               <div
-                *ngIf="editingBlock != undefined && activeBlock.block"
+                *ngIf="editingBlock != undefined && activeBlock"
                 class="w-100 h-100"
                 style="overflow-y: scroll"
               >
@@ -733,15 +732,15 @@
                           floatLabel="never"
                         >
                           <mat-select
-                            [ngModel]="activeBlock.block.type"
+                            [ngModel]="activeBlock!.block.type"
                             (ngModelChange)="
-                              activeBlock.block.type = $event; setValue()
+                              activeBlock!.block.type = $event; setValue()
                             "
                             class="my-auto d-flex justify-content-start align-items-center"
                           >
                             <mat-select-trigger
                               class="text-dark h-100 m-auto"
-                              *ngIf="matchingType(activeBlock.block.type ?? 0)"
+                              *ngIf="matchingType(activeBlock!.block.type ?? 0)"
                             >
                               <div
                                 class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
@@ -749,7 +748,7 @@
                                 <div style="height: 40px"></div>
                                 <div class="text-start text-truncate w-50 ms-2">
                                   {{
-                                    matchingType(activeBlock.block.type)!.name
+                                    matchingType(activeBlock!.block.type)!.name
                                   }}
                                 </div>
                               </div>
@@ -787,7 +786,7 @@
                           [cpPosition]="'top'"
                           [cpPositionRelativeToArrow]="false"
                           (colorPickerSelect)="
-                            activeBlock.block.backgroundColor = $event;
+                            activeBlock!.block.backgroundColor = $event;
                             setValue()
                           "
                           [cpOutputFormat]="'hex'"
@@ -796,9 +795,9 @@
                           [cpOKButtonClass]="'big-design-alt-button'"
                           [cpSaveClickOutside]="false"
                           [colorPicker]="
-                            activeBlock.block.backgroundColor &&
-                            activeBlock.block.backgroundColor != ''
-                              ? activeBlock.block.backgroundColor
+                            activeBlock!.block.backgroundColor &&
+                            activeBlock!.block.backgroundColor != ''
+                              ? activeBlock!.block.backgroundColor
                               : page.backgroundColor
                           "
                           style="height: 40px"
@@ -808,9 +807,9 @@
                             style="font-size: 14px"
                           >
                             {{
-                              activeBlock.block.backgroundColor &&
-                              activeBlock.block.backgroundColor != ""
-                                ? activeBlock.block.backgroundColor
+                              activeBlock!.block.backgroundColor &&
+                              activeBlock!.block.backgroundColor != ""
+                                ? activeBlock!.block.backgroundColor
                                 : page.backgroundColor
                             }}
                           </p>
@@ -818,9 +817,9 @@
                             class="rounded-circle border border-secondary"
                             style="height: 20px; aspect-ratio: 1"
                             [style.background-color]="
-                              activeBlock.block.backgroundColor &&
-                              activeBlock.block.backgroundColor != ''
-                                ? activeBlock.block.backgroundColor
+                              activeBlock!.block.backgroundColor &&
+                              activeBlock!.block.backgroundColor != ''
+                                ? activeBlock!.block.backgroundColor
                                 : page.backgroundColor
                             "
                           ></div>
@@ -835,7 +834,7 @@
                       <div class="w-100 mb-3">
                         <tc-range-slider
                           animate-onclick="2s"
-                          [value]="activeBlock.block.corners"
+                          [value]="activeBlock!.block.corners"
                           generate-labels="true"
                           id="block-corners"
                           round="0"
@@ -855,28 +854,28 @@
                 >
                   <mat-expansion-panel-header>
                     <mat-panel-title class="fw-bold text-dark">
-                      {{ matchingType(activeBlock.block.type)!.name }}
+                      {{ matchingType(activeBlock!.block.type)!.name }}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <div
                     class="wrap-input1 w-100 pt-3"
-                    *ngIf="activeBlock.block?.type == 0"
+                    *ngIf="activeBlock!.block.type == 0"
                   >
                     <p class="w-100 mb-4 text">Displayed NFTs</p>
                     <div class="px-3 w-100 mb-3">
                       <app-nft-table
                         #nftTable
-                        [nfts]="activeBlock.block.nftList.nfts ?? []"
-                        [count]="(activeBlock.block.nftList.nfts ?? []).length"
+                        [nfts]="activeBlock!.block.nftList.nfts ?? []"
+                        [count]="(activeBlock!.block.nftList.nfts ?? []).length"
                         (clicked)="openNFT($event?.nft, $event?.index)"
                         (uploaded)="
-                          activeBlock.block.nftList.nfts = $event; setValue()
+                          activeBlock!.block.nftList.nfts = $event; setValue()
                         "
                       >
                       </app-nft-table>
                     </div>
                   </div>
-                  <ng-container *ngIf="activeBlock.block?.type == 1">
+                  <ng-container *ngIf="activeBlock!.block.type == 1">
                     <div
                       class="wrap-input1 w-100 pt-3"
                       *ngIf="activeBlock.block?.type == 1"
@@ -1613,124 +1612,32 @@
         <div
           class="w-100 w-md-{{
             editable && openBar ? '80' : '100'
-          }} h-100 d-flex justify-content-center align-content-center bg-light position-{{
+          }} h-100 d-flex justify-content-center align-items-center bg-light position-{{
             openBar ? 'static' : 'absolute'
           }}"
         >
           <div
-            class="big-design-card rounded-15 m-auto {{
+            class="rounded-15 {{
               editable
                 ? 'shadow border border-1 border-dark'
                 : 'shadow-0 border-preview'
-            }} {{
+            }} m-auto {{
               editable ? editableLayout.type + '-full' : editableLayout.type
-            }} p-0 d-flex justify-content-between align-content-center flex-column{{
-              page.position == 0 ? '' : '-reverse'
-            }}"
-            role="button"
-            (click)="editable ? null : clickedCanvas.emit(true)"
+            }} p-0"
             style="overflow: hidden"
           >
-            <div
-              *ngIf="page.bar.visible"
-              class="w-100 shadow"
-              [style.background-color]="page.bar.backgroundColor"
-              [style.border-style]="'solid'"
-              [style.color]="page.bar.detailColor"
-              [style.border-color]="page.bar.detailColor"
-              [style.border-top-width.px]="page.position == 1 ? 1 : 0"
-              [style.border-bottom-width.px]="page.position == 0 ? 1 : 0"
-              [style.border-left-width.px]="0"
-              [style.border-right-width.px]="0"
-              [style.height.px]="100"
-            ></div>
-
-            <div
-              class="w-100 h-100 big-design-body p-0"
-              style="overflow-y: scroll"
-              id="capture"
-              #mainFrame
-              [style.pointer-events]="editable ? 'all' : 'none'"
-              [style.background-color]="page.backgroundColor"
+            <app-page
+              [editable]="editable"
+              [layout]="editableLayout"
+              [overrideBlock]="activeBlock"
+              [currentPage]="{page, index: p}"
+              (clickedLayout)="clickedCanvas.emit(true)"
+              (updatePages)="updatePages($event)"
+              (updateBlocks)="drop($event, p)"
+              (pageChanged)="tabGroup.selectedIndex = $event"
+              (edit)="edit($event.blockIndex, $event.pageIndex)"
             >
-              <section class="py-0 w-100 mb-0">
-                <div
-                  class="ms-0 mb-0 h-100"
-                  cdkDropList
-                  [cdkDropListData]="page.blocks"
-                  (cdkDropListDropped)="drop($event, p)"
-                >
-                  <div *ngFor="let b of page.blocks ?? []; index as i" cdkDrag>
-                    <app-block
-                      [id]="'p-' + i"
-                      [block]="
-                        (activeBlock.index == i
-                          ? activeBlock.block
-                          : undefined) ?? b
-                      "
-                      [active]="activeBlock.index == i"
-                      [mainFrame]="mainFrame"
-                      [page]="page"
-                      (clicked)="edit(i, p)"
-                    >
-                    </app-block>
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            <div
-              class="w-100 shadow"
-              [style.background-color]="page.tab.backgroundColor"
-              [style.border-style]="'solid'"
-              [style.color]="page.tab.detailColor"
-              [style.border-color]="page.tab.detailColor"
-              [style.border-top-width.px]="page.position == 0 ? 1 : 0"
-              [style.border-bottom-width.px]="page.position == 1 ? 1 : 0"
-              [style.border-left-width.px]="0"
-              [style.border-right-width.px]="0"
-              [style.height.px]="75"
-            >
-              <div
-                class="w-100 h-100 d-flex justify-content-between align-items-center justify-content-center p-0"
-                cdkDropList
-                [cdkDropListData]="editableLayout.pages"
-                (cdkDropListDropped)="onDropPage($event)"
-                [cdkDropListOrientation]="'horizontal'"
-                #tabParent
-              >
-                <div
-                  *ngFor="
-                    let page2 of editableLayout.pages ?? [];
-                    index as tabIndex
-                  "
-                  class="px-{{
-                    tabIndex != 0 && tabIndex != editableLayout.pages.length - 1
-                      ? 'bar'
-                      : '0'
-                  }} m-0"
-                  [style.width.%]="100 / editableLayout.pages.length"
-                  [style.height.px]="tabParent.clientHeight"
-                  [style.background-color]="page.tab.detailColor"
-                  (click)="tabGroup.selectedIndex = tabIndex"
-                  cdkDrag
-                >
-                  <div
-                    class="d-flex justify-content-center align-items-center flex-column fw-bolder h-100"
-                    [style.background-color]="page.tab.backgroundColor"
-                    [style.color]="
-                      tabGroup.selectedIndex == tabIndex
-                        ? (page.tab.textColor | colorShade: 50)
-                        : page.tab.textColor
-                    "
-                    style="font-size: 12px"
-                  >
-                    <mat-icon> {{ page2.icon }} </mat-icon>
-                    {{ page2.title }}
-                  </div>
-                </div>
-              </div>
-            </div>
+            </app-page>
           </div>
         </div>
       </div>

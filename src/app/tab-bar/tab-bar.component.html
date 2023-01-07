@@ -1,0 +1,50 @@
+<div
+  class="w-100 shadow"
+  [style.background-color]="tab.backgroundColor"
+  [style.border-style]="'solid'"
+  [style.color]="tab.detailColor"
+  [style.border-color]="tab.detailColor"
+  [style.border-top-width.px]="position == 0 ? 1 : 0"
+  [style.border-bottom-width.px]="position == 1 ? 1 : 0"
+  [style.border-left-width.px]="0"
+  [style.border-right-width.px]="0"
+  [style.height.px]="75"
+>
+  <div
+    class="w-100 h-100 d-flex justify-content-between align-items-center justify-content-center p-0"
+    cdkDropList
+    [cdkDropListData]="pages"
+    (cdkDropListDropped)="onDropPage($event)"
+    [cdkDropListOrientation]="'horizontal'"
+    #tabParent
+  >
+    <div
+      *ngFor="let page of pages ?? []; index as tabIndex"
+      class="px-{{
+        tabIndex != 0 && tabIndex != pages.length - 1
+          ? 'bar'
+          : '0'
+      }} m-0"
+      [style.width.%]="100 / pages.length"
+      [style.height.px]="tabParent.clientHeight"
+      [style.background-color]="page.tab.detailColor"
+      (click)="indexChanged.emit(tabIndex)"
+      cdkDrag
+    >
+
+      <div
+        class="d-flex justify-content-center align-items-center flex-column fw-bolder h-100"
+        [style.background-color]="page.tab.backgroundColor"
+        [style.color]="
+          selectedIndex == tabIndex
+            ? (tab.textColor | colorShade: 50)
+            : tab.textColor
+        "
+        style="font-size: 12px"
+      >
+        <mat-icon> {{ page.icon }} </mat-icon>
+        {{ page.title }}
+      </div>
+    </div>
+  </div>
+</div>

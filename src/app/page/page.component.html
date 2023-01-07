@@ -1,0 +1,68 @@
+<div
+  class="w-100 h-100 p-0 d-flex justify-content-between align-content-center flex-column{{
+    currentPage.page.position == 0 ? '' : '-reverse'
+  }}"
+  role="button"
+  (click)="editable ? null : clickedLayout.emit()"
+>
+  <!--NAV BAR-->
+
+  <app-navigation-bar
+    [bar]="currentPage.page.bar"
+    [position]="currentPage.page.position"
+  >
+  </app-navigation-bar>
+
+  <!--BODY BAR-->
+
+  <div
+    class="w-100 h-100 big-design-body p-0"
+    style="overflow-y: scroll"
+    id="capture"
+    #mainFrame
+    [style.pointer-events]="editable ? 'all' : 'none'"
+    [style.background-color]="currentPage.page.backgroundColor"
+  >
+    <section class="py-0 w-100 mb-0">
+      <div
+        class="ms-0 mb-0 h-100 w-100"
+        cdkDropList
+        [cdkDropListData]="currentPage.page.blocks"
+        (cdkDropListDropped)="updateBlocks.emit($event)"
+      >
+        <div
+          *ngFor="let b of currentPage.page.blocks ?? []; index as i"
+          cdkDrag
+        >
+          <app-block
+            [id]="'p-' + i"
+            [block]="
+              (overrideBlock && overrideBlock.index == i
+                ? overrideBlock.block
+                : undefined) ?? b
+            "
+            [active]="overrideBlock != undefined && overrideBlock.index == i"
+            [mainFrame]="mainFrame"
+            [page]="currentPage.page"
+            (clicked)="
+              edit.emit({ blockIndex: i, pageIndex: currentPage.index })
+            "
+          >
+          </app-block>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- activeBlock.index == i ? activeBlock.block : undefined -->
+  <!--TAB BAR-->
+
+  <app-tab-bar
+    (update)="updatePages.emit($event)"
+    [tab]="currentPage.page.tab"
+    [position]="currentPage.page.position"
+    [selectedIndex]="currentPage.index"
+    [pages]="layout.pages"
+    (indexChanged)="pageChanged.emit($event)"
+  >
+  </app-tab-bar>
+</div>
