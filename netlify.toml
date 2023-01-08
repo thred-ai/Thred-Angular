@@ -5,11 +5,6 @@
   publish = "dist/frontend/browser"
 
 [[redirects]]
-  from = "/*"
-  to = "/"
-  status = 200
-
-[[redirects]]
 from = "https://thredapps.io/*"
 to = "https://www.mythreds.com/*"
 status = 301
@@ -20,6 +15,13 @@ from = "https://www.thredapps.io/*"
 to = "https://www.mythreds.com/*"
 status = 301
 force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+
+
 
   ## (optional) Settings for Netlify Dev
   ## https://github.com/netlify/cli/blob/main/docs/netlify-dev.md#project-detection
