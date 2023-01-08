@@ -162,7 +162,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     this.loadService.finishSignIn(email, password, (result) => {
       callback(result);
-    });
+    });//
   }
 
   private handlePassReset(
