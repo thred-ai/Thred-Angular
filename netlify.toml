@@ -6,13 +6,13 @@
 
 [[redirects]]
 from = "https://thredapps.io/*"
-to = "https://www.mythreds.com/*"
+to = "https://www.mythreds.com/"
 status = 301
 force = true
 
 [[redirects]]
 from = "https://www.thredapps.io/*"
-to = "https://www.mythreds.com/*"
+to = "https://www.mythreds.com/"
 status = 301
 force = true
 
