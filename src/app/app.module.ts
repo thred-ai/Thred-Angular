@@ -37,7 +37,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { HomeComponent } from './home/home.component';
 import { AuthComponent } from './auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
@@ -127,7 +126,6 @@ import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.componen
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     AuthComponent,
     DashboardComponent,
     SearchBarComponent,

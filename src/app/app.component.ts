@@ -99,7 +99,6 @@ export class AppComponent {
     });
   }
 
-
   viewProfile() {
     this.loadService.currentUser.then((user) => {
       if (user) {
@@ -126,17 +125,18 @@ export class AppComponent {
   }
 
   async onActivate(event: any) {
+    let component = event as AuthComponent;
+    if (component && component.isAuth) {
+      let user = await this.loadService.currentUser;
+
+      if (user) {
+        this.loadService.openDash(user.uid);
+      }
+    }
+
     if (isPlatformBrowser(this.platformID)) {
       window.scroll(0, 0);
 
-      let component = event as AuthComponent;
-      if (component && component.isAuth) {
-        let user = await this.loadService.currentUser;
-
-        if (user) {
-          this.loadService.openDash(user.uid);
-        }
-      }
       let menu = document.getElementById('profile-menu');
 
       if (menu) {
@@ -181,7 +181,6 @@ export class AppComponent {
       });
     }
   }
-
 
   updateBar(event: boolean) {
     console.log(event);
