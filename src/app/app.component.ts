@@ -41,15 +41,16 @@ export class AppComponent {
     @Inject(PLATFORM_ID) private platformID: Object,
     private dialog: MatDialog
   ) {
-    if (!isPlatformBrowser(this.platformID)) {
-      this.display = false;
-    } else {
+    if (isPlatformBrowser(this.platformID)) {
       this.localStorage = localStorage;
+      this.display = true;
+    } else {
+      this.display = false;
     }
   }
 
   featuredUtil?: Wallet;
-  display = true;
+  display = false;
   connected?: string = undefined;
 
   sendToChildEmitter = new EventEmitter();

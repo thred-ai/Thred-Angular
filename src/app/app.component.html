@@ -2,11 +2,11 @@
   class="w-100 border-bottom bg-white"
   style="height: 7.5vh; position: fixed; z-index: 50; top: 0"
   id="top-bar"
+  
 >
   <div
-    class="w-100 h-100 justify-content-between align-items-center d-{{
-      display ? 'flex' : 'none'
-    }}"
+    class="w-100 h-100 justify-content-between align-items-center d-flex"
+    *ngIf="display"
   >
     <div class="d-flex justify-content-start align-items-center h-100">
       <div class="my-1 mx-0 mx-md-4 h-100 py-2 py-md-3">
@@ -164,7 +164,7 @@
   <div
     class="bg-dark border-top w-100 mt-5"
     style="min-height: 40vh; z-index: 1"
-    *ngIf="!(location.path() | isAdmin)"
+    *ngIf="!(location.path() | isAdmin) && display"
   >
     <div
       class="w-100 d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-content-center px-2 px-md-5 py-2 py-md-5"
