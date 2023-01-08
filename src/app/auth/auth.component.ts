@@ -21,6 +21,8 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   err?: string;
 
+  show = false
+
   signUpForm = this.fb.group({
     email: [null, [Validators.required, Validators.email]],
     password: [null, Validators.required],
@@ -180,6 +182,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformID)){
+      this.show = true
       window.onclick = (e) => {
         if (isPlatformBrowser(this.platformID)) {
           if ((e.target as any).id != 'continue') {
