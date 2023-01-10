@@ -649,7 +649,6 @@
                         cdkDropList
                         [cdkDropListData]="page.blocks"
                         (cdkDropListDropped)="drop($event, p)"
-                        #mainFrame
                       >
                         <div
                           *ngFor="let b of page.blocks ?? []; index as i"
@@ -663,7 +662,6 @@
                                 : undefined) ?? b
                             "
                             [active]="activeBlock?.index == i"
-                            [mainFrame]="mainFrame"
                             [page]="page"
                             (clicked)="edit(i, p)"
                             (hoverOn)="changeStyle($event, i)"

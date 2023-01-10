@@ -19,7 +19,6 @@
     class="w-100 h-100 big-design-body p-0"
     style="overflow-y: scroll"
     id="capture"
-    #mainFrame
     [style.pointer-events]="editable ? 'all' : 'none'"
     [style.background-color]="currentPage.page.backgroundColor"
   >
@@ -42,7 +41,6 @@
                 : undefined) ?? b
             "
             [active]="overrideBlock != undefined && overrideBlock.index == i"
-            [mainFrame]="mainFrame"
             [page]="currentPage.page"
             (clicked)="
               edit.emit({ blockIndex: i, pageIndex: currentPage.index })

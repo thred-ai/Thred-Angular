@@ -5,15 +5,15 @@
   #col
   (click)="clicked.emit()"
   [class.big-design-editor]="active"
-  [style.padding-top.px]="mainFrame.clientWidth * (block.padding.top * 0.0025)"
+  [style.padding-top.px]="col.clientWidth * (block.padding.top * 0.0025)"
   [style.padding-right.px]="
-    mainFrame.clientWidth * (block.padding.right * 0.0025)
+    col.clientWidth * (block.padding.right * 0.0025)
   "
   [style.padding-bottom.px]="
-    mainFrame.clientWidth * (block.padding.bottom * 0.0025)
+    col.clientWidth * (block.padding.bottom * 0.0025)
   "
   [style.padding-left.px]="
-    mainFrame.clientWidth * (block.padding.left * 0.0025)
+    col.clientWidth * (block.padding.left * 0.0025)
   "
 >
   <div
@@ -38,7 +38,7 @@
     [style.border-bottom-color]="block.borders.bottom.color"
     [style.border-style]="'solid'"
     [style.color]="block.textColor"
-    [style.border-radius.px]="block.corners"
+    [style.border-radius.px]="col.clientWidth * block.corners * 0.0025"
     [style.box-shadow]="
       col.clientWidth * (block.shadow.direction.horizontal * 0.0005) +
       'px ' +

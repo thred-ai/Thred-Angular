@@ -13,7 +13,6 @@ export class BlockComponent implements OnInit {
 
   @Input() block!: Block
   @Input() active!: boolean
-  @Input() mainFrame!: HTMLElement
   @Input() id!: string
   @Input() page!: Page
 
