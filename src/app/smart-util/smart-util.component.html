@@ -75,565 +75,698 @@
       </ng-template>
     </button>
   </div>
-  <div
-    class="frame-body d-flex justify-content-between align-content-center w-100"
-    *ngIf="mode == 0 && wallet"
-  >
-    <div class="p-0 h-100">
-      <div
-        class="p-3 pe-0 pt-0 d-flex justify-content-center align-content-center w-100 h-100"
-      >
-        <div
-          class="m-auto big-design-card rounded-10 p-3 text-start h-100"
-          style="overflow-y: scroll; width: 35vw"
-        >
-          <div class="big-design-header">
-            <h2 class="big-design-input-title text-start">
-              Wallet Information
-            </h2>
-          </div>
-          <div class="big-design-body">
-            <div class="m-3 pb-4 px-0">
-              <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">
-                  Display Images
-                </h3>
 
-                <div class="rounded-15 border w-100" style="aspect-ratio: 1.5">
+  <ng-container
+    *ngIf="
+      wallet &&
+      ((wallet.displayedLayouts ?? [] | layouts: wallet.activeLayouts) ??
+        []) as walletLayouts
+    "
+  >
+    <div
+      class="frame-body d-flex justify-content-between align-content-center w-100"
+      *ngIf="mode == 0"
+    >
+      <div class="p-0 h-100">
+        <div
+          class="p-3 pe-0 pt-0 d-flex justify-content-center align-content-center w-100 h-100"
+        >
+          <div
+            class="m-auto big-design-card rounded-10 p-3 text-start h-100"
+            style="overflow-y: scroll; width: 35vw"
+          >
+            <div class="big-design-header">
+              <h2 class="big-design-input-title text-start">
+                Wallet Information
+              </h2>
+            </div>
+            <div class="big-design-body">
+              <div class="m-3 pb-4 px-0">
+                <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">
+                    Display Images
+                  </h3>
+
                   <div
-                    class="position-relative w-100 h-100 animate__animated animate__fadeIn zoom"
+                    class="rounded-15 border w-100"
+                    style="aspect-ratio: 1.5"
                   >
                     <div
-                      class="m-img-input position-relative h-100 w-100 bg-purple rounded-15 shadow d-flex justify-content-center align-content-center"
-                      role="button"
-                      (click)="marketingImgInput.click()"
-                    >
-                      <img
-                        class="h-100 w-100 m-img-input-display"
-                        style="object-fit: cover"
-                        [src]="wallet.coverUrl! | safeUrl"
-                        role="button"
-                      />
-                      <input
-                        #marketingImgInput
-                        type="file"
-                        (change)="fileChangeEvent($event, 0)"
-                        style="display: none"
-                      />
-                      <mat-icon
-                        class="text-white shadow fw-bolder position-absolute"
-                        style="z-index: 48; top: 50%"
-                        >upload
-                      </mat-icon>
-                    </div>
-
-                    <div
-                      class="position-absolute w-md-auto bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
-                      style="
-                        object-fit: contain;
-                        aspect-ratio: 1;
-                        height: 20%;
-                        bottom: 10px;
-                        right: 10px;
-                        overflow: hidden;
-                      "
+                      class="position-relative w-100 h-100 animate__animated animate__fadeIn zoom"
                     >
                       <div
-                        class="m-auto position-relative img-input"
-                        style="height: 90%; width: 90%; overflow: hidden"
+                        class="m-img-input position-relative h-100 w-100 bg-purple rounded-15 shadow d-flex justify-content-center align-content-center"
                         role="button"
-                        (click)="appImgInput.click()"
+                        (click)="marketingImgInput.click()"
                       >
                         <img
-                          class="w-100 h-100 position-absolute"
-                          style="z-index: 50; object-fit: contain"
-                          [src]="wallet.displayUrl! | safeUrl"
+                          class="h-100 w-100 m-img-input-display"
+                          style="object-fit: cover"
+                          [src]="wallet.coverUrl! | safeUrl"
+                          role="button"
                         />
-                        <div
-                          class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
-                          style="z-index: 51; opacity: 0.5"
-                        >
-                          <mat-icon class="m-auto">upload </mat-icon>
-                        </div>
                         <input
-                          #appImgInput
+                          #marketingImgInput
                           type="file"
-                          (change)="fileChangeEvent($event, 1)"
+                          (change)="fileChangeEvent($event, 0)"
                           style="display: none"
                         />
+                        <mat-icon
+                          class="text-white shadow fw-bolder position-absolute"
+                          style="z-index: 48; top: 50%"
+                          >upload
+                        </mat-icon>
+                      </div>
+
+                      <div
+                        class="position-absolute w-md-auto bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
+                        style="
+                          object-fit: contain;
+                          aspect-ratio: 1;
+                          height: 20%;
+                          bottom: 10px;
+                          right: 10px;
+                          overflow: hidden;
+                        "
+                      >
+                        <div
+                          class="m-auto position-relative img-input"
+                          style="height: 90%; width: 90%; overflow: hidden"
+                          role="button"
+                          (click)="appImgInput.click()"
+                        >
+                          <img
+                            class="w-100 h-100 position-absolute"
+                            style="z-index: 50; object-fit: contain"
+                            [src]="wallet.displayUrl! | safeUrl"
+                          />
+                          <div
+                            class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
+                            style="z-index: 51; opacity: 0.5"
+                          >
+                            <mat-icon class="m-auto">upload </mat-icon>
+                          </div>
+                          <input
+                            #appImgInput
+                            type="file"
+                            (change)="fileChangeEvent($event, 1)"
+                            style="display: none"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="w-100 py-5 text-purple text-center fw-bold">
-                <i><span style="font-size: small">Images</span></i>
-                <hr class="fw-bolder border-1" />
-              </div>
-
-              <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">Display Name</h3>
-
-                <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
-                  <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
-                  >
-                    <input
-                      matInput
-                      class="bg-transparent text-truncate"
-                      type="text"
-                      name="name"
-                      [(ngModel)]="wallet.name"
-                      placeholder="Wallet Name"
-                    />
-                  </mat-form-field>
+                <div class="w-100 py-5 text-purple text-center fw-bold">
+                  <i><span style="font-size: small">Images</span></i>
+                  <hr class="fw-bolder border-1" />
                 </div>
-              </div>
 
-              <div class="wrap-input1 w-100 pt-3 mb-0 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">Description</h3>
+                <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">
+                    Display Name
+                  </h3>
 
-                <div class="rounded-15 border w-100 pb-2 px-4 mb-4">
-                  <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
-                  >
-                    <textarea
-                      matInput
-                      class="bg-transparent bg-info pb-2"
-                      type="text"
-                      name="name"
-                      [(ngModel)]="wallet.description"
-                      placeholder="Wallet Description (Optional)"
-                      style="min-height: 100px"
+                  <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
                     >
-                    </textarea>
-                  </mat-form-field>
+                      <input
+                        matInput
+                        class="bg-transparent text-truncate"
+                        type="text"
+                        name="name"
+                        [(ngModel)]="wallet.name"
+                        placeholder="Wallet Name"
+                      />
+                    </mat-form-field>
+                  </div>
                 </div>
-              </div>
 
-              <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">
-                  Available Networks
-                </h3>
+                <div class="wrap-input1 w-100 pt-3 mb-0 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">
+                    Description
+                  </h3>
 
-                <div class="rounded-pill border w-100 pe-4 mb-3">
-                  <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
-                  >
-                    <mat-select
-                      [ngModel]="wallet.chains"
-                      (selectionChange)="changed($event)"
-                      class="my-auto d-flex justify-content-start align-items-center"
-                      multiple
+                  <div class="rounded-15 border w-100 pb-2 px-4 mb-4">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
                     >
-                      <mat-select-trigger
-                        class="text-dark h-100 m-auto bg-danger"
+                      <textarea
+                        matInput
+                        class="bg-transparent bg-info pb-2"
+                        type="text"
+                        name="name"
+                        [(ngModel)]="wallet.description"
+                        placeholder="Wallet Description (Optional)"
+                        style="min-height: 100px"
                       >
-                        <div
-                          class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                      </textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">
+                    Available Networks
+                  </h3>
+
+                  <div class="rounded-pill border w-100 pe-4 mb-3">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
+                    >
+                      <mat-select
+                        [ngModel]="wallet.chains"
+                        (selectionChange)="changed($event)"
+                        class="my-auto d-flex justify-content-start align-items-center"
+                        multiple
+                      >
+                        <mat-select-trigger
+                          class="text-dark h-100 m-auto bg-danger"
                         >
-                          <!-- [mdbPopover]="template"
+                          <div
+                            class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                          >
+                            <!-- [mdbPopover]="template"
                           placement="bottom"
                           trigger="hover" -->
-                          <div
-                            class="position-relative"
-                            style="width: 95px; height: 47.5px"
-                            role="button"
-                          >
                             <div
-                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                              style="
-                                object-fit: contain;
-                                aspect-ratio: 1;
-                                top: 0px;
-                                left: 0px;
-                                overflow: hidden;
-                                z-index: 50;
-                              "
-                              *ngIf="(wallet.chains.length ?? 0) > 0"
+                              class="position-relative"
+                              style="width: 95px; height: 47.5px"
+                              role="button"
                             >
-                              <img
-                                class="m-auto rounded-circle"
-                                style="
-                                  object-fit: contain;
-                                  height: 85%;
-                                  width: 85%;
-                                "
-                                [src]="wallet.chains[0].url"
-                                role="button"
-                              />
-                            </div>
-                            <div
-                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute fw-bold"
-                              *ngIf="(wallet.chains.length ?? 0) > 1"
-                              style="
-                                object-fit: contain;
-                                aspect-ratio: 1;
-                                top: 0px;
-                                left: 25px;
-                                overflow: hidden;
-                                z-index: 49;
-                              "
-                            >
-                              <img
-                                class="m-auto rounded-circle"
-                                style="
-                                  object-fit: contain;
-                                  height: 85%;
-                                  width: 85%;
-                                "
-                                [src]="wallet.chains[1].url"
-                              />
-                            </div>
-
-                            <div
-                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                              *ngIf="(wallet.chains.length ?? 0) < 2"
-                              style="
-                                object-fit: contain;
-                                aspect-ratio: 1;
-                                top: 0px;
-                                left: 25px;
-                                overflow: hidden;
-                                z-index: 48;
-                                opacity: 0.5;
-                              "
-                            >
-                              <mat-icon
-                                class="m-auto rounded-circle bg-purple text-white"
-                                style="
-                                  object-fit: contain;
-                                  height: 85%;
-                                  width: 85%;
-                                "
-                              >
-                              </mat-icon>
-                            </div>
-
-                            <div
-                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                              *ngIf="(wallet.chains.length ?? 0) > 2"
-                              style="
-                                object-fit: contain;
-                                aspect-ratio: 1;
-                                top: 0px;
-                                left: 50px;
-                                overflow: hidden;
-                                z-index: 48;
-                                opacity: 0.5;
-                              "
-                            >
-                              <mat-icon
-                                class="m-auto rounded-circle bg-purple text-white"
-                                style="
-                                  object-fit: contain;
-                                  height: 85%;
-                                  width: 85%;
-                                "
-                              >
-                              </mat-icon>
-                            </div>
-                          </div>
-                          <span
-                            class="text-start text-truncate w-50 ms-3"
-                            style="font-size: large"
-                          >
-                            {{ chains(wallet.chains) }}
-                          </span>
-                        </div>
-                      </mat-select-trigger>
-
-                      <mat-optgroup
-                        *ngFor="let category of categories"
-                        [label]="category.name"
-                      >
-                        <mat-option
-                          *ngFor="let chain of category.chains ?? []"
-                          [value]="chain"
-                        >
-                          <div
-                            class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
-                          >
-                            <div
-                              class="d-flex justify-content-start align-items-center"
-                              style="height: 22.5px"
-                            >
-                              <img
-                                id="image"
-                                *ngIf="chain?.url"
-                                class="me-2 h-100 rounded-circle"
-                                [src]="chain?.url"
-                                style="object-fit: cover; aspect-ratio: 1"
-                              />
-                              <span class="py-1" style="font-size: medium">
-                                {{ chain?.name ?? "No Network Selected" }}
-                              </span>
-                            </div>
-                            <div class="h-100 p-3">
                               <div
-                                class="bg-white border rounded-circle p-1"
-                                style="height: 22.5px; aspect-ratio: 1"
+                                class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                                style="
+                                  object-fit: contain;
+                                  aspect-ratio: 1;
+                                  top: 0px;
+                                  left: 0px;
+                                  overflow: hidden;
+                                  z-index: 50;
+                                "
+                                *ngIf="(wallet.chains.length ?? 0) > 0"
                               >
-                                <div
-                                  class="border rounded-circle bg-{{
-                                    contains(chain) ? 'purple' : 'light'
-                                  }}"
-                                  style="aspect-ratio: 1"
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        </mat-option>
-                      </mat-optgroup>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <div class="w-100 py-5 text-purple text-center fw-bold">
-                <i><span style="font-size: small">General</span></i>
-                <hr class="fw-bolder border-1" />
-              </div>
-
-              <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">
-                  Account Generation
-                </h3>
-
-                <div class="rounded-pill border w-100 pe-4 mb-3">
-                  <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
-                  >
-                    <mat-select
-                      [(ngModel)]="wallet.authStyle"
-                      class="my-auto d-flex justify-content-start align-items-center"
-                      (selectionChange)="authChanged($event)"
-                    >
-                      <mat-select-trigger
-                        class="text-dark h-100 m-auto bg-danger"
-                      >
-                        <div
-                          class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
-                        >
-                          <div style="height: 47.5px"></div>
-                          <div
-                            class="text-start text-truncate w-50 ms-2"
-                            style="font-size: large"
-                          >
-                            {{ method(wallet.authStyle) }}
-                          </div>
-                        </div>
-                      </mat-select-trigger>
-
-                      <mat-optgroup
-                        *ngFor="let category of authCategories"
-                        [label]="category.name"
-                      >
-                        <mat-option
-                          *ngFor="let method of category.methods ?? []"
-                          [value]="method.id"
-                        >
-                          <div
-                            class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
-                          >
-                            <div
-                              class="d-flex justify-content-start align-items-center"
-                              style="height: 22.5px"
-                            >
-                              <span class="py-1" style="font-size: medium">
-                                {{ method?.name ?? "Choose a method" }}
-                              </span>
-                            </div>
-                          </div>
-                        </mat-option>
-                      </mat-optgroup>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <ng-container *ngIf="wallet.authStyle as auth">
-                <ng-container *ngIf="auth == 1">
-                  <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-                    <h3 class="w-100 mb-4" style="font-size: 20px">
-                      Availability
-                    </h3>
-                    <mat-slide-toggle
-                      class="mb-4"
-                      [ngModel]="wallet.status == 0 ? true : false"
-                      (ngModelChange)="wallet.status = $event == true ? 0 : 1"
-                    >
-                      {{
-                        wallet.status == 0 ? "Any Email" : "Whitelisted Domains"
-                      }}
-                    </mat-slide-toggle>
-                  </div>
-
-                  <div
-                    class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
-                    [hidden]="wallet.status == 0"
-                  >
-                    <h3 class="w-100 mb-4" style="font-size: 20px">
-                      Whitelist
-                    </h3>
-                    <div
-                      class="rounded-pill border w-100 pb-2 px-4 mb-4"
-                      *ngIf="15 as threshold"
-                    >
-                      <mat-form-field
-                        class="w-100"
-                        appearance="legacy"
-                        floatLabel="never"
-                      >
-                        <mat-chip-list #chipList aria-label="Product selection">
-                          <ng-container
-                            *ngFor="
-                              let domain of selectedUsers ?? [];
-                              index as i
-                            "
-                          >
-                            <mat-chip
-                              [selectable]="selectable"
-                              class="bg-light-success close-{{ i }}"
-                              style="cursor: pointer"
-                              [mdbPopover]="template"
-                              placement="right"
-                              trigger="click"
-                            >
-                              <div class="category-chip__text text-white">
-                                {{ domain }}
+                                <img
+                                  class="m-auto rounded-circle"
+                                  style="
+                                    object-fit: contain;
+                                    height: 85%;
+                                    width: 85%;
+                                  "
+                                  [src]="wallet.chains[0].url"
+                                  role="button"
+                                />
                               </div>
                               <div
-                                matChipRemove
-                                class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-light-success text-white fw-bolder"
+                                class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute fw-bold"
+                                *ngIf="(wallet.chains.length ?? 0) > 1"
                                 style="
-                                  width: fit-content;
-                                  aspect-ratio: 1/1;
-                                  opacity: 1;
-                                  pointer-events: none;
+                                  object-fit: contain;
+                                  aspect-ratio: 1;
+                                  top: 0px;
+                                  left: 25px;
+                                  overflow: hidden;
+                                  z-index: 49;
                                 "
                               >
-                                <mat-icon>
-                                  {{ "check_circle" }}
+                                <img
+                                  class="m-auto rounded-circle"
+                                  style="
+                                    object-fit: contain;
+                                    height: 85%;
+                                    width: 85%;
+                                  "
+                                  [src]="wallet.chains[1].url"
+                                />
+                              </div>
+
+                              <div
+                                class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                                *ngIf="(wallet.chains.length ?? 0) < 2"
+                                style="
+                                  object-fit: contain;
+                                  aspect-ratio: 1;
+                                  top: 0px;
+                                  left: 25px;
+                                  overflow: hidden;
+                                  z-index: 48;
+                                  opacity: 0.5;
+                                "
+                              >
+                                <mat-icon
+                                  class="m-auto rounded-circle bg-purple text-white"
+                                  style="
+                                    object-fit: contain;
+                                    height: 85%;
+                                    width: 85%;
+                                  "
+                                >
                                 </mat-icon>
                               </div>
-                            </mat-chip>
-                            <ng-template #template>
+
                               <div
-                                class="w-100 h-100 popover-menu menu-{{
-                                  i
-                                }} popover-body-padding"
+                                class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                                *ngIf="(wallet.chains.length ?? 0) > 2"
+                                style="
+                                  object-fit: contain;
+                                  aspect-ratio: 1;
+                                  top: 0px;
+                                  left: 50px;
+                                  overflow: hidden;
+                                  z-index: 48;
+                                  opacity: 0.5;
+                                "
                               >
-                                <ng-container>
-                                  <b class="fw-bolder mb-4 text-light-success"
-                                    >Whitelisted</b
-                                  >
-                                  <br />
-                                  This domain will be whitelisted for this
-                                  wallet.
-                                </ng-container>
-                                <br />
-                                <div class="w-100 h-100 mt-3">
-                                  <button
-                                    (click)="remove(domain, auth)"
-                                    id="removeBtn"
-                                    class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
-                                  >
-                                    Remove
-                                  </button>
+                                <mat-icon
+                                  class="m-auto rounded-circle bg-purple text-white"
+                                  style="
+                                    object-fit: contain;
+                                    height: 85%;
+                                    width: 85%;
+                                  "
+                                >
+                                </mat-icon>
+                              </div>
+                            </div>
+                            <span
+                              class="text-start text-truncate w-50 ms-3"
+                              style="font-size: large"
+                            >
+                              {{ chains(wallet.chains) }}
+                            </span>
+                          </div>
+                        </mat-select-trigger>
+
+                        <mat-optgroup
+                          *ngFor="let category of categories"
+                          [label]="category.name"
+                        >
+                          <mat-option
+                            *ngFor="let chain of category.chains ?? []"
+                            [value]="chain"
+                          >
+                            <div
+                              class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                            >
+                              <div
+                                class="d-flex justify-content-start align-items-center"
+                                style="height: 22.5px"
+                              >
+                                <img
+                                  id="image"
+                                  *ngIf="chain?.url"
+                                  class="me-2 h-100 rounded-circle"
+                                  [src]="chain?.url"
+                                  style="object-fit: cover; aspect-ratio: 1"
+                                />
+                                <span class="py-1" style="font-size: medium">
+                                  {{ chain?.name ?? "No Network Selected" }}
+                                </span>
+                              </div>
+                              <div class="h-100 p-3">
+                                <div
+                                  class="bg-white border rounded-circle p-1"
+                                  style="height: 22.5px; aspect-ratio: 1"
+                                >
+                                  <div
+                                    class="border rounded-circle bg-{{
+                                      contains(chain) ? 'purple' : 'light'
+                                    }}"
+                                    style="aspect-ratio: 1"
+                                  ></div>
                                 </div>
                               </div>
-                            </ng-template>
-                          </ng-container>
-
-                          <input
-                            class="h-100 text-dark"
-                            [placeholder]="'Ex. thredapps.com'"
-                            #addressInput
-                            [formControl]="addressCtrl"
-                            [matChipInputFor]="chipList"
-                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                            (matChipInputTokenEnd)="add($event, auth)"
-                          />
-                        </mat-chip-list>
-                      </mat-form-field>
-                    </div>
+                            </div>
+                          </mat-option>
+                        </mat-optgroup>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
-                </ng-container>
+                </div>
 
-                <ng-container *ngIf="auth == 2">
-                  <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-                    <h3 class="w-100 mb-4" style="font-size: 20px">
-                      Availability
-                    </h3>
-                    <mat-slide-toggle
-                      class="mb-4"
-                      [ngModel]="wallet.status == 0 ? true : false"
-                      (ngModelChange)="wallet.status = $event == true ? 0 : 1"
-                    >
-                      {{
-                        wallet.status == 0
-                          ? "Any Address"
-                          : "Whitelisted Address"
-                      }}
-                    </mat-slide-toggle>
-                  </div>
+                <div class="w-100 py-5 text-purple text-center fw-bold">
+                  <i><span style="font-size: small">General</span></i>
+                  <hr class="fw-bolder border-1" />
+                </div>
 
-                  <div
-                    class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
-                    [hidden]="wallet.status == 0"
-                  >
-                    <h3 class="w-100 mb-4" style="font-size: 20px">
-                      Whitelist
-                    </h3>
-                    <div
-                      class="rounded-pill border w-100 pb-2 px-4 mb-4"
-                      *ngIf="15 as threshold"
+                <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">
+                    Account Generation
+                  </h3>
+
+                  <div class="rounded-pill border w-100 pe-4 mb-3">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
                     >
-                      <mat-form-field
-                        class="w-100"
-                        appearance="legacy"
-                        floatLabel="never"
+                      <mat-select
+                        [(ngModel)]="wallet.authStyle"
+                        class="my-auto d-flex justify-content-start align-items-center"
+                        (selectionChange)="authChanged($event)"
                       >
-                        <mat-chip-list #chipList aria-label="Product selection">
-                          <ng-container
-                            *ngFor="
-                              let address of selectedUsers ?? [];
-                              index as i
-                            "
+                        <mat-select-trigger
+                          class="text-dark h-100 m-auto bg-danger"
+                        >
+                          <div
+                            class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                          >
+                            <div style="height: 47.5px"></div>
+                            <div
+                              class="text-start text-truncate w-50 ms-2"
+                              style="font-size: large"
+                            >
+                              {{ method(wallet.authStyle) }}
+                            </div>
+                          </div>
+                        </mat-select-trigger>
+
+                        <mat-optgroup
+                          *ngFor="let category of authCategories"
+                          [label]="category.name"
+                        >
+                          <mat-option
+                            *ngFor="let method of category.methods ?? []"
+                            [value]="method.id"
+                          >
+                            <div
+                              class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                            >
+                              <div
+                                class="d-flex justify-content-start align-items-center"
+                                style="height: 22.5px"
+                              >
+                                <span class="py-1" style="font-size: medium">
+                                  {{ method?.name ?? "Choose a method" }}
+                                </span>
+                              </div>
+                            </div>
+                          </mat-option>
+                        </mat-optgroup>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <ng-container *ngIf="wallet.authStyle as auth">
+                  <ng-container *ngIf="auth == 1">
+                    <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                      <h3 class="w-100 mb-4" style="font-size: 20px">
+                        Availability
+                      </h3>
+                      <mat-slide-toggle
+                        class="mb-4"
+                        [ngModel]="wallet.status == 0 ? true : false"
+                        (ngModelChange)="wallet.status = $event == true ? 0 : 1"
+                      >
+                        {{
+                          wallet.status == 0
+                            ? "Any Email"
+                            : "Whitelisted Domains"
+                        }}
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div
+                      class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
+                      [hidden]="wallet.status == 0"
+                    >
+                      <h3 class="w-100 mb-4" style="font-size: 20px">
+                        Whitelist
+                      </h3>
+                      <div
+                        class="rounded-pill border w-100 pb-2 px-4 mb-4"
+                        *ngIf="15 as threshold"
+                      >
+                        <mat-form-field
+                          class="w-100"
+                          appearance="legacy"
+                          floatLabel="never"
+                        >
+                          <mat-chip-list
+                            #chipList
+                            aria-label="Product selection"
                           >
                             <ng-container
-                              *ngIf="
-                                (address | addressValidate)
-                                  ? 'y'
-                                  : 'n' as validAddress
+                              *ngFor="
+                                let domain of selectedUsers ?? [];
+                                index as i
+                              "
+                            >
+                              <mat-chip
+                                [selectable]="selectable"
+                                class="bg-light-success close-{{ i }}"
+                                style="cursor: pointer"
+                                [mdbPopover]="template"
+                                placement="right"
+                                trigger="click"
+                              >
+                                <div class="category-chip__text text-white">
+                                  {{ domain }}
+                                </div>
+                                <div
+                                  matChipRemove
+                                  class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-light-success text-white fw-bolder"
+                                  style="
+                                    width: fit-content;
+                                    aspect-ratio: 1/1;
+                                    opacity: 1;
+                                    pointer-events: none;
+                                  "
+                                >
+                                  <mat-icon>
+                                    {{ "check_circle" }}
+                                  </mat-icon>
+                                </div>
+                              </mat-chip>
+                              <ng-template #template>
+                                <div
+                                  class="w-100 h-100 popover-menu menu-{{
+                                    i
+                                  }} popover-body-padding"
+                                >
+                                  <ng-container>
+                                    <b class="fw-bolder mb-4 text-light-success"
+                                      >Whitelisted</b
+                                    >
+                                    <br />
+                                    This domain will be whitelisted for this
+                                    wallet.
+                                  </ng-container>
+                                  <br />
+                                  <div class="w-100 h-100 mt-3">
+                                    <button
+                                      (click)="remove(domain, auth)"
+                                      id="removeBtn"
+                                      class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
+                                </div>
+                              </ng-template>
+                            </ng-container>
+
+                            <input
+                              class="h-100 text-dark"
+                              [placeholder]="'Ex. thredapps.com'"
+                              #addressInput
+                              [formControl]="addressCtrl"
+                              [matChipInputFor]="chipList"
+                              [matChipInputSeparatorKeyCodes]="
+                                separatorKeysCodes
+                              "
+                              (matChipInputTokenEnd)="add($event, auth)"
+                            />
+                          </mat-chip-list>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="auth == 2">
+                    <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                      <h3 class="w-100 mb-4" style="font-size: 20px">
+                        Availability
+                      </h3>
+                      <mat-slide-toggle
+                        class="mb-4"
+                        [ngModel]="wallet.status == 0 ? true : false"
+                        (ngModelChange)="wallet.status = $event == true ? 0 : 1"
+                      >
+                        {{
+                          wallet.status == 0
+                            ? "Any Address"
+                            : "Whitelisted Address"
+                        }}
+                      </mat-slide-toggle>
+                    </div>
+
+                    <div
+                      class="wrap-input1 w-100 pt-3 px-4 px-md-5 animate__animated animate__fadeIn"
+                      [hidden]="wallet.status == 0"
+                    >
+                      <h3 class="w-100 mb-4" style="font-size: 20px">
+                        Whitelist
+                      </h3>
+                      <div
+                        class="rounded-pill border w-100 pb-2 px-4 mb-4"
+                        *ngIf="15 as threshold"
+                      >
+                        <mat-form-field
+                          class="w-100"
+                          appearance="legacy"
+                          floatLabel="never"
+                        >
+                          <mat-chip-list
+                            #chipList
+                            aria-label="Product selection"
+                          >
+                            <ng-container
+                              *ngFor="
+                                let address of selectedUsers ?? [];
+                                index as i
                               "
                             >
                               <ng-container
                                 *ngIf="
-                                  validAddress == 'y' ? 'y' : 'n' as result
+                                  (address | addressValidate)
+                                    ? 'y'
+                                    : 'n' as validAddress
                                 "
                               >
-                                <mat-chip
-                                  [selectable]="selectable"
-                                  class="bg-{{
-                                    result == 'y'
-                                      ? 'light-success'
-                                      : 'light-danger'
-                                  }} close-{{ i }}"
-                                  [mdbPopover]="template"
-                                  placement="right"
-                                  trigger="click"
-                                  style="cursor: pointer"
+                                <ng-container
+                                  *ngIf="
+                                    validAddress == 'y' ? 'y' : 'n' as result
+                                  "
+                                >
+                                  <mat-chip
+                                    [selectable]="selectable"
+                                    class="bg-{{
+                                      result == 'y'
+                                        ? 'light-success'
+                                        : 'light-danger'
+                                    }} close-{{ i }}"
+                                    [mdbPopover]="template"
+                                    placement="right"
+                                    trigger="click"
+                                    style="cursor: pointer"
+                                    *ngIf="
+                                      address
+                                        | address
+                                          : false
+                                          : address.length >
+                                              threshold as displayAddress
+                                    "
+                                  >
+                                    <div class="category-chip__text text-white">
+                                      {{ displayAddress }}
+                                    </div>
+                                    <div
+                                      matChipRemove
+                                      class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-{{
+                                        result == 'y'
+                                          ? 'light-success'
+                                          : 'light-danger'
+                                      }} text-white fw-bolder"
+                                      style="
+                                        width: fit-content;
+                                        aspect-ratio: 1/1;
+                                        opacity: 1;
+                                        pointer-events: none;
+                                      "
+                                    >
+                                      <mat-icon>
+                                        {{
+                                          result == "y"
+                                            ? "check_circle"
+                                            : "error"
+                                        }}
+                                      </mat-icon>
+                                    </div>
+                                    <ng-template #template>
+                                      <div
+                                        class="w-100 h-100 popover-menu menu-{{
+                                          i
+                                        }} popover-body-padding"
+                                      >
+                                        <ng-container *ngIf="result == 'y'">
+                                          <b
+                                            class="fw-bolder mb-4 text-light-success"
+                                            >Verified Address</b
+                                          >
+                                          <br />
+                                          The address exists and will be
+                                          whitelisted for this wallet.
+                                        </ng-container>
+                                        <ng-container *ngIf="result != 'y'">
+                                          <b
+                                            class="fw-bolder mb-4 text-light-danger"
+                                            >Invalid Address</b
+                                          >
+                                          <br />
+                                          The address does not exist and will
+                                          not be whitelisted for this wallet.
+                                        </ng-container>
+                                        <br />
+                                        <div class="w-100 h-100 mt-3">
+                                          <button
+                                            (click)="remove(address, auth)"
+                                            id="removeBtn"
+                                            class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
+                                          >
+                                            Remove
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </ng-template>
+                                  </mat-chip>
+                                </ng-container>
+                              </ng-container>
+                            </ng-container>
+
+                            <input
+                              class="h-100 text-dark"
+                              [placeholder]="'Ex. 0x56...78'"
+                              #addressInput
+                              [formControl]="addressCtrl"
+                              [matAutocomplete]="auto"
+                              [matChipInputFor]="chipList"
+                              [matChipInputSeparatorKeyCodes]="
+                                separatorKeysCodes
+                              "
+                              (matChipInputTokenEnd)="add($event, auth)"
+                            />
+                          </mat-chip-list>
+                          <mat-autocomplete
+                            #auto="matAutocomplete"
+                            (optionSelected)="selected($event)"
+                          >
+                            <cdk-virtual-scroll-viewport
+                              class="autocomplete-test-viewport"
+                              [ngStyle]="{
+                                height:
+                                  ((filteredAddresses | async) ?? []).length > 0
+                                    ? '150px'
+                                    : '0px'
+                              }"
+                              itemSize="35"
+                            >
+                              <mat-option
+                                *cdkVirtualFor="
+                                  let address of filteredAddresses | async
+                                "
+                                [value]="address"
+                              >
+                                <ng-container
                                   *ngIf="
                                     address
                                       | address
@@ -642,223 +775,124 @@
                                             threshold as displayAddress
                                   "
                                 >
-                                  <div class="category-chip__text text-white">
+                                  <div
+                                    class="d-flex justify-content-start align-items-center w-100"
+                                  >
                                     {{ displayAddress }}
                                   </div>
-                                  <div
-                                    matChipRemove
-                                    class="d-flex justify-content-center align-items-center btn me-1 rounded-circle bg-{{
-                                      result == 'y'
-                                        ? 'light-success'
-                                        : 'light-danger'
-                                    }} text-white fw-bolder"
-                                    style="
-                                      width: fit-content;
-                                      aspect-ratio: 1/1;
-                                      opacity: 1;
-                                      pointer-events: none;
-                                    "
-                                  >
-                                    <mat-icon>
-                                      {{
-                                        result == "y" ? "check_circle" : "error"
-                                      }}
-                                    </mat-icon>
-                                  </div>
-                                  <ng-template #template>
-                                    <div
-                                      class="w-100 h-100 popover-menu menu-{{
-                                        i
-                                      }} popover-body-padding"
-                                    >
-                                      <ng-container *ngIf="result == 'y'">
-                                        <b
-                                          class="fw-bolder mb-4 text-light-success"
-                                          >Verified Address</b
-                                        >
-                                        <br />
-                                        The address exists and will be
-                                        whitelisted for this wallet.
-                                      </ng-container>
-                                      <ng-container *ngIf="result != 'y'">
-                                        <b
-                                          class="fw-bolder mb-4 text-light-danger"
-                                          >Invalid Address</b
-                                        >
-                                        <br />
-                                        The address does not exist and will not
-                                        be whitelisted for this wallet.
-                                      </ng-container>
-                                      <br />
-                                      <div class="w-100 h-100 mt-3">
-                                        <button
-                                          (click)="remove(address, auth)"
-                                          id="removeBtn"
-                                          class="w-100 btn bg-black text-white fw-bold rounded-10 px-4 py-2"
-                                        >
-                                          Remove
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </ng-template>
-                                </mat-chip>
-                              </ng-container>
-                            </ng-container>
-                          </ng-container>
-
-                          <input
-                            class="h-100 text-dark"
-                            [placeholder]="'Ex. 0x56...78'"
-                            #addressInput
-                            [formControl]="addressCtrl"
-                            [matAutocomplete]="auto"
-                            [matChipInputFor]="chipList"
-                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                            (matChipInputTokenEnd)="add($event, auth)"
-                          />
-                        </mat-chip-list>
-                        <mat-autocomplete
-                          #auto="matAutocomplete"
-                          (optionSelected)="selected($event)"
-                        >
-                          <cdk-virtual-scroll-viewport
-                            class="autocomplete-test-viewport"
-                            [ngStyle]="{
-                              height:
-                                ((filteredAddresses | async) ?? []).length > 0
-                                  ? '150px'
-                                  : '0px'
-                            }"
-                            itemSize="35"
-                          >
-                            <mat-option
-                              *cdkVirtualFor="
-                                let address of filteredAddresses | async
-                              "
-                              [value]="address"
-                            >
-                              <ng-container
-                                *ngIf="
-                                  address
-                                    | address
-                                      : false
-                                      : address.length >
-                                          threshold as displayAddress
-                                "
-                              >
-                                <div
-                                  class="d-flex justify-content-start align-items-center w-100"
-                                >
-                                  {{ displayAddress }}
-                                </div>
-                              </ng-container>
-                            </mat-option>
-                          </cdk-virtual-scroll-viewport>
-                        </mat-autocomplete>
-                      </mat-form-field>
+                                </ng-container>
+                              </mat-option>
+                            </cdk-virtual-scroll-viewport>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </div>
                     </div>
-                  </div>
+                  </ng-container>
                 </ng-container>
-              </ng-container>
 
-              <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">Tracking</h3>
-                <mat-slide-toggle class="mb-3" [(ngModel)]="wallet.tracking">
-                  {{ wallet.tracking ? "Enabled" : "Disabled" }}
-                </mat-slide-toggle>
-              </div>
+                <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">Tracking</h3>
+                  <mat-slide-toggle class="mb-3" [(ngModel)]="wallet.tracking">
+                    {{ wallet.tracking ? "Enabled" : "Disabled" }}
+                  </mat-slide-toggle>
+                </div>
 
-              <div class="w-100 py-5 text-purple text-center fw-bold">
-                <i><span style="font-size: small">Account Management</span></i>
-                <hr class="fw-bolder border-1" />
-              </div>
-
-              <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">Layouts</h3>
-
-                <div class="rounded-pill border w-100 pe-4 mb-3">
-                  <mat-form-field
-                    class="w-100"
-                    appearance="legacy"
-                    floatLabel="never"
+                <div class="w-100 py-5 text-purple text-center fw-bold">
+                  <i
+                    ><span style="font-size: small">Account Management</span></i
                   >
-                    <mat-select
-                      [ngModel]="wallet.displayedLayouts"
-                      (selectionChange)="layoutChanged($event)"
-                      class="my-auto d-flex justify-content-start align-items-center"
-                      multiple
+                  <hr class="fw-bolder border-1" />
+                </div>
+
+                <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">Layouts</h3>
+
+                  <div class="rounded-pill border w-100 pe-4 mb-3">
+                    <mat-form-field
+                      class="w-100"
+                      appearance="legacy"
+                      floatLabel="never"
                     >
-                      <mat-select-trigger
-                        class="text-dark h-100 m-auto bg-danger"
+                      <mat-select
+                        [ngModel]="wallet.displayedLayouts"
+                        (selectionChange)="layoutChanged($event)"
+                        class="my-auto d-flex justify-content-start align-items-center"
+                        multiple
                       >
-                        <div
-                          class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                        <mat-select-trigger
+                          class="text-dark h-100 m-auto bg-danger"
                         >
-                          <!-- [mdbPopover]="template"
+                          <div
+                            class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                          >
+                            <!-- [mdbPopover]="template"
                           placement="bottom"
                           trigger="hover" -->
-                          <div
-                            class="position-relative"
-                            style="width: 95px; height: 47.5px"
-                            role="button"
-                          >
                             <div
-                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                              style="
-                                object-fit: contain;
-                                aspect-ratio: 1;
-                                top: 0px;
-                                left: 0px;
-                                overflow: hidden;
-                                z-index: 50;
-                              "
+                              class="position-relative"
+                              style="width: 95px; height: 47.5px"
+                              role="button"
                             >
-                              <mat-icon
-                                class="m-auto rounded-circle bg-dark text-white p-2"
+                              <div
+                                class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
                                 style="
                                   object-fit: contain;
-                                  height: 85%;
-                                  width: 85%;
+                                  aspect-ratio: 1;
+                                  top: 0px;
+                                  left: 0px;
+                                  overflow: hidden;
+                                  z-index: 50;
                                 "
                               >
-                                {{
-                                  (wallet.displayedLayouts ?? [])[0] == "mobile"
-                                    ? "phone_iphone"
-                                    : "desktop_windows"
-                                }}
-                              </mat-icon>
-                            </div>
-                            <div
-                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute fw-bold"
-                              *ngIf="
-                                ((wallet.displayedLayouts ?? []).length ?? 0) >
-                                1
-                              "
-                              style="
-                                object-fit: contain;
-                                aspect-ratio: 1;
-                                top: 0px;
-                                left: 25px;
-                                overflow: hidden;
-                                z-index: 49;
-                              "
-                            >
-                              <mat-icon
-                                class="m-auto rounded-circle bg-dark text-white p-2"
+                                <mat-icon
+                                  class="m-auto rounded-circle bg-dark text-white p-2"
+                                  style="
+                                    object-fit: contain;
+                                    height: 85%;
+                                    width: 85%;
+                                  "
+                                >
+                                  {{
+                                    (wallet.displayedLayouts ?? [])[0] ==
+                                    "mobile"
+                                      ? "phone_iphone"
+                                      : "desktop_windows"
+                                  }}
+                                </mat-icon>
+                              </div>
+                              <div
+                                class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute fw-bold"
+                                *ngIf="
+                                  ((wallet.displayedLayouts ?? []).length ??
+                                    0) >
+                                  1
+                                "
                                 style="
                                   object-fit: contain;
-                                  height: 85%;
-                                  width: 85%;
+                                  aspect-ratio: 1;
+                                  top: 0px;
+                                  left: 25px;
+                                  overflow: hidden;
+                                  z-index: 49;
                                 "
                               >
-                                {{
-                                  (wallet.displayedLayouts ?? [])[1] == "mobile"
-                                    ? "phone_iphone"
-                                    : "desktop_windows"
-                                }}
-                              </mat-icon>
-                            </div>
-                            <!-- 
+                                <mat-icon
+                                  class="m-auto rounded-circle bg-dark text-white p-2"
+                                  style="
+                                    object-fit: contain;
+                                    height: 85%;
+                                    width: 85%;
+                                  "
+                                >
+                                  {{
+                                    (wallet.displayedLayouts ?? [])[1] ==
+                                    "mobile"
+                                      ? "phone_iphone"
+                                      : "desktop_windows"
+                                  }}
+                                </mat-icon>
+                              </div>
+                              <!-- 
                             <div
                               class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
                               *ngIf="
@@ -887,226 +921,224 @@
                               >
                               </mat-icon>
                             </div> -->
-                          </div>
-                          <span
-                            class="text-start text-truncate w-50 ms-3"
-                            style="font-size: large"
-                          >
-                            {{
-                              displayedLayouts(wallet.displayedLayouts ?? [])
-                                | titlecase
-                            }}
-                          </span>
-                        </div>
-                      </mat-select-trigger>
-
-                      <mat-option
-                        *ngFor="let layout of layouts ?? []"
-                        [value]="layout"
-                      >
-                        <div
-                          class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
-                        >
-                          <div
-                            class="d-flex justify-content-start align-items-center"
-                            style="height: 22.5px"
-                          >
-                            <mat-icon
-                              class="me-2 h-100 rounded-circle"
-                              style="object-fit: contain; aspect-ratio: 1"
+                            </div>
+                            <span
+                              class="text-start text-truncate w-50 ms-3"
+                              style="font-size: large"
                             >
                               {{
-                                layout == "mobile"
-                                  ? "phone_iphone"
-                                  : "desktop_windows"
+                                displayedLayouts(wallet.displayedLayouts ?? [])
+                                  | titlecase
                               }}
-                            </mat-icon>
-                            <span class="py-1" style="font-size: medium">
-                              {{ (layout | titlecase) ?? "No Layout Selected" }}
                             </span>
                           </div>
-                          <div class="h-100 p-3">
+                        </mat-select-trigger>
+
+                        <mat-option
+                          *ngFor="let layout of layouts ?? []"
+                          [value]="layout"
+                        >
+                          <div
+                            class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                          >
                             <div
-                              class="bg-white border rounded-circle p-1"
-                              style="height: 22.5px; aspect-ratio: 1"
+                              class="d-flex justify-content-start align-items-center"
+                              style="height: 22.5px"
                             >
+                              <mat-icon
+                                class="me-2 h-100 rounded-circle"
+                                style="object-fit: contain; aspect-ratio: 1"
+                              >
+                                {{
+                                  layout == "mobile"
+                                    ? "phone_iphone"
+                                    : "desktop_windows"
+                                }}
+                              </mat-icon>
+                              <span class="py-1" style="font-size: medium">
+                                {{
+                                  (layout | titlecase) ?? "No Layout Selected"
+                                }}
+                              </span>
+                            </div>
+                            <div class="h-100 p-3">
                               <div
-                                class="border rounded-circle bg-{{
-                                  containsLayout(layout) ? 'purple' : 'light'
-                                }}"
-                                style="aspect-ratio: 1"
-                              ></div>
+                                class="bg-white border rounded-circle p-1"
+                                style="height: 22.5px; aspect-ratio: 1"
+                              >
+                                <div
+                                  class="border rounded-circle bg-{{
+                                    containsLayout(layout) ? 'purple' : 'light'
+                                  }}"
+                                  style="aspect-ratio: 1"
+                                ></div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <div class="w-100 py-5 text-purple text-center fw-bold">
-                <i><span style="font-size: small">Layouts</span></i>
-                <hr class="fw-bolder border-1" />
-              </div>
-
-              <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-                <h3 class="w-100 mb-4" style="font-size: 20px">
-                  New User Webhook
-                </h3>
-
-                <div
-                  class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
-                >
-                  <mat-form-field
-                    class="mb-0 pe-3 w-75"
-                    appearance="legacy"
-                    floatLabel="never"
-                  >
-                    <input
-                      matInput
-                      class="mb-2 text-truncate"
-                      type="text"
-                      name="name"
-                      [(ngModel)]="wallet.installWebhook"
-                      placeholder="Enter Webhook URL"
-                    />
-                  </mat-form-field>
-                  <div
-                    class="bg-white rounded-circle shadow p-1"
-                    style="height: 52.5px !important; width: 52.5px !important"
-                    role="button"
-                    [mdbPopover]="webhook1Template"
-                    placement="top"
-                    [trigger]="'hover'"
-                    (click)="sendTestHook(wallet.installWebhook, 0)"
-                  >
-                    <div
-                      class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
-                      style="aspect-ratio: 1"
-                    >
-                      <mat-icon
-                        class="text-white m-auto"
-                        style="font-size: 25px"
-                      >
-                        smart_toy
-                      </mat-icon>
-                    </div>
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
-
-                  <ng-template #webhook1Template>
-                    <div class="popover-body-padding">
-                      <b class="fw-bolder mb-4 text-light-success"
-                        >Fired when someone joins your wallet!</b
-                      >
-                      <br />
-                      Press me to send a sample payload to your webhook!
-                    </div>
-                  </ng-template>
                 </div>
-              </div>
 
-              <div class="w-100 py-5 text-purple text-center fw-bold">
-                <i><span style="font-size: small">Notifications</span></i>
-                <hr class="fw-bolder border-1" />
+                <div class="w-100 py-5 text-purple text-center fw-bold">
+                  <i><span style="font-size: small">Layouts</span></i>
+                  <hr class="fw-bolder border-1" />
+                </div>
+
+                <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                  <h3 class="w-100 mb-4" style="font-size: 20px">
+                    New User Webhook
+                  </h3>
+
+                  <div
+                    class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
+                  >
+                    <mat-form-field
+                      class="mb-0 pe-3 w-75"
+                      appearance="legacy"
+                      floatLabel="never"
+                    >
+                      <input
+                        matInput
+                        class="mb-2 text-truncate"
+                        type="text"
+                        name="name"
+                        [(ngModel)]="wallet.installWebhook"
+                        placeholder="Enter Webhook URL"
+                      />
+                    </mat-form-field>
+                    <div
+                      class="bg-white rounded-circle shadow p-1"
+                      style="
+                        height: 52.5px !important;
+                        width: 52.5px !important;
+                      "
+                      role="button"
+                      [mdbPopover]="webhook1Template"
+                      placement="top"
+                      [trigger]="'hover'"
+                      (click)="sendTestHook(wallet.installWebhook, 0)"
+                    >
+                      <div
+                        class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
+                        style="aspect-ratio: 1"
+                      >
+                        <mat-icon
+                          class="text-white m-auto"
+                          style="font-size: 25px"
+                        >
+                          smart_toy
+                        </mat-icon>
+                      </div>
+                    </div>
+
+                    <ng-template #webhook1Template>
+                      <div class="popover-body-padding">
+                        <b class="fw-bolder mb-4 text-light-success"
+                          >Fired when someone joins your wallet!</b
+                        >
+                        <br />
+                        Press me to send a sample payload to your webhook!
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+
+                <div class="w-100 py-5 text-purple text-center fw-bold">
+                  <i><span style="font-size: small">Notifications</span></i>
+                  <hr class="fw-bolder border-1" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="w-100 p-0 h-100">
-      <div
-        class="p-3 pt-0 d-flex justify-content-center align-content-center w-100 h-100"
-      >
+      <div class="w-100 p-0 h-100">
         <div
-          class="w-100 big-design-card rounded-10 p-3 text-start d-flex justify-content-between align-content-center flex-column h-100"
+          class="p-3 pt-0 d-flex justify-content-center align-content-center w-100 h-100"
         >
-          <div class="big-design-header w-100">
-            <h2 class="big-design-input-title text-start">Wallet Layouts</h2>
-          </div>
-          <div class="big-design-body h-100 bg-light rounded-10 w-100">
-            <mat-tab-group
-              mat-stretch-tabs
-              #menu
-              class="w-100 h-100"
-              dynamicHeight
-              animationDuration="0ms"
-              *ngIf="wallet"
-              color="transparent"
-              [(selectedIndex)]="selectedIndex"
-            >
-              <mat-tab
-                *ngFor="
-                  let layout of (wallet.displayedLayouts ?? []
-                    | layouts: wallet.activeLayouts) ?? []
-                "
+          <div
+            class="w-100 big-design-card rounded-10 p-3 text-start d-flex justify-content-between align-content-center flex-column h-100"
+          >
+            <div class="big-design-header w-100">
+              <h2 class="big-design-input-title text-start">Wallet Layouts</h2>
+            </div>
+            <div class="big-design-body h-100 bg-light rounded-10 w-100">
+              <mat-tab-group
+                mat-stretch-tabs
+                #menu
+                class="w-100 h-100"
+                dynamicHeight
+                animationDuration="0ms"
+                *ngIf="wallet"
+                color="transparent"
+                [(selectedIndex)]="selectedIndex"
               >
-                <ng-template mat-tab-label>
-                  <span class="ms-2 text-dark big-design-body fw-bold">
-                    {{ layout.name }}
-                  </span>
-                </ng-template>
-                <div class="w-100 h-100 position-relative">
-                  <div
-                    class="w-100 d-flex justify-content-end align-items-center position-absolute p-3"
-                    style="z-index: 50"
-                  >
-                    <button
-                      class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center me-1 px-3 py-2"
-                      (click)="syncLayouts(layout.type)"
-                      style="font-size: x-small"
-                      [disabled]="sameLayouts()"
+                <mat-tab *ngFor="let layout of walletLayouts ?? []">
+                  <ng-template mat-tab-label>
+                    <span class="ms-2 text-dark big-design-body fw-bold">
+                      {{ layout.name }}
+                    </span>
+                  </ng-template>
+                  <div class="w-100 h-100 position-relative">
+                    <div
+                      class="w-100 d-flex justify-content-end align-items-center position-absolute p-3"
+                      style="z-index: 50"
                     >
-                      Copy to
-                      {{ layout.type == "mobile" ? "Desktop" : "Mobile" }}
-                    </button>
-                    <button
-                      class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center ms-2 px-3 py-2"
-                      (click)="loading ? null : (mode = 1)"
-                      style="font-size: x-small"
+                      <button
+                        class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center me-1 px-3 py-2"
+                        (click)="syncLayouts(layout.type)"
+                        style="font-size: x-small"
+                        [disabled]="sameLayouts()"
+                      >
+                        Copy to
+                        {{ layout.type == "mobile" ? "Desktop" : "Mobile" }}
+                      </button>
+                      <button
+                        class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center ms-2 px-3 py-2"
+                        (click)="loading ? null : (mode = 1)"
+                        style="font-size: x-small"
+                      >
+                        Edit Layout
+                      </button>
+                    </div>
+                    <div
+                      class="w-100 h-100 d-flex justify-content-center align-items-center"
                     >
-                      Edit Layout
-                    </button>
-                  </div>
-                  <div
-                    class="w-100 h-100 d-flex justify-content-center align-items-center"
-                  >
-                    <div class="p-3">
-                      <app-layout-builder
-                        [wallet]="wallet"
-                        [layout]="layout"
-                        [editable]="false"
-                        (clickedCanvas)="mode = 1"
-                        [color]="'transparent'"
-                      ></app-layout-builder>
+                      <div class="p-3">
+                        <app-layout-builder
+                          [wallet]="wallet"
+                          [layout]="layout"
+                          [editable]="false"
+                          (clickedCanvas)="mode = 1"
+                          [color]="'transparent'"
+                        ></app-layout-builder>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </mat-tab>
-            </mat-tab-group>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="frame-body d-flex justify-content-center align-content-center rounded-10 bg-dark rounded-0"
-    *ngIf="mode == 1 && selectedIndex != undefined && wallet"
-  >
-    <div class="m-auto p-3 pt-0 h-100" style="width: 100vw">
-      <app-layout-builder
-        #layoutBuilder
-        [wallet]="wallet"
-        [layout]="
-          selectedIndex
-            | layoutIndex: wallet.displayedLayouts ?? []:wallet.activeLayouts
-        "
-        [editable]="true"
-        (layoutSaved)="layoutSaved($event)"
-        [color]="'primary'"
-      ></app-layout-builder>
+    <div
+      class="frame-body d-flex justify-content-center align-content-center rounded-10 bg-dark rounded-0"
+      *ngIf="mode == 1 && selectedIndex != undefined && wallet"
+    >
+      <div class="m-auto p-3 pt-0 h-100" style="width: 100vw">
+        <app-layout-builder
+          #layoutBuilder
+          [wallet]="wallet"
+          [layout]="walletLayouts[selectedIndex]"
+          [editable]="true"
+          (layoutSaved)="layoutSaved($event)"
+          [color]="'primary'"
+        ></app-layout-builder>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </div>
