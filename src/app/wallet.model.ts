@@ -1,13 +1,7 @@
-import { ethers } from 'ethers';
 import { Chain } from './chain.model';
 import { Layout } from './layout.model';
 import { Page } from './page.model';
-import { Block } from './block.model';
-import { Signature } from './signature.model';
-import { StoreTheme } from './theme.model';
-import { NFTList } from './nft-list.model';
-import { NFT } from './nft.model';
-import { NftTokenType } from 'alchemy-sdk';
+import { Dict } from './load.service';
 
 export class Wallet {
   name!: string;
@@ -27,11 +21,10 @@ export class Wallet {
   status!: number;
   installWebhook!: string;
   whitelist?: string[];
-
-  layouts!: Layout[];
+  activeLayouts!: Dict<Layout>;
   authStyle!: number;
-  tracking!: boolean
-  displayedLayouts?: string[]
+  tracking!: boolean;
+  displayedLayouts?: string[];
 
   constructor(
     id: string,
@@ -52,7 +45,7 @@ export class Wallet {
     installWebhook?: string,
     whitelist?: string[],
     authStyle?: number,
-    layouts?: Layout[],
+    activeLayouts?: Dict<Layout>,
     tracking?: boolean,
     displayedLayouts?: string[]
   ) {
@@ -74,10 +67,8 @@ export class Wallet {
     this.installWebhook = installWebhook ?? '';
     this.whitelist = whitelist ?? [];
     this.authStyle = authStyle ?? 1;
-    this.tracking = tracking ?? false
-    this.displayedLayouts = displayedLayouts ?? [
-      'mobile',
-    ]
+    this.tracking = tracking ?? false;
+    this.displayedLayouts = displayedLayouts ?? ['mobile'];
 
     // this.colorStyle =
     //   colorStyle && (colorStyle?.name ?? '').trim() != ''
@@ -92,13 +83,11 @@ export class Wallet {
     //         [10.0, 10.0, 10.0, 1]
     //       );
 
-    let pages = [
-      new Page('1', 'Home', 'home', [], 0, ''),
-    ];
+    let pages = [new Page('1', 'Home', 'home', [], 0, '')];
 
-    this.layouts = layouts ?? [
-      new Layout('Desktop', 'desktop', pages),
-      new Layout('Mobile', 'mobile', pages),
-    ];
+    this.activeLayouts = activeLayouts ?? {
+      desktop: new Layout('Desktop', 'desktop', pages),
+      mobile: new Layout('Mobile', 'mobile', pages),
+    };
   }
 }

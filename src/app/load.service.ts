@@ -629,9 +629,11 @@ export class LoadService {
     });
   }
 
-  syncPages(layouts?: Layout[]) {
-    return layouts?.map((layout) => {
-      return new Layout(
+  syncPages(layouts: Dict<Layout> = {}) {
+    let lays: Dict<Layout> = {};
+
+    Object.values(layouts)?.map((layout) => {
+      lays[layout.type] = new Layout(
         layout.name,
         layout.type,
         layout.pages.map((page) => {
@@ -755,9 +757,12 @@ export class LoadService {
             page.detailColor,
             page.icon
           );
-        })
+        }),
+        layout.id
       );
     });
+
+    return lays;
   }
 
   syncWallet(wallet: Wallet) {
@@ -780,7 +785,7 @@ export class LoadService {
       wallet.installWebhook,
       wallet.whitelist,
       wallet.authStyle,
-      this.syncPages(wallet.layouts),
+      this.syncPages(wallet.activeLayouts),
       wallet.tracking,
       wallet.displayedLayouts
     );
@@ -1032,64 +1037,80 @@ export class LoadService {
     // this.metaService.removeTag("name='googlebot'");
   }
 
+  async changeLayout(
+    layout: Layout,
+    wallet: Wallet,
+    step = 1,
+    callback: (layout: Layout) => any
+  ) {
+    console.log('man2');
+    try {
+      if (wallet && layout) {
+        var data = {
+          layoutType: layout.type,
+          step,
+          layoutId: layout.id,
+          walletId: wallet.id,
+        };
+
+        if (data) {
+          this.functions
+            .httpsCallable('editLayouts')(data)
+            .pipe(first())
+            .subscribe(
+              async (newLayout) => {
+                console.log(newLayout)
+                callback(newLayout ?? layout);
+              },
+              (err) => {
+                console.error({ err });
+                callback(layout);
+              }
+            );
+        } else {
+          console.log('none');
+          callback(layout);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      callback(layout);
+    }
+  }
+
   async addLayout(
     layout: Layout,
     wallet: Wallet,
     callback: (layout: Layout) => any
   ) {
+    console.log('man');
     try {
-      // const promises1 = (layout.blocks ?? []).map(
-      //   async (row: Block, mainIndex: number) => {
-      //     const promises2 = (row.imgs ?? []).map(
-      //       async (image, index: number) => {
-      //         if (this.isBase64(image.link?.replace(/^[\w\d;:\/]+base64\,/g, ''))) {
-      //           var url = image.link;
-      //           url = (await this.uploadLayoutImages(
-      //             image.link,
-      //             layout.id +
-      //               '_' +
-      //               mainIndex.toString() +
-      //               '_' +
-      //               index.toString(),
-      //             uid
-      //           )) as string;
-      //           var split = url.split('&token=');
-      //           url = split[0];
-
-      //           ((layout.blocks ?? [])[mainIndex].imgs ?? [])[index].link = url;
-      //         }
-      //       }
-      //     );
-      //     await Promise.all(promises2);
-      //   }
-      // );
-
-      // await Promise.all(promises1);
-
-      let uid = (await this.currentUser)?.uid;
-
-      if (wallet && uid) {
-        let i = wallet.layouts.findIndex((p) => p.type == layout.type);
-
-        if (i > -1) {
-          wallet.layouts[i] = layout;
-        }
-
+      if (wallet && layout) {
         var data = {
-          layouts: JSON.parse(JSON.stringify(wallet.layouts)),
+          layout: JSON.parse(JSON.stringify(layout)),
+          walletId: wallet.id,
         };
 
-        if (uid && data) {
-          await this.db
-            .collection(`Users/${uid}/wallets`)
-            .doc(wallet.id)
-            .set(data, { merge: true });
-          callback(layout);
+        if (data) {
+          this.functions
+            .httpsCallable('saveLayouts')(data)
+            .pipe(first())
+            .subscribe(
+              async (newLayout) => {
+                callback(newLayout ?? layout);
+              },
+              (err) => {
+                console.error({ err });
+                callback(layout);
+              }
+            );
         } else {
+          console.log('none');
           callback(layout);
         }
       }
     } catch (error) {
+      console.log(error);
       callback(layout);
     }
   }
@@ -1100,19 +1121,5 @@ export class LoadService {
     } catch (err) {
       return false;
     }
-  }
-
-  private async uploadLayoutImages(image: string, type: string, uid?: string) {
-    const filePath = 'users/' + uid + '/layouts/' + type + '.png';
-    let ref = this.storage.ref(filePath);
-
-    const byteArray = Buffer.from(
-      image?.replace(/^[\w\d;:\/]+base64\,/g, ''),
-      'base64'
-    );
-
-    const task = await ref.put(byteArray);
-    const url = await task.ref.getDownloadURL();
-    return url;
   }
 }

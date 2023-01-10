@@ -1,5 +1,5 @@
 import { ENTER, COMMA, T } from '@angular/cdk/keycodes';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, TitleCasePipe } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -18,7 +18,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ethers } from 'ethers';
 import { CurrencyMaskInputMode } from 'ngx-currency';
-import { Observable } from 'rxjs';
+import { async, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AddressEnsLookupPipe } from '../address-ens-lookup.pipe';
 import { AddressValidatePipe } from '../address-validate.pipe';
@@ -27,6 +27,7 @@ import { LayoutBuilderComponent } from '../layout-builder/layout-builder.compone
 import { Layout } from '../layout.model';
 import { LoadService } from '../load.service';
 import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
+import { Page } from '../page.model';
 import { Signature } from '../signature.model';
 import { Wallet } from '../wallet.model';
 
@@ -140,18 +141,17 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
   sameLayouts() {
     return (
-      (this.wallet?.layouts[0]?.pages ?? []) ==
-        (this.wallet?.layouts[1]?.pages ?? []) ?? false
+      (this.wallet?.activeLayouts['desktop']?.pages ?? []) ==
+        (this.wallet?.activeLayouts['mobile']?.pages ?? []) ?? false
     );
   }
 
   syncLayouts(id: string) {
-    let layout =
-      this.wallet?.layouts.find((layout) => layout.type == id)?.pages ?? [];
+    let layout = this.wallet?.activeLayouts[id].pages ?? [];
     if (id == 'mobile') {
-      this.wallet!.layouts[0].pages = layout;
+      this.wallet!.activeLayouts['desktop'].pages = layout;
     } else if (id == 'desktop') {
-      this.wallet!.layouts[1].pages = layout;
+      this.wallet!.activeLayouts['mobile'].pages = layout;
     }
   }
 
@@ -401,7 +401,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
             this.wallet![field]?.trim() == ''
         ).length == 0;
 
-        console.log(validText)
+      console.log(validText);
 
       let validArray =
         arrayFields.filter(
@@ -455,13 +455,9 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         if (i > -1) {
           this.saves.splice(i, 1);
         }
-        let index =
-          this.wallet?.layouts.findIndex(
-            (l) => l.name.toLowerCase() == data.layout!.name.toLowerCase()
-          ) ?? -1;
         this.loading = false;
-        if (this.wallet && index > -1) {
-          this.wallet.layouts[index] = data.layout;
+        if (this.wallet) {
+          this.wallet.activeLayouts[data.layout.type] = data.layout;
           //toast
           if (this.saves.length == 0) {
             this.loadingMode = 0;
@@ -500,8 +496,8 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
   async changed(event: MatSelectChange) {
     if (event.value.length == 0) {
-      event.source.writeValue(this.wallet!.chains)
-      return undefined
+      event.source.writeValue(this.wallet!.chains);
+      return undefined;
     }
     this.wallet!.chains = event.value;
 
@@ -510,9 +506,19 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
   async layoutChanged(event: MatSelectChange) {
     if (event.value.length == 0) {
-      event.source.writeValue(this.wallet!.displayedLayouts)
-      return undefined
+      event.source.writeValue(this.wallet!.displayedLayouts);
+      return undefined;
     }
+
+    let pipe = new TitleCasePipe();
+
+    event.value?.forEach((val: string) => {
+      if (!this.wallet!.activeLayouts[val]) {
+        this.wallet!.activeLayouts[val] = new Layout(pipe.transform(val), val, [
+          new Page('1', 'Home', 'home', [], 0, ''),
+        ]);
+      }
+    });
     this.wallet!.displayedLayouts = event.value;
 
     return undefined;

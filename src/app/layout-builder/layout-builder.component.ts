@@ -7,6 +7,7 @@ import {
   Input,
   EventEmitter,
   Output,
+  HostListener,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -64,6 +65,17 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   gridBorders: { id: 'left' | 'right' | 'top' | 'bottom' }[] = [];
   gridShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
   blockShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
+
+  @HostListener('document:keydown.control.z') undo(event: KeyboardEvent) {
+    console.log('oy');
+    // responds to control+z
+  }
+
+  @HostListener('document:keydown.meta.z') undoApple(event: KeyboardEvent) {
+    console.log('apple oy');
+    // responds to control+z
+    this.changeLayout(-1)
+  }
 
   // Dict<{
   //   nft: NFT;
@@ -367,7 +379,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.activeBlock = undefined
+    this.activeBlock = undefined;
     this.OnDestroy.next();
     this.OnDestroy.complete();
   }
@@ -465,9 +477,8 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
           )
         )
       ),
-      index: blockIndex
-    }
-
+      index: blockIndex,
+    };
 
     this.margins = (
       Object.keys(this.activeBlock?.block?.padding ?? {}) as (
@@ -775,7 +786,7 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
     this.videos = [];
     this.buttons = [];
     this.editingBlock = undefined;
-    this.activeBlock = undefined
+    this.activeBlock = undefined;
   }
 
   activeBlock?: {
@@ -947,8 +958,26 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
       let time = new Date().getTime();
       this.layoutSaved.emit({ time });
       this.loadService.addLayout(this.editableLayout, this.wallet, (layout) => {
+        this.editableLayout!.id = layout.id;
         this.layoutSaved.emit({ time, layout });
       });
+    }
+  }
+
+  async changeLayout(mode = 1) {
+    if (this.editableLayout) {
+      // let time = new Date().getTime();
+      // this.layoutSaved.emit({ time });
+      this.loadService.changeLayout(
+        this.editableLayout,
+        this.wallet,
+        mode,
+        (layout) => {
+          console.log(layout)
+          this.editableLayout = layout;
+          // this.layoutSaved.emit({ time, layout });
+        }
+      );
     }
   }
 
@@ -1042,9 +1071,12 @@ export class LayoutBuilderComponent implements OnInit, OnDestroy {
   }
 
   updatePages(event: CdkDragDrop<Page[]>) {
-
-    console.log(event)
-    moveItemInArray(this.editableLayout?.pages ?? [], event.previousIndex, event.currentIndex);
+    console.log(event);
+    moveItemInArray(
+      this.editableLayout?.pages ?? [],
+      event.previousIndex,
+      event.currentIndex
+    );
 
     if (this.editingBlock?.pageIndex == event.previousIndex) {
       this.editingBlock.pageIndex = event.currentIndex;
