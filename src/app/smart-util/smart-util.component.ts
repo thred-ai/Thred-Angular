@@ -458,6 +458,12 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         this.loading = false;
         if (this.wallet) {
           this.wallet.activeLayouts[data.layout.type] = data.layout;
+          console.log('SAVED');
+          console.log(this.wallet.activeLayouts[data.layout.type]);
+          this.wallet.displayedLayouts = Object.keys(
+            this.wallet.activeLayouts
+          ).map((l) => l.replace('-layout', ''));
+          this.cdr.detectChanges();
           //toast
           if (this.saves.length == 0) {
             this.loadingMode = 0;
