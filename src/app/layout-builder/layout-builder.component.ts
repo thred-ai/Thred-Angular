@@ -54,9 +54,7 @@ export class LayoutBuilderComponent implements OnInit {
   loaded = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
-
   items = {};
-
 
   @HostListener('document:keydown.control.z') undo(event: KeyboardEvent) {
     console.log('oy');
@@ -66,7 +64,7 @@ export class LayoutBuilderComponent implements OnInit {
   @HostListener('document:keydown.meta.z') undoApple(event: KeyboardEvent) {
     console.log('apple oy');
     // responds to control+z
-    this.changeLayout(-1)
+    this.changeLayout(-1);
   }
 
   // Dict<{
@@ -115,7 +113,6 @@ export class LayoutBuilderComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-
   config: SummernoteOptions = {
     placeholder: '',
     tabsize: 2,
@@ -141,10 +138,6 @@ export class LayoutBuilderComponent implements OnInit {
 
   title = 'LAUNCHING LAYOUT BUILDER';
 
-
-
-
-
   @Input() wallet!: Wallet;
   @Input() color!: string;
 
@@ -166,7 +159,7 @@ export class LayoutBuilderComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
-    private loadService: LoadService,
+    private loadService: LoadService
   ) {
     this.mode = 1;
   }
@@ -174,7 +167,6 @@ export class LayoutBuilderComponent implements OnInit {
   selectedTheme: Dict<any> = {};
 
   async ngOnInit() {
-
     if (this.editableLayout) {
       await Promise.all(
         this.editableLayout.pages?.map((page, index) => {
@@ -232,14 +224,17 @@ export class LayoutBuilderComponent implements OnInit {
   drop(event: any, pageIndex: number) {
     let arr = this.editableLayout?.pages[pageIndex].blocks ?? [];
     moveItemInArray(arr, event.previousIndex, event.currentIndex);
-    if (this.activeBlock && this.activeBlock?.blockIndex == event.previousIndex) {
+    if (
+      this.activeBlock &&
+      this.activeBlock?.blockIndex == event.previousIndex
+    ) {
       this.activeBlock.blockIndex = event.currentIndex;
     }
     this.saveLayout(0);
   }
 
   saveLayout(delay = 750) {
-    console.log(delay)
+    console.log(delay);
     setTimeout(() => {
       this.save();
     }, delay);
@@ -256,6 +251,21 @@ export class LayoutBuilderComponent implements OnInit {
     }
   }
 
+  removeBlocks(index: number, pageIndex: number) {
+    this.editableLayout?.pages[pageIndex]?.blocks?.splice(index, 1);
+    // this.saveLayout(0);
+
+    this.cdr.detectChanges();
+  }
+
+  addBlock(pageIndex: number, block: Block) {
+    let rows =
+      (this.editableLayout?.pages[pageIndex]?.blocks as Array<Block>) ?? [];
+    rows.push(block);
+
+    this.saveLayout(0);
+  }
+
   async changeLayout(mode = 1) {
     if (this.layout) {
       // let time = new Date().getTime();
@@ -265,7 +275,7 @@ export class LayoutBuilderComponent implements OnInit {
         this.wallet,
         mode,
         (layout) => {
-          console.log(layout)
+          console.log(layout);
           this.layout = layout;
           // this.layoutSaved.emit({ time, layout });
         }
@@ -273,6 +283,22 @@ export class LayoutBuilderComponent implements OnInit {
     }
   }
 
+  finishedEditing(mode: number = 0, blockIndex: number, pageIndex: number) {
+    let blocks = this.editableLayout?.pages[pageIndex].blocks ?? [];
+
+    if (blocks[blockIndex] != undefined) {
+      switch (mode) {
+        // @ts-ignore
+        case 1:
+          this.removeBlocks(blockIndex, pageIndex);
+          break;
+        default:
+          break;
+      }
+    }
+
+    this.activeBlock = undefined
+  }
 
   @ViewChild('tabGroup', { static: false }) childTabGroup!: MatTabGroup;
 
@@ -398,21 +424,23 @@ export class LayoutBuilderComponent implements OnInit {
       return;
     }
 
-    console.log(blockIndex)
-    console.log(pageIndex)
-    console.log(this.editableLayout?.pages[pageIndex].blocks![blockIndex])
+    console.log(blockIndex);
+    console.log(pageIndex);
+    console.log(this.editableLayout?.pages[pageIndex].blocks![blockIndex]);
 
     this.activeBlock = {
       block: Object.assign(
         {},
         JSON.parse(
-          JSON.stringify(this.editableLayout?.pages[pageIndex].blocks![blockIndex])
+          JSON.stringify(
+            this.editableLayout?.pages[pageIndex].blocks![blockIndex]
+          )
         )
       ),
       blockIndex,
       pageIndex,
     };
 
-    this.cdr.detectChanges()
+    this.cdr.detectChanges();
   }
 }

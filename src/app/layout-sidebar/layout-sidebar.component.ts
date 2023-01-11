@@ -45,25 +45,45 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     block: Block;
     blockIndex: number;
     pageIndex: number;
-  }
+  };
 
-  @Input() set overrideBlock(block: {
-    block: Block;
-    blockIndex: number;
-    pageIndex: number;
-  } | undefined) {
-    this.activeBlock = block
+  @Input() set overrideBlock(
+    block:
+      | {
+          block: Block;
+          blockIndex: number;
+          pageIndex: number;
+        }
+      | undefined
+  ) {
+    this.activeBlock = block;
     if (block) {
       this.setEdit(block.blockIndex);
     }
   }
 
-  @Output() saveLayouts = new EventEmitter<{delay: number, page: Page}>();
+  @Output() saveLayouts = new EventEmitter<{ delay: number; page: Page }>();
   @Output() droppedPage = new EventEmitter<any>();
   @Output() closeBar = new EventEmitter<any>();
 
   @Output() edit = new EventEmitter<{
     blockIndex: number;
+    pageIndex: number;
+  }>();
+
+  @Output() finishedEdit = new EventEmitter<{
+    blockIndex: number;
+    pageIndex: number;
+    mode: number;
+  }>();
+
+  @Output() removeBlock = new EventEmitter<{
+    blockIndex: number;
+    pageIndex: number;
+  }>();
+
+  @Output() addedBlock = new EventEmitter<{
+    block: Block;
     pageIndex: number;
   }>();
 
@@ -101,30 +121,18 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let blocks = this.pages[this.activeBlock.pageIndex].blocks ?? [];
-
-    if (blocks[this.activeBlock.blockIndex] != undefined) {
-      switch (mode) {
-        // @ts-ignore
-        case 1:
-          this.removeBlocks(
-            this.activeBlock.blockIndex,
-            this.activeBlock.pageIndex
-          );
-          break;
-        default:
-          break;
-      }
-    }
-
-    this.activeBlock = undefined;
+    this.finishedEdit.emit({
+      blockIndex: this.activeBlock.blockIndex,
+      pageIndex: this.activeBlock.pageIndex,
+      mode,
+    });
   }
 
   saveLayout(delay: number) {
     // if (this.activeBlock){
     //   this.page.blocks[this.activeBlock.blockIndex] = this.activeBlock.block
     // }
-    this.saveLayouts.emit({delay, page: this.page});
+    this.saveLayouts.emit({ delay, page: this.page });
   }
 
   icons = new Array<any>();
@@ -205,33 +213,25 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     this.OnDestroy.complete();
   }
 
-  removeBlocks(index: number, pageIndex: number) {
-    this.pages[pageIndex]?.blocks?.splice(index, 1);
-    // this.saveLayout(0);
-
-    this.cdr.detectChanges();
+  removeBlocks(blockIndex: number, pageIndex: number) {
+    this.removeBlock.emit({ blockIndex, pageIndex });
   }
 
   addBlock(pageIndex: number) {
-    let rows = (this.pages[pageIndex]?.blocks as Array<Block>) ?? [];
-    rows.push(
-      new Block(
-        undefined,
-        0,
-        [],
-        new Grid(0, 3, 0, 'start'),
-        '',
-        '#FFFFFF',
-        0,
-        '',
-        [],
-        ''
-      )
+    let block = new Block(
+      undefined,
+      0,
+      [],
+      new Grid(0, 3, 0, 'start'),
+      '',
+      '#FFFFFF',
+      0,
+      '',
+      [],
+      ''
     );
 
-    // this.saveLayout(0);
-
-    this.edit.emit({ blockIndex: rows.length - 1, pageIndex });
+    this.addedBlock.emit({ block, pageIndex });
   }
 
   removeSliderListener(id: string) {

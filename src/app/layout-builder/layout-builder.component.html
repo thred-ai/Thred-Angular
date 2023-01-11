@@ -84,6 +84,11 @@
             (droppedPage)="drop($event.$event, $event.pageIndex)"
             (closeBar)="openBar = false"
             (edit)="edit($event.blockIndex, $event.pageIndex)"
+            (finishedEdit)="
+              finishedEditing($event.mode, $event.blockIndex, $event.pageIndex)
+            "
+            (addedBlock)="addBlock($event.pageIndex, $event.block)"
+            (removeBlock)="removeBlocks($event.blockIndex, $event.pageIndex)"
           >
           </app-layout-sidebar>
         </div>
@@ -113,27 +118,24 @@
           }}"
         >
           <div
-            class="rounded-15 {{
-              editable
-                ? 'shadow border border-1 border-dark'
-                : 'shadow-0 border-preview'
-            }} m-auto {{
+            class="m-auto {{
               editable ? editableLayout.type + '-full' : editableLayout.type
-            }} p-0"
-            style="overflow: hidden"
+            }}"
           >
-            <app-page
-              [editable]="editable"
-              [layout]="editableLayout"
-              [overrideBlock]="activeBlock"
-              [currentPage]="{page, index: p}"
-              (clickedLayout)="clickedCanvas.emit(true)"
-              (updatePages)="updatePages($event)"
-              (updateBlocks)="drop($event, p)"
-              (pageChanged)="tabGroup.selectedIndex = $event"
-              (edit)="edit($event.blockIndex, $event.pageIndex)"
-            >
-            </app-page>
+            <div class="w-100 h-100 preview-display" style="overflow: hidden">
+              <app-page
+                [editable]="editable"
+                [layout]="editableLayout"
+                [overrideBlock]="activeBlock"
+                [currentPage]="{page, index: p}"
+                (clickedLayout)="clickedCanvas.emit(true)"
+                (updatePages)="updatePages($event)"
+                (updateBlocks)="drop($event, p)"
+                (pageChanged)="tabGroup.selectedIndex = $event"
+                (edit)="edit($event.blockIndex, $event.pageIndex)"
+              >
+              </app-page>
+            </div>
           </div>
         </div>
       </div>
