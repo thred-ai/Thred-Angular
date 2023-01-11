@@ -6,15 +6,9 @@
   (click)="clicked.emit()"
   [class.big-design-editor]="active"
   [style.padding-top.px]="col.clientWidth * (block.padding.top * 0.0025)"
-  [style.padding-right.px]="
-    col.clientWidth * (block.padding.right * 0.0025)
-  "
-  [style.padding-bottom.px]="
-    col.clientWidth * (block.padding.bottom * 0.0025)
-  "
-  [style.padding-left.px]="
-    col.clientWidth * (block.padding.left * 0.0025)
-  "
+  [style.padding-right.px]="col.clientWidth * (block.padding.right * 0.0025)"
+  [style.padding-bottom.px]="col.clientWidth * (block.padding.bottom * 0.0025)"
+  [style.padding-left.px]="col.clientWidth * (block.padding.left * 0.0025)"
 >
   <div
     class="p-0 w-100"

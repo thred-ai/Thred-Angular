@@ -36,11 +36,11 @@
           <app-block
             [id]="'p-' + i"
             [block]="
-              (overrideBlock && overrideBlock.index == i
+              (overrideBlock && overrideBlock.blockIndex == i
                 ? overrideBlock.block
                 : undefined) ?? b
             "
-            [active]="overrideBlock != undefined && overrideBlock.index == i"
+            [active]="overrideBlock != undefined && overrideBlock.blockIndex == i"
             [page]="currentPage.page"
             (clicked)="
               edit.emit({ blockIndex: i, pageIndex: currentPage.index })

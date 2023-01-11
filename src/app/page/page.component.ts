@@ -18,7 +18,8 @@ export class PageComponent implements OnInit {
   @Input() layout!: Layout;
   @Input() overrideBlock?: {
     block: Block;
-    index: number;
+    blockIndex: number;
+    pageIndex: number;
   };
 
   @Output() updatePages = new EventEmitter<any>();
