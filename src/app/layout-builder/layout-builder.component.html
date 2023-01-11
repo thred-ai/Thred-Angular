@@ -76,7 +76,7 @@
         >
           <app-layout-sidebar
             [page]="page"
-            [pages]="editableLayout.pages ?? []"
+            [pages]="editableLayout.pages"
             [pageIndex]="p"
             [walletId]="wallet.id"
             [overrideBlock]="activeBlock"
@@ -117,24 +117,22 @@
             openBar ? 'static' : 'absolute'
           }}"
         >
-          <div
-            class="m-auto {{
-              editable ? editableLayout.type + '-full' : editableLayout.type
-            }}"
-          >
-            <div class="w-100 h-100 preview-display" style="overflow: hidden">
-              <app-page
-                [editable]="editable"
-                [layout]="editableLayout"
-                [overrideBlock]="activeBlock"
-                [currentPage]="{page, index: p}"
-                (clickedLayout)="clickedCanvas.emit(true)"
-                (updatePages)="updatePages($event)"
-                (updateBlocks)="drop($event, p)"
-                (pageChanged)="tabGroup.selectedIndex = $event"
-                (edit)="edit($event.blockIndex, $event.pageIndex)"
-              >
-              </app-page>
+          <div class="m-auto {{ editableLayout.type }}">
+            <div class="preview-display">
+              <div class="display">
+                <app-page
+                  [editable]="editable"
+                  [layout]="editableLayout"
+                  [overrideBlock]="activeBlock"
+                  [currentPage]="{page, index: p}"
+                  (clickedLayout)="clickedCanvas.emit(true)"
+                  (updatePages)="updatePages($event)"
+                  (updateBlocks)="drop($event, p)"
+                  (pageChanged)="tabGroup.selectedIndex = $event"
+                  (edit)="edit($event.blockIndex, $event.pageIndex)"
+                >
+                </app-page>
+              </div>
             </div>
           </div>
         </div>
