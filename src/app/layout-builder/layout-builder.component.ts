@@ -32,18 +32,15 @@ import * as html2canvas from 'html2canvas';
 const DragConfig = {
   dragStartThreshold: 0,
   pointerDirectionChangeThreshold: 5,
-  zIndex: 10000
+  zIndex: 10000,
 };
-
-
 
 @Component({
   selector: 'app-layout-builder',
   templateUrl: './layout-builder.component.html',
   styleUrls: ['./layout-builder.component.scss'],
-  providers: [{ provide: CDK_DRAG_CONFIG, useValue: DragConfig }]
+  providers: [{ provide: CDK_DRAG_CONFIG, useValue: DragConfig }],
 })
-
 export class LayoutBuilderComponent implements OnInit {
   loaded = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -98,6 +95,12 @@ export class LayoutBuilderComponent implements OnInit {
   @Input() color!: string;
 
   @Output() layoutSaved = new EventEmitter<{ time: number; layout?: Layout }>();
+  @Output() layoutChanged = new EventEmitter<{
+    time: number;
+    layout?: Layout;
+    mode: number;
+  }>();
+
   @Output() clickedCanvas = new EventEmitter<boolean>();
 
   @Input() set layout(value: Layout) {
@@ -199,13 +202,15 @@ export class LayoutBuilderComponent implements OnInit {
   async save() {
     let display = document.getElementById('display');
     if (this.editableLayout && display) {
-      html2canvas.default(display, { allowTaint: true, useCORS: true }).then((canvas) => {
-        document.body.appendChild(canvas);
+      html2canvas
+        .default(display, { allowTaint: true, useCORS: true })
+        .then((canvas) => {
+          document.body.appendChild(canvas);
 
-        let url = canvas.toDataURL();
+          let url = canvas.toDataURL();
 
-        console.log(url);
-      });
+          console.log(url);
+        });
 
       let time = new Date().getTime();
       this.layoutSaved.emit({ time });
@@ -232,17 +237,17 @@ export class LayoutBuilderComponent implements OnInit {
   }
 
   async changeLayout(mode = 1) {
-    if (this.layout) {
-      // let time = new Date().getTime();
-      // this.layoutSaved.emit({ time });
+    if (this.editableLayout) {
+      let time = new Date().getTime();
+      this.layoutChanged.emit({ time, layout: undefined, mode });
       this.loadService.changeLayout(
-        this.layout,
+        this.editableLayout,
         this.wallet,
         mode,
         (layout) => {
           console.log(layout);
-          this.layout = layout;
-          // this.layoutSaved.emit({ time, layout });
+          this.editableLayout = layout;
+          this.layoutChanged.emit({ time, layout, mode });
         }
       );
     }

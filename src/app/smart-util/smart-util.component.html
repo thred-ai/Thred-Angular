@@ -74,6 +74,51 @@
         </mat-icon>
       </ng-template>
     </button>
+
+    <div
+      class="d-flex justify-content-between align-items-center h-100"
+      *ngIf="mode == 1"
+    >
+      <div class="px-1">
+        <button
+          class="btn bg-transparent border-white rounded-circle fw-bold text-white d-flex justify-content-between align-content-center p-2 my-auto"
+          (click)="loadingChangeMode = -1; layoutBuilder?.changeLayout(-1)"
+          [disabled]="loadingChangeMode == -1 || loadingChangeMode == 1"
+        >
+          <ng-container *ngIf="loadingChangeMode == -1; else buttonTitles1">
+            <span
+              class="spinner-border spinner-border-sm m-auto"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </ng-container>
+
+          <ng-template #buttonTitles1>
+            <mat-icon class="fw-bold" style="aspect-ratio: 1"> undo </mat-icon>
+          </ng-template>
+        </button>
+      </div>
+
+      <div class="px-1">
+        <button
+          class="btn bg-transparent border-white rounded-circle fw-bold text-white d-flex justify-content-between align-content-center p-2 my-auto"
+          (click)="loadingChangeMode = 1; layoutBuilder?.changeLayout(1)"
+          [disabled]="loadingChangeMode == -1 || loadingChangeMode == 1"
+        >
+          <ng-container *ngIf="loadingChangeMode == 1; else buttonTitles2">
+            <span
+              class="spinner-border spinner-border-sm m-auto"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </ng-container>
+
+          <ng-template #buttonTitles2>
+            <mat-icon class="fw-bold" style="aspect-ratio: 1"> redo </mat-icon>
+          </ng-template>
+        </button>
+      </div>
+    </div>
   </div>
 
   <ng-container
@@ -1111,6 +1156,7 @@
           [layout]="walletLayouts[selectedIndex]"
           [editable]="true"
           (layoutSaved)="layoutSaved($event)"
+          (layoutChanged)="changeLayout($event)"
           [color]="'primary'"
         ></app-layout-builder>
       </div>

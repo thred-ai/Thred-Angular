@@ -155,6 +155,8 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   }
 
   loading = false;
+  loadingChange = false;
+
   mode = 0;
 
   customCurrencyMaskConfig = {
@@ -443,9 +445,14 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     }
   }
 
-  @ViewChild('layoutBuilder') layoutBuilder?: LayoutBuilderComponent;
+
   saves: number[] = [];
+  changes: number[] = [];
+
   loadingMode = 0;
+  loadingChangeMode = 0;
+
+  @ViewChild('layoutBuilder') layoutBuilder?: LayoutBuilderComponent;
 
   layoutSaved(data: { time: number; layout?: Layout }) {
     if (data.time) {
@@ -454,7 +461,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         if (i > -1) {
           this.saves.splice(i, 1);
         }
-        this.loading = false;
         if (this.wallet) {
           this.wallet.activeLayouts[data.layout.type] = data.layout;
           console.log('SAVED');
@@ -471,6 +477,33 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       } else {
         this.loadingMode = 1;
         this.saves.push(data.time);
+      }
+    }
+  }
+
+  async changeLayout(data: { time: number; layout?: Layout, mode: number}){
+    if (data.time) {
+      if (data.layout) {
+        let i = this.changes.indexOf(data.time);
+        if (i > -1) {
+          this.changes.splice(i, 1);
+        }
+        if (this.wallet) {
+          this.wallet.activeLayouts[data.layout.type] = data.layout;
+          console.log('SAVED');
+          console.log(this.wallet.activeLayouts[data.layout.type]);
+          this.wallet.displayedLayouts = Object.keys(
+            this.wallet.activeLayouts
+          ).map((l) => l.replace('-layout', ''));
+          this.cdr.detectChanges();
+          //toast
+          if (this.changes.length == 0) {
+            this.loadingChangeMode = 0;
+          }
+        }
+      } else {
+        // this.loadingChangeMode = data.mode;
+        this.changes.push(data.time);
       }
     }
   }

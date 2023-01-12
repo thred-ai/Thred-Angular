@@ -1043,7 +1043,10 @@ export class LoadService {
     step = 1,
     callback: (layout: Layout) => any
   ) {
-    console.log('man2');
+    console.log("LAYOUT -- " + layout.id);
+    console.log("WALLET -- " + wallet.id);
+    console.log("TYPE -- " + layout.type);
+
     try {
       if (wallet && layout) {
         var data = {
