@@ -202,15 +202,17 @@ export class LayoutBuilderComponent implements OnInit {
   async save() {
     let display = document.getElementById('display');
     if (this.editableLayout && display) {
-      html2canvas
-        .default(display, { allowTaint: true, useCORS: true })
-        .then((canvas) => {
-          document.body.appendChild(canvas);
+      // html2canvas
+      //   .default(display, { allowTaint: true, useCORS: true })
+      //   .then((canvas) => {
+      //     document.body.appendChild(canvas);
 
-          let url = canvas.toDataURL();
+      //     let url = canvas.toDataURL();
 
-          console.log(url);
-        });
+      //     console.log(url);
+      //   });
+
+      
 
       let time = new Date().getTime();
       this.layoutSaved.emit({ time });
