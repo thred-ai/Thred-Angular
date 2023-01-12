@@ -12120,8 +12120,9 @@ mat-calendar.no-header {
 }
 
 .desktop {
-  --padding-x: 2.55%;
-  --padding-y: 2.55%;
+  --padding-x: 2.0%;
+  --padding-t: 3.05%;
+  --padding-b: 23.95%;
 
   height: calc(var(--desktopDisplayHeight) * 1%);
   aspect-ratio: 1.3 !important;
@@ -12139,17 +12140,16 @@ mat-calendar.no-header {
     
     width: 100%;
     height: 100%;
-    padding-top: var(--padding-y);
-    padding-bottom: var(--padding-y);
+    padding-top: var(--padding-t);
+    padding-bottom: var(--padding-b);
     padding-left: var(--padding-x);
     padding-right: var(--padding-x);
     
 
     .display {
-      overflow: hidden;
-      border-radius: 15px;
       width: 100%;
       height: 100%;
+      border: 2px solid black !important;
     }
   }
 }

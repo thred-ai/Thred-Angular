@@ -2,14 +2,12 @@ import {
   Component,
   OnInit,
   ViewChild,
-  OnDestroy,
   ChangeDetectorRef,
   Input,
   EventEmitter,
   Output,
   HostListener,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 import {
   moveItemInArray,
@@ -18,38 +16,34 @@ import {
   CdkDragExit,
   CDK_DRAG_CONFIG,
 } from '@angular/cdk/drag-drop';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
-import { Button } from '../button.model';
 import { LoadService, Dict } from '../load.service';
 import { Page } from '../page.model';
 import { Block } from '../block.model';
 import { Wallet } from '../wallet.model';
 import { Layout } from '../layout.model';
 import { MatTabGroup } from '@angular/material/tabs';
-import { NFT } from '../nft.model';
 import { NFTList } from '../nft-list.model';
-import { Options } from '@angular-slider/ngx-slider';
-import { SharedDialogComponent } from '../shared-dialog/shared-dialog.component';
-import { NFTTableComponent } from '../nft-table/nft-table.component';
-import { Grid } from '../grid.model';
-import { Media } from '../media.model';
-import { MediaTableComponent } from '../media-table/media-table.component';
+import * as html2canvas from 'html2canvas';
 
 const DragConfig = {
   dragStartThreshold: 0,
   pointerDirectionChangeThreshold: 5,
-  zIndex: 10001,
+  zIndex: 10000
 };
+
+
 
 @Component({
   selector: 'app-layout-builder',
   templateUrl: './layout-builder.component.html',
   styleUrls: ['./layout-builder.component.scss'],
-  providers: [{ provide: CDK_DRAG_CONFIG, useValue: DragConfig }],
+  providers: [{ provide: CDK_DRAG_CONFIG, useValue: DragConfig }]
 })
+
 export class LayoutBuilderComponent implements OnInit {
   loaded = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -67,50 +61,12 @@ export class LayoutBuilderComponent implements OnInit {
     this.changeLayout(-1);
   }
 
-  // Dict<{
-  //   nft: NFT;
-  //   collection: Collection;
-  // }> = {};
-
   mode = 0;
   codeMode = false;
   pageDisplay?: string;
 
-  // urlText(showHttps = false) {
-  //   var url = 'https://shopmythred.com/' + this.wallet?.username;
-
-  //   if (this.wallet?.customURL?.status == 2) {
-  //     url =
-  //       this.wallet?.customURL.fullURL != undefined
-  //         ? this.wallet?.customURL.fullURL
-  //         : url;
-  //   }
-
-  //   return (
-  //     url +
-  //     '/' +
-  //     (this.layoutForm.controls['url'].value
-  //       ? this.layoutForm.controls['url'].value
-  //       : '')
-  //   );
-  // }
-
   changeSetting() {
     this.mode = this.mode == 0 ? 1 : 0;
-  }
-
-  radioChange(event: any) {
-    let val = event.value;
-
-    // this.layoutForm.controls['isFullscreen'].setValue(val);
-    this.cdr.detectChanges();
-  }
-
-  radioChangeLoader(event: any) {
-    let val = event.value;
-
-    // this.layoutForm.controls['isLoader'].setValue(val);
-    this.cdr.detectChanges();
   }
 
   config: SummernoteOptions = {
@@ -241,7 +197,16 @@ export class LayoutBuilderComponent implements OnInit {
   }
 
   async save() {
-    if (this.editableLayout) {
+    let display = document.getElementById('display');
+    if (this.editableLayout && display) {
+      html2canvas.default(display, { allowTaint: true, useCORS: true }).then((canvas) => {
+        document.body.appendChild(canvas);
+
+        let url = canvas.toDataURL();
+
+        console.log(url);
+      });
+
       let time = new Date().getTime();
       this.layoutSaved.emit({ time });
       this.loadService.addLayout(this.editableLayout, this.wallet, (layout) => {
@@ -297,7 +262,7 @@ export class LayoutBuilderComponent implements OnInit {
       }
     }
 
-    this.activeBlock = undefined
+    this.activeBlock = undefined;
   }
 
   @ViewChild('tabGroup', { static: false }) childTabGroup!: MatTabGroup;

@@ -72,6 +72,7 @@
 
         <div
           class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow-0 p-0 border-end"
+          style="z-index: 50"
           *ngIf="editable && openBar"
         >
           <app-layout-sidebar
@@ -117,9 +118,9 @@
             openBar ? 'static' : 'absolute'
           }}"
         >
-          <div class="m-auto {{ editableLayout.type }}">
+          <div class="m-auto {{ editableLayout.type }} shadow-preview">
             <div class="preview-display">
-              <div class="display">
+              <div class="display" id="display">
                 <app-page
                   [editable]="editable"
                   [layout]="editableLayout"

@@ -35,14 +35,12 @@
       <ng-container *ngIf="item.type == 0">
         <img
           *ngIf="item.data as nft"
-          loading="lazy"
           id="image"
           class="h-100 w-100"
-          [useSrcset]="true"
-          [defaultImage]="'/assets/default.png'"
-          [lazyLoad]="nft.img != '' ? nft.img : '/assets/default.png'"
+          [src]="nft.img"
           alt="ok"
           style="object-fit: cover; aspect-ratio: 1"
+
         />
       </ng-container>
 
@@ -51,13 +49,11 @@
           #image
           *ngIf="item.data as img"
           class="w-100"
-          loading="lazy"
           id="image"
-          [useSrcset]="true"
-          [defaultImage]="'/assets/default.png'"
-          [lazyLoad]="img.url"
+          [src]="img.url"
           style="object-fit: contain"
           [style.aspect-ratio]="img.width / img.height"
+     
         />
       </ng-container>
     </div>
