@@ -825,9 +825,6 @@
                           <div
                             class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
                           >
-                            <!-- [mdbPopover]="template"
-                          placement="bottom"
-                          trigger="hover" -->
                             <div
                               class="position-relative"
                               style="width: 95px; height: 47.5px"
@@ -892,35 +889,6 @@
                                   }}
                                 </mat-icon>
                               </div>
-                              <!-- 
-                            <div
-                              class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
-                              *ngIf="
-                                ((utilForm.controls['networks'].value ?? [])
-                                  .length ??
-                                  0) <
-                                2
-                              "
-                              style="
-                                object-fit: contain;
-                                aspect-ratio: 1;
-                                top: 0px;
-                                left: 25px;
-                                overflow: hidden;
-                                z-index: 48;
-                                opacity: 0.5;
-                              "
-                            >
-                              <mat-icon
-                                class="m-auto rounded-circle bg-purple text-white"
-                                style="
-                                  object-fit: contain;
-                                  height: 85%;
-                                  width: 85%;
-                                "
-                              >
-                              </mat-icon>
-                            </div> -->
                             </div>
                             <span
                               class="text-start text-truncate w-50 ms-3"
@@ -1078,6 +1046,13 @@
               >
                 <mat-tab *ngFor="let layout of walletLayouts ?? []">
                   <ng-template mat-tab-label>
+                    <mat-icon class="example-tab-icon text-dark">
+                      {{
+                        layout.type == "mobile"
+                          ? "phone_iphone"
+                          : "desktop_windows"
+                      }}</mat-icon
+                    >
                     <span class="ms-2 text-dark big-design-body fw-bold">
                       {{ layout.name }}
                     </span>

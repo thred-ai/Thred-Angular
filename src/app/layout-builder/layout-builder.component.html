@@ -71,7 +71,7 @@
         <!-- SIDEBAR -->
 
         <div
-          class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow-0 p-0 border-end"
+          class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow p-0 border-end"
           style="z-index: 50"
           *ngIf="editable && openBar"
         >
@@ -94,11 +94,10 @@
           </app-layout-sidebar>
         </div>
 
-        <!-- DISPLAY PREVIEW -->
+        <!-- CLOSED SIDEBAR -->
+
         <div
-          class="h-100 d-flex justify-content-center align-items-center px-0 h-100 bg-white border-end position-{{
-            openBar ? 'static' : 'absolute'
-          }}"
+          class="h-100 d-flex justify-content-center align-items-center px-0 h-100 bg-white border-end position-absolute"
           *ngIf="editable && !openBar"
           style="z-index: 500"
         >
@@ -110,6 +109,8 @@
             <mat-icon> arrow_forward_ios </mat-icon>
           </div>
         </div>
+
+        <!-- DISPLAY PREVIEW -->
 
         <div
           class="w-100 w-md-{{

@@ -28,7 +28,6 @@ import { Layout } from '../layout.model';
 import { LoadService } from '../load.service';
 import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
 import { Page } from '../page.model';
-import { Signature } from '../signature.model';
 import { Wallet } from '../wallet.model';
 
 @Component({
