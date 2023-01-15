@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NftTokenType } from 'alchemy-sdk';
 import { ethers } from 'ethers';
+import { NFT } from 'thred-core';
 import { LoadService } from './load.service';
-import { NFT } from './nft.model';
 
 @Pipe({
   name: 'nft'

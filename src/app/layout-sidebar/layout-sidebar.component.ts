@@ -11,17 +11,11 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { Block } from '../block.model';
-import { Grid } from '../grid.model';
-import { Layout } from '../layout.model';
+import { Page, Block, Grid, NFT, NFTList } from 'thred-core';
 import { LoadService } from '../load.service';
 import { MediaTableComponent } from '../media-table/media-table.component';
-import { NFTList } from '../nft-list.model';
 import { NFTTableComponent } from '../nft-table/nft-table.component';
-import { NFT } from '../nft.model';
-import { Page } from '../page.model';
 import { SharedDialogComponent } from '../shared-dialog/shared-dialog.component';
-import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-layout-sidebar',

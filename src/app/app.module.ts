@@ -39,7 +39,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthComponent } from './auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SearchBarComponent } from './search-bar/search-bar.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -65,7 +64,7 @@ import { AddressEnsLookupPipe } from './address-ens-lookup.pipe';
 import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
 import { FormatEtherPipe } from './format-ether.pipe';
 import { TypeNumberPipe } from './type-number.pipe';
-import { IsAdminPipe } from './is-admin.pipe';
+import { IsRoutePipe } from './is-route.pipe';
 import { CollectionTableComponent } from './collection-table/collection-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { StatusComponent } from './status/status.component';
@@ -85,7 +84,6 @@ import { NotificationComponent } from './notification/notification.component';
 import { SmartUtilComponent } from './smart-util/smart-util.component';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { SafeUrlPipe } from './safe-url.pipe';
-import { ProfileComponent } from './profile/profile.component';
 import { ViewCoordComponent } from './view-coord/view-coord.component';
 import { WalletConnectComponentComponent } from './wallet-connect-component/wallet-connect-component.component';
 
@@ -98,37 +96,32 @@ import { StoreThemePipe } from './store-theme.pipe';
 import { SafeTextRowsPipe } from './safe-text-rows.pipe';
 import { nftPipe } from './nft.pipe';
 import { NFTTableComponent } from './nft-table/nft-table.component';
-import {MatSliderModule} from '@angular/material/slider';
-import { NgxSliderModule } from "@angular-slider/ngx-slider";
+import { MatSliderModule } from '@angular/material/slider';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { LoaderComponent } from './loader/loader.component';
 import { AngularResizeEventModule } from 'angular-resize-event';
 import { AddNftComponent } from './add-nft/add-nft.component';
 import { SharedDialogComponent } from './shared-dialog/shared-dialog.component';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ColorShadePipe } from './color-shade.pipe';
 import { SliderValuePipe } from './slider-value.pipe';
 import { LayoutsPipe } from './layouts.pipe';
 import { LayoutIndexPipe } from './layout-index.pipe';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MediaTableComponent } from './media-table/media-table.component';
-import { GridComponent } from './grid/grid.component';
-import { GridItemComponent } from './grid-item/grid-item.component';
-import { NgxDefaultImageModule } from "ngx-default-image";
-import { BlockComponent } from './block/block.component';
+import { NgxDefaultImageModule } from 'ngx-default-image';
 import { EditBlockComponent } from './edit-block/edit-block.component';
-import { TabBarComponent } from './tab-bar/tab-bar.component';
-import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
-import { PageComponent } from './page/page.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { DragBlockComponent } from './drag-block/drag-block.component';
 import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.component';
+import { ThredCoreModule } from 'thred-core';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
     DashboardComponent,
-    SearchBarComponent,
     AddressValidatePipe,
     AddressPipe,
     AddressEnsLookupPipe,
@@ -139,7 +132,7 @@ import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.componen
     StatusComponent,
     DataTableComponent,
     NotificationComponent,
-    IsAdminPipe,
+    IsRoutePipe,
     ViewsPipe,
     VideoPipePipe,
     LocationPipe,
@@ -163,16 +156,10 @@ import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.componen
     LayoutsPipe,
     LayoutIndexPipe,
     MediaTableComponent,
-    GridComponent,
-    GridItemComponent,
-    BlockComponent,
     EditBlockComponent,
-    TabBarComponent,
-    NavigationBarComponent,
-    PageComponent,
     EditPageComponent,
     DragBlockComponent,
-    LayoutSidebarComponent
+    LayoutSidebarComponent,
   ],
   imports: [
     CommonModule,
@@ -235,7 +222,8 @@ import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.componen
     ColorPickerModule,
     NgxSliderModule,
     AngularResizeEventModule,
-    NgxDefaultImageModule
+    NgxDefaultImageModule,
+    ThredCoreModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

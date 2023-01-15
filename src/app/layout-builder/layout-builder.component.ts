@@ -21,13 +21,9 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { LoadService, Dict } from '../load.service';
-import { Page } from '../page.model';
-import { Block } from '../block.model';
-import { Wallet } from '../wallet.model';
-import { Layout } from '../layout.model';
 import { MatTabGroup } from '@angular/material/tabs';
-import { NFTList } from '../nft-list.model';
 import * as html2canvas from 'html2canvas';
+import { Block, Layout, NFTList, Page, Wallet } from 'thred-core';
 
 const DragConfig = {
   dragStartThreshold: 0,

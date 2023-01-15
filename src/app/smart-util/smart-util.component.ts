@@ -20,15 +20,12 @@ import { ethers } from 'ethers';
 import { CurrencyMaskInputMode } from 'ngx-currency';
 import { async, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Chain, Layout, Page, Wallet } from 'thred-core';
 import { AddressEnsLookupPipe } from '../address-ens-lookup.pipe';
 import { AddressValidatePipe } from '../address-validate.pipe';
-import { Chain } from '../chain.model';
 import { LayoutBuilderComponent } from '../layout-builder/layout-builder.component';
-import { Layout } from '../layout.model';
 import { LoadService } from '../load.service';
 import { NameEnsLookupPipe } from '../name-ens-lookup.pipe';
-import { Page } from '../page.model';
-import { Wallet } from '../wallet.model';
 
 @Component({
   selector: 'app-smart-util',
@@ -69,10 +66,9 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     let app = this.data.wallet as Wallet;
 
     console.log(app);
+
     if (app) {
       this.wallet = app;
-
-      this.selectedUsers = (await this.getENS(app.whitelist ?? [])) ?? [];
 
       this.loadService.loadedChains.subscribe((chains) => {
         this.categories[0].chains = chains ?? [];
@@ -116,6 +112,12 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         undefined
       );
     }
+
+    this.loadService.currentUser.then((user) => {
+      if (user?.uid && this.wallet) {
+        this.wallet.creatorId = user.uid;
+      }
+    });
 
     this.cdr.detectChanges();
 
@@ -445,7 +447,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     }
   }
 
-
   saves: number[] = [];
   changes: number[] = [];
 
@@ -481,7 +482,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     }
   }
 
-  async changeLayout(data: { time: number; layout?: Layout, mode: number}){
+  async changeLayout(data: { time: number; layout?: Layout; mode: number }) {
     if (data.time) {
       if (data.layout) {
         let i = this.changes.indexOf(data.time);

@@ -1,4 +1,4 @@
-import { Wallet } from "./wallet.model"
+import { Wallet } from "thred-core"
 
 
 export class Category{

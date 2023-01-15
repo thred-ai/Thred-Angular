@@ -14,9 +14,8 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ResizedEvent } from 'angular-resize-event';
-import { Chain } from '../chain.model';
+import { NFT } from 'thred-core';
 import { LoadService } from '../load.service';
-import { NFT } from '../nft.model';
 
 @Component({
   selector: 'app-nft-table',

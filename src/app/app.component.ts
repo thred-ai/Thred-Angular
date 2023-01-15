@@ -12,13 +12,12 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ethers } from 'ethers';
 import { AuthComponent } from './auth/auth.component';
-import { Developer } from './developer.model';
 import { LoadService } from './load.service';
-import { ProfileComponent } from './profile/profile.component';
-import { Wallet } from './wallet.model';
 import Web3 from 'web3';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Meta, Title } from '@angular/platform-browser';
+import { ProfileComponent } from './profile/profile.component';
+import { Developer, Wallet } from 'thred-core';
 // import * as AOS from 'aos';
 
 @Component({

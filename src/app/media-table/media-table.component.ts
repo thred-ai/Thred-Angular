@@ -12,8 +12,8 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ResizedEvent } from 'angular-resize-event';
+import { Media } from 'thred-core';
 import { LoadService } from '../load.service';
-import { Media } from '../media.model';
 
 class SafeObjectUrl {
   url: any;

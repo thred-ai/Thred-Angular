@@ -5,9 +5,8 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { NFT, NFTList } from 'thred-core';
 import { LoadService } from '../load.service';
-import { NFTList } from '../nft-list.model';
-import { NFT } from '../nft.model';
 
 @Component({
   selector: 'app-add-nft',

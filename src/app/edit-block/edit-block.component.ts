@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Block } from '../block.model';
-import { Page } from '../page.model';
+import { Block, Page } from 'thred-core';
 
 @Component({
   selector: 'app-edit-block',

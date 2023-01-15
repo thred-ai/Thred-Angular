@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Wallet } from '../wallet.model';
+import { Wallet } from 'thred-core';
 
 @Component({
   selector: 'app-view-coord',

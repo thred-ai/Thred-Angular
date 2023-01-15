@@ -7,28 +7,16 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Developer } from './developer.model';
 import { first } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
 import { Alchemy, AlchemyProvider } from 'alchemy-sdk';
-import { Wallet } from './wallet.model';
-import { Chain } from './chain.model';
 import { Category } from './category.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Meta, Title } from '@angular/platform-browser';
-import { Page } from './page.model';
-import { Block } from './block.model';
 import { v4 as uuid } from 'uuid';
-import { NFT } from './nft.model';
-import { NFTList } from './nft-list.model';
-import { Layout } from './layout.model';
-import { Tab } from './tab.model';
-import { Bar } from './bar.model';
-import { Border } from './border.model';
-import { Grid } from './grid.model';
-import { Shadow } from './shadow.model';
+import { Bar, Block, Border, Chain, Developer, Grid, Layout, NFT, NFTList, Page, Shadow, Tab, Wallet, ThredcoreService } from 'thred-core';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -65,7 +53,8 @@ export class LoadService {
     private storage: AngularFireStorage,
     private http: HttpClient,
     private metaService: Meta,
-    private titleService: Title
+    private titleService: Title,
+    private thredService: ThredcoreService
   ) {
     if (isPlatformBrowser(this.platformID)) {
       let chains = Object.values(environment.rpc);
@@ -453,13 +442,14 @@ export class LoadService {
         let d = docs_2[0];
 
         if (d) {
-          let util = this.syncWallet(d as Wallet);
+          console.log(d)
+          let util = this.thredService.syncWallet(d as Wallet);
 
           d.chains.forEach((c: any, i: number) => {
             d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
           });
           if (getProfiles) {
-            this.getUserInfo(d.creator, false, false, (result) => {
+            this.getUserInfo(d.creatorId, false, false, (result) => {
               if (result) {
                 util.creatorName = result.name;
               }
@@ -489,7 +479,7 @@ export class LoadService {
         console.log(docs);
 
         docs.forEach((d) => {
-          let util = this.syncWallet(d as Wallet);
+          let util = this.thredService.syncWallet(d as Wallet);
           console.log(d);
 
           util.chains.forEach((c: any, i: number) => {
@@ -605,7 +595,7 @@ export class LoadService {
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {
             let docs_2 = (docs2 as Wallet[]).map((wallet) =>
-              this.syncWallet(wallet)
+              this.thredService.syncWallet(wallet)
             );
             docs_2.forEach((d) => {
               d.chains.forEach((c: any, i: number) => {
@@ -627,168 +617,6 @@ export class LoadService {
       }
       sub.unsubscribe();
     });
-  }
-
-  syncPages(layouts: Dict<Layout> = {}) {
-    let lays: Dict<Layout> = {};
-
-    Object.values(layouts)?.map((layout) => {
-      lays[layout.type] = new Layout(
-        layout.name,
-        layout.type,
-        layout.pages.map((page) => {
-          return new Page(
-            page.id,
-            page.title,
-            page.name,
-            page.blocks?.map((block) => {
-              return new Block(
-                new NFTList(
-                  block.nftList?.type,
-                  block.nftList?.nfts?.map((nft) => {
-                    return new NFT(
-                      nft.title,
-                      nft.description,
-                      nft.img,
-                      nft.address,
-                      nft.tokenId,
-                      nft.chainId,
-                      nft.type
-                    );
-                  })
-                ),
-                block.type,
-                block.imgs,
-                new Grid(
-                  block.grid?.spacing,
-                  block.grid?.rows,
-                  block.grid?.corners,
-                  block.grid?.alignment,
-                  block.grid?.backgroundColor,
-                  block.grid?.detailColor,
-                  block.grid?.textColor,
-                  new Shadow(
-                    block.grid?.shadow?.color,
-                    block.grid?.shadow?.blur,
-                    block.grid?.shadow?.direction
-                  ),
-                  {
-                    left: new Border(
-                      block.grid?.borders?.left?.name,
-                      block.grid?.borders?.left?.color,
-                      block.grid?.borders?.left?.width
-                    ),
-                    right: new Border(
-                      block.grid?.borders?.right?.name,
-                      block.grid?.borders?.right?.color,
-                      block.grid?.borders?.right?.width
-                    ),
-                    top: new Border(
-                      block.grid?.borders?.top?.name,
-                      block.grid?.borders?.top?.color,
-                      block.grid?.borders?.top?.width
-                    ),
-                    bottom: new Border(
-                      block.grid?.borders?.bottom?.name,
-                      block.grid?.borders?.bottom?.color,
-                      block.grid?.borders?.bottom?.width
-                    ),
-                  }
-                ),
-                block.html,
-                block.backgroundColor,
-                block.corners,
-                block.animations,
-                block.vids,
-                block.htmlTemplate,
-                block.fontName,
-                block.padding,
-                block.detailColor,
-                block.textColor,
-                {
-                  left: new Border(
-                    block.borders?.left?.name,
-                    block.borders?.left?.color,
-                    block.borders?.left?.width
-                  ),
-                  right: new Border(
-                    block.borders?.right?.name,
-                    block.borders?.right?.color,
-                    block.borders?.right?.width
-                  ),
-                  top: new Border(
-                    block.borders?.top?.name,
-                    block.borders?.top?.color,
-                    block.borders?.top?.width
-                  ),
-                  bottom: new Border(
-                    block.borders?.bottom?.name,
-                    block.borders?.bottom?.color,
-                    block.borders?.bottom?.width
-                  ),
-                },
-                new Shadow(
-                  block.shadow?.color,
-                  block.shadow?.blur,
-                  block.shadow?.direction
-                )
-              );
-            }),
-            page.type,
-            page.url,
-            new Tab(
-              page.tab?.backgroundColor,
-              page.tab?.detailColor,
-              page.tab?.textColor,
-              page.tab?.corners
-            ),
-            new Bar(
-              page.bar?.backgroundColor,
-              page.bar?.detailColor,
-              page.bar?.textColor,
-              page.bar?.corners,
-              page.bar?.visible,
-              page.bar?.font,
-              page.bar?.content,
-              page.bar?.mode
-            ),
-            page.position,
-            page.backgroundColor,
-            page.detailColor,
-            page.icon
-          );
-        }),
-        layout.id
-      );
-    });
-
-    return lays;
-  }
-
-  syncWallet(wallet: Wallet) {
-    return new Wallet(
-      wallet.id,
-      wallet.creatorId,
-      wallet.created,
-      wallet.modified,
-      wallet.creatorName,
-      wallet.name,
-      wallet.displayUrl,
-      wallet.description,
-      wallet.verified,
-      wallet.reviews,
-      wallet.rating,
-      wallet.downloads,
-      wallet.chains,
-      wallet.coverUrl,
-      wallet.status,
-      wallet.installWebhook,
-      wallet.whitelist,
-      wallet.authStyle,
-      this.syncPages(wallet.activeLayouts),
-      wallet.tracking,
-      wallet.displayedLayouts
-    );
   }
 
   async updateBlockImage(id: string, imgId: string, file?: File) {

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Wallet } from 'thred-core';
 import { Dict } from './load.service';
-import { Wallet } from './wallet.model';
 
 @Pipe({
   name: 'location',

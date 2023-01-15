@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Layout } from './layout.model';
+import { Layout } from 'thred-core';
 import { Dict } from './load.service';
 
 @Pipe({

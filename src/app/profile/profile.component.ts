@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Developer } from '../developer.model';
+import { Developer } from 'thred-core';
 import { LoadService } from '../load.service';
 
 @Component({

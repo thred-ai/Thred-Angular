@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Wallet } from '../wallet.model';
+import { Wallet } from 'thred-core';
 
 @Component({
   selector: 'app-data-table',
