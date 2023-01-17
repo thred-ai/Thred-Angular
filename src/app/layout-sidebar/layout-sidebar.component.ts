@@ -41,6 +41,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     pageIndex: number;
   };
 
+
   @Input() set overrideBlock(
     block:
       | {
@@ -579,18 +580,18 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       name: 'NFT Display',
       code: 0,
     },
-    // {
-    //   name: 'NFT Collection',
-    //   code: 5,
-    // },
-    // {
-    //   name: 'NFT Wallet',
-    //   code: 6,
-    // },
-    // {
-    //   name: 'Multi Block',
-    //   code: 3,
-    // },
+    {
+      name: 'NFT Collection',
+      code: 5,
+    },
+    {
+      name: 'NFT Wallet',
+      code: 6,
+    },
+    {
+      name: 'Multi Block',
+      code: 3,
+    },
   ];
 
   tabPosTypes = [
@@ -646,6 +647,8 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   hoverIndex?: number = undefined;
 
   changeStyle($event: Event, index: number) {
+
+    
     // this.color = $event.type == 'mouseover' ? 'yellow' : 'red';
     let p = document.getElementById('p-' + index);
 

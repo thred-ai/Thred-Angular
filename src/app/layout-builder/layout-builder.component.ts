@@ -131,6 +131,9 @@ export class LayoutBuilderComponent implements OnInit {
               page.blocks!.map((block) => {
                 if (block.type == 0 && block.nftList) {
                   return this.loadService.loadNFTs(block.nftList, (nfts) => {
+                    console.log(nfts);
+                    console.log(block.nftList);
+
                     block.nftList = new NFTList(
                       block.nftList.type ?? 0,
                       nfts ?? [],
@@ -208,8 +211,6 @@ export class LayoutBuilderComponent implements OnInit {
       //     console.log(url);
       //   });
 
-      
-
       let time = new Date().getTime();
       this.layoutSaved.emit({ time });
       this.loadService.addLayout(this.editableLayout, this.wallet, (layout) => {
@@ -230,6 +231,8 @@ export class LayoutBuilderComponent implements OnInit {
     let rows =
       (this.editableLayout?.pages[pageIndex]?.blocks as Array<Block>) ?? [];
     rows.push(block);
+
+    this.edit(rows.length - 1, pageIndex);
 
     this.saveLayout(0);
   }
@@ -385,6 +388,8 @@ export class LayoutBuilderComponent implements OnInit {
   }
 
   async edit(blockIndex: number, pageIndex: number) {
+    console.log(blockIndex);
+    console.log(pageIndex);
     if (
       this.activeBlock?.blockIndex == blockIndex &&
       this.activeBlock?.pageIndex == pageIndex

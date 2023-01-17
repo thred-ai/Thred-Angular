@@ -18,6 +18,7 @@ export class EditBlockComponent implements OnInit {
   @Output() hoverOn = new EventEmitter<any>();
   @Output() hoverOff = new EventEmitter<any>();
 
+
   constructor() { }
 
   ngOnInit(): void {
