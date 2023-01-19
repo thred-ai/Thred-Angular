@@ -115,6 +115,8 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { DragBlockComponent } from './drag-block/drag-block.component';
 import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.component';
 import { ThredCoreModule } from 'thred-core';
+import { NgxSummernoteModule } from 'ngx-summernote';
+
 import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
@@ -223,6 +225,7 @@ import { ProfileComponent } from './profile/profile.component';
     NgxSliderModule,
     AngularResizeEventModule,
     NgxDefaultImageModule,
+    NgxSummernoteModule,
     ThredCoreModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
