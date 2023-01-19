@@ -41,7 +41,12 @@
               "src/miniature.earth.js",
               "src/hologram",
               "src/src",
-              "src/modules"
+              "src/modules",
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
             ],
             "styles": [
               "src/styles.scss",

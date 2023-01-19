@@ -148,6 +148,44 @@
             </div>
           </div>
 
+          <div class="wrap-input1 w-100 pt-3">
+            <p class="w-100 mb-4 text">Detail Color</p>
+            <div class="px-3 w-100">
+              <div class="rounded-pill border w-100 px-2 mb-3">
+                <a
+                  role="button"
+                  class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                  [cpPosition]="'top'"
+                  [cpPositionRelativeToArrow]="false"
+                  (colorPickerSelect)="
+                    pages[pageIndex]!.detailColor = $event;
+                    syncBlockAndPageColors(pageIndex, $event);
+                    saveLayout(0)
+                  "
+                  [cpOutputFormat]="'hex'"
+                  [cpOKButton]="true"
+                  [cpOKButtonText]="'SET COLOR'"
+                  [cpOKButtonClass]="'big-design-alt-button'"
+                  [cpSaveClickOutside]="false"
+                  [colorPicker]="page.detailColor"
+                  style="height: 40px"
+                >
+                  <p
+                    class="big-design-input-text my-auto p-0"
+                    style="font-size: 14px"
+                  >
+                    {{ page.detailColor }}
+                  </p>
+                  <div
+                    class="rounded-circle border border-secondary"
+                    style="height: 20px; aspect-ratio: 1"
+                    [style.background-color]="page.detailColor"
+                  ></div>
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
             <i><span style="font-size: small">General</span></i>
           </div>
