@@ -10,6 +10,7 @@
     animationDuration="0"
     #tabGroup
     [color]="color"
+    (selectedTabChange)="activeBlock = undefined"
   >
     <mat-tab
       class="py-0 w-100"
@@ -80,6 +81,7 @@
             [pages]="editableLayout.pages"
             [pageIndex]="p"
             [walletId]="wallet.id"
+            [defaultItems]="defaultNFTs"
             [overrideBlock]="activeBlock"
             (saveLayouts)="saveLayout($event.delay)"
             (droppedPage)="drop($event.$event, $event.pageIndex)"
@@ -127,6 +129,7 @@
                   [layout]="editableLayout"
                   [overrideBlock]="activeBlock"
                   [currentPage]="{page, index: p}"
+                  [defaultItems]="defaultNFTs"
                   (clickedLayout)="clickedCanvas.emit(true)"
                   (updatePages)="updatePages($event)"
                   (updateBlocks)="drop($event, p)"

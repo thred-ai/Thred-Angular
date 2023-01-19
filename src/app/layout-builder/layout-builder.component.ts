@@ -23,7 +23,7 @@ import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { LoadService, Dict } from '../load.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import * as html2canvas from 'html2canvas';
-import { Block, Layout, NFTList, Page, Wallet } from 'thred-core';
+import { Block, Layout, NFT, NFTList, Page, Wallet } from 'thred-core';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -62,28 +62,14 @@ export class LayoutBuilderComponent implements OnInit {
     this.mode = this.mode == 0 ? 1 : 0;
   }
 
-  config: SummernoteOptions = {
-    placeholder: '',
-    tabsize: 2,
-    height: 200,
-    toolbar: [
-      ['misc', ['undo', 'redo']],
-      [['bold', 'italic', 'underline', 'clear']],
-      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-      ['fontsize', ['fontname', 'fontsize', 'color']],
-      ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
-      ['insert', ['table', 'hr']],
-    ],
-    fontNames: [],
-  };
 
-  config2: SummernoteOptions = {
-    placeholder: '',
-    tabsize: 2,
-    height: 200,
-    toolbar: [['misc', ['undo', 'redo', 'codeview']]],
-    fontNames: [],
-  };
+  // config2: SummernoteOptions = {
+  //   placeholder: '',
+  //   tabsize: 2,
+  //   height: 200,
+  //   toolbar: [['misc', ['undo', 'redo', 'codeview']]],
+  //   fontNames: [],
+  // };
 
   title = 'LAUNCHING LAYOUT BUILDER';
 
@@ -122,23 +108,52 @@ export class LayoutBuilderComponent implements OnInit {
   selectedTheme: Dict<any> = {};
 
   async ngOnInit() {
+    await this.refreshNFTS();
+
+    this.recalculateUniqIdsForDragDrop();
+
+    this.cdr.detectChanges();
+  }
+
+  defaultNFTs = [
+    new NFT(
+      '',
+      '',
+      'https://cdn.simplehash.com/assets/9d1b2dc7a3ae37f313efce97b1bb8af53365809b82be47c169a2fdf61c9f26b1.png',
+      '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D',
+      1,
+      1
+    ),
+    new NFT(
+      '',
+      '',
+      'https://cdn.simplehash.com/assets/b3df9c78238ba23b0b65b5de687e1232e2a709c3ed091c6f20ec374967a4f29b.png',
+      '0xED5AF388653567Af2F388E6224dC7C4b3241C544',
+      1,
+      1
+    ),
+    new NFT(
+      '',
+      '',
+      'https://cdn.simplehash.com/assets/a200bf39b8c8ec73d1f42aaa579c688a37837090e1eed7cfe461be204448d680.png',
+      '0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB',
+      1,
+      1
+    ),
+  ]
+
+  async refreshNFTS() {
     if (this.editableLayout) {
       await Promise.all(
         this.editableLayout.pages?.map((page, index) => {
-          console.log(page.icon);
           if (page.blocks) {
             return Promise.all(
               page.blocks!.map((block) => {
-                if (block.type == 0 && block.nftList) {
+                if (block.type == 0) {
                   return this.loadService.loadNFTs(block.nftList, (nfts) => {
                     console.log(nfts);
                     console.log(block.nftList);
-
-                    block.nftList = new NFTList(
-                      block.nftList.type ?? 0,
-                      nfts ?? [],
-                      block.nftList.contract
-                    );
+                    block.nftList.nfts = nfts;
                   });
                 } else {
                   return Promise.resolve(undefined);
@@ -150,13 +165,13 @@ export class LayoutBuilderComponent implements OnInit {
           }
         })
       );
-
-      console.log(this.editableLayout.pages);
+      this.saveLayout(0);
     }
 
-    this.recalculateUniqIdsForDragDrop();
-
-    this.cdr.detectChanges();
+    await this.loadService.loadNFTs(new NFTList(0, this.defaultNFTs), (nfts) => {
+      console.log(nfts);
+      this.defaultNFTs = nfts;
+    });
   }
 
   editorOptions = {

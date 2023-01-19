@@ -16,7 +16,22 @@ import { HttpClient } from '@angular/common/http';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Meta, Title } from '@angular/platform-browser';
 import { v4 as uuid } from 'uuid';
-import { Bar, Block, Border, Chain, Developer, Grid, Layout, NFT, NFTList, Page, Shadow, Tab, Wallet, ThredcoreService } from 'thred-core';
+import {
+  Bar,
+  Block,
+  Border,
+  Chain,
+  Developer,
+  Grid,
+  Layout,
+  NFT,
+  NFTList,
+  Page,
+  Shadow,
+  Tab,
+  Wallet,
+  ThredcoreService,
+} from 'thred-core';
 
 export interface Dict<T> {
   [key: string]: T;
@@ -442,7 +457,7 @@ export class LoadService {
         let d = docs_2[0];
 
         if (d) {
-          console.log(d)
+          console.log(d);
           let util = this.thredService.syncWallet(d as Wallet);
 
           d.chains.forEach((c: any, i: number) => {
@@ -871,9 +886,9 @@ export class LoadService {
     step = 1,
     callback: (layout: Layout) => any
   ) {
-    console.log("LAYOUT -- " + layout.id);
-    console.log("WALLET -- " + wallet.id);
-    console.log("TYPE -- " + layout.type);
+    console.log('LAYOUT -- ' + layout.id);
+    console.log('WALLET -- ' + wallet.id);
+    console.log('TYPE -- ' + layout.type);
 
     try {
       if (wallet && layout) {
@@ -890,7 +905,7 @@ export class LoadService {
             .pipe(first())
             .subscribe(
               async (newLayout) => {
-                console.log(newLayout)
+                console.log(newLayout);
                 callback(newLayout ?? layout);
               },
               (err) => {
@@ -917,6 +932,8 @@ export class LoadService {
     console.log('man');
     try {
       if (wallet && layout) {
+        
+
         var data = {
           layout: JSON.parse(JSON.stringify(layout)),
           walletId: wallet.id,

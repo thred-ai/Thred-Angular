@@ -10,6 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { Page, Block, Grid, NFT, NFTList } from 'thred-core';
 import { LoadService } from '../load.service';
@@ -34,6 +35,9 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   @Input() pageIndex!: number;
   @Input() pages!: Page[];
   @Input() walletId!: string;
+
+  @Input() defaultItems?: any[];
+
 
   activeBlock?: {
     block: Block;
@@ -564,10 +568,10 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   ];
 
   types = [
-    // {
-    //   name: 'Text',
-    //   code: 2,
-    // },
+    {
+      name: 'Text',
+      code: 2,
+    },
     {
       name: 'Image',
       code: 1,
@@ -580,18 +584,18 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       name: 'NFT Display',
       code: 0,
     },
-    {
-      name: 'NFT Collection',
-      code: 5,
-    },
+    // {
+    //   name: 'NFT Collection',
+    //   code: 5,
+    // },
     {
       name: 'NFT Wallet',
       code: 6,
     },
-    {
-      name: 'Multi Block',
-      code: 3,
-    },
+    // {
+    //   name: 'Multi Block',
+    //   code: 3,
+    // },
   ];
 
   tabPosTypes = [
@@ -615,6 +619,20 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       code: 0,
     },
   ];
+
+  config: SummernoteOptions = {
+    placeholder: '',
+    tabsize: 2,
+    height: 200,
+    toolbar: [
+      ['misc', ['undo', 'redo']],
+      [['bold', 'italic', 'underline', 'clear']],
+      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
+      ['insert', ['table', 'hr']],
+    ],
+  };
 
   alignment(id: string) {
     return this.gridAlignment.find((a) => a.id == id);

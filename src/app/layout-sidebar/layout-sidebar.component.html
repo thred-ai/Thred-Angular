@@ -531,6 +531,7 @@
                   [id]="'p-' + i"
                   [block]="b"
                   [active]="false"
+                  [defaultItems]="defaultItems"
                   [page]="page"
                   (clicked)="edit.emit({ blockIndex: i, pageIndex })"
                   (hoverOn)="changeStyle($event, i)"
@@ -722,10 +723,7 @@
           </div>
         </div>
         <ng-container *ngIf="activeBlock!.block.type == 1">
-          <div
-            class="wrap-input1 w-100 pt-3"
-            *ngIf="activeBlock.block?.type == 1"
-          >
+          <div class="wrap-input1 w-100 pt-3">
             <p class="w-100 mb-4 text">Display Images</p>
             <div class="px-3 w-100 mb-3">
               <app-media-table
@@ -740,6 +738,22 @@
           </div>
         </ng-container>
 
+        <ng-container *ngIf="activeBlock!.block.type == 6">
+          <div class="wrap-input1 w-100 pt-3 text-center">
+            <p
+              class="px-2 mw-100 text-truncate text-center fw-bold text-secondary"
+            >
+              This block will display NFTs in the user's wallet at runtime.
+            </p>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="activeBlock!.block.type == 2">
+          <div class="wrap-input1 w-100 pt-3 text-center">
+
+
+          </div>
+        </ng-container>
         <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
           <i
             ><span style="font-size: small"
@@ -774,12 +788,6 @@
           <i><span style="font-size: small">Block Margins</span></i>
         </div>
       </mat-expansion-panel>
-
-      <!-- <div
-        *ngIf="rowForm.controls.type.value == 2"
-        [ngxSummernote]="config"
-        formControlName="htmlText"
-      ></div> -->
 
       <!-- <div
         class="w-100"
@@ -1398,5 +1406,3 @@
     </div>
   </div>
 </div>
-
-

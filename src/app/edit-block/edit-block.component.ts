@@ -13,6 +13,8 @@ export class EditBlockComponent implements OnInit {
   @Input() mainFrame!: HTMLElement
   @Input() id!: string
   @Input() page!: Page
+  @Input() defaultItems?: any[];
+
 
   @Output() clicked = new EventEmitter<any>();
   @Output() hoverOn = new EventEmitter<any>();
@@ -22,6 +24,7 @@ export class EditBlockComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.defaultItems)
   }
 
 }
