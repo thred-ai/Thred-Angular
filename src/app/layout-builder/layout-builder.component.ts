@@ -87,6 +87,7 @@ export class LayoutBuilderComponent implements OnInit {
 
   @Input() set layout(value: Layout) {
     if (!this.editableLayout) {
+      console.log(value.pages[0])
       this.editableLayout = Object.assign(
         {},
         JSON.parse(JSON.stringify(value))
@@ -411,6 +412,8 @@ export class LayoutBuilderComponent implements OnInit {
     ) {
       return;
     }
+
+    this.activeBlock = undefined;
 
     console.log(blockIndex);
     console.log(pageIndex);

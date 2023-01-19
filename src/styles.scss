@@ -62,6 +62,10 @@
 
   --desktopPreviewHeight: 90;
   --desktopDisplayHeight: 95;
+
+  --refresher-colour: #343a40;
+  --ion-background-color:white;
+
 }
 
 *,
@@ -12196,3 +12200,40 @@ mat-calendar.no-header {
 .remove-border-bottom .mat-tab-header {
   border-bottom: none;
 }
+
+// ion-refresher {
+//   z-index: 500 !important;
+// }
+
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none;
+}
+
+ion-spinner {
+  color: var(--refresher-colour) !important;
+}
+
+ion-icon {
+  color: var(--refresher-colour) !important;
+}
+
+img {
+  outline: none;
+ }
+
+ img::-moz-selection {
+  background-color: transparent;
+  color: #000;
+}
+
+img::selection {
+  background-color: transparent;
+  color: #000;
+}
+
+// .myclass::-moz-selection,
+// .myclass::selection { 
+//   background-color: transparent;
+//   color: #000;
+
+//  }

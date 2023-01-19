@@ -64,7 +64,9 @@
           </div>
         </div>
       </ng-template>
-      <div
+
+      <ng-template matTabContent>
+        <div
         class="w-100 h-100 d-block d-md-flex justify-content-between align-items-top border-{{
           editable ? 'top' : 'none'
         }} position-{{ openBar ? 'static' : 'relative' }}"
@@ -134,7 +136,9 @@
                   (updatePages)="updatePages($event)"
                   (updateBlocks)="drop($event, p)"
                   (pageChanged)="tabGroup.selectedIndex = $event"
-                  (edit)="edit($event.blockIndex, $event.pageIndex)"
+                  (edit)="
+                    editable ? edit($event.blockIndex, $event.pageIndex) : null
+                  "
                 >
                 </app-page>
               </div>
@@ -142,6 +146,9 @@
           </div>
         </div>
       </div>
+
+      </ng-template>
+   
     </mat-tab>
 
     <mat-tab disabled *ngIf="editable">
