@@ -53,12 +53,12 @@
 
     <button
       class="btn bg-purple border-0 rounded-pill fw-bold text-white d-flex justify-content-between align-content-center px-3 py-2 my-auto"
-      (click)="save()"
+      (click)="edited ? save() : publish()"
       [disabled]="loading"
       *ngIf="mode == 0"
     >
       <ng-container *ngIf="loading; else buttonTitles">
-        Saving
+        {{ edited ? "Saving" : "Publishing" }}
         <span
           class="spinner-border spinner-border-sm ms-2 m-auto"
           role="status"
@@ -67,7 +67,7 @@
       </ng-container>
 
       <ng-template #buttonTitles>
-        <ng-container> Save Wallet</ng-container>
+        <ng-container> {{ edited ? "Save Wallet" : "Publish" }}</ng-container>
         <mat-icon class="fw-bold ms-2" style="aspect-ratio: 1">
           check_circle
         </mat-icon>
@@ -243,7 +243,8 @@
                         class="bg-transparent text-truncate"
                         type="text"
                         name="name"
-                        [(ngModel)]="wallet.name"
+                        [ngModel]="wallet.name"
+                        (ngModelChange)="wallet.name = $event; edited = true"
                         placeholder="Wallet Name"
                       />
                     </mat-form-field>
@@ -266,7 +267,10 @@
                         class="bg-transparent bg-info pb-2"
                         type="text"
                         name="name"
-                        [(ngModel)]="wallet.description"
+                        [ngModel]="wallet.description"
+                        (ngModelChange)="
+                          wallet.description = $event; edited = true
+                        "
                         placeholder="Wallet Description (Optional)"
                         style="min-height: 100px"
                       >
@@ -288,6 +292,7 @@
                     >
                       <mat-select
                         [ngModel]="wallet.chains"
+                        (ngModelChange)="edited = true"
                         (selectionChange)="changed($event)"
                         class="my-auto d-flex justify-content-start align-items-center"
                         multiple
@@ -298,9 +303,6 @@
                           <div
                             class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
                           >
-                            <!-- [mdbPopover]="template"
-                          placement="bottom"
-                          trigger="hover" -->
                             <div
                               class="position-relative"
                               style="width: 95px; height: 47.5px"
@@ -473,7 +475,10 @@
                       floatLabel="never"
                     >
                       <mat-select
-                        [(ngModel)]="wallet.authStyle"
+                        [ngModel]="wallet.authStyle"
+                        (ngModelChange)="
+                          wallet.authStyle = $event; edited = true
+                        "
                         class="my-auto d-flex justify-content-start align-items-center"
                         (selectionChange)="authChanged($event)"
                       >
@@ -529,7 +534,7 @@
                       <mat-slide-toggle
                         class="mb-4"
                         [ngModel]="wallet.status == 0 ? true : false"
-                        (ngModelChange)="wallet.status = $event == true ? 0 : 1"
+                        (ngModelChange)="wallet.status = $event == true ? 0 : 1; edited = true"
                       >
                         {{
                           wallet.status == 0
@@ -644,7 +649,9 @@
                       <mat-slide-toggle
                         class="mb-4"
                         [ngModel]="wallet.status == 0 ? true : false"
-                        (ngModelChange)="wallet.status = $event == true ? 0 : 1"
+                        (ngModelChange)="
+                          wallet.status = $event == true ? 0 : 1; edited = true
+                        "
                       >
                         {{
                           wallet.status == 0
@@ -836,7 +843,11 @@
 
                 <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
                   <h3 class="w-100 mb-4" style="font-size: 20px">Tracking</h3>
-                  <mat-slide-toggle class="mb-3" [(ngModel)]="wallet.tracking">
+                  <mat-slide-toggle
+                    class="mb-3"
+                    [ngModel]="wallet.tracking"
+                    (ngModelChange)="wallet.tracking = $event; edited = true"
+                  >
                     {{ wallet.tracking ? "Enabled" : "Disabled" }}
                   </mat-slide-toggle>
                 </div>
@@ -859,6 +870,7 @@
                     >
                       <mat-select
                         [ngModel]="wallet.displayedLayouts"
+                        (ngModelChange)="edited = true"
                         (selectionChange)="layoutChanged($event)"
                         class="my-auto d-flex justify-content-start align-items-center"
                         multiple
@@ -1017,7 +1029,10 @@
                         class="mb-2 text-truncate"
                         type="text"
                         name="name"
-                        [(ngModel)]="wallet.installWebhook"
+                        [ngModel]="wallet.installWebhook"
+                        (ngModelChange)="
+                          wallet.installWebhook = $event; edited = true
+                        "
                         placeholder="Enter Webhook URL"
                       />
                     </mat-form-field>
@@ -1064,12 +1079,13 @@
                 </div>
 
                 <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
-                  
-                  <div class="px-3 d-flex justify-content-center align-content-center py-4">
+                  <div
+                    class="px-3 d-flex justify-content-center align-content-center py-4"
+                  >
                     <a
                       role="button"
                       class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
-                      (click)="wallet.status = 3; save(true)"
+                      (click)="wallet.status = 3; save(true, true)"
                     >
                       Delete Wallet
                     </a>
@@ -1134,7 +1150,11 @@
                         Copy to
                         {{ layout.type == "mobile" ? "Desktop" : "Mobile" }}
                       </button> -->
-                      <div class="py-2" [matTooltip]="'Open Layout Builder'" [matTooltipClass]="'multi-line-tooltip'">
+                      <div
+                        class="py-2"
+                        [matTooltip]="'Open Layout Builder'"
+                        [matTooltipClass]="'multi-line-tooltip'"
+                      >
                         <button
                           class="rounded-circle fw-bolder text-dark bg-white shadow d-flex justify-content-center align-content-center w-100 h-100"
                           (click)="loading ? null : (mode = 1)"
@@ -1145,19 +1165,19 @@
                       </div>
 
                       <div
-                      class="py-2"
-                      [matTooltip]="
-                        'Controls:\n\n• Pull/Drag down to refresh\n• Press tabs to switch between pages'
-                      "
-                      [matTooltipClass]="'multi-line-tooltip'"
-                    >
-                      <button
-                        class="rounded-circle fw-bolder text-dark bg-white shadow d-flex justify-content-center align-content-center w-100 h-100"
-                        style="padding: 10px"
+                        class="py-2"
+                        [matTooltip]="
+                          'Controls:\n\n• Pull/Drag down to refresh\n• Press tabs to switch between pages'
+                        "
+                        [matTooltipClass]="'multi-line-tooltip'"
                       >
-                        <mat-icon class="m-auto"> open_with </mat-icon>
-                      </button>
-                    </div>
+                        <button
+                          class="rounded-circle fw-bolder text-dark bg-white shadow d-flex justify-content-center align-content-center w-100 h-100"
+                          style="padding: 10px"
+                        >
+                          <mat-icon class="m-auto"> open_with </mat-icon>
+                        </button>
+                      </div>
 
                       <div
                         class="py-2"
@@ -1192,8 +1212,6 @@
                           </mat-icon>
                         </button>
                       </div>
-
-                     
                     </div>
                     <div
                       class="w-100 h-100 d-flex justify-content-center align-items-center"

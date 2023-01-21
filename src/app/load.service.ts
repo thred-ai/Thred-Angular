@@ -261,6 +261,27 @@ export class LoadService {
       );
   }
 
+  async publishSmartUtil(data: Wallet, callback: (result?: Wallet) => any) {
+    try {
+      let id = data.id;
+
+      let uploadData = JSON.parse(JSON.stringify(data));
+
+      if (uploadData.downloads > 0) {
+        delete uploadData.downloads;
+      }
+
+      await this.db
+        .collection(`Wallets`)
+        .doc(id)
+        .set(uploadData, { merge: true });
+      callback(data);
+    } catch (error) {
+      console.log(error);
+      callback(undefined);
+    }
+  }
+
   async saveSmartUtil(
     data: Wallet,
     callback: (result?: Wallet) => any,
@@ -943,13 +964,13 @@ export class LoadService {
           walletId: wallet.id,
         };
 
-        console.log(data.layout.authPage)
+        console.log(data.layout.authPage);
 
-        if (!layout.authPage.img){
-          data.layout.authPage.img = null
+        if (!layout.authPage.img) {
+          data.layout.authPage.img = null;
         }
-        if (!layout.authPage.text){
-          data.layout.authPage.text = null
+        if (!layout.authPage.text) {
+          data.layout.authPage.text = null;
         }
         if (data) {
           this.functions

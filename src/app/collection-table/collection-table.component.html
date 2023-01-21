@@ -164,10 +164,10 @@
           *matHeaderCellDef
           class="big-design-body fw-bold px-3"
         >
-          Availability
+          Visibility
         </th>
         <td mat-cell *matCellDef="let element" class="big-design-body px-3" (click)="open(element)">
-          <app-status [status]="element.status" [enabledTitle]="'PUBLIC'" [disabledTitle]="'PRIVATE'"> </app-status>
+          <app-status [status]="element.status" [enabledTitle]="'PUBLIC'" [disabledTitle]="'WHITELIST'"> </app-status>
         </td>
       </ng-container>
 
