@@ -638,6 +638,7 @@ export class LoadService {
     if (file) {
       try {
         let ref = this.storage.ref(`wallets/${id}/img-${imgId}.png`);
+
         await ref.put(file, { cacheControl: 'no-cache' });
         let displayUrl = await ref.getDownloadURL().toPromise();
         return displayUrl as string;
@@ -646,9 +647,14 @@ export class LoadService {
         return undefined;
       }
     } else {
-      let ref = this.storage.ref(`wallets/${id}/img-${imgId}.png`);
-      await ref.delete().toPromise();
-      return undefined;
+      try {
+        // let ref = this.storage.ref(`wallets/${id}/img-${imgId}.png`);
+
+        // await ref.delete().toPromise();
+        return undefined;
+      } catch (error) {
+        return undefined;
+      }
     }
   }
 
@@ -932,13 +938,19 @@ export class LoadService {
     console.log('man');
     try {
       if (wallet && layout) {
-        
-
         var data = {
           layout: JSON.parse(JSON.stringify(layout)),
           walletId: wallet.id,
         };
 
+        console.log(data.layout.authPage)
+
+        if (!layout.authPage.img){
+          data.layout.authPage.img = null
+        }
+        if (!layout.authPage.text){
+          data.layout.authPage.text = null
+        }
         if (data) {
           this.functions
             .httpsCallable('saveLayouts')(data)

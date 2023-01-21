@@ -40,7 +40,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   } = {};
   selectedIndex = 0;
 
-  layouts = ['desktop', 'mobile'];
+  layouts = [{name: 'desktop', available: false, title: "Desktop (Coming Soon)"}, {name: 'mobile', available: true, title: "Mobile"}];
 
   constructor(
     private fb: FormBuilder,
@@ -549,6 +549,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       event.source.writeValue(this.wallet!.displayedLayouts);
       return undefined;
     }
+    
 
     let pipe = new TitleCasePipe();
 

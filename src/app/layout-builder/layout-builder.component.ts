@@ -23,7 +23,16 @@ import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { LoadService, Dict } from '../load.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import * as html2canvas from 'html2canvas';
-import { Block, Layout, NFT, NFTList, Page, Wallet } from 'thred-core';
+import {
+  Block,
+  Layout,
+  Media,
+  NFT,
+  NFTList,
+  Page,
+  User,
+  Wallet,
+} from 'thred-core';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -62,7 +71,6 @@ export class LayoutBuilderComponent implements OnInit {
     this.mode = this.mode == 0 ? 1 : 0;
   }
 
-
   // config2: SummernoteOptions = {
   //   placeholder: '',
   //   tabsize: 2,
@@ -74,6 +82,7 @@ export class LayoutBuilderComponent implements OnInit {
   title = 'LAUNCHING LAYOUT BUILDER';
 
   @Input() wallet!: Wallet;
+
   @Input() color!: string;
 
   @Output() layoutSaved = new EventEmitter<{ time: number; layout?: Layout }>();
@@ -87,7 +96,7 @@ export class LayoutBuilderComponent implements OnInit {
 
   @Input() set layout(value: Layout) {
     if (!this.editableLayout) {
-      console.log(value.pages[0])
+      console.log(value.pages[0]);
       this.editableLayout = Object.assign(
         {},
         JSON.parse(JSON.stringify(value))
@@ -108,7 +117,42 @@ export class LayoutBuilderComponent implements OnInit {
 
   selectedTheme: Dict<any> = {};
 
+  authDetails: {
+    authStyle: number;
+    name: string;
+    displayUrl: Media | undefined;
+    loading: boolean;
+    err: string;
+  } = {
+    authStyle: 0,
+    name: '',
+    displayUrl: undefined,
+    loading: false,
+    err: '',
+  };
+
+  user: User = new User(
+    'John Gillman',
+    '0xd31c54eFD3A4B5E6a993AaA4618D3700a12ff752',
+    [],
+    new Date().getTime(),
+    'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_profile.png',
+    'john@thredapps.com'
+  );
+
   async ngOnInit() {
+    this.authDetails.authStyle = this.wallet.authStyle;
+    this.authDetails.name = this.wallet.name;
+    this.authDetails.displayUrl = new Media(
+      'profile',
+      this.wallet.displayUrl,
+      'image/png',
+      undefined,
+      new Date().getTime(),
+      75,
+      75
+    );
+
     await this.refreshNFTS();
 
     this.recalculateUniqIdsForDragDrop();
@@ -141,7 +185,7 @@ export class LayoutBuilderComponent implements OnInit {
       1,
       1
     ),
-  ]
+  ];
 
   async refreshNFTS() {
     if (this.editableLayout) {
@@ -169,10 +213,13 @@ export class LayoutBuilderComponent implements OnInit {
       this.saveLayout(0);
     }
 
-    await this.loadService.loadNFTs(new NFTList(0, this.defaultNFTs), (nfts) => {
-      console.log(nfts);
-      this.defaultNFTs = nfts;
-    });
+    await this.loadService.loadNFTs(
+      new NFTList(0, this.defaultNFTs),
+      (nfts) => {
+        console.log(nfts);
+        this.defaultNFTs = nfts;
+      }
+    );
   }
 
   editorOptions = {
@@ -229,6 +276,7 @@ export class LayoutBuilderComponent implements OnInit {
 
       let time = new Date().getTime();
       this.layoutSaved.emit({ time });
+      console.log(this.editableLayout.authPage);
       this.loadService.addLayout(this.editableLayout, this.wallet, (layout) => {
         this.editableLayout!.id = layout.id;
         this.layoutSaved.emit({ time, layout: this.editableLayout });
@@ -320,7 +368,10 @@ export class LayoutBuilderComponent implements OnInit {
       event.currentIndex
     );
 
-    if (this.activeBlock?.pageIndex == event.previousIndex) {
+    if (
+      this.activeBlock &&
+      this.activeBlock?.pageIndex == event.previousIndex
+    ) {
       this.activeBlock.pageIndex = event.currentIndex;
     }
 

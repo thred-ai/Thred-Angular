@@ -186,6 +186,44 @@
             </div>
           </div>
 
+          <div class="wrap-input1 w-100 pt-3">
+            <p class="w-100 mb-4 text">Text Color</p>
+            <div class="px-3 w-100">
+              <div class="rounded-pill border w-100 px-2 mb-3">
+                <a
+                  role="button"
+                  class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
+                  [cpPosition]="'top'"
+                  [cpPositionRelativeToArrow]="false"
+                  (colorPickerSelect)="
+                    pages[pageIndex]!.textColor = $event;
+                    syncBlockAndPageColors(pageIndex, $event);
+                    saveLayout(0)
+                  "
+                  [cpOutputFormat]="'hex'"
+                  [cpOKButton]="true"
+                  [cpOKButtonText]="'SET COLOR'"
+                  [cpOKButtonClass]="'big-design-alt-button'"
+                  [cpSaveClickOutside]="false"
+                  [colorPicker]="page.textColor"
+                  style="height: 40px"
+                >
+                  <p
+                    class="big-design-input-text my-auto p-0"
+                    style="font-size: 14px"
+                  >
+                    {{ page.textColor }}
+                  </p>
+                  <div
+                    class="rounded-circle border border-secondary"
+                    style="height: 20px; aspect-ratio: 1"
+                    [style.background-color]="page.textColor"
+                  ></div>
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
             <i><span style="font-size: small">General</span></i>
           </div>
@@ -372,7 +410,10 @@
           </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel class="shadow-0 border-bottom">
+        <mat-expansion-panel
+          class="shadow-0 border-bottom"
+          *ngIf="page.type == 0 || page.type == 2"
+        >
           <mat-expansion-panel-header>
             <mat-panel-title class="fw-bold text-dark">
               Tab Bar
@@ -551,8 +592,81 @@
 
         <mat-expansion-panel
           class="shadow-0 border-bottom"
+          *ngIf="page.type == 1"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title class="fw-bold text-dark">
+              Branding
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="wrap-input1 w-100 pt-3">
+            <p class="w-100 mb-4 text">Title</p>
+
+            <div class="px-3 w-100">
+              <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+                <mat-form-field
+                  class="w-100 text"
+                  appearance="legacy"
+                  floatLabel="never"
+                >
+                  <input
+                    matInput
+                    class="bg-transparent text-truncate"
+                    type="text"
+                    name="name"
+                    [ngModel]="(page | cast : AuthPage)?.text"
+                    (ngModelChange)="authTextChanged.emit($event)"
+                    placeholder="Name"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="wrap-input1 w-100 pt-3">
+            <p class="w-100 mb-4 text">Display Image</p>
+            <div class="px-3 w-100 mb-3" *ngIf="(page | cast : AuthPage)?.img ? [(page | cast : AuthPage).img!] : [] as media">
+              <app-media-table
+                #mediaTable2
+                [id]="walletId"
+                [media]="media"
+                [max]="1"
+                [count]="media.length"
+                (uploaded)="authMediaChanged.emit($event)"
+              >
+              </app-media-table>
+            </div>
+          </div>
+
+          <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+            <i><span style="font-size: small">Branding</span></i>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- <ngx-dropzone
+  class="big-design-body d-flex justify-content-{{
+    loading == 0 ? 'between' : 'center'
+  }} align-items-center flex-column rounded-15 w-100"
+  style="
+    overflow: auto;
+    resize: vertical;
+    box-sizing: border-box;
+    min-height: 400px;
+    border-color: #a328ea;
+  "
+  (resized)="resize($event)"
+  (change)="dropped($event)"
+  [multiple]="false"
+  [disableClick]="true"
+  
+  #dropzone -->
+
+        <mat-expansion-panel
+          class="shadow-0 border-bottom"
           disabled
           [expanded]="true"
+          *ngIf="page.type == 0 || page.type == 2"
         >
           <mat-expansion-panel-header>
             <mat-panel-title class="fw-bold text-dark"> Body </mat-panel-title>
@@ -768,6 +882,7 @@
                 #mediaTable
                 [id]="walletId"
                 [media]="activeBlock.block.imgs"
+                [max]="100"
                 [count]="activeBlock.block.imgs.length"
                 (uploaded)="activeBlock.block.imgs = $event; setValue()"
               >
@@ -779,18 +894,15 @@
         <ng-container *ngIf="activeBlock!.block.type == 6">
           <div class="wrap-input1 w-100 pt-3 text-center">
             <p
-              class="px-2 mw-100 text-truncate text-center fw-bold text-secondary"
+              class="px-2 mw-100 text-center fw-bold text-secondary"
             >
-              This block will display NFTs in the user's wallet at runtime.
+              NFTs from the user's wallet will be displayed at runtime.
             </p>
           </div>
         </ng-container>
 
         <ng-container *ngIf="activeBlock!.block.type == 2">
-          <div class="wrap-input1 w-100 pt-3 text-center">
-
-
-          </div>
+          <div class="wrap-input1 w-100 pt-3 text-center"></div>
         </ng-container>
         <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
           <i

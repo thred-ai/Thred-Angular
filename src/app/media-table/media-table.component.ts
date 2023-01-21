@@ -15,7 +15,7 @@ import { ResizedEvent } from 'angular-resize-event';
 import { Media } from 'thred-core';
 import { LoadService } from '../load.service';
 
-class SafeObjectUrl {
+export class SafeObjectUrl {
   url: any;
   constructor(url: string) {
     this.url = url;
@@ -80,6 +80,7 @@ export class MediaTableComponent implements OnInit {
   }
 
   @Input() count: number = 0;
+  @Input() max: number = 0;
   @Input() id?: string = undefined;
 
   //
@@ -119,6 +120,9 @@ export class MediaTableComponent implements OnInit {
   acceptedTypes = '.png,.jpeg,.gif';
 
   public async dropped(files: any) {
+    if (this.data.length >= this.max) {
+      return;
+    }
     for (const file of files.addedFiles) {
       var type = file.type;
 
@@ -150,7 +154,9 @@ export class MediaTableComponent implements OnInit {
 
       if (this.id) {
         this.loading = 1;
-        let media = new Media(file.name, unsafeUrl, file.type);
+
+        let date = new Date().getTime();
+        let media = new Media(`img_${date}.png`, unsafeUrl, file.type, undefined, date);
 
         let url = await this.loadService.updateBlockImage(
           this.id,
@@ -162,22 +168,21 @@ export class MediaTableComponent implements OnInit {
 
         Img.src = URL.createObjectURL(file);
 
-        console.log("oy")
-        Img.onload = (e: any) => {
-          console.log("hello")
-          const height = e.path[0].height;
-          const width = e.path[0].width;
+        console.log('oy');
+        Img.onload = () => {
+          const height = Img.height;
+          const width = Img.width;
 
           console.log(height, width);
 
-          media.width = width
-          media.height = height
+          media.width = width;
+          media.height = height;
 
           if (url) {
             media.url = url;
             this.data.push(media);
             this.uploaded.emit(this.data);
-  
+
             this.reloadTable();
           }
         };
@@ -197,6 +202,7 @@ export class MediaTableComponent implements OnInit {
       if (!url) {
         this.data.splice(index, 1);
         this.uploaded.emit(this.data);
+        console.log(this.data);
         this.reloadTable();
       }
     }

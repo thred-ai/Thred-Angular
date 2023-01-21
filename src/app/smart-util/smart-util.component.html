@@ -26,8 +26,7 @@
 
       <button
         class="btn bg-transparent shadow-0 rounded-pill fw-bold border-0 text-light-purple d-flex justify-content-between align-content-center ms-4 px-3 py-2 my-auto"
-        (click)="save()"
-        style="pointer-events: none"
+        (click)="loadingMode == 0 ? layoutBuilder?.save() : null"
         *ngIf="mode == 1"
       >
         <ng-container *ngIf="loadingMode == 1; else buttonTitles">
@@ -40,7 +39,7 @@
         </ng-container>
 
         <ng-template #buttonTitles>
-          <ng-container *ngIf="loadingMode == 0"> Saved</ng-container>
+          <ng-container *ngIf="loadingMode == 0"> Save</ng-container>
           <mat-icon
             *ngIf="loadingMode == 0"
             class="fw-bold ms-2"
@@ -535,7 +534,7 @@
                         {{
                           wallet.status == 0
                             ? "Any Email"
-                            : "Whitelisted Domains"
+                            : "Whitelisted Email(s)"
                         }}
                       </mat-slide-toggle>
                     </div>
@@ -650,7 +649,7 @@
                         {{
                           wallet.status == 0
                             ? "Any Address"
-                            : "Whitelisted Address"
+                            : "Whitelisted Address(s)"
                         }}
                       </mat-slide-toggle>
                     </div>
@@ -949,7 +948,8 @@
 
                         <mat-option
                           *ngFor="let layout of layouts ?? []"
-                          [value]="layout"
+                          [disabled]="!layout.available"
+                          [value]="layout.name"
                         >
                           <div
                             class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
@@ -963,15 +963,13 @@
                                 style="object-fit: contain; aspect-ratio: 1"
                               >
                                 {{
-                                  layout == "mobile"
+                                  layout.name == "mobile"
                                     ? "phone_iphone"
                                     : "desktop_windows"
                                 }}
                               </mat-icon>
                               <span class="py-1" style="font-size: medium">
-                                {{
-                                  (layout | titlecase) ?? "No Layout Selected"
-                                }}
+                                {{ layout.title }}
                               </span>
                             </div>
                             <div class="h-100 p-3">
@@ -981,7 +979,9 @@
                               >
                                 <div
                                   class="border rounded-circle bg-{{
-                                    containsLayout(layout) ? 'purple' : 'light'
+                                    containsLayout(layout.name)
+                                      ? 'purple'
+                                      : 'light'
                                   }}"
                                   style="aspect-ratio: 1"
                                 ></div>
@@ -1078,7 +1078,7 @@
             <div class="big-design-header w-100">
               <h2 class="big-design-input-title text-start">Wallet Layouts</h2>
             </div>
-            <div class="big-design-body h-100 bg-light rounded-10 w-100">
+            <div class="big-design-body h-100 bg-white rounded-10 w-100">
               <mat-tab-group
                 mat-stretch-tabs
                 #menu
@@ -1104,10 +1104,10 @@
                   </ng-template>
                   <div class="w-100 h-100 position-relative">
                     <div
-                      class="w-100 d-flex justify-content-end align-items-center position-absolute p-3"
-                      style="z-index: 50"
+                      class="h-100 d-flex justify-content-start align-items-end flex-column position-absolute p-3"
+                      style="z-index: 50; right: 0"
                     >
-                      <button
+                      <!-- <button
                         class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center me-1 px-3 py-2"
                         (click)="syncLayouts(layout.type)"
                         style="font-size: x-small"
@@ -1115,19 +1115,72 @@
                       >
                         Copy to
                         {{ layout.type == "mobile" ? "Desktop" : "Mobile" }}
-                      </button>
+                      </button> -->
+                      <div class="py-2" [matTooltip]="'Open Layout Builder'" [matTooltipClass]="'multi-line-tooltip'">
+                        <button
+                          class="rounded-circle fw-bolder text-dark bg-white shadow d-flex justify-content-center align-content-center w-100 h-100"
+                          (click)="loading ? null : (mode = 1)"
+                          style="padding: 10px"
+                        >
+                          <mat-icon class="m-auto"> open_in_browser </mat-icon>
+                        </button>
+                      </div>
+
+                      <div
+                      class="py-2"
+                      [matTooltip]="
+                        'Controls:\n\n• Pull/Drag down to refresh\n• Press tabs to switch between pages'
+                      "
+                      [matTooltipClass]="'multi-line-tooltip'"
+                    >
                       <button
-                        class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center ms-2 px-3 py-2"
-                        (click)="loading ? null : (mode = 1)"
-                        style="font-size: x-small"
+                        class="rounded-circle fw-bolder text-dark bg-white shadow d-flex justify-content-center align-content-center w-100 h-100"
+                        style="padding: 10px"
                       >
-                        Edit Layout
+                        <mat-icon class="m-auto"> open_with </mat-icon>
                       </button>
+                    </div>
+                    
+                      <div
+                        class="py-2"
+                        [matTooltip]="
+                          layout.type == 'mobile'
+                            ? 'Copy this layout to Desktop'
+                            : 'Copy this layout to Mobile'
+                        "
+                        [matTooltipClass]="'multi-line-tooltip'"
+                      >
+                        <button
+                          class="rounded-circle fw-bolder text-dark bg-white shadow d-flex justify-content-center align-content-center w-100 h-100"
+                          (click)="syncLayouts(layout.type)"
+                          style="padding: 10px"
+                          [style.opacity]="
+                            (wallet.displayedLayouts?.length ?? 0) == 1 ||
+                            sameLayouts()
+                              ? 0.5
+                              : 1
+                          "
+                          [disabled]="
+                            (wallet.displayedLayouts?.length ?? 0) == 1 ||
+                            sameLayouts()
+                          "
+                        >
+                          <mat-icon class="m-auto">
+                            {{
+                              layout.type == "mobile"
+                                ? "desktop_windows"
+                                : "phone_iphone"
+                            }}
+                          </mat-icon>
+                        </button>
+                      </div>
+
+                     
                     </div>
                     <div
                       class="w-100 h-100 d-flex justify-content-center align-items-center"
                     >
-                      <div class="p-3">
+                      <div class="w-100" style="max-width: 450px">
                         <app-layout-builder
                           [wallet]="wallet"
                           [layout]="layout"
@@ -1135,6 +1188,17 @@
                           [color]="'transparent'"
                         ></app-layout-builder>
                       </div>
+
+                      <!-- <div class="w-50">
+                        <p>
+                          <b>Controls:</b>
+                          <br />
+                          <br />
+                          • Pull/Drag down to refresh
+                          <br />
+                          • Press tabs to switch between pages
+                        </p>
+                      </div> -->
                     </div>
                   </div>
                 </mat-tab>

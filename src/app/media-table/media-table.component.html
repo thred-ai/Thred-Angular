@@ -3,7 +3,8 @@
     loading == 0 ? 'between' : 'center'
   }} align-items-center flex-column rounded-15 w-100"
   style="
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     resize: vertical;
     box-sizing: border-box;
     min-height: 400px;
@@ -13,7 +14,6 @@
   (change)="dropped($event)"
   [multiple]="false"
   [disableClick]="true"
-  
   #dropzone
 >
   <div class="w-100 h-100" #frame [hidden]="loading != 0">
@@ -33,9 +33,11 @@
           style="background-color: rgb(240, 226, 253)"
         >
           <button
-            class="text-purple fw-bolder"
+            class="text-{{data.length >= max ? 'secondary' : 'purple'}} fw-bolder"
             mat-icon-button
             (click)="dropzone.showFileSelector()"
+            [disabled]="data.length >= max"
+            [style.opacity]="data.length >= max ? 0.5 : 1"
           >
             <mat-icon>add</mat-icon>
           </button>

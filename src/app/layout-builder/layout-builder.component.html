@@ -1,7 +1,7 @@
 <div
-  *ngIf="editableLayout"
-  class="bg-light p-0 {{
-    editable ? 'big-design-card rounded-15 shadow w-100 h-100' : 'vh-75 vw-50'
+  *ngIf="editableLayout && wallet"
+  class="bg-white p-0 {{
+    editable ? 'big-design-card rounded-15 shadow w-100 h-100' : 'vh-75 w-100'
   }}"
   style="overflow: hidden"
 >
@@ -11,11 +11,132 @@
     #tabGroup
     [color]="color"
     (selectedTabChange)="activeBlock = undefined"
+    [disablePagination]="!editable"
+    [disableRipple]="!editable"
+    
   >
     <mat-tab
       class="py-0 w-100"
+      [disabled]="!editable"
+      *ngIf="editable && editableLayout.authPage as page"
+    >
+      <ng-template mat-tab-label>
+        <div
+          class="w-100 child-menu-drop-list"
+          *ngIf="editable && page.type == 1"
+        >
+          <div
+            class="d-flex align-items-center bg-white ps-2 rounded fw-bold"
+            style="font-size: small"
+          >
+            <div *cdkDragPlaceholder class="drag-custom-placeholder"></div>
+            <div
+              class="drag-wrapper d-flex w-100 justify-content-between align-content-center p-1"
+            >
+              <div
+                class="d-flex align-items-center"
+                [class.text-purple]="tabGroup.selectedIndex == 0"
+              >
+                <span>{{ page.title }}</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-content-center">
+                <button
+                  [disabled]="true"
+                  class="text-purple fw-bolder"
+                  mat-icon-button
+                >
+                  <mat-icon class="text">radio_button_checked</mat-icon>
+                </button>
+                <div
+                  class="bg-light-gray my-auto"
+                  style="width: 1px; height: 60%"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template matTabContent>
+        <div
+          class="w-100 h-100 d-block d-md-flex justify-content-between align-items-top border-{{
+            editable ? 'top' : 'none'
+          }} position-{{ openBar ? 'static' : 'relative' }}"
+        >
+          <!-- SIDEBAR -->
+
+          <div
+            class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow p-0 border-end"
+            style="z-index: 50"
+            *ngIf="editable && openBar"
+          >
+            <app-layout-sidebar
+              [page]="page"
+              [pages]="[page]"
+              [pageIndex]="0"
+              [walletId]="wallet.id"
+              [overrideBlock]="activeBlock"
+              (authMediaChanged)="
+                editableLayout.authPage.img = $event[0]; saveLayout(0)
+              "
+              (authTextChanged)="
+                editableLayout.authPage.text = $event; saveLayout(0)
+              "
+              (saveLayouts)="saveLayout($event.delay)"
+              (closeBar)="openBar = false"
+            >
+            </app-layout-sidebar>
+          </div>
+
+          <!-- CLOSED SIDEBAR -->
+
+          <div
+            class="h-100 d-flex justify-content-center align-items-center px-0 h-100 bg-white border-end position-absolute"
+            *ngIf="editable && !openBar"
+            style="z-index: 500"
+          >
+            <div
+              class="my-auto p-2 text-secondary"
+              role="button"
+              (click)="openBar = true"
+            >
+              <mat-icon> arrow_forward_ios </mat-icon>
+            </div>
+          </div>
+
+          <!-- DISPLAY PREVIEW -->
+
+          <div
+            class="w-100 w-md-{{
+              editable && openBar ? '80' : '100'
+            }} h-100 d-flex justify-content-center align-items-center bg-{{
+              editable ? 'light' : 'white'
+            }} position-{{ openBar ? 'static' : 'absolute' }}"
+          >
+            <div class="m-0 {{ editableLayout.type }} shadow-preview">
+              <div class="preview-display">
+                <div class="display" id="display">
+                  <thred-page
+                    [editable]="false"
+                    [layout]="editableLayout"
+                    [currentPage]="{ page, index: 0 }"
+                    [authDetails]="authDetails"
+                  >
+                  </thred-page>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab
+      class="py-0 w-100"
+      [disabled]="!editable"
       *ngFor="
-        let page of editableLayout.pages ?? [];
+        let page of editableLayout.pages;
         index as p;
         trackBy: trackByIndex
       "
@@ -29,12 +150,12 @@
           [cdkDropListOrientation]="'horizontal'"
           class="w-100 child-menu-drop-list"
           cdkDropList
-          *ngIf="editable"
+          *ngIf="editable && (page.type == 0 || page.type == 2)"
         >
           <div
             (cdkDragEntered)="onDragEntered($event)"
             (cdkDragExited)="onDragExited($event)"
-            class="d-flex align-items-center bg-light ps-2 rounded fw-bold"
+            class="d-flex align-items-center bg-white ps-2 rounded fw-bold"
             cdkDrag
             style="font-size: small"
           >
@@ -42,7 +163,10 @@
             <div
               class="drag-wrapper d-flex w-100 justify-content-between align-content-center p-1"
             >
-              <div class="d-flex align-items-center">
+              <div
+                class="d-flex align-items-center"
+                [class.text-purple]="tabGroup.selectedIndex == p + 1"
+              >
                 <span>{{ page.title }}</span>
               </div>
 
@@ -67,88 +191,93 @@
 
       <ng-template matTabContent>
         <div
-        class="w-100 h-100 d-block d-md-flex justify-content-between align-items-top border-{{
-          editable ? 'top' : 'none'
-        }} position-{{ openBar ? 'static' : 'relative' }}"
-      >
-        <!-- SIDEBAR -->
-
-        <div
-          class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow p-0 border-end"
-          style="z-index: 50"
-          *ngIf="editable && openBar"
+          class="w-100 h-100 d-block d-md-flex justify-content-between align-items-top border-{{
+            editable ? 'top' : 'none'
+          }} position-{{ openBar ? 'static' : 'relative' }}"
         >
-          <app-layout-sidebar
-            [page]="page"
-            [pages]="editableLayout.pages"
-            [pageIndex]="p"
-            [walletId]="wallet.id"
-            [defaultItems]="defaultNFTs"
-            [overrideBlock]="activeBlock"
-            (saveLayouts)="saveLayout($event.delay)"
-            (droppedPage)="drop($event.$event, $event.pageIndex)"
-            (closeBar)="openBar = false"
-            (edit)="edit($event.blockIndex, $event.pageIndex)"
-            (finishedEdit)="
-              finishedEditing($event.mode, $event.blockIndex, $event.pageIndex)
-            "
-            (addedBlock)="addBlock($event.pageIndex, $event.block)"
-            (removeBlock)="removeBlocks($event.blockIndex, $event.pageIndex)"
-          >
-          </app-layout-sidebar>
-        </div>
+          <!-- SIDEBAR -->
 
-        <!-- CLOSED SIDEBAR -->
-
-        <div
-          class="h-100 d-flex justify-content-center align-items-center px-0 h-100 bg-white border-end position-absolute"
-          *ngIf="editable && !openBar"
-          style="z-index: 500"
-        >
           <div
-            class="my-auto p-2 text-secondary"
-            role="button"
-            (click)="openBar = true"
+            class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow p-0 border-end"
+            style="z-index: 50"
+            *ngIf="editable && openBar"
           >
-            <mat-icon> arrow_forward_ios </mat-icon>
+            <app-layout-sidebar
+              [page]="page"
+              [pages]="editableLayout.pages"
+              [pageIndex]="p"
+              [walletId]="wallet.id"
+              [defaultItems]="defaultNFTs"
+              [overrideBlock]="activeBlock"
+              (saveLayouts)="saveLayout($event.delay); saveLayout(0)"
+              (droppedPage)="drop($event.$event, $event.pageIndex)"
+              (closeBar)="openBar = false"
+              (edit)="edit($event.blockIndex, $event.pageIndex)"
+              (finishedEdit)="
+                finishedEditing(
+                  $event.mode,
+                  $event.blockIndex,
+                  $event.pageIndex
+                )
+              "
+              (addedBlock)="addBlock($event.pageIndex, $event.block)"
+              (removeBlock)="removeBlocks($event.blockIndex, $event.pageIndex)"
+            >
+            </app-layout-sidebar>
           </div>
-        </div>
 
-        <!-- DISPLAY PREVIEW -->
+          <!-- CLOSED SIDEBAR -->
 
-        <div
-          class="w-100 w-md-{{
-            editable && openBar ? '80' : '100'
-          }} h-100 d-flex justify-content-center align-items-center bg-light position-{{
-            openBar ? 'static' : 'absolute'
-          }}"
-        >
-          <div class="m-0 {{ editableLayout.type }} shadow-preview">
-            <div class="preview-display">
-              <div class="display" id="display">
-                <app-page
-                  [editable]="editable"
-                  [layout]="editableLayout"
-                  [overrideBlock]="activeBlock"
-                  [currentPage]="{page, index: p}"
-                  [defaultItems]="defaultNFTs"
-                  (clickedLayout)="clickedCanvas.emit(true)"
-                  (updatePages)="updatePages($event)"
-                  (updateBlocks)="drop($event, p)"
-                  (pageChanged)="tabGroup.selectedIndex = $event"
-                  (edit)="
-                    editable ? edit($event.blockIndex, $event.pageIndex) : null
-                  "
-                >
-                </app-page>
+          <div
+            class="h-100 d-flex justify-content-center align-items-center px-0 h-100 bg-white border-end position-absolute"
+            *ngIf="editable && !openBar"
+            style="z-index: 500"
+          >
+            <div
+              class="my-auto p-2 text-secondary"
+              role="button"
+              (click)="openBar = true"
+            >
+              <mat-icon> arrow_forward_ios </mat-icon>
+            </div>
+          </div>
+
+          <!-- DISPLAY PREVIEW -->
+
+          <div
+            class="w-100 w-md-{{
+              editable && openBar ? '80' : '100'
+            }} h-100 d-flex justify-content-center align-items-center bg-{{
+              editable ? 'light' : 'white'
+            }} position-{{ openBar ? 'static' : 'absolute' }}"
+          >
+            <div class="m-0 {{ editableLayout.type }} shadow-preview">
+              <div class="preview-display">
+                <div class="display" id="display">
+                  <thred-page
+                    [editable]="editable"
+                    [layout]="editableLayout"
+                    [overrideBlock]="activeBlock"
+                    [currentPage]="{page, index: p}"
+                    [defaultItems]="defaultNFTs"
+                    [accountDetails]="page.type == 2 ? {user} : undefined"
+                    (clickedLayout)="clickedCanvas.emit(true)"
+                    (updatePages)="updatePages($any($event))"
+                    (updateBlocks)="drop($event, p)"
+                    (pageChanged)="tabGroup.selectedIndex = (editable ? $any($event) + 1 : $event)"
+                    (edit)="
+                      editable
+                        ? edit($any($event).blockIndex, $any($event).pageIndex)
+                        : null
+                    "
+                  >
+                  </thred-page>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
       </ng-template>
-   
     </mat-tab>
 
     <mat-tab disabled *ngIf="editable">

@@ -118,6 +118,7 @@ import { ThredCoreModule } from 'thred-core';
 import { NgxSummernoteModule } from 'ngx-summernote';
 
 import { ProfileComponent } from './profile/profile.component';
+import { PageListPipe } from './page-list.pipe';
 
 @NgModule({
   declarations: [
@@ -162,6 +163,7 @@ import { ProfileComponent } from './profile/profile.component';
     EditPageComponent,
     DragBlockComponent,
     LayoutSidebarComponent,
+    PageListPipe,
   ],
   imports: [
     CommonModule,
