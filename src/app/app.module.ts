@@ -12,7 +12,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
-// import { Globals } from './globals';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -23,7 +22,6 @@ import { MatInputModule } from '@angular/material/input';
 import { InViewportModule } from 'ng-in-viewport';
 import { MatSelectModule } from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
-// import { ApplicationPipesModule } from './shared/applicationPipes.module';
 import {
   AngularFireFunctionsModule,
   AngularFireFunctions,
@@ -44,7 +42,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgRouterOutletCommModule } from 'ng-router-outlet-comm';
 import { AddressValidatePipe } from './address-validate.pipe';
-import { AddressPipe } from './address.pipe';
 import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
@@ -62,8 +59,6 @@ import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { AddressEnsLookupPipe } from './address-ens-lookup.pipe';
 import { NameEnsLookupPipe } from './name-ens-lookup.pipe';
-import { FormatEtherPipe } from './format-ether.pipe';
-import { TypeNumberPipe } from './type-number.pipe';
 import { IsRoutePipe } from './is-route.pipe';
 import { CollectionTableComponent } from './collection-table/collection-table.component';
 import { MatTableModule } from '@angular/material/table';
@@ -92,7 +87,6 @@ import { LayoutBuilderComponent } from './layout-builder/layout-builder.componen
 import { VideoPipePipe } from './video-pipe.pipe';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { StoreThemePipe } from './store-theme.pipe';
 import { SafeTextRowsPipe } from './safe-text-rows.pipe';
 import { nftPipe } from './nft.pipe';
 import { NFTTableComponent } from './nft-table/nft-table.component';
@@ -102,7 +96,6 @@ import { AngularResizeEventModule } from 'angular-resize-event';
 import { AddNftComponent } from './add-nft/add-nft.component';
 import { SharedDialogComponent } from './shared-dialog/shared-dialog.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ColorShadePipe } from './color-shade.pipe';
 import { SliderValuePipe } from './slider-value.pipe';
 import { LayoutsPipe } from './layouts.pipe';
 import { LayoutIndexPipe } from './layout-index.pipe';
@@ -125,11 +118,8 @@ import { PageListPipe } from './page-list.pipe';
     AuthComponent,
     DashboardComponent,
     AddressValidatePipe,
-    AddressPipe,
     AddressEnsLookupPipe,
     NameEnsLookupPipe,
-    FormatEtherPipe,
-    TypeNumberPipe,
     CollectionTableComponent,
     StatusComponent,
     DataTableComponent,
@@ -142,7 +132,6 @@ import { PageListPipe } from './page-list.pipe';
     safeHtmlPipe,
     SafeUrlPipe,
     nftPipe,
-    StoreThemePipe,
     SafeTextRowsPipe,
     SmartUtilComponent,
     ProfileComponent,
@@ -152,7 +141,6 @@ import { PageListPipe } from './page-list.pipe';
     NFTTableComponent,
     AddNftComponent,
     SharedDialogComponent,
-    ColorShadePipe,
     SliderValuePipe,
     LayoutsPipe,
     LayoutIndexPipe,
