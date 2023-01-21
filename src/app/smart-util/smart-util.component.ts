@@ -40,7 +40,10 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   } = {};
   selectedIndex = 0;
 
-  layouts = [{name: 'desktop', available: false, title: "Desktop (Coming Soon)"}, {name: 'mobile', available: true, title: "Mobile"}];
+  layouts = [
+    { name: 'desktop', available: false, title: 'Desktop (Coming Soon)' },
+    { name: 'mobile', available: true, title: 'Mobile' },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -87,37 +90,33 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     } else {
       this.loadService.loadedChains.subscribe((chains) => {
         this.categories[0].chains = chains ?? [];
+        this.checkSave();
       });
       this.wallet = new Wallet(
         this.loadService.newUtilID,
         '',
+        new Date().getTime(),
         0,
-        undefined,
-        undefined,
-        undefined,
+        '',
+        'New Wallet (Draft)',
         'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_app.png',
-        undefined,
+        '',
         undefined,
         undefined,
         undefined,
         undefined,
         [this.categories[0].chains[0]],
         'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_smartutil_marketing.png',
-        0,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined
+        0
       );
-    }
 
-    this.loadService.currentUser.then((user) => {
-      if (user?.uid && this.wallet) {
-        this.wallet.creatorId = user.uid;
-      }
-    });
+      this.loadService.currentUser.then((user) => {
+        if (user?.uid && this.wallet) {
+          this.wallet.creatorId = user.uid;
+          this.checkSave();
+        }
+      });
+    }
 
     this.cdr.detectChanges();
 
@@ -138,6 +137,16 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         });
       }
     };
+  }
+
+  checkSave() {
+    if (
+      this.wallet &&
+      this.wallet.creatorId != '' &&
+      this.wallet.chains.length > 0
+    ) {
+      this.save();
+    }
   }
 
   sameLayouts() {
@@ -420,7 +429,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  async save() {
+  async save(close = false) {
     if (this.wallet && this.isValid) {
       this.loading = true;
 
@@ -433,8 +442,10 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
           wallet,
           (result) => {
             console.log(result);
+            if (close) {
+              this.dialogRef.close(wallet.status < 3 ? wallet : undefined);
+            }
             this.loading = false;
-            this.dialogRef.close(wallet);
           },
           appFile,
           marketingFile
@@ -467,9 +478,10 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
           console.log('SAVED');
           console.log(this.wallet.activeLayouts[data.layout.type]);
 
-          this.wallet.displayedLayouts = JSON.parse(JSON.stringify(this.wallet.displayedLayouts))
+          this.wallet.displayedLayouts = JSON.parse(
+            JSON.stringify(this.wallet.displayedLayouts)
+          );
 
-          
           this.cdr.detectChanges();
           //toast
           if (this.saves.length == 0) {
@@ -531,7 +543,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.wallet);
   }
 
   async changed(event: MatSelectChange) {
@@ -549,7 +561,6 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       event.source.writeValue(this.wallet!.displayedLayouts);
       return undefined;
     }
-    
 
     let pipe = new TitleCasePipe();
 

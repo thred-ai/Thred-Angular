@@ -1062,6 +1062,24 @@
                   <i><span style="font-size: small">Notifications</span></i>
                   <hr class="fw-bolder border-1" />
                 </div>
+
+                <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+                  
+                  <div class="px-3 d-flex justify-content-center align-content-center py-4">
+                    <a
+                      role="button"
+                      class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
+                      (click)="wallet.status = 3; save(true)"
+                    >
+                      Delete Wallet
+                    </a>
+                  </div>
+                </div>
+
+                <div class="w-100 py-5 text-purple text-center fw-bold">
+                  <i><span style="font-size: small">Danger Zone</span></i>
+                  <hr class="fw-bolder border-1" />
+                </div>
               </div>
             </div>
           </div>
@@ -1140,7 +1158,7 @@
                         <mat-icon class="m-auto"> open_with </mat-icon>
                       </button>
                     </div>
-                    
+
                       <div
                         class="py-2"
                         [matTooltip]="

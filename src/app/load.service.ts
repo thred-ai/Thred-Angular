@@ -605,7 +605,7 @@ export class LoadService {
 
           if (fetchOnlyAvailablewallets) {
             q = this.db.collection(`Users/${uid}/wallets`, (ref) =>
-              ref.where('status', '==', 0)
+              ref.where('status', 'in', [0, 1])
             );
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {

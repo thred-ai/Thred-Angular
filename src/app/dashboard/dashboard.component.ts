@@ -51,7 +51,6 @@ export class DashboardComponent implements OnInit {
     dateRangeEnd: HTMLInputElement
   ) {
     if (dateRangeStart.value && dateRangeEnd.value) {
-
       this.selectedDateRange = new DateRange(
         this.dateRange.controls['start'].value,
         this.dateRange.controls['end'].value
@@ -66,7 +65,7 @@ export class DashboardComponent implements OnInit {
       let uid = user?.uid;
 
       if (uid) {
-        this.loadService.getUserInfo(uid, true, false, (dev) => {
+        this.loadService.getUserInfo(uid, true, true, (dev) => {
           this.dev = dev;
         });
       } else {
@@ -96,7 +95,8 @@ export class DashboardComponent implements OnInit {
 
   openUtil(
     wallet?: Wallet,
-    index: number = this.dev?.utils.findIndex((app) => app.id == wallet?.id) ?? -1,
+    index: number = this.dev?.utils.findIndex((app) => app.id == wallet?.id) ??
+      -1,
     mode = 0
   ) {
     const modalRef = this.dialog.open(SmartUtilComponent, {
@@ -106,22 +106,29 @@ export class DashboardComponent implements OnInit {
 
       data: {
         wallet,
-        mode
+        mode,
       },
     });
 
     modalRef.afterClosed().subscribe((value) => {
-      if (value && this.dev && (value as Wallet)) {
-        console.log(index);
+      if (this.dev) {
         let apps = [...this.dev?.utils];
 
-        if (index > -1) {
-          apps[index] = Object.assign(this.dev.utils[index], value);
+        if (value && (value as Wallet)) {
+          console.log(index);
+
+          if (index > -1) {
+            apps[index] = Object.assign(this.dev.utils[index], value);
+          } else {
+            apps.push(value as Wallet);
+          }
+
         } else {
-          apps.push(value as Wallet);
+          if (index > -1) {
+            apps.splice(index, 1)
+          }
         }
         this.dev.utils = apps;
-
         this.cdr.detectChanges();
       }
     });
@@ -131,7 +138,6 @@ export class DashboardComponent implements OnInit {
     this.selectedCoord = undefined;
     this.cdr.detectChanges();
   }
-
 
   openCard(coords: Dict<any>) {
     coords['time'] = new Date(coords['time']);
@@ -146,17 +152,17 @@ export class DashboardComponent implements OnInit {
   }
 
   @Input() dev?: Developer = undefined;
-  chains?: Chain[]
+  chains?: Chain[];
 
   async ngOnInit() {
-    this.loadService.loadedChains.subscribe(chains => {
-      this.chains = chains ?? []
-    })
-    this.loadService.getChains(async chains => {
-      console.log(chains)
+    this.loadService.loadedChains.subscribe((chains) => {
+      this.chains = chains ?? [];
+    });
+    this.loadService.getChains(async (chains) => {
+      console.log(chains);
       this.getProfile();
       this.loadStats((await this.loadService.currentUser)?.uid);
-    })
+    });
   }
 
   loadStats(uid?: string) {

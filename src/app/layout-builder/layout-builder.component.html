@@ -173,11 +173,11 @@
               <div class="d-flex justify-content-between align-content-center">
                 <button
                   (click)="onRemoveMenu($event, p)"
-                  [disabled]="editableLayout.pages.length === 1"
+                  [disabled]="editableLayout.pages.length === 1 || page.type == 2"
                   class="text-purple fw-bolder"
                   mat-icon-button
                 >
-                  <mat-icon class="text">clear</mat-icon>
+                  <mat-icon class="text">{{page.type == 0 ? 'clear' : 'radio_button_checked'}}</mat-icon>
                 </button>
                 <div
                   class="bg-light-gray my-auto"
