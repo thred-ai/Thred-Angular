@@ -98,7 +98,6 @@ import { nftPipe } from './nft.pipe';
 import { NFTTableComponent } from './nft-table/nft-table.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { LoaderComponent } from './loader/loader.component';
 import { AngularResizeEventModule } from 'angular-resize-event';
 import { AddNftComponent } from './add-nft/add-nft.component';
 import { SharedDialogComponent } from './shared-dialog/shared-dialog.component';
@@ -151,7 +150,6 @@ import { PageListPipe } from './page-list.pipe';
     WalletConnectComponentComponent,
     LayoutBuilderComponent,
     NFTTableComponent,
-    LoaderComponent,
     AddNftComponent,
     SharedDialogComponent,
     ColorShadePipe,
