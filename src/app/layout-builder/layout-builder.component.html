@@ -13,7 +13,6 @@
     (selectedTabChange)="activeBlock = undefined"
     [disablePagination]="!editable"
     [disableRipple]="!editable"
-    
   >
     <mat-tab
       class="py-0 w-100"
@@ -77,12 +76,6 @@
               [pageIndex]="0"
               [walletId]="wallet.id"
               [overrideBlock]="activeBlock"
-              (authMediaChanged)="
-                editableLayout.authPage.img = $event[0]; saveLayout(0)
-              "
-              (authTextChanged)="
-                editableLayout.authPage.text = $event; saveLayout(0)
-              "
               (saveLayouts)="saveLayout($event.delay)"
               (closeBar)="openBar = false"
             >
@@ -173,11 +166,15 @@
               <div class="d-flex justify-content-between align-content-center">
                 <button
                   (click)="onRemoveMenu($event, p)"
-                  [disabled]="editableLayout.pages.length === 1 || page.type == 2"
+                  [disabled]="
+                    editableLayout.pages.length === 1 || page.type == 2
+                  "
                   class="text-purple fw-bolder"
                   mat-icon-button
                 >
-                  <mat-icon class="text">{{page.type == 0 ? 'clear' : 'radio_button_checked'}}</mat-icon>
+                  <mat-icon class="text">{{
+                    page.type == 0 ? "clear" : "radio_button_checked"
+                  }}</mat-icon>
                 </button>
                 <div
                   class="bg-light-gray my-auto"
@@ -207,7 +204,7 @@
               [pages]="editableLayout.pages"
               [pageIndex]="p"
               [walletId]="wallet.id"
-              [defaultItems]="defaultNFTs"
+              [defaultItems]="{ '6': defaultNFTs }"
               [overrideBlock]="activeBlock"
               (saveLayouts)="saveLayout($event.delay); saveLayout(0)"
               (droppedPage)="drop($event.$event, $event.pageIndex)"
@@ -221,6 +218,7 @@
                 )
               "
               (addedBlock)="addBlock($event.pageIndex, $event.block)"
+             
               (removeBlock)="removeBlocks($event.blockIndex, $event.pageIndex)"
             >
             </app-layout-sidebar>
@@ -259,12 +257,16 @@
                     [layout]="editableLayout"
                     [overrideBlock]="activeBlock"
                     [currentPage]="{page, index: p}"
-                    [defaultItems]="defaultNFTs"
+                    [defaultItems]="{ '6': defaultNFTs }"
                     [accountDetails]="page.type == 2 ? {user} : undefined"
                     (clickedLayout)="clickedCanvas.emit(true)"
                     (updatePages)="updatePages($any($event))"
                     (updateBlocks)="drop($event, p)"
-                    (pageChanged)="tabGroup.selectedIndex = (editable ? $any($event) + 1 : $event)"
+                    (pageChanged)="
+                      tabGroup.selectedIndex = editable
+                        ? $any($event) + 1
+                        : $event
+                    "
                     (edit)="
                       editable
                         ? edit($any($event).blockIndex, $any($event).pageIndex)

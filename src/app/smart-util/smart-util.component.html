@@ -468,14 +468,19 @@
                     Account Generation
                   </h3>
 
-                  <div class="rounded-pill border w-100 pe-4 mb-3">
+                  <div
+                    class="rounded-pill border w-100 pe-4 mb-3"
+                    [style.opacity]="newWallet ? 1 : 0.6"
+                  >
                     <mat-form-field
                       class="w-100"
                       appearance="legacy"
                       floatLabel="never"
+                      [disabled]="!newWallet"
                     >
                       <mat-select
                         [ngModel]="wallet.authStyle"
+                        [disabled]="!newWallet"
                         (ngModelChange)="
                           wallet.authStyle = $event; edited = true
                         "
@@ -534,7 +539,9 @@
                       <mat-slide-toggle
                         class="mb-4"
                         [ngModel]="wallet.status == 0 ? true : false"
-                        (ngModelChange)="wallet.status = $event == true ? 0 : 1; edited = true"
+                        (ngModelChange)="
+                          wallet.status = $event == true ? 0 : 1; edited = true
+                        "
                       >
                         {{
                           wallet.status == 0
@@ -1216,7 +1223,7 @@
                     <div
                       class="w-100 h-100 d-flex justify-content-center align-items-center"
                     >
-                      <div class="w-100" style="max-width: 450px">
+                      <div class="w-100">
                         <app-layout-builder
                           [wallet]="wallet"
                           [layout]="layout"

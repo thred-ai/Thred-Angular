@@ -108,6 +108,7 @@ import { DragBlockComponent } from './drag-block/drag-block.component';
 import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.component';
 import { ThredCoreModule } from 'thred-core';
 import { NgxSummernoteModule } from 'ngx-summernote';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { ProfileComponent } from './profile/profile.component';
 import { PageListPipe } from './page-list.pipe';
@@ -187,6 +188,7 @@ import { PageListPipe } from './page-list.pipe';
     NgbModule,
     MatTabsModule,
     MatTableModule,
+    MatCheckboxModule,
     MatNativeDateModule,
     ScrollingModule,
     NgRouterOutletCommModule,

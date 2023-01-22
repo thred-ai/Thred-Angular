@@ -24,6 +24,7 @@ import { LoadService, Dict } from '../load.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import * as html2canvas from 'html2canvas';
 import {
+  AccountPage,
   Block,
   Layout,
   Media,
@@ -66,6 +67,7 @@ export class LayoutBuilderComponent implements OnInit {
   mode = 0;
   codeMode = false;
   pageDisplay?: string;
+
 
   changeSetting() {
     this.mode = this.mode == 0 ? 1 : 0;
@@ -137,7 +139,8 @@ export class LayoutBuilderComponent implements OnInit {
     [],
     new Date().getTime(),
     'https://storage.googleapis.com/thred-protocol.appspot.com/resources/default_profile.png',
-    'john@thredapps.com'
+    'john@thredapps.com',
+    []
   );
 
   async ngOnInit() {
@@ -276,7 +279,7 @@ export class LayoutBuilderComponent implements OnInit {
 
       let time = new Date().getTime();
       this.layoutSaved.emit({ time });
-      console.log(this.editableLayout.authPage);
+      console.log(this.editableLayout.pages);
       this.loadService.addLayout(this.editableLayout, this.wallet, (layout) => {
         this.editableLayout!.id = layout.id;
         this.layoutSaved.emit({ time, layout: this.editableLayout });

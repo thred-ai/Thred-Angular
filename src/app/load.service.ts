@@ -31,6 +31,7 @@ import {
   Tab,
   Wallet,
   ThredcoreService,
+  AccountPage,
 } from 'thred-core';
 
 export interface Dict<T> {
@@ -43,7 +44,7 @@ export interface Dict<T> {
 export class LoadService {
   providers: Dict<{ alchemy: Alchemy; ethers: AlchemyProvider }> = {};
 
-  chains = [new Chain('Ethereum Goerli', 5, 'ETH', 0)];
+  chains = [new Chain('Ethereum Goerli', 5, 'ETH')];
 
   defaultCoords = {
     address: {
@@ -630,15 +631,23 @@ export class LoadService {
             );
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {
+
+            console.log(docs2)
+
             let docs_2 = (docs2 as Wallet[]).map((wallet) =>
               this.thredService.syncWallet(wallet)
             );
+
+            console.log(docs_2)
+
+
             docs_2.forEach((d) => {
               d.chains.forEach((c: any, i: number) => {
                 d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
               });
             });
             developer.utils = (docs_2 as Wallet[]) ?? [];
+            console.log(developer.utils)
             this.checkLoadedUser(developer);
 
             callback(developer);

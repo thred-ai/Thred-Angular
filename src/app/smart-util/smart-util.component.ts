@@ -40,6 +40,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   selectedIndex = 0;
 
   edited = false;
+  newWallet = true;
 
   layouts = [
     { name: 'desktop', available: false, title: 'Desktop (Coming Soon)' },
@@ -73,7 +74,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
     if (app) {
       this.wallet = app;
-
+      this.newWallet = false;
       this.loadService.loadedChains.subscribe((chains) => {
         this.categories[0].chains = chains ?? [];
 
@@ -152,17 +153,26 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
   sameLayouts() {
     return (
-      (this.wallet?.activeLayouts['desktop']?.pages ?? []) ==
-        (this.wallet?.activeLayouts['mobile']?.pages ?? []) ?? false
+      ((this.wallet?.activeLayouts['desktop']?.pages ?? []) ==
+        (this.wallet?.activeLayouts['mobile']?.pages ?? []) ??
+        false) ||
+      (this.wallet?.activeLayouts['desktop']?.authPage ==
+        this.wallet?.activeLayouts['mobile']?.authPage ??
+        false)
     );
   }
 
   syncLayouts(id: string) {
     let layout = this.wallet?.activeLayouts[id].pages ?? [];
-    if (id == 'mobile') {
-      this.wallet!.activeLayouts['desktop'].pages = layout;
-    } else if (id == 'desktop') {
-      this.wallet!.activeLayouts['mobile'].pages = layout;
+    let authPage = this.wallet?.activeLayouts[id].authPage;
+    if (authPage) {
+      if (id == 'mobile') {
+        this.wallet!.activeLayouts['desktop'].pages = layout;
+        this.wallet!.activeLayouts['desktop'].authPage = authPage;
+      } else if (id == 'desktop') {
+        this.wallet!.activeLayouts['mobile'].pages = layout;
+        this.wallet!.activeLayouts['mobile'].authPage = authPage;
+      }
     }
   }
 
@@ -445,17 +455,16 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
           (result) => {
             console.log(result);
             this.edited = false;
-            if (autopublish){
-              this.publish(wallet, result => {
+            if (autopublish) {
+              this.publish(wallet, (result) => {
                 if (close && result) {
-                  this.dialogRef.close(result.status < 3 ? result : undefined);
+                  this.dialogRef.close(result.status < 3 ? result : '0');
                 }
                 this.loading = false;
-              })
-            }
-            else{
+              });
+            } else {
               if (close) {
-                this.dialogRef.close(wallet.status < 3 ? wallet : undefined);
+                this.dialogRef.close(wallet.status < 3 ? wallet : '0');
               }
               this.loading = false;
             }
@@ -471,24 +480,20 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     }
   }
 
-  publish(wallet = this.wallet, callback?: (result?: Wallet) => any){
-    if (wallet){
+  publish(wallet = this.wallet, callback?: (result?: Wallet) => any) {
+    if (wallet) {
       this.loading = true;
 
-      this.loadService.publishSmartUtil(
-        wallet,
-        (result) => {
-          console.log(result);
-          this.loading = false
-          if (callback){
-            callback(result)
-          }
+      this.loadService.publishSmartUtil(wallet, (result) => {
+        console.log(result);
+        this.loading = false;
+        if (callback) {
+          callback(result);
         }
-      );
-    }
-    else{
-      if (callback){
-        callback()
+      });
+    } else {
+      if (callback) {
+        callback();
       }
     }
   }
@@ -580,7 +585,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.dialogRef.close(this.wallet);
+    this.dialogRef.close(this.newWallet ? this.wallet : undefined);
   }
 
   async changed(event: MatSelectChange) {

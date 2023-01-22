@@ -110,6 +110,230 @@
             </div>
           </div>
 
+          <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+            <i><span style="font-size: small">General</span></i>
+          </div>
+        </mat-expansion-panel>
+
+        <ng-container *ngIf="page.type == 1">
+          <mat-expansion-panel
+            class="shadow-0 border-bottom"
+            *ngIf="page | cast: AuthPage as authPage"
+            [expanded]="true"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title class="fw-bold text-dark">
+                Branding
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="wrap-input1 w-100 pt-3">
+              <p class="w-100 mb-4 text">Title</p>
+
+              <div class="px-3 w-100">
+                <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+                  <mat-form-field
+                    class="w-100 text"
+                    appearance="legacy"
+                    floatLabel="never"
+                  >
+                    <input
+                      matInput
+                      class="bg-transparent text-truncate"
+                      type="text"
+                      name="name"
+                      [ngModel]="authPage?.text"
+                      (ngModelChange)="
+                        authPage['text'] = $event;
+                        page = authPage;
+                        saveLayout(0)
+                      "
+                      placeholder="Name"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="wrap-input1 w-100 pt-3">
+              <p class="w-100 mb-4 text">Display Image</p>
+              <div
+                class="px-3 w-100 mb-3"
+                *ngIf="authPage.img ? [authPage.img] : [] as media"
+              >
+                <app-media-table
+                  #mediaTable2
+                  [id]="walletId"
+                  [media]="media"
+                  [max]="1"
+                  [count]="media.length"
+                  (ngModelChange)="
+                    authPage['img'] = $any($event)[0];
+                    page = authPage;
+                    saveLayout(0)
+                  "
+                >
+                </app-media-table>
+              </div>
+            </div>
+
+            <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+              <i><span style="font-size: small">Branding</span></i>
+            </div>
+          </mat-expansion-panel>
+        </ng-container>
+
+        <ng-container *ngIf="page.type == 2">
+          <mat-expansion-panel
+            class="shadow-0 border-bottom"
+            [expanded]="true"
+            *ngIf="page | cast: AccountPage as accountPage"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title class="fw-bold text-dark">
+                Social Elements
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <!-- <div class="wrap-input1 w-100 pt-3">
+            <p class="w-100 mb-4 text">Name</p>
+
+            <div class="px-3 w-100">
+              <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+                <mat-form-field
+                  class="w-100 text"
+                  appearance="legacy"
+                  floatLabel="never"
+                >
+                  <input
+                    matInput
+                    class="bg-transparent text-truncate"
+                    type="text"
+                    name="name"
+                    [ngModel]="page.title"
+                    (ngModelChange)="page.title = $event; saveLayout(0)"
+                    placeholder="Name"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div> -->
+
+            <div class="wrap-input1 w-100 pt-3">
+              <div class="px-3 w-100 py-2">
+                <mat-checkbox
+                  class="example-margin"
+                  [ngModel]="accountPage?.displayName"
+                  (ngModelChange)="
+                    accountPage['displayName'] = $event;
+                    page = accountPage;
+                    saveLayout(0)
+                  "
+                  >Display Name</mat-checkbox
+                >
+              </div>
+              <div class="px-3 w-100 py-2">
+                <mat-checkbox
+                  class="example-margin"
+                  [ngModel]="accountPage?.displayPic"
+                  (ngModelChange)="
+                    accountPage['displayPic'] = $event;
+                    page = accountPage;
+                    saveLayout(0)
+                  "
+                  >Profile Picture</mat-checkbox
+                >
+              </div>
+              <div class="px-3 w-100 py-2">
+                <mat-checkbox
+                  class="example-margin"
+                  [ngModel]="accountPage?.bio"
+                  (ngModelChange)="
+                    accountPage['bio'] = $event;
+                    page = accountPage;
+                    saveLayout(0)
+                  "
+                  >User Bio</mat-checkbox
+                >
+              </div>
+            </div>
+
+            <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+              <i><span style="font-size: small">Social Elements</span></i>
+            </div>
+          </mat-expansion-panel>
+        </ng-container>
+        <mat-expansion-panel
+          class="shadow-0 border-bottom"
+          disabled
+          [expanded]="true"
+          *ngIf="page.type == 0 || page.type == 2"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title class="fw-bold text-dark"> Body </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="wrap-input1 w-100 pt-3 px-0 mb-3">
+            <div
+              class="w-100"
+              cdkDropList
+              [cdkDropListData]="page.blocks"
+              (cdkDropListDropped)="droppedPage.emit({$event, pageIndex})"
+            >
+              <div *ngFor="let b of page.blocks ?? []; index as i" cdkDrag>
+                <app-edit-block
+                  [id]="'p-' + i"
+                  [block]="b"
+                  [active]="false"
+                  [defaultItems]="
+                    defaultItems ? defaultItems[b.type] : undefined
+                  "
+                  [page]="page"
+                  (clicked)="edit.emit({ blockIndex: i, pageIndex })"
+                  (hoverOn)="changeStyle($event, i)"
+                  (hoverOff)="changeStyle($event, i)"
+                >
+                </app-edit-block>
+              </div>
+            </div>
+
+            <div
+              class="w-100 d-flex justify-content-between align-items-center"
+            >
+              <div class="mt-1 px-3 w-100">
+                <div
+                  class="card rounded-15 zoom container-fluid d-flex justify-content-center align-items-center big-design-placeholder mt-1"
+                  role="button"
+                  (click)="addBlock(pageIndex)"
+                  matTooltip="Add New Content Block"
+                >
+                  <a
+                    class="fw-bolder text-purple d-flex align-items-center justify-content-center"
+                    style="font-size: large; text-decoration: none"
+                  >
+                    ADD BLOCK
+                    <mat-icon
+                      class="ms-1"
+                      style="font-weight: bolder"
+                      [inline]="true"
+                      >add</mat-icon
+                    >
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+            <i><span style="font-size: small">Body</span></i>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="shadow-0 border-bottom" [expanded]="false">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="fw-bold text-dark">
+              Colours
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
           <div class="wrap-input1 w-100 pt-3">
             <p class="w-100 mb-4 text">Background Color</p>
             <div class="px-3 w-100">
@@ -225,7 +449,7 @@
           </div>
 
           <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
-            <i><span style="font-size: small">General</span></i>
+            <i><span style="font-size: small">Colours</span></i>
           </div>
         </mat-expansion-panel>
 
@@ -589,141 +813,6 @@
             <i><span style="font-size: small">Tab Bar</span></i>
           </div>
         </mat-expansion-panel>
-
-        <mat-expansion-panel
-          class="shadow-0 border-bottom"
-          *ngIf="page.type == 1"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title class="fw-bold text-dark">
-              Branding
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="wrap-input1 w-100 pt-3">
-            <p class="w-100 mb-4 text">Title</p>
-
-            <div class="px-3 w-100">
-              <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
-                <mat-form-field
-                  class="w-100 text"
-                  appearance="legacy"
-                  floatLabel="never"
-                >
-                  <input
-                    matInput
-                    class="bg-transparent text-truncate"
-                    type="text"
-                    name="name"
-                    [ngModel]="(page | cast : AuthPage)?.text"
-                    (ngModelChange)="authTextChanged.emit($event)"
-                    placeholder="Name"
-                  />
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-
-          <div class="wrap-input1 w-100 pt-3">
-            <p class="w-100 mb-4 text">Display Image</p>
-            <div class="px-3 w-100 mb-3" *ngIf="(page | cast : AuthPage)?.img ? [(page | cast : AuthPage).img!] : [] as media">
-              <app-media-table
-                #mediaTable2
-                [id]="walletId"
-                [media]="media"
-                [max]="1"
-                [count]="media.length"
-                (uploaded)="authMediaChanged.emit($event)"
-              >
-              </app-media-table>
-            </div>
-          </div>
-
-          <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
-            <i><span style="font-size: small">Branding</span></i>
-          </div>
-        </mat-expansion-panel>
-
-        <!-- <ngx-dropzone
-  class="big-design-body d-flex justify-content-{{
-    loading == 0 ? 'between' : 'center'
-  }} align-items-center flex-column rounded-15 w-100"
-  style="
-    overflow: auto;
-    resize: vertical;
-    box-sizing: border-box;
-    min-height: 400px;
-    border-color: #a328ea;
-  "
-  (resized)="resize($event)"
-  (change)="dropped($event)"
-  [multiple]="false"
-  [disableClick]="true"
-  
-  #dropzone -->
-
-        <mat-expansion-panel
-          class="shadow-0 border-bottom"
-          disabled
-          [expanded]="true"
-          *ngIf="page.type == 0 || page.type == 2"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title class="fw-bold text-dark"> Body </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div class="wrap-input1 w-100 pt-3 px-0 mb-3">
-            <div
-              class="w-100"
-              cdkDropList
-              [cdkDropListData]="page.blocks"
-              (cdkDropListDropped)="droppedPage.emit({$event, pageIndex})"
-            >
-              <div *ngFor="let b of page.blocks ?? []; index as i" cdkDrag>
-                <app-edit-block
-                  [id]="'p-' + i"
-                  [block]="b"
-                  [active]="false"
-                  [defaultItems]="defaultItems"
-                  [page]="page"
-                  (clicked)="edit.emit({ blockIndex: i, pageIndex })"
-                  (hoverOn)="changeStyle($event, i)"
-                  (hoverOff)="changeStyle($event, i)"
-                >
-                </app-edit-block>
-              </div>
-            </div>
-
-            <div
-              class="w-100 d-flex justify-content-between align-items-center"
-            >
-              <div class="mt-1 px-3 w-100">
-                <div
-                  class="card rounded-15 zoom container-fluid d-flex justify-content-center align-items-center big-design-placeholder mt-1"
-                  role="button"
-                  (click)="addBlock(pageIndex)"
-                  matTooltip="Add New Content Block"
-                >
-                  <a
-                    class="fw-bolder text-purple d-flex align-items-center justify-content-center"
-                    style="font-size: large; text-decoration: none"
-                  >
-                    ADD BLOCK
-                    <mat-icon
-                      class="ms-1"
-                      style="font-weight: bolder"
-                      [inline]="true"
-                      >add</mat-icon
-                    >
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
-            <i><span style="font-size: small">Body</span></i>
-          </div>
-        </mat-expansion-panel>
       </mat-accordion>
     </div>
     <div *ngIf="activeBlock" class="w-100 h-100" style="overflow-y: scroll">
@@ -781,6 +870,16 @@
           </div>
         </div>
 
+        <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
+          <i><span style="font-size: small">General</span></i>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="shadow-0 border-bottom" [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="fw-bold text-dark"> Colours </mat-panel-title>
+        </mat-expansion-panel-header>
+
         <div class="wrap-input1 w-100 pt-3">
           <p class="w-100 mb-4 text">Background Color</p>
           <div class="px-3 w-100">
@@ -832,23 +931,8 @@
           </div>
         </div>
 
-        <div class="wrap-input1 w-100 pt-3">
-          <p class="w-100 mb-4 text">Corner Radius</p>
-          <div class="px-3 w-100">
-            <div class="w-100 mb-3">
-              <tc-range-slider
-                animate-onclick="2s"
-                [value]="activeBlock!.block.corners"
-                generate-labels="true"
-                id="block-corners"
-                round="0"
-              ></tc-range-slider>
-            </div>
-          </div>
-        </div>
-
         <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
-          <i><span style="font-size: small">General</span></i>
+          <i><span style="font-size: small">Colours</span></i>
         </div>
       </mat-expansion-panel>
 
@@ -893,9 +977,7 @@
 
         <ng-container *ngIf="activeBlock!.block.type == 6">
           <div class="wrap-input1 w-100 pt-3 text-center">
-            <p
-              class="px-2 mw-100 text-center fw-bold text-secondary"
-            >
+            <p class="px-2 mw-100 text-center fw-bold text-secondary">
               NFTs from the user's wallet will be displayed at runtime.
             </p>
           </div>
@@ -1083,21 +1165,6 @@
           </div>
         </div>
 
-        <div class="wrap-input1 w-100 pt-3">
-          <p class="w-100 mb-4 text">Corners</p>
-          <div class="px-3 w-100">
-            <div class="w-100 mb-3">
-              <tc-range-slider
-                animate-onclick="2s"
-                [value]="activeBlock.block.grid.corners"
-                generate-labels="true"
-                id="grid-corners"
-                round="0"
-              ></tc-range-slider>
-            </div>
-          </div>
-        </div>
-
         <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
           <i><span style="font-size: small">Grid Layout</span></i>
         </div>
@@ -1109,8 +1176,31 @@
             Item Borders
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <ng-container *ngFor="let border of gridBorders">
-          <div class="w-100 py-4">
+
+        <div class="py-4 border-bottom">
+          <div class="wrap-input1 w-100">
+            <p class="w-100 mb-4 text">Border Radius</p>
+            <div class="px-3 w-100">
+              <div class="w-100 mb-3">
+                <tc-range-slider
+                  animate-onclick="2s"
+                  [value]="activeBlock.block.grid.corners"
+                  generate-labels="true"
+                  id="grid-corners"
+                  round="0"
+                ></tc-range-slider>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-container
+          *ngFor="let border of gridBorders; index as gridBorderIndex"
+        >
+          <div
+            class="w-100 py-4 border-{{
+              gridBorderIndex == gridBorders.length - 1 ? '0' : 'bottom'
+            }}"
+          >
             <div class="wrap-input1 w-100">
               <p class="w-100 mb-4 text">
                 Border {{ border.id | titlecase }} Width
@@ -1183,7 +1273,7 @@
             Block Shadow
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="wrap-input1 w-100 py-4">
+        <div class="wrap-input1 w-100 py-4 border-bottom">
           <p class="w-100 mb-4 text">Shadow Color</p>
           <div class="px-3 w-100">
             <div class="rounded-pill border w-100 px-2 mb-3">
@@ -1218,7 +1308,7 @@
             </div>
           </div>
         </div>
-        <div class="wrap-input1 w-100 py-4">
+        <div class="wrap-input1 w-100 py-4 border-bottom">
           <p class="w-100 mb-4 text">Shadow Blur</p>
           <div class="px-3 w-100">
             <div class="w-100 mb-3">
@@ -1232,8 +1322,16 @@
             </div>
           </div>
         </div>
-        <ng-container *ngFor="let shadow of blockShadowDirection">
-          <div class="w-100 py-4">
+        <ng-container
+          *ngFor="let shadow of blockShadowDirection; index as blockShadowIndex"
+        >
+          <div
+            class="w-100 py-4 border-{{
+              blockShadowIndex == blockShadowDirection.length - 1
+                ? '0'
+                : 'bottom'
+            }}"
+          >
             <div class="wrap-input1 w-100">
               <p class="w-100 mb-4 text">
                 {{ shadow.id | titlecase }} Position
@@ -1263,7 +1361,7 @@
             Item Shadow
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="wrap-input1 w-100 py-4">
+        <div class="wrap-input1 w-100 py-4 border-bottom">
           <p class="w-100 mb-4 text">Shadow Color</p>
           <div class="px-3 w-100">
             <div class="rounded-pill border w-100 px-2 mb-3">
@@ -1298,7 +1396,7 @@
             </div>
           </div>
         </div>
-        <div class="wrap-input1 w-100 py-4">
+        <div class="wrap-input1 w-100 py-4 border-bottom">
           <p class="w-100 mb-4 text">Shadow Blur</p>
           <div class="px-3 w-100">
             <div class="w-100 mb-3">
@@ -1312,8 +1410,14 @@
             </div>
           </div>
         </div>
-        <ng-container *ngFor="let shadow of gridShadowDirection">
-          <div class="w-100 py-4">
+        <ng-container
+          *ngFor="let shadow of gridShadowDirection; index as gridShadowIndex"
+        >
+          <div
+            class="w-100 py-4 border-{{
+              gridShadowIndex == gridShadowDirection.length - 1 ? '0' : 'bottom'
+            }}"
+          >
             <div class="wrap-input1 w-100">
               <p class="w-100 mb-4 text">
                 {{ shadow.id | titlecase }} Position
@@ -1343,8 +1447,30 @@
             Block Borders
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <ng-container *ngFor="let border of borders">
-          <div class="w-100 py-4">
+
+        <div class="w-100 py-4 border-bottom">
+          <div class="wrap-input1 w-100">
+            <p class="w-100 mb-4 text">Border Radius</p>
+            <div class="px-3 w-100">
+              <div class="w-100 mb-3">
+                <tc-range-slider
+                  animate-onclick="2s"
+                  [value]="activeBlock!.block.corners"
+                  generate-labels="true"
+                  id="block-corners"
+                  round="0"
+                ></tc-range-slider>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngFor="let border of borders; index as blockBorderIndex">
+          <div
+            class="w-100 py-4 border-{{
+              blockBorderIndex == borders.length - 1 ? '0' : 'bottom'
+            }}"
+          >
             <div class="wrap-input1 w-100">
               <p class="w-100 mb-4 text">
                 Border {{ border.id | titlecase }} Width

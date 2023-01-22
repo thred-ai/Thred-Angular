@@ -2,11 +2,8 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import { ethers } from 'ethers';
-import { Chain, Developer, Wallet } from 'thred-core';
-import { LayoutBuilderComponent } from '../layout-builder/layout-builder.component';
+import { AccountPage, AuthPage, Chain, Developer, Page, Wallet } from 'thred-core';
 import { Dict, LoadService } from '../load.service';
-import { Signature } from '../signature.model';
 import { SmartUtilComponent } from '../smart-util/smart-util.component';
 
 @Component({
@@ -67,6 +64,7 @@ export class DashboardComponent implements OnInit {
       if (uid) {
         this.loadService.getUserInfo(uid, true, true, (dev) => {
           this.dev = dev;
+          
         });
       } else {
       }
@@ -105,30 +103,32 @@ export class DashboardComponent implements OnInit {
       panelClass: 'app-full-bleed-dialog',
 
       data: {
-        wallet,
+        wallet: wallet ? JSON.parse(JSON.stringify(wallet)) : undefined,
         mode,
       },
     });
 
     modalRef.afterClosed().subscribe((value) => {
       if (this.dev) {
-        let apps = [...this.dev?.utils];
+        if (value) {
+          let apps = [...this.dev?.utils];
 
-        if (value && (value as Wallet)) {
-          console.log(index);
+          if (value == '0') {
+            if (index > -1) {
+              apps.splice(index, 1);
+            }
+          } else if (value as Wallet) {
+            console.log(index);
 
-          if (index > -1) {
-            apps[index] = Object.assign(this.dev.utils[index], value);
-          } else {
-            apps.push(value as Wallet);
+            if (index > -1) {
+              apps[index] = Object.assign(this.dev.utils[index], value);
+            } else {
+              apps.push(value as Wallet);
+            }
           }
-
-        } else {
-          if (index > -1) {
-            apps.splice(index, 1)
-          }
+          this.dev.utils = apps;
         }
-        this.dev.utils = apps;
+
         this.cdr.detectChanges();
       }
     });
@@ -155,6 +155,7 @@ export class DashboardComponent implements OnInit {
   chains?: Chain[];
 
   async ngOnInit() {
+
     this.loadService.loadedChains.subscribe((chains) => {
       this.chains = chains ?? [];
     });

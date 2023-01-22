@@ -12,8 +12,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { Page, Block, Grid, NFT, NFTList, Layout, Media } from 'thred-core';
-import { AuthPage } from 'thred-core/lib/models/wallet/auth-page.model';
+import { Page, Block, Grid, NFT, NFTList, Layout, Media, Dict, AccountPage, AuthPage } from 'thred-core';
 import { LoadService } from '../load.service';
 import { MediaTableComponent } from '../media-table/media-table.component';
 import { NFTTableComponent } from '../nft-table/nft-table.component';
@@ -31,15 +30,16 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   gridShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
   blockShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
 
-  @Input() page!: Page | AuthPage;
+  @Input() page!: Page;
 
   AuthPage!: AuthPage
+  AccountPage!: AccountPage
 
   @Input() pageIndex!: number;
   @Input() pages!: Page[];
   @Input() walletId!: string;
 
-  @Input() defaultItems?: any[];
+  @Input() defaultItems?: Dict<any[]>;
   @Input() layout?: Layout;
 
 
@@ -68,8 +68,8 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   @Output() saveLayouts = new EventEmitter<{ delay: number; page: Page }>();
   @Output() droppedPage = new EventEmitter<any>();
   @Output() closeBar = new EventEmitter<any>();
-  @Output() authMediaChanged = new EventEmitter<Media[]>();
-  @Output() authTextChanged = new EventEmitter<string>();
+  @Output() authPageChanged = new EventEmitter<{name: 'img' | 'text', data: any}>();
+  @Output() accountPageChanged = new EventEmitter<{name: 'displayName' | 'displayPic' | 'bio', data: any}>();
 
   @Output() edit = new EventEmitter<{
     blockIndex: number;
