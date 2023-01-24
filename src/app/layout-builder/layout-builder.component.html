@@ -45,7 +45,7 @@
                   class="text-purple fw-bolder"
                   mat-icon-button
                 >
-                  <mat-icon class="text">radio_button_checked</mat-icon>
+                  <mat-icon class="text">lock</mat-icon>
                 </button>
                 <div
                   class="bg-light-gray my-auto"
@@ -164,17 +164,8 @@
               </div>
 
               <div class="d-flex justify-content-between align-content-center">
-                <button
-                  (click)="onRemoveMenu($event, p)"
-                  [disabled]="
-                    editableLayout.pages.length === 1 || page.type == 2
-                  "
-                  class="text-purple fw-bolder"
-                  mat-icon-button
-                >
-                  <mat-icon class="text">{{
-                    page.type == 0 ? "clear" : "radio_button_checked"
-                  }}</mat-icon>
+                <button class="text-purple fw-bolder" mat-icon-button>
+                  <mat-icon class="text">{{ page.icon }}</mat-icon>
                 </button>
                 <div
                   class="bg-light-gray my-auto"
@@ -208,6 +199,7 @@
               [overrideBlock]="activeBlock"
               (saveLayouts)="saveLayout($event.delay); saveLayout(0)"
               (droppedPage)="drop($event.$event, $event.pageIndex)"
+              (removedPage)="onRemoveMenu($event)"
               (closeBar)="openBar = false"
               (edit)="edit($event.blockIndex, $event.pageIndex)"
               (finishedEdit)="
@@ -218,7 +210,6 @@
                 )
               "
               (addedBlock)="addBlock($event.pageIndex, $event.block)"
-             
               (removeBlock)="removeBlocks($event.blockIndex, $event.pageIndex)"
             >
             </app-layout-sidebar>
@@ -297,3 +288,8 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+
+<!-- (click)="onRemoveMenu($event, p)"
+                  [disabled]="
+                    editableLayout.pages.length === 1 || page.type == 2
+                  " -->

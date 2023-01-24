@@ -67,6 +67,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
 
   @Output() saveLayouts = new EventEmitter<{ delay: number; page: Page }>();
   @Output() droppedPage = new EventEmitter<any>();
+  @Output() removedPage = new EventEmitter<number>();
   @Output() closeBar = new EventEmitter<any>();
   @Output() authPageChanged = new EventEmitter<{name: 'img' | 'text', data: any}>();
   @Output() accountPageChanged = new EventEmitter<{name: 'displayName' | 'displayPic' | 'bio', data: any}>();
@@ -200,7 +201,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   selectIcon(icon: string, page: Page) {
     console.log(icon);
     page.icon = icon;
-    // this.saveLayout(0);
+    this.saveLayout(0);
   }
 
   formattedName(name: string) {

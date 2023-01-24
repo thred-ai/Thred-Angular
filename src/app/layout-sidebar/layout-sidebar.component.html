@@ -814,6 +814,17 @@
           </div>
         </mat-expansion-panel>
       </mat-accordion>
+
+      <div class="px-3 d-flex justify-content-center align-content-center py-4">
+        <button
+          role="button"
+          [disabled]="pages.length === 1 || page.type != 0"
+          (click)="removedPage.emit(pageIndex)"
+          class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
+        >
+          Delete Page
+        </button>
+      </div>
     </div>
     <div *ngIf="activeBlock" class="w-100 h-100" style="overflow-y: scroll">
       <mat-expansion-panel class="shadow-0 border-bottom" [expanded]="true">
@@ -1671,13 +1682,13 @@
       </div> -->
 
       <div class="px-3 d-flex justify-content-center align-content-center py-4">
-        <a
+        <button
           role="button"
           (click)="finishedEditing(1)"
           class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
         >
           Delete Block
-        </a>
+        </button>
       </div>
     </div>
   </div>

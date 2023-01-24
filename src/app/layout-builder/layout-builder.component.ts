@@ -390,8 +390,7 @@ export class LayoutBuilderComponent implements OnInit {
     this.showDragWrapper(event);
   }
 
-  onRemoveMenu(event: MouseEvent, index: number): void {
-    event.stopPropagation();
+  onRemoveMenu(index: number): void {
     this.editableLayout?.pages.splice(index, 1);
     // When we want to remove last item and this item is active right now
     if (

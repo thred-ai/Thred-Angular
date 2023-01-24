@@ -1148,15 +1148,6 @@
                       class="h-100 d-flex justify-content-start align-items-end flex-column position-absolute p-3"
                       style="z-index: 50; right: 0"
                     >
-                      <!-- <button
-                        class="btn rounded-pill fw-bolder bg-white text-dark d-flex justify-content-between align-content-center me-1 px-3 py-2"
-                        (click)="syncLayouts(layout.type)"
-                        style="font-size: x-small"
-                        [disabled]="sameLayouts()"
-                      >
-                        Copy to
-                        {{ layout.type == "mobile" ? "Desktop" : "Mobile" }}
-                      </button> -->
                       <div
                         class="py-2"
                         [matTooltip]="'Open Layout Builder'"
@@ -1231,17 +1222,6 @@
                           [color]="'transparent'"
                         ></app-layout-builder>
                       </div>
-
-                      <!-- <div class="w-50">
-                        <p>
-                          <b>Controls:</b>
-                          <br />
-                          <br />
-                          • Pull/Drag down to refresh
-                          <br />
-                          • Press tabs to switch between pages
-                        </p>
-                      </div> -->
                     </div>
                   </div>
                 </mat-tab>
