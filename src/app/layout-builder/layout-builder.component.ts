@@ -19,13 +19,12 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
+// import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { LoadService, Dict } from '../load.service';
 import { MatTabGroup } from '@angular/material/tabs';
-import * as html2canvas from 'html2canvas';
 import {
-  AccountPage,
   Block,
+  Chain,
   Layout,
   Media,
   NFT,
@@ -34,6 +33,7 @@ import {
   User,
   Wallet,
 } from 'thred-core';
+import { ethers } from 'ethers';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -67,7 +67,6 @@ export class LayoutBuilderComponent implements OnInit {
   mode = 0;
   codeMode = false;
   pageDisplay?: string;
-
 
   changeSetting() {
     this.mode = this.mode == 0 ? 1 : 0;
@@ -156,7 +155,16 @@ export class LayoutBuilderComponent implements OnInit {
       75
     );
 
+    this.defaultChains = this.wallet.chains.map((c) => {
+      c.balance = ethers.utils.parseEther("10");
+      return c;
+    });
+
+    console.log(this.defaultChains);
+
     await this.refreshNFTS();
+
+    console.log(this.wallet.chains);
 
     this.recalculateUniqIdsForDragDrop();
 
@@ -189,6 +197,8 @@ export class LayoutBuilderComponent implements OnInit {
       1
     ),
   ];
+
+  defaultChains: Chain[] = [];
 
   async refreshNFTS() {
     if (this.editableLayout) {
@@ -391,11 +401,16 @@ export class LayoutBuilderComponent implements OnInit {
   }
 
   onRemoveMenu(index: number): void {
+    console.log(index);
+    console.log(this.childTabGroup.selectedIndex);
+    console.log(this.editableLayout?.pages.length);
+
     this.editableLayout?.pages.splice(index, 1);
     // When we want to remove last item and this item is active right now
+
     if (
-      this.childTabGroup.selectedIndex === this.editableLayout?.pages.length ??
-      0
+      (this.childTabGroup.selectedIndex ?? 0) >=
+      (this.editableLayout?.pages.length ?? 0)
     ) {
       this.childTabGroup.selectedIndex =
         (this.childTabGroup?.selectedIndex ?? -1) - 1;

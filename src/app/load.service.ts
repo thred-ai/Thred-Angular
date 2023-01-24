@@ -126,7 +126,7 @@ export class LoadService {
       });
   }
 
-  loadedChains = new BehaviorSubject<any[]>([]);
+  loadedChains = new BehaviorSubject<Chain[]>([]);
   loadedUser = new BehaviorSubject<Developer | null>(null);
   loadedNFTs = new BehaviorSubject<any[]>([]);
 
@@ -136,7 +136,9 @@ export class LoadService {
       .pipe(first())
       .subscribe(
         async (resp) => {
-          this.loadedChains.next(resp);
+          
+          let chains = this.thredService.syncChains(resp)
+          this.loadedChains.next(chains);
           console.log(resp);
           callback(resp);
         },
@@ -480,7 +482,7 @@ export class LoadService {
 
         if (d) {
           console.log(d);
-          let util = this.thredService.syncWallet(d as Wallet);
+          let util = this.thredService.syncWallet(d, this.loadedChains.value)
 
           d.chains.forEach((c: any, i: number) => {
             d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
@@ -516,7 +518,7 @@ export class LoadService {
         console.log(docs);
 
         docs.forEach((d) => {
-          let util = this.thredService.syncWallet(d as Wallet);
+          let util = this.thredService.syncWallet(d, this.loadedChains.value)
           console.log(d);
 
           util.chains.forEach((c: any, i: number) => {
@@ -632,21 +634,14 @@ export class LoadService {
           }
           let sub2 = q.valueChanges().subscribe((docs2) => {
 
+            console.log(this.loadedChains.value)
             console.log(docs2)
 
-            let docs_2 = (docs2 as Wallet[]).map((wallet) =>
-              this.thredService.syncWallet(wallet)
+            let docs_2 = (docs2 as any[]).map((wallet) =>
+              this.thredService.syncWallet(wallet, this.loadedChains.value)
             );
-
-            console.log(docs_2)
-
-
-            docs_2.forEach((d) => {
-              d.chains.forEach((c: any, i: number) => {
-                d.chains[i] = this.loadedChains.value?.find((x) => x.id == c);
-              });
-            });
-            developer.utils = (docs_2 as Wallet[]) ?? [];
+            
+            developer.utils = docs_2
             console.log(developer.utils)
             this.checkLoadedUser(developer);
 

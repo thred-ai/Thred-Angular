@@ -78,16 +78,9 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       this.loadService.loadedChains.subscribe((chains) => {
         this.categories[0].chains = chains ?? [];
 
-        var chains: any[] = [];
-
-        this.categories.forEach((c) => {
-          c.chains.forEach((a) => {
-            if (app.chains.find((x) => x.id == a.id)) {
-              chains.push(a);
-            }
-          });
-        });
-        this.wallet!.chains = chains;
+        this.wallet!.chains = chains.filter((c) =>
+          app.chains.find((c2) => c2.id == c.id)
+        );
       });
     } else {
       this.loadService.loadedChains.subscribe((chains) => {

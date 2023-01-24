@@ -599,6 +599,10 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       name: 'NFT Wallet',
       code: 6,
     },
+    {
+      name: 'Network',
+      code: 7,
+    },
     // {
     //   name: 'Multi Block',
     //   code: 3,
