@@ -35,7 +35,7 @@ export class MediaTableComponent implements OnInit {
     { media: Media; index: number } | undefined
   >();
 
-  @Output() uploaded = new EventEmitter<Media[]>();
+  @Output() dataChanged = new EventEmitter<{data: Media, type: 0 | 1}>();
 
   @ViewChild(MatTable) table!: MatTable<any>;
   data: Media[] = [];
@@ -156,7 +156,13 @@ export class MediaTableComponent implements OnInit {
         this.loading = 1;
 
         let date = new Date().getTime();
-        let media = new Media(`img_${date}.png`, unsafeUrl, file.type, undefined, date);
+        let media = new Media(
+          `img_${date}.png`,
+          unsafeUrl,
+          file.type,
+          undefined,
+          date
+        );
 
         let url = await this.loadService.updateBlockImage(
           this.id,
@@ -180,8 +186,7 @@ export class MediaTableComponent implements OnInit {
 
           if (url) {
             media.url = url;
-            this.data.push(media);
-            this.uploaded.emit(this.data);
+            this.dataChanged.emit({data: media, type: 1});
 
             this.reloadTable();
           }
@@ -194,17 +199,13 @@ export class MediaTableComponent implements OnInit {
   async remove(media: Media) {
     let index = this.data.indexOf(media);
     if (index > -1 && this.id) {
-      this.loading = 1;
-      let url = await this.loadService.updateBlockImage(
-        this.id,
-        `${media.date}`
-      );
-      if (!url) {
-        this.data.splice(index, 1);
-        this.uploaded.emit(this.data);
+      this.data.splice(index, 1);
+      setTimeout(() => {
         console.log(this.data);
-        this.reloadTable();
-      }
+        // this.reloadTable();
+        this.dataChanged.emit({data: media, type: 0});
+
+      }, 250);
     }
   }
 

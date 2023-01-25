@@ -30,7 +30,7 @@ import {
   Shadow,
   Tab,
   Wallet,
-  ThredcoreService,
+  ThredCoreService,
   AccountPage,
 } from 'thred-core';
 
@@ -70,7 +70,7 @@ export class LoadService {
     private http: HttpClient,
     private metaService: Meta,
     private titleService: Title,
-    private thredService: ThredcoreService
+    private thredService: ThredCoreService
   ) {
     if (isPlatformBrowser(this.platformID)) {
       let chains = Object.values(environment.rpc);

@@ -167,11 +167,7 @@
                   [media]="media"
                   [max]="1"
                   [count]="media.length"
-                  (ngModelChange)="
-                    authPage['img'] = $any($event)[0];
-                    page = authPage;
-                    saveLayout(0)
-                  "
+                  (dataChanged)="setAuthPageImgData($event); saveLayout(0)"
                 >
                 </app-media-table>
               </div>
@@ -895,7 +891,6 @@
         </div>
       </mat-expansion-panel>
 
-
       <mat-expansion-panel class="shadow-0 border-bottom" [expanded]="true">
         <mat-expansion-panel-header>
           <mat-panel-title class="fw-bold text-dark">
@@ -928,7 +923,7 @@
                 [media]="activeBlock.block.imgs"
                 [max]="100"
                 [count]="activeBlock.block.imgs.length"
-                (uploaded)="activeBlock.block.imgs = $event; setValue()"
+                (dataChanged)="setBlockImgData($event); setValue()"
               >
               </app-media-table>
             </div>
@@ -1002,11 +997,90 @@
       <mat-expansion-panel class="shadow-0 border-bottom">
         <mat-expansion-panel-header>
           <mat-panel-title class="fw-bold text-dark">
-            Grid Layout
+            Block Layout
           </mat-panel-title>
         </mat-expansion-panel-header>
+
         <div class="wrap-input1 w-100 pt-3">
-          <p class="w-100 mb-4 text">Layout</p>
+          <p class="w-100 mb-4 text">Style</p>
+          <div class="px-3 w-100">
+            <div class="rounded-pill border w-100 pe-4 mb-3">
+              <mat-form-field
+                class="w-100 text"
+                appearance="legacy"
+                floatLabel="never"
+              >
+                <mat-select
+                  [ngModel]="activeBlock.block.grid!.type"
+                  (ngModelChange)="
+                    activeBlock.block.grid!.type = $event; setValue()
+                  "
+                  class="my-auto d-flex justify-content-start align-items-center"
+                >
+                  <mat-select-trigger
+                    class="text-dark h-100 m-auto"
+                    *ngIf="activeBlock.block?.grid?.type != undefined"
+                  >
+                    <div
+                      class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                    >
+                      <div style="height: 40px"></div>
+                      <div class="text-start text-truncate w-50 ms-2">
+                        {{ matchingGridType(activeBlock.block.grid.type)?.name ?? 'No Layout Selected' }}
+                      </div>
+                    </div>
+                  </mat-select-trigger>
+                  <!-- 
+                  <mat-select-trigger
+                    class="text-dark h-100 m-auto"
+                    *ngIf="activeBlock.block?.grid?.rows ?? 3"
+                  >
+                    <div
+                      class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+                    >
+                      <div style="height: 40px"></div>
+                      <div class="text-start text-truncate w-50 ms-2">
+                        {{ activeBlock.block.grid.rows }}
+
+                        {{
+                          activeBlock.block.grid.type == 0
+                            ? "Item(s) Per. Row"
+                            : "Visible Items"
+                        }}
+                      </div>
+                    </div>
+                  </mat-select-trigger> -->
+
+                  <mat-option
+                    *ngFor="let g of gridLayoutTypes ?? []"
+                    [value]="g.code"
+                  >
+                    <div
+                      class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+                    >
+                      <div
+                        class="d-flex justify-content-start align-items-center"
+                      >
+                        <span class="py-1" style="font-size: medium">
+                          {{ g.name }}
+                        </span>
+                      </div>
+                    </div>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="wrap-input1 w-100 pt-3">
+          <p class="w-100 mb-4 text">
+            {{
+              activeBlock.block.grid.type == 0
+                ? "Item(s) Per. Row"
+                : "Visible Items"
+            }}
+          </p>
           <div class="px-3 w-100">
             <div class="rounded-pill border w-100 pe-4 mb-3">
               <mat-form-field
@@ -1031,7 +1105,12 @@
                       <div style="height: 40px"></div>
                       <div class="text-start text-truncate w-50 ms-2">
                         {{ activeBlock.block.grid.rows }}
-                        Item(s) Per. Row
+
+                        {{
+                          activeBlock.block.grid.type == 0
+                            ? "Item(s) Per. Row"
+                            : "Visible Items"
+                        }}
                       </div>
                     </div>
                   </mat-select-trigger>
@@ -1044,7 +1123,12 @@
                         class="d-flex justify-content-start align-items-center"
                       >
                         <span class="py-1" style="font-size: medium">
-                          {{ g.name }} Per. Row
+                          {{ g.name }}
+                          {{
+                            activeBlock.block.grid.type == 0
+                              ? "Item(s) Per. Row"
+                              : "Visible Items"
+                          }}
                         </span>
                       </div>
                     </div>
@@ -1055,7 +1139,10 @@
           </div>
         </div>
 
-        <div class="wrap-input1 w-100 pt-3">
+        <div
+          class="wrap-input1 w-100 pt-3"
+          *ngIf="activeBlock.block.grid.type == 0"
+        >
           <p class="w-100 mb-4 text">Alignment</p>
           <div class="px-3 w-100">
             <div class="rounded-pill border w-100 pe-4 mb-3">
@@ -1194,7 +1281,7 @@
                       setValue()
                     "
                     [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                    [cpAlphaChannel]="'always'"
                     [cpOKButton]="true"
                     [cpOKButtonText]="'SET COLOR'"
                     [cpOKButtonClass]="'big-design-alt-button'"
@@ -1247,7 +1334,7 @@
                   activeBlock.block.shadow.color = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"
@@ -1336,7 +1423,7 @@
                   activeBlock.block.grid.shadow.color = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"
@@ -1467,7 +1554,7 @@
                       setValue()
                     "
                     [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                    [cpAlphaChannel]="'always'"
                     [cpOKButton]="true"
                     [cpOKButtonText]="'SET COLOR'"
                     [cpOKButtonClass]="'big-design-alt-button'"
@@ -1502,7 +1589,9 @@
 
       <mat-expansion-panel class="shadow-0 border-bottom" [expanded]="false">
         <mat-expansion-panel-header>
-          <mat-panel-title class="fw-bold text-dark"> Block Colours </mat-panel-title>
+          <mat-panel-title class="fw-bold text-dark">
+            Block Colours
+          </mat-panel-title>
         </mat-expansion-panel-header>
 
         <div class="wrap-input1 w-100 pt-3">
@@ -1518,7 +1607,7 @@
                   activeBlock!.block.backgroundColor = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"
@@ -1570,7 +1659,7 @@
                   activeBlock!.block.textColor = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"
@@ -1616,7 +1705,9 @@
 
       <mat-expansion-panel class="shadow-0 border-bottom" [expanded]="false">
         <mat-expansion-panel-header>
-          <mat-panel-title class="fw-bold text-dark"> Item Colours </mat-panel-title>
+          <mat-panel-title class="fw-bold text-dark">
+            Item Colours
+          </mat-panel-title>
         </mat-expansion-panel-header>
 
         <div class="wrap-input1 w-100 pt-3">
@@ -1632,7 +1723,7 @@
                   activeBlock!.block.grid.backgroundColor = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"
@@ -1684,7 +1775,7 @@
                   activeBlock!.block.grid.textColor = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
+                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"

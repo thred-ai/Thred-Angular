@@ -12,7 +12,18 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { Page, Block, Grid, NFT, NFTList, Layout, Media, Dict, AccountPage, AuthPage } from 'thred-core';
+import {
+  Page,
+  Block,
+  Grid,
+  NFT,
+  NFTList,
+  Layout,
+  Media,
+  Dict,
+  AccountPage,
+  AuthPage,
+} from 'thred-core';
 import { LoadService } from '../load.service';
 import { MediaTableComponent } from '../media-table/media-table.component';
 import { NFTTableComponent } from '../nft-table/nft-table.component';
@@ -32,8 +43,8 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
 
   @Input() page!: Page;
 
-  AuthPage!: AuthPage
-  AccountPage!: AccountPage
+  AuthPage!: AuthPage;
+  AccountPage!: AccountPage;
 
   @Input() pageIndex!: number;
   @Input() pages!: Page[];
@@ -42,13 +53,11 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   @Input() defaultItems?: Dict<any[]>;
   @Input() layout?: Layout;
 
-
   activeBlock?: {
     block: Block;
     blockIndex: number;
     pageIndex: number;
   };
-
 
   @Input() set overrideBlock(
     block:
@@ -69,8 +78,14 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   @Output() droppedPage = new EventEmitter<any>();
   @Output() removedPage = new EventEmitter<number>();
   @Output() closeBar = new EventEmitter<any>();
-  @Output() authPageChanged = new EventEmitter<{name: 'img' | 'text', data: any}>();
-  @Output() accountPageChanged = new EventEmitter<{name: 'displayName' | 'displayPic' | 'bio', data: any}>();
+  @Output() authPageChanged = new EventEmitter<{
+    name: 'img' | 'text';
+    data: any;
+  }>();
+  @Output() accountPageChanged = new EventEmitter<{
+    name: 'displayName' | 'displayPic' | 'bio';
+    data: any;
+  }>();
 
   @Output() edit = new EventEmitter<{
     blockIndex: number;
@@ -139,6 +154,34 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     //   this.page.blocks[this.activeBlock.blockIndex] = this.activeBlock.block
     // }
     this.saveLayouts.emit({ delay, page: this.page });
+  }
+
+  setBlockImgData(event: { data: Media; type: 0 | 1 }) {
+    if (!this.activeBlock) {
+      return;
+    }
+    if (event.type == 1) {
+      this.activeBlock.block.imgs.push(event.data);
+      return;
+    }
+
+    let index = this.activeBlock.block.imgs.indexOf(event.data);
+    if (index > -1) {
+      this.activeBlock.block.imgs.splice(index);
+    }
+  }
+
+  setAuthPageImgData(event: { data: Media; type: 0 | 1 }) {
+    let page = this.page as AuthPage;
+
+    if (page) {
+      if (event.type == 1) {
+        page.img = event.data;
+        return;
+      }
+
+      page.img = undefined;
+    }
   }
 
   icons = new Array<any>();
@@ -547,6 +590,12 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
+  matchingGridType(type: number) {
+    return this.gridLayoutTypes.find((t) => {
+      return t.code == (type ?? 0);
+    });
+  }
+
   grid: Array<{
     name: string;
     block: number;
@@ -620,6 +669,18 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     },
   ];
 
+  gridLayoutTypes = [
+    {
+      name: 'Carousel',
+      code: 1,
+    },
+    {
+      name: 'Grid',
+      code: 0,
+    },
+    
+  ];
+
   navBarTypes = [
     {
       name: 'Image',
@@ -676,8 +737,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   hoverIndex?: number = undefined;
 
   changeStyle($event: Event, index: number) {
-
-    
     // this.color = $event.type == 'mouseover' ? 'yellow' : 'red';
     let p = document.getElementById('p-' + index);
 

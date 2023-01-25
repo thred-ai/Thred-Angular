@@ -10,7 +10,9 @@
     animationDuration="0"
     #tabGroup
     [color]="color"
-    (selectedTabChange)="activeBlock = undefined"
+    (selectedIndexChange)="
+      activeBlock = undefined; tabGroup.selectedIndex = $event
+    "
     [disablePagination]="!editable"
     [disableRipple]="!editable"
   >
@@ -76,7 +78,9 @@
               [pageIndex]="0"
               [walletId]="wallet.id"
               [overrideBlock]="activeBlock"
-              (saveLayouts)="saveLayout($event.delay)"
+              (saveLayouts)="
+                editableLayout.authPage = $event.page; saveLayout($event.delay)
+              "
               (closeBar)="openBar = false"
             >
             </app-layout-sidebar>
@@ -197,7 +201,9 @@
               [walletId]="wallet.id"
               [defaultItems]="{ '6': defaultNFTs, '7': defaultChains }"
               [overrideBlock]="activeBlock"
-              (saveLayouts)="saveLayout($event.delay); saveLayout(0)"
+              (saveLayouts)="
+                editableLayout.pages[p] = $event.page; saveLayout($event.delay)
+              "
               (droppedPage)="drop($event.$event, $event.pageIndex)"
               (removedPage)="onRemoveMenu($event)"
               (closeBar)="openBar = false"
