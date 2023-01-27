@@ -273,7 +273,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       [],
       new Grid(0, 3, 0, 'start'),
       '',
-      '#FFFFFF',
+      '#FFFFFF00',
       0,
       '',
       [],
@@ -692,19 +692,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     },
   ];
 
-  config: SummernoteOptions = {
-    placeholder: '',
-    tabsize: 2,
-    height: 200,
-    toolbar: [
-      ['misc', ['undo', 'redo']],
-      [['bold', 'italic', 'underline', 'clear']],
-      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-      ['fontsize', ['fontname', 'fontsize', 'color']],
-      ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
-      ['insert', ['table', 'hr']],
-    ],
-  };
 
   alignment(id: string) {
     return this.gridAlignment.find((a) => a.id == id);

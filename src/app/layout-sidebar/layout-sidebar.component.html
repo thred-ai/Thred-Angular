@@ -190,29 +190,6 @@
                 Social Elements
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <!-- <div class="wrap-input1 w-100 pt-3">
-            <p class="w-100 mb-4 text">Name</p>
-
-            <div class="px-3 w-100">
-              <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
-                <mat-form-field
-                  class="w-100 text"
-                  appearance="legacy"
-                  floatLabel="never"
-                >
-                  <input
-                    matInput
-                    class="bg-transparent text-truncate"
-                    type="text"
-                    name="name"
-                    [ngModel]="page.title"
-                    (ngModelChange)="page.title = $event; saveLayout(0)"
-                    placeholder="Name"
-                  />
-                </mat-form-field>
-              </div>
-            </div>
-          </div> -->
 
             <div class="wrap-input1 w-100 pt-3">
               <div class="px-3 w-100 py-2">
@@ -326,7 +303,7 @@
         <mat-expansion-panel class="shadow-0 border-bottom" [expanded]="false">
           <mat-expansion-panel-header>
             <mat-panel-title class="fw-bold text-dark">
-              Colours
+              Page Colours
             </mat-panel-title>
           </mat-expansion-panel-header>
 
@@ -345,7 +322,6 @@
                     saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -384,7 +360,6 @@
                     saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -423,7 +398,6 @@
                     saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -448,7 +422,7 @@
           </div>
 
           <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
-            <i><span style="font-size: small">Colours</span></i>
+            <i><span style="font-size: small">Page Colours</span></i>
           </div>
         </mat-expansion-panel>
 
@@ -532,8 +506,6 @@
                   (colorPickerSelect)="
                     page.bar.backgroundColor = $event; saveLayout(0)
                   "
-                  [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -570,7 +542,6 @@
                     page.bar.textColor = $event; saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -607,7 +578,6 @@
                     page.bar.detailColor = $event; saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -690,7 +660,6 @@
                           <mat-icon class="me-2 my-auto">{{ icon }}</mat-icon>
                           {{ formattedName(icon) | titlecase }}
                         </mat-option>
-                        <!-- [selected]="icon == theme" -->
                       </mat-optgroup>
                     </cdk-virtual-scroll-viewport>
                   </mat-autocomplete>
@@ -716,7 +685,6 @@
                     page.tab.backgroundColor = $event; saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -753,7 +721,6 @@
                     page.tab.textColor = $event; saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -790,7 +757,6 @@
                     page.tab.detailColor = $event; saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
-                  [cpAlphaChannel]="'always'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"
                   [cpOKButtonClass]="'big-design-alt-button'"
@@ -938,8 +904,13 @@
           </div>
         </ng-container>
 
-        <ng-container *ngIf="activeBlock!.block.type == 2">
-          <div class="wrap-input1 w-100 pt-3 text-center"></div>
+        <ng-container *ngIf="activeBlock!.block.type == 2" >
+          <div class="wrap-input1 w-100 pt-3 text-center">
+            <app-text-editor
+              [content]="activeBlock!.block.html"
+              (contentChange)="activeBlock!.block.html = $event; setValue()"
+            ></app-text-editor>
+          </div>
         </ng-container>
         <div class="w-100 pt-3 pb-0 text-purple text-center fw-bold">
           <i
@@ -1026,30 +997,14 @@
                     >
                       <div style="height: 40px"></div>
                       <div class="text-start text-truncate w-50 ms-2">
-                        {{ matchingGridType(activeBlock.block.grid.type)?.name ?? 'No Layout Selected' }}
-                      </div>
-                    </div>
-                  </mat-select-trigger>
-                  <!-- 
-                  <mat-select-trigger
-                    class="text-dark h-100 m-auto"
-                    *ngIf="activeBlock.block?.grid?.rows ?? 3"
-                  >
-                    <div
-                      class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
-                    >
-                      <div style="height: 40px"></div>
-                      <div class="text-start text-truncate w-50 ms-2">
-                        {{ activeBlock.block.grid.rows }}
-
                         {{
-                          activeBlock.block.grid.type == 0
-                            ? "Item(s) Per. Row"
-                            : "Visible Items"
+                          matchingGridType(activeBlock.block.grid.type)?.name ??
+                            "No Layout Selected"
                         }}
                       </div>
                     </div>
-                  </mat-select-trigger> -->
+                  </mat-select-trigger>
+              
 
                   <mat-option
                     *ngFor="let g of gridLayoutTypes ?? []"
@@ -1659,7 +1614,6 @@
                   activeBlock!.block.textColor = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"
@@ -1775,7 +1729,6 @@
                   activeBlock!.block.grid.textColor = $event; setValue()
                 "
                 [cpOutputFormat]="'hex'"
-                [cpAlphaChannel]="'always'"
                 [cpOKButton]="true"
                 [cpOKButtonText]="'SET COLOR'"
                 [cpOKButtonClass]="'big-design-alt-button'"
@@ -1819,140 +1772,7 @@
         </div>
       </mat-expansion-panel>
 
-      <!-- <div
-        cdkDropList
-        class="rounded shadow bg-light w-100 h-100"
-        (cdkDropListDropped)="drop($event, p, true)"
-        style="overflow-y: scroll"
-        *ngIf="(activeBlock.block?.type ?? 0) == 1"
-      >
-        <div
-          class="example-box"
-          *ngFor="let image of images"
-          cdkDrag
-          [cdkDragDisabled]="!image.isActive"
-        >
-          <div class="h-100 w-100 p-1" style="position: relative">
-            <a
-              *ngIf="image.isActive"
-              role="button"
-              (click)="fileInput.click()"
-            >
-              <img
-                loading="lazy"
-                class="ani-style w-100 white"
-                [useSrcset]="true"
-                [defaultImage]="'/assets/default.png'"
-                [lazyLoad]="image.img"
-                style="object-fit: contain"
-                alt="ok"
-              />
-            </a>
-
-            <div style="position: absolute; top: 0; right: 0">
-              <a
-                *ngIf="image.isActive && canCancel()"
-                class="ani-style"
-                (click)="removeImg(image)"
-                role="button"
-                ><mat-icon>cancel</mat-icon></a
-              >
-            </div>
-
-            <div
-              *ngIf="!image.isActive"
-              class="cdk-drag-placeholder w-100"
-              style="height: 100px"
-            >
-              <a
-                class="h-100 w-100 d-flex ani-style justify-content-center align-items-center"
-                (click)="fileInput.click()"
-                style="text-decoration: none"
-                role="button"
-              >
-                <mat-icon>add_circle</mat-icon>
-              </a>
-            </div>
-            <mat-form-field class="w-100 my-1" floatLabel="never">
-              <input
-                type="text"
-                matInput
-                [ngModelOptions]="{ standalone: true }"
-                [ngModel]="image.link"
-                style="font-size: small"
-                placeholder="Image Click URL"
-                class="text-dark big-design-input-text"
-              />
-              <mat-icon role="button" matSuffix>link</mat-icon>
-            </mat-form-field>
-            <input
-              #fileInput
-              type="file"
-              (change)="fileChangeEvent($event, image)"
-              style="display: none"
-            />
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div
-        cdkDropList
-        class="rounded shadow bg-light w-100 h-100"
-        (cdkDropListDropped)="drop($event, p, true)"
-        style="overflow-y: scroll"
-        *ngIf="(activeBlock.block?.type ?? 0) == 4"
-      >
-        <div
-          class="example-box"
-          *ngFor="let vid of videos"
-          cdkDrag
-          [cdkDragDisabled]="!vid.isActive"
-        >
-          <div class="h-100 w-100 p-1" style="position: relative">
-            <a class="ms-0 me-0" role="button" *ngIf="vid.isActive">
-              <iframe
-                [src]="vid.link | videoPipe | safeUrl"
-                width="100%"
-                style="aspect-ratio: 16/9"
-              ></iframe>
-            </a>
-
-            <div style="position: absolute; top: 0; right: 0">
-              <a *ngIf="vid.isActive" class="ani-style" role="button"
-                ><mat-icon>cancel</mat-icon></a
-              >
-            </div>
-
-            <div
-              *ngIf="!vid.isActive"
-              class="cdk-drag-placeholder w-100 m-0"
-              style="aspect-ratio: 16/9"
-            >
-              <a
-                class="h-100 w-100 d-flex ani-style justify-content-center align-items-center"
-                style="text-decoration: none"
-                role="button"
-              >
-                No Video Set
-              </a>
-            </div>
-            <mat-form-field class="w-100 my-1" floatLabel="never">
-              <input
-                type="text"
-                matInput
-                [ngModelOptions]="{ standalone: true }"
-                [ngModel]="vid.link"
-                (keyup)="vidChangeEvent($event, vid)"
-                style="font-size: small"
-                placeholder="Video URL"
-                class="text-dark big-design-input-text"
-              />
-              <mat-icon role="button" matSuffix>link</mat-icon>
-            </mat-form-field>
-          </div>
-        </div>
-      </div> -->
-
+     
       <div class="px-3 d-flex justify-content-center align-content-center py-4">
         <button
           role="button"

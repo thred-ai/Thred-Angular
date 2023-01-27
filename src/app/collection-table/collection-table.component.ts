@@ -22,7 +22,7 @@ import { Wallet } from 'thred-core';
 export class CollectionTableComponent
   implements OnInit, AfterViewInit, OnChanges
 {
-  @Output() clicked = new EventEmitter<{ app: Wallet; index: number, mode: number }>();
+  @Output() clicked = new EventEmitter<{ app: Wallet, mode: number }>();
 
   @Input() set utils(utils: Wallet[]) {
     this.dataSource = new MatTableDataSource<Wallet>(utils);
@@ -37,12 +37,9 @@ export class CollectionTableComponent
 
   open(
     app: Wallet,
-    index: number = (this.dataSource?.data ?? []).findIndex(
-      (d) => d.id == app.id
-    ),
     mode = 0
   ) {
-    this.clicked.emit({ app, index, mode });
+    this.clicked.emit({ app, mode });
   }
 
 

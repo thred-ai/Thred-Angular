@@ -107,11 +107,15 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { DragBlockComponent } from './drag-block/drag-block.component';
 import { LayoutSidebarComponent } from './layout-sidebar/layout-sidebar.component';
 import { ThredCoreModule } from 'thred-core';
-import { NgxSummernoteModule } from 'ngx-summernote';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { ProfileComponent } from './profile/profile.component';
 import { PageListPipe } from './page-list.pipe';
+// import {BUTTONS, NgxWigModule} from 'ngx-wig';
+import { TextEditorComponent } from './text-editor/text-editor.component';
+import { JoditAngularModule } from 'jodit-angular';
+
+
 
 @NgModule({
   declarations: [
@@ -151,6 +155,7 @@ import { PageListPipe } from './page-list.pipe';
     DragBlockComponent,
     LayoutSidebarComponent,
     PageListPipe,
+    TextEditorComponent,
   ],
   imports: [
     CommonModule,
@@ -215,7 +220,7 @@ import { PageListPipe } from './page-list.pipe';
     NgxSliderModule,
     AngularResizeEventModule,
     NgxDefaultImageModule,
-    NgxSummernoteModule,
+    JoditAngularModule,
     ThredCoreModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -228,7 +233,9 @@ import { PageListPipe } from './page-list.pipe';
       provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
       useClass: DefaultMatCalendarRangeStrategy,
     },
+    // { provide: BUTTONS, multi: true, useValue: MY_PLUGIN }
   ],
+  
   bootstrap: [AppComponent],
 })
 export class AppModule {

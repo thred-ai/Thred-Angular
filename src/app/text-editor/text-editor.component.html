@@ -1,0 +1,14 @@
+<jodit-editor
+  [config]="{
+    buttons: buttons,
+    buttonsMD: buttons,
+    buttonsSM: buttons,
+    buttonsXS: buttons,
+    showCharsCounter: false,
+    showWordsCounter: false,
+    showXPathInStatusbar: false,
+    disablePlugins: 'powered-by-jodit,add-new-line'
+  }"
+  [defaultValue]="content"
+  (onChange)="contentChange.emit($event.args[0])"
+></jodit-editor>

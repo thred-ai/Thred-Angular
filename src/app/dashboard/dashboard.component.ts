@@ -64,7 +64,6 @@ export class DashboardComponent implements OnInit {
       if (uid) {
         this.loadService.getUserInfo(uid, true, true, (dev) => {
           this.dev = dev;
-          
         });
       } else {
       }
@@ -93,11 +92,9 @@ export class DashboardComponent implements OnInit {
 
   openUtil(
     wallet?: Wallet,
-    index: number = this.dev?.utils.findIndex((app) => app.id == wallet?.id) ??
-      -1,
     mode = 0
   ) {
-    const modalRef = this.dialog.open(SmartUtilComponent, {
+    this.dialog.open(SmartUtilComponent, {
       maxHeight: 'calc(var(--vh, 1vh) * 100)',
       maxWidth: '100vw',
       panelClass: 'app-full-bleed-dialog',
@@ -106,31 +103,6 @@ export class DashboardComponent implements OnInit {
         wallet: wallet ? JSON.parse(JSON.stringify(wallet)) : undefined,
         mode,
       },
-    });
-
-    modalRef.afterClosed().subscribe((value) => {
-      if (this.dev) {
-        if (value) {
-          let apps = [...this.dev?.utils];
-
-          if (value == '0') {
-            if (index > -1) {
-              apps.splice(index, 1);
-            }
-          } else if (value as Wallet) {
-            console.log(index);
-
-            if (index > -1) {
-              apps[index] = Object.assign(this.dev.utils[index], value);
-            } else {
-              apps.push(value as Wallet);
-            }
-          }
-          this.dev.utils = apps;
-        }
-
-        this.cdr.detectChanges();
-      }
     });
   }
 
@@ -164,6 +136,11 @@ export class DashboardComponent implements OnInit {
       this.getProfile();
       this.loadStats((await this.loadService.currentUser)?.uid);
     });
+
+    this.loadService.loadedUser.subscribe(dev => {
+      console.log(dev)
+      this.dev = dev ?? undefined
+    })
   }
 
   loadStats(uid?: string) {

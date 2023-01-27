@@ -117,7 +117,7 @@ export class MediaTableComponent implements OnInit {
     this.reloadTable();
   }
 
-  acceptedTypes = '.png,.jpeg,.gif';
+  acceptedTypes = '.png,.jpeg,.gif,.svg,.webp';
 
   public async dropped(files: any) {
     if (this.data.length >= this.max) {

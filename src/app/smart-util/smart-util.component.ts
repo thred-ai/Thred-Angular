@@ -19,7 +19,7 @@ import { ethers } from 'ethers';
 import { CurrencyMaskInputMode } from 'ngx-currency';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { Chain, Layout, Page, Wallet } from 'thred-core';
+import { Chain, Developer, Layout, Page, Wallet } from 'thred-core';
 import { AddressEnsLookupPipe } from '../address-ens-lookup.pipe';
 import { AddressValidatePipe } from '../address-validate.pipe';
 import { LayoutBuilderComponent } from '../layout-builder/layout-builder.component';
@@ -43,7 +43,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   newWallet = true;
 
   layouts = [
-    { name: 'desktop', available: false, title: 'Desktop (Coming Soon)' },
+    { name: 'desktop', available: true, title: 'Desktop (Coming Soon)' },
     { name: 'mobile', available: true, title: 'Mobile' },
   ];
 
@@ -61,6 +61,24 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         address ? this._filter(address) : this.addresses.slice()
       )
     );
+  }
+
+  updateWallets(wallet = this.wallet) {
+    let dev = JSON.parse(
+      JSON.stringify(this.loadService.loadedUser.value)
+    ) as Developer;
+    console.log('oyz');
+
+    if (dev && dev.utils && wallet) {
+      console.log('oy');
+      let index = dev.utils.findIndex((w) => w.id == wallet.id);
+      if (index > -1) {
+        dev.utils[index] = wallet;
+      } else {
+        dev.utils.push(wallet);
+      }
+      this.loadService.loadedUser.next(dev);
+    }
   }
 
   ngOnDestroy(): void {
@@ -449,18 +467,16 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
             console.log(result);
             this.edited = false;
             if (autopublish) {
-              this.publish(wallet, (result) => {
-                if (close && result) {
-                  this.dialogRef.close(result.status < 3 ? result : '0');
-                }
+              this.publish(wallet, close, (result) => {
                 this.loading = false;
               });
             } else {
               if (close) {
-                this.dialogRef.close(wallet.status < 3 ? wallet : '0');
+                this.close();
               }
               this.loading = false;
             }
+            this.updateWallets(wallet);
           },
           appFile,
           marketingFile
@@ -473,7 +489,11 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     }
   }
 
-  publish(wallet = this.wallet, callback?: (result?: Wallet) => any) {
+  publish(
+    wallet = this.wallet,
+    close = false,
+    callback?: (result?: Wallet) => any
+  ) {
     if (wallet) {
       this.loading = true;
 
@@ -482,6 +502,9 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
         this.loading = false;
         if (callback) {
           callback(result);
+          if (close && result) {
+            this.close();
+          }
         }
       });
     } else {
@@ -514,6 +537,8 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
           this.wallet.displayedLayouts = JSON.parse(
             JSON.stringify(this.wallet.displayedLayouts)
           );
+
+          this.updateWallets();
 
           this.cdr.detectChanges();
           //toast
@@ -578,7 +603,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.dialogRef.close(this.newWallet ? this.wallet : undefined);
+    this.dialogRef.close();
   }
 
   async changed(event: MatSelectChange) {

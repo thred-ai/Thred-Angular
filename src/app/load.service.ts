@@ -10,28 +10,18 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { first } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
 import { Alchemy, AlchemyProvider } from 'alchemy-sdk';
-import { Category } from './category.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Meta, Title } from '@angular/platform-browser';
-import { v4 as uuid } from 'uuid';
 import {
-  Bar,
-  Block,
-  Border,
   Chain,
   Developer,
-  Grid,
   Layout,
   NFT,
   NFTList,
-  Page,
-  Shadow,
-  Tab,
   Wallet,
   ThredCoreService,
-  AccountPage,
 } from 'thred-core';
 
 export interface Dict<T> {
