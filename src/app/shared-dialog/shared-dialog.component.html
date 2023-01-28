@@ -15,7 +15,17 @@
   </div>
   <mat-dialog-content style="overflow: hidden" *ngIf="data">
     <div style="overflow-y: scroll; height: 65vh">
-      <app-add-nft [data]="data.payload" (saved)="saved($event)" *ngIf="data.mode == 0"></app-add-nft>
+      <app-add-nft
+        [data]="data.payload"
+        (saved)="saved($event)"
+        *ngIf="data.mode == 0"
+      ></app-add-nft>
+      <app-add-app
+        [data]="data.payload"
+        [id]="data.id"
+        (saved)="saved($event)"
+        *ngIf="data.mode == 8"
+      ></app-add-app>
     </div>
   </mat-dialog-content>
 </div>

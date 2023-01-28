@@ -259,6 +259,7 @@ export class LoadService {
       let id = data.id;
 
       let uploadData = JSON.parse(JSON.stringify(data));
+      uploadData.chains = uploadData.chains.map((c: Chain) => c.id);
 
       if (uploadData.downloads > 0) {
         delete uploadData.downloads;
@@ -653,6 +654,30 @@ export class LoadService {
     if (file) {
       try {
         let ref = this.storage.ref(`wallets/${id}/img-${imgId}.png`);
+
+        await ref.put(file, { cacheControl: 'no-cache' });
+        let displayUrl = await ref.getDownloadURL().toPromise();
+        return displayUrl as string;
+      } catch (error) {
+        console.log('app');
+        return undefined;
+      }
+    } else {
+      try {
+        // let ref = this.storage.ref(`wallets/${id}/img-${imgId}.png`);
+
+        // await ref.delete().toPromise();
+        return undefined;
+      } catch (error) {
+        return undefined;
+      }
+    }
+  }
+
+  async updateAppImage(id: string, imgId: string, file?: File) {
+    if (file) {
+      try {
+        let ref = this.storage.ref(`wallets/${id}/app-${imgId}.png`);
 
         await ref.put(file, { cacheControl: 'no-cache' });
         let displayUrl = await ref.getDownloadURL().toPromise();

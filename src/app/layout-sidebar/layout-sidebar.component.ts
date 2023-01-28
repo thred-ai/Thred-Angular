@@ -23,7 +23,9 @@ import {
   Dict,
   AccountPage,
   AuthPage,
+  App,
 } from 'thred-core';
+import { AppTableComponent } from '../app-table/app-table.component';
 import { LoadService } from '../load.service';
 import { MediaTableComponent } from '../media-table/media-table.component';
 import { NFTTableComponent } from '../nft-table/nft-table.component';
@@ -271,6 +273,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       undefined,
       0,
       [],
+      [],
       new Grid(0, 3, 0, 'start'),
       '',
       '#FFFFFF00',
@@ -500,7 +503,9 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   }
 
   @ViewChild('nftTable') nftTable?: NFTTableComponent;
+  @ViewChild('appTable') appTable?: AppTableComponent;
   @ViewChild('mediaTable') mediaTable?: MediaTableComponent;
+  @ViewChild('mediaTable2') mediaTable2?: MediaTableComponent;
 
   openNFT(nft?: NFT, index?: number) {
     console.log(nft);
@@ -542,6 +547,54 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
           if (this.nftTable) {
             this.nftTable.nfts = this.activeBlock.block.nftList.nfts;
             this.nftTable.resize(undefined, true);
+          }
+        }
+        this.cdr.detectChanges();
+      }
+      this.setValue();
+    });
+  }
+
+  openApp(app?: App, index?: number) {
+    console.log(app);
+    const modalRef = this.dialog.open(SharedDialogComponent, {
+      width: '750px',
+      maxHeight: '80vh',
+      maxWidth: '100vw',
+      panelClass: 'app-full-bleed-sm-dialog',
+
+      data: {
+        payload: app,
+        id: this.walletId,
+        mode: 8,
+        title: 'App Details',
+      },
+    });
+
+    modalRef.afterClosed().subscribe((value) => {
+      //
+
+      if (this.activeBlock?.block) {
+        if (
+          !this.activeBlock.block.apps
+        ) {
+          this.activeBlock.block.apps = []
+        }
+        if (this.activeBlock.block.apps) {
+          if (app && index != undefined && index > -1) {
+            if (value && value?.nft) {
+              this.activeBlock.block.apps[index] = value?.app;
+            } else if (value == '0') {
+              this.activeBlock.block.apps.splice(index, 1);
+            }
+          } else {
+            if (value && value?.app) {
+              this.activeBlock.block.apps.push(value?.app);
+            }
+          }
+          if (this.appTable) {
+            this.appTable.apps = this.activeBlock.block.apps;
+            this.appTable.resize(undefined, true);
           }
         }
         this.cdr.detectChanges();
@@ -651,6 +704,10 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     {
       name: 'Network',
       code: 7,
+    },
+    {
+      name: 'App',
+      code: 8,
     },
     // {
     //   name: 'Multi Block',

@@ -879,6 +879,22 @@
             </app-nft-table>
           </div>
         </div>
+        <div
+          class="wrap-input1 w-100 pt-3"
+          *ngIf="activeBlock!.block.type == 8"
+        >
+          <p class="w-100 mb-4 text">Displayed Apps</p>
+          <div class="px-3 w-100 mb-3">
+            <app-app-table
+              #appTable
+              [apps]="activeBlock!.block.apps"
+              [count]="(activeBlock!.block.apps).length"
+              (clicked)="openApp($event?.app, $event?.index)"
+              (uploaded)="activeBlock!.block.apps = $event; setValue()"
+            >
+            </app-app-table>
+          </div>
+        </div>
         <ng-container *ngIf="activeBlock!.block.type == 1">
           <div class="wrap-input1 w-100 pt-3">
             <p class="w-100 mb-4 text">Display Images</p>

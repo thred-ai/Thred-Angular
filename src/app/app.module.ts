@@ -114,6 +114,8 @@ import { PageListPipe } from './page-list.pipe';
 // import {BUTTONS, NgxWigModule} from 'ngx-wig';
 import { TextEditorComponent } from './text-editor/text-editor.component';
 import { JoditAngularModule } from 'jodit-angular';
+import { AppTableComponent } from './app-table/app-table.component';
+import { AddAppComponent } from './add-app/add-app.component';
 
 
 
@@ -144,7 +146,9 @@ import { JoditAngularModule } from 'jodit-angular';
     WalletConnectComponentComponent,
     LayoutBuilderComponent,
     NFTTableComponent,
+    AppTableComponent,
     AddNftComponent,
+    AddAppComponent,
     SharedDialogComponent,
     SliderValuePipe,
     LayoutsPipe,

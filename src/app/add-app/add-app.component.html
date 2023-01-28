@@ -1,0 +1,239 @@
+<div class="mt-3 pb-4 px-0 w-100" *ngIf="app">
+  <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+    <h3 class="w-100 mb-4" style="font-size: 20px">App Name</h3>
+
+    <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+      <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
+        <input
+          matInput
+          class="bg-transparent text-truncate"
+          type="text"
+          name="name"
+          [(ngModel)]="app.name"
+          placeholder="App Name"
+        />
+        <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+    <h3 class="w-100 mb-4" style="font-size: 20px">App URL</h3>
+
+    <div class="rounded-pill border w-100 pb-2 px-4 mb-4">
+      <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
+        <input
+          matInput
+          class="bg-transparent text-truncate"
+          type="text"
+          name="name"
+          [(ngModel)]="app.loadURL"
+          placeholder="App URL"
+        />
+        <!-- <span class="shadow-input1 py-3 px-2 px-lg-4 px-md-4"></span> -->
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
+    <h3 class="w-100 mb-4" style="font-size: 20px">App Image</h3>
+
+    <div
+      class="bg-white rounded-icon shadow d-flex justify-content-center align-items-center"
+      style="
+        object-fit: contain;
+        aspect-ratio: 1;
+        height: 75px;
+        overflow: hidden;
+      "
+    >
+      <div
+        class="m-auto position-relative img-input"
+        style="height: 90%; width: 90%; overflow: hidden"
+        role="button"
+        (click)="appImgInput.click()"
+      >
+        <img
+          class="w-100 h-100 position-absolute"
+          style="z-index: 50; object-fit: contain"
+          [src]="app.displayUrl! | safeUrl"
+        />
+        <div
+          class="w-100 h-100 position-absolute img-input-display bg-purple text-white"
+          style="z-index: 51; opacity: 0.5"
+        >
+          <mat-icon class="m-auto">upload </mat-icon>
+        </div>
+        <input
+          #appImgInput
+          type="file"
+          (change)="fileChangeEvent($event, 1)"
+          style="display: none"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap-input1 w-100 pt-3 mb-2 px-4 px-md-5">
+    <h3 class="w-100 mb-4" style="font-size: 20px">Default Network</h3>
+
+    <div class="rounded-pill border w-100 pe-4 mb-3">
+      <mat-form-field class="w-100" appearance="legacy" floatLabel="never">
+        <mat-select
+          [(ngModel)]="app.defaultChain"
+          class="my-auto d-flex justify-content-start align-items-center"
+        >
+          <mat-select-trigger class="text-dark h-100 m-auto bg-danger">
+            <div
+              class="w-100 d-flex justify-content-start align-items-center p-3 my-auto"
+            >
+              <!-- [mdbPopover]="template"
+                  placement="bottom"
+                  trigger="hover" -->
+              <div
+                class="position-relative"
+                style="width: 95px; height: 47.5px"
+                role="button"
+              >
+                <div
+                  class="nft-img bg-white rounded-circle shadow d-flex justify-content-center align-items-center position-absolute"
+                  style="
+                    object-fit: contain;
+                    aspect-ratio: 1;
+                    top: 0px;
+                    left: 0px;
+                    overflow: hidden;
+                    z-index: 50;
+                  "
+                >
+                  <img
+                    class="m-auto rounded-circle"
+                    style="
+                      object-fit: contain;
+                      overflow: hidden;
+                      height: 85%;
+                      width: 85%;
+                    "
+                    [src]="chains[app.defaultChain ?? 1]?.url"
+                    role="button"
+                  />
+                </div>
+              </div>
+              <span
+                class="text-start text-truncate w-50 ms-3"
+                style="font-size: large"
+              >
+                {{ chains[app.defaultChain ?? 1].name }}
+              </span>
+            </div>
+          </mat-select-trigger>
+
+          <mat-option *ngFor="let chain of chainList ?? []" [value]="chain.id">
+            <div
+              class="h-100 w-100 d-flex justify-content-start justify-content-md-between align-items-center py-3"
+            >
+              <div
+                class="d-flex justify-content-start align-items-center"
+                style="height: 22.5px"
+              >
+                <img
+                  id="image"
+                  *ngIf="chain?.url"
+                  class="me-2 h-100 rounded-circle"
+                  [src]="chain?.url"
+                  style="object-fit: cover; aspect-ratio: 1"
+                />
+                <span class="py-1" style="font-size: medium">
+                  {{ chain?.name ?? "No Network Selected" }}
+                </span>
+              </div>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="w-100 py-5 text-purple text-center fw-bold">
+    <i><span style="font-size: small">App Info</span></i>
+    <hr class="fw-bolder border-1" />
+  </div>
+
+  <!-- <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
+      <h3 class="w-100 mb-4" style="font-size: 20px">Listing Price</h3>
+
+      <div
+        class="rounded-pill border w-100 px-4 pe-0 mb-4 d-flex justify-content-between align-content-center"
+      >
+        <mat-form-field
+          class="mb-0 pe-3 w-75"
+          appearance="legacy"
+          floatLabel="never"
+        >
+          <input
+            matInput
+            currencyMask
+            [options]="customCurrencyMaskConfig"
+            class="mb-2 text-truncate"
+            type="text"
+            name="name"
+            formControlName="price"
+            placeholder="Price"
+          />
+        </mat-form-field>
+        <div
+          class="bg-white rounded-circle shadow p-1"
+          style="height: 52.5px !important; width: 52.5px !important"
+          role="button"
+          [mdbPopover]="template"
+          placement="top"
+          [trigger]="'hover'"
+        >
+          <div
+            class="bg-purple m-auto rounded-circle d-flex justify-content-center align-content-center notif-icon success-hover"
+            style="aspect-ratio: 1"
+          >
+            <mat-icon class="text-white m-auto" style="font-size: 25px">
+              smart_toy
+            </mat-icon>
+          </div>
+        </div>
+        <ng-template #template>
+          <div class="popover-body-padding">
+            <b class="fw-bolder mb-4 text-light-success">Relative Prices</b>
+            <br />
+            Prices are relative to the different networks. Ex. 100 ETH, 100
+            MATIC.
+          </div>
+        </ng-template>
+      </div>
+    </div> -->
+
+  <div
+    class="wrap-input1 w-100 pt-0 px-4 px-md-5 d-flex justify-content-between align-content-center"
+  >
+    <button
+      class="text me-2 px-3 py-2 w-100 btn bg-secondary text-white fw-bolder rounded-pill"
+      (click)="delete()"
+      [disabled]="loading"
+    >
+      Delete
+    </button>
+    <button
+      class="text ms-2 px-3 py-2 w-100 btn bg-purple text-white fw-bolder rounded-pill"
+      (click)="save()"
+      [disabled]="loading"
+    >
+      {{ loading ? "Saving" : "Save" }}
+      <span
+        *ngIf="loading"
+        class="spinner-border spinner-border-sm ms-1"
+        role="status"
+        aria-hidden="true"
+      ></span>
+    </button>
+  </div>
+  <p *ngIf="err != ''" class="text-danger py-3 text-center fw-bold">
+    {{ err }}
+  </p>
+</div>
