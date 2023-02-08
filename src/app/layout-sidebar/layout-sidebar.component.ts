@@ -10,6 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { isPlatformBrowser } from 'ng-in-viewport';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { Subject, BehaviorSubject } from 'rxjs';
 import {
@@ -287,19 +288,23 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   }
 
   removeSliderListener(id: string) {
-    const $slider = document.getElementById(id);
+    if (isPlatformBrowser()) {
+      const $slider = document.getElementById(id);
 
-    if ($slider) {
-      $slider.removeAllListeners!('change');
+      if ($slider) {
+        $slider.removeAllListeners!('change');
+      }
     }
   }
 
   addSliderListener(id: string, callback: (data: number) => any) {
-    const $slider = document.getElementById(id);
+    if (isPlatformBrowser()) {
+      const $slider = document.getElementById(id);
 
-    $slider?.addEventListener('change', (evt: any) => {
-      callback(evt.detail.value ?? 0);
-    });
+      $slider?.addEventListener('change', (evt: any) => {
+        callback(evt.detail.value ?? 0);
+      });
+    }
   }
 
   async setEdit(blockIndex: number) {
@@ -368,17 +373,19 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
 
     this.syncListeners(true);
 
-    setTimeout(async () => {
-      let p = document.getElementById('p-' + blockIndex);
-      if (p) {
-        p.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-          inline: 'start',
-        });
-      } else {
-      }
-    }, 100);
+    if (isPlatformBrowser()) {
+      setTimeout(async () => {
+        let p = document.getElementById('p-' + blockIndex);
+        if (p) {
+          p.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'start',
+          });
+        } else {
+        }
+      }, 100);
+    }
   }
 
   syncListeners(add = true) {
@@ -575,10 +582,8 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       //
 
       if (this.activeBlock?.block) {
-        if (
-          !this.activeBlock.block.apps
-        ) {
-          this.activeBlock.block.apps = []
+        if (!this.activeBlock.block.apps) {
+          this.activeBlock.block.apps = [];
         }
         if (this.activeBlock.block.apps) {
           if (app && index != undefined && index > -1) {
@@ -735,7 +740,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       name: 'Grid',
       code: 0,
     },
-    
   ];
 
   navBarTypes = [
@@ -748,7 +752,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       code: 0,
     },
   ];
-
 
   alignment(id: string) {
     return this.gridAlignment.find((a) => a.id == id);
@@ -782,22 +785,25 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
 
   changeStyle($event: Event, index: number) {
     // this.color = $event.type == 'mouseover' ? 'yellow' : 'red';
-    let p = document.getElementById('p-' + index);
 
-    if ($event?.type == 'mouseover') {
-      this.hoverIndex = index;
-      setTimeout(async () => {
-        if (p) {
-          p.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'start',
-          });
-        } else {
-        }
-      }, 0);
-    } else {
-      this.hoverIndex = undefined;
+    if (isPlatformBrowser()) {
+      let p = document.getElementById('p-' + index);
+
+      if ($event?.type == 'mouseover') {
+        this.hoverIndex = index;
+        setTimeout(async () => {
+          if (p) {
+            p.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'start',
+            });
+          } else {
+          }
+        }, 0);
+      } else {
+        this.hoverIndex = undefined;
+      }
     }
   }
 }

@@ -275,8 +275,8 @@ export class LayoutBuilderComponent implements OnInit {
   }
 
   async save() {
-    let display = document.getElementById('display');
-    if (this.editableLayout && display) {
+    // let display = document.getElementById('display');
+    if (this.editableLayout) {
       // html2canvas
       //   .default(display, { allowTaint: true, useCORS: true })
       //   .then((canvas) => {
