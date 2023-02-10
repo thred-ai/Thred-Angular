@@ -113,12 +113,22 @@
           >
             <div class="m-0 {{ editableLayout.type }} shadow-preview">
               <div class="preview-display">
-                <div class="display" id="display">
+                <div class="display" #display id="display">
                   <thred-page
                     [editable]="false"
                     [layout]="editableLayout"
                     [currentPage]="{ page, index: 0 }"
-                    [authDetails]="authDetails"
+                    [authDetails]="
+                      [
+                        authDetails,
+                        {
+                          frame: {
+                            innerWidth: display.clientWidth,
+                            innerHeight: display.clientHeight
+                          }
+                        }
+                      ] | mergeObj
+                    "
                   >
                   </thred-page>
                 </div>

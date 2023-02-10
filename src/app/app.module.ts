@@ -116,6 +116,7 @@ import { TextEditorComponent } from './text-editor/text-editor.component';
 import { JoditAngularModule } from 'jodit-angular';
 import { AppTableComponent } from './app-table/app-table.component';
 import { AddAppComponent } from './add-app/add-app.component';
+import { MergeObjPipe } from './merge-obj.pipe';
 
 
 
@@ -160,6 +161,7 @@ import { AddAppComponent } from './add-app/add-app.component';
     LayoutSidebarComponent,
     PageListPipe,
     TextEditorComponent,
+    MergeObjPipe,
   ],
   imports: [
     CommonModule,
