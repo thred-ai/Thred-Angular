@@ -63,8 +63,6 @@
   --desktopPreviewHeight: 90;
   --desktopDisplayHeight: 95;
 
-  --refresher-colour: #343a40;
-  --ion-background-color: white;
 }
 
 *,
@@ -12201,17 +12199,6 @@ mat-calendar.no-header {
 //   z-index: 500 !important;
 // }
 
-ion-content::part(scroll)::-webkit-scrollbar {
-  display: none;
-}
-
-ion-spinner {
-  color: var(--refresher-colour) !important;
-}
-
-ion-icon {
-  color: var(--refresher-colour) !important;
-}
 
 img {
   outline: none;

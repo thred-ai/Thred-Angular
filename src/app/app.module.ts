@@ -117,6 +117,8 @@ import { JoditAngularModule } from 'jodit-angular';
 import { AppTableComponent } from './app-table/app-table.component';
 import { AddAppComponent } from './add-app/add-app.component';
 import { MergeObjPipe } from './merge-obj.pipe';
+import { CastPipe } from './cast.pipe';
+import { LayoutSliderComponent } from './layout-slider/layout-slider.component';
 
 
 
@@ -154,6 +156,7 @@ import { MergeObjPipe } from './merge-obj.pipe';
     SliderValuePipe,
     LayoutsPipe,
     LayoutIndexPipe,
+    CastPipe,
     MediaTableComponent,
     EditBlockComponent,
     EditPageComponent,
@@ -162,6 +165,7 @@ import { MergeObjPipe } from './merge-obj.pipe';
     PageListPipe,
     TextEditorComponent,
     MergeObjPipe,
+    LayoutSliderComponent,
   ],
   imports: [
     CommonModule,

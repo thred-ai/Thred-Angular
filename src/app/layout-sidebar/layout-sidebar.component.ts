@@ -31,6 +31,7 @@ import { LoadService } from '../load.service';
 import { MediaTableComponent } from '../media-table/media-table.component';
 import { NFTTableComponent } from '../nft-table/nft-table.component';
 import { SharedDialogComponent } from '../shared-dialog/shared-dialog.component';
+import { RangeCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-layout-sidebar',
@@ -287,26 +288,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     this.addedBlock.emit({ block, pageIndex });
   }
 
-  removeSliderListener(id: string) {
-    if (isPlatformBrowser()) {
-      const $slider = document.getElementById(id);
-
-      if ($slider) {
-        $slider.removeAllListeners!('change');
-      }
-    }
-  }
-
-  addSliderListener(id: string, callback: (data: number) => any) {
-    if (isPlatformBrowser()) {
-      const $slider = document.getElementById(id);
-
-      $slider?.addEventListener('change', (evt: any) => {
-        callback(evt.detail.value ?? 0);
-      });
-    }
-  }
-
   async setEdit(blockIndex: number) {
     this.margins = (
       Object.keys(this.activeBlock?.block?.padding ?? {}) as (
@@ -371,8 +352,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
 
     this.cdr.detectChanges();
 
-    this.syncListeners(true);
-
     if (isPlatformBrowser()) {
       setTimeout(async () => {
         let p = document.getElementById('p-' + blockIndex);
@@ -388,109 +367,11 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  syncListeners(add = true) {
-    this.margins.forEach((margin) => {
-      this.removeSliderListener('block-margin-' + margin.id);
-      if (add) {
-        this.addSliderListener('block-margin-' + margin.id, (data) => {
-          if (this.activeBlock?.block) {
-            this.activeBlock.block.padding[margin.id] = data;
-            this.setValue();
-          }
-        });
-      }
-    });
 
-    this.borders.forEach((border) => {
-      this.removeSliderListener('block-border-' + border.id);
-      if (add) {
-        this.addSliderListener('block-border-' + border.id, (data) => {
-          if (this.activeBlock?.block) {
-            this.activeBlock.block.borders[border.id].width = data;
-            this.setValue();
-          }
-        });
-      }
-    });
 
-    this.gridBorders.forEach((border) => {
-      this.removeSliderListener('grid-border-' + border.id);
-      if (add) {
-        this.addSliderListener('grid-border-' + border.id, (data) => {
-          if (this.activeBlock?.block) {
-            this.activeBlock.block.grid.borders[border.id].width = data;
-            this.setValue();
-          }
-        });
-      }
-    });
-
-    this.blockShadowDirection.forEach((shadow) => {
-      this.removeSliderListener('block-shadow-direction-' + shadow.id);
-      if (add) {
-        this.addSliderListener(
-          'block-shadow-direction-' + shadow.id,
-          (data) => {
-            if (this.activeBlock?.block) {
-              this.activeBlock.block.shadow.direction[shadow.id] = data;
-              this.setValue();
-            }
-          }
-        );
-      }
-    });
-
-    this.gridShadowDirection.forEach((shadow) => {
-      this.removeSliderListener('grid-shadow-direction-' + shadow.id);
-      if (add) {
-        this.addSliderListener('grid-shadow-direction-' + shadow.id, (data) => {
-          if (this.activeBlock?.block) {
-            this.activeBlock.block.grid.shadow.direction[shadow.id] = data;
-            this.setValue();
-          }
-        });
-      }
-    });
-
-    this.removeSliderListener('grid-corners');
-    this.removeSliderListener('grid-spacing');
-    this.removeSliderListener('grid-shadow-blur');
-
-    this.removeSliderListener('block-corners');
-    this.removeSliderListener('block-shadow-blur');
-
-    if (add) {
-      this.addSliderListener('grid-corners', (data) => {
-        if (this.activeBlock?.block) {
-          this.activeBlock.block.grid.corners = data;
-          this.setValue();
-        }
-      });
-      this.addSliderListener('grid-spacing', (data) => {
-        if (this.activeBlock?.block) {
-          this.activeBlock.block.grid.spacing = data;
-          this.setValue();
-        }
-      });
-      this.addSliderListener('grid-shadow-blur', (data) => {
-        if (this.activeBlock?.block) {
-          this.activeBlock.block.grid.shadow.blur = data;
-          this.setValue();
-        }
-      });
-      this.addSliderListener('block-corners', (data) => {
-        if (this.activeBlock?.block) {
-          this.activeBlock.block.corners = data;
-          this.setValue();
-        }
-      });
-      this.addSliderListener('block-shadow-blur', (data) => {
-        if (this.activeBlock?.block) {
-          this.activeBlock.block.shadow.blur = data;
-          this.setValue();
-        }
-      });
-    }
+  sliderVal(event: Event){
+    console.log((event as RangeCustomEvent).detail.value)
+    return (event as RangeCustomEvent).detail.value as number;
   }
 
   setValue() {

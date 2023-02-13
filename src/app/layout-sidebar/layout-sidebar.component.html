@@ -888,7 +888,7 @@
             <app-app-table
               #appTable
               [apps]="activeBlock!.block.apps"
-              [count]="(activeBlock!.block.apps).length"
+              [count]="activeBlock!.block.apps.length"
               (clicked)="openApp($event?.app, $event?.index)"
               (uploaded)="activeBlock!.block.apps = $event; setValue()"
             >
@@ -920,7 +920,7 @@
           </div>
         </ng-container>
 
-        <ng-container *ngIf="activeBlock!.block.type == 2" >
+        <ng-container *ngIf="activeBlock!.block.type == 2">
           <div class="wrap-input1 w-100 pt-3 text-center">
             <app-text-editor
               [content]="activeBlock!.block.html"
@@ -947,13 +947,14 @@
           <p class="w-100 mb-4 text">Margin {{ margin.id | titlecase }}</p>
           <div class="px-3 w-100">
             <div class="w-100 mb-3">
-              <tc-range-slider
-                animate-onclick="2s"
+              <app-layout-slider
+                [min]="0"
+                [max]="100"
                 [value]="activeBlock.block.padding![margin.id]"
-                generate-labels="true"
-                id="block-margin-{{ margin.id }}"
-                round="0"
-              ></tc-range-slider>
+                (valueChange)="
+                  activeBlock.block.padding![margin.id] = $event; setValue()
+                "
+              ></app-layout-slider>
             </div>
           </div>
         </div>
@@ -962,24 +963,6 @@
           <i><span style="font-size: small">Block Margins</span></i>
         </div>
       </mat-expansion-panel>
-
-      <!-- <div
-        class="w-100"
-        *ngIf="(activeBlock.block?.type ?? 0) == 7"
-        [class.relative]="codeMode == false"
-        style="height: 450px"
-      >
-        <ngx-monaco-editor
-          class="w-100 h-100"
-          [class.absolute]="codeMode"
-          ngDefaultControl
-          [options]="editorOptions"
-          [ngModel]="activeBlock.block!.html"
-        >
-        </ngx-monaco-editor>
-
-        <a [hidden]='codeMode' (click)='codeMode = true' style="position: absolute; bottom: 15px; right: 5px; z-index: 100; height: 30px; width: 30px; text-decoration: none;" role="button" class="btn btn-light shadow rounded-circle d-flex justify-content-center align-items-center"><mat-icon >fullscreen</mat-icon></a>
-      </div> -->
 
       <mat-expansion-panel class="shadow-0 border-bottom">
         <mat-expansion-panel-header>
@@ -1020,7 +1003,6 @@
                       </div>
                     </div>
                   </mat-select-trigger>
-              
 
                   <mat-option
                     *ngFor="let g of gridLayoutTypes ?? []"
@@ -1172,13 +1154,14 @@
           <p class="w-100 mb-4 text">Spacing</p>
           <div class="px-3 w-100">
             <div class="w-100 mb-3">
-              <tc-range-slider
-                animate-onclick="2s"
+              <app-layout-slider
+                [min]="0"
+                [max]="100"
                 [value]="activeBlock.block.grid.spacing"
-                generate-labels="true"
-                id="grid-spacing"
-                round="0"
-              ></tc-range-slider>
+                (valueChange)="
+                  activeBlock.block.grid.spacing = $event; setValue()
+                "
+              ></app-layout-slider>
             </div>
           </div>
         </div>
@@ -1200,13 +1183,14 @@
             <p class="w-100 mb-4 text">Border Radius</p>
             <div class="px-3 w-100">
               <div class="w-100 mb-3">
-                <tc-range-slider
-                  animate-onclick="2s"
+                <app-layout-slider
+                  [min]="0"
+                  [max]="100"
                   [value]="activeBlock.block.grid.corners"
-                  generate-labels="true"
-                  id="grid-corners"
-                  round="0"
-                ></tc-range-slider>
+                  (valueChange)="
+                    activeBlock.block.grid.corners = $event; setValue()
+                  "
+                ></app-layout-slider>
               </div>
             </div>
           </div>
@@ -1225,13 +1209,15 @@
               </p>
               <div class="px-3 w-100">
                 <div class="w-100 mb-3">
-                  <tc-range-slider
-                    animate-onclick="2s"
+                  <app-layout-slider
+                    [min]="0"
+                    [max]="100"
                     [value]="activeBlock.block.grid.borders[border.id].width"
-                    generate-labels="true"
-                    id="grid-border-{{ border.id }}"
-                    round="0"
-                  ></tc-range-slider>
+                    (valueChange)="
+                      activeBlock.block.grid.borders[border.id].width = $event;
+                      setValue()
+                    "
+                  ></app-layout-slider>
                 </div>
               </div>
             </div>
@@ -1332,13 +1318,14 @@
           <p class="w-100 mb-4 text">Shadow Blur</p>
           <div class="px-3 w-100">
             <div class="w-100 mb-3">
-              <tc-range-slider
-                animate-onclick="2s"
+              <app-layout-slider
+                [min]="0"
+                [max]="100"
                 [value]="activeBlock.block.shadow.blur"
-                generate-labels="true"
-                id="block-shadow-blur"
-                round="0"
-              ></tc-range-slider>
+                (valueChange)="
+                  activeBlock.block.shadow.blur = $event; setValue()
+                "
+              ></app-layout-slider>
             </div>
           </div>
         </div>
@@ -1358,13 +1345,14 @@
               </p>
               <div class="px-3 w-100">
                 <div class="w-100 mb-3">
-                  <tc-range-slider
-                    animate-onclick="2s"
+                  <app-layout-slider
+                    [min]="0"
+                    [max]="100"
                     [value]="activeBlock.block.shadow.direction[shadow.id]"
-                    generate-labels="true"
-                    id="block-shadow-direction-{{ shadow.id }}"
-                    round="0"
-                  ></tc-range-slider>
+                    (valueChange)="
+                      activeBlock.block.shadow.blur = $event; setValue()
+                    "
+                  ></app-layout-slider>
                 </div>
               </div>
             </div>
@@ -1421,13 +1409,14 @@
           <p class="w-100 mb-4 text">Shadow Blur</p>
           <div class="px-3 w-100">
             <div class="w-100 mb-3">
-              <tc-range-slider
-                animate-onclick="2s"
+              <app-layout-slider
+                [min]="0"
+                [max]="100"
                 [value]="activeBlock.block.grid.shadow.blur"
-                generate-labels="true"
-                id="grid-shadow-blur"
-                round="0"
-              ></tc-range-slider>
+                (valueChange)="
+                  activeBlock.block.grid.shadow.blur = $event; setValue()
+                "
+              ></app-layout-slider>
             </div>
           </div>
         </div>
@@ -1445,13 +1434,16 @@
               </p>
               <div class="px-3 w-100">
                 <div class="w-100 mb-3">
-                  <tc-range-slider
-                    animate-onclick="2s"
+                  <app-layout-slider
+                    [min]="0"
+                    [max]="100"
                     [value]="activeBlock.block.grid.shadow.direction[shadow.id]"
-                    generate-labels="true"
-                    id="grid-shadow-direction-{{ shadow.id }}"
-                    round="0"
-                  ></tc-range-slider>
+                    (valueChange)="
+                      activeBlock.block.grid.shadow.direction[shadow.id] =
+                        $event;
+                      setValue()
+                    "
+                  ></app-layout-slider>
                 </div>
               </div>
             </div>
@@ -1474,13 +1466,14 @@
             <p class="w-100 mb-4 text">Border Radius</p>
             <div class="px-3 w-100">
               <div class="w-100 mb-3">
-                <tc-range-slider
-                  animate-onclick="2s"
+                <app-layout-slider
+                  [min]="0"
+                  [max]="100"
                   [value]="activeBlock!.block.corners"
-                  generate-labels="true"
-                  id="block-corners"
-                  round="0"
-                ></tc-range-slider>
+                  (valueChange)="
+                    activeBlock!.block.corners = $event; setValue()
+                  "
+                ></app-layout-slider>
               </div>
             </div>
           </div>
@@ -1498,13 +1491,15 @@
               </p>
               <div class="px-3 w-100">
                 <div class="w-100 mb-3">
-                  <tc-range-slider
-                    animate-onclick="2s"
+                  <app-layout-slider
+                    [min]="0"
+                    [max]="100"
                     [value]="activeBlock.block.borders[border.id].width"
-                    generate-labels="true"
-                    id="block-border-{{ border.id }}"
-                    round="0"
-                  ></tc-range-slider>
+                    (valueChange)="
+                      activeBlock.block.borders[border.id].width = $event;
+                      setValue()
+                    "
+                  ></app-layout-slider>
                 </div>
               </div>
             </div>
@@ -1788,7 +1783,6 @@
         </div>
       </mat-expansion-panel>
 
-     
       <div class="px-3 d-flex justify-content-center align-content-center py-4">
         <button
           role="button"

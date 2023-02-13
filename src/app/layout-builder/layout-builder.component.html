@@ -118,17 +118,13 @@
                     [editable]="false"
                     [layout]="editableLayout"
                     [currentPage]="{ page, index: 0 }"
-                    [authDetails]="
-                      [
-                        authDetails,
-                        {
-                          frame: {
-                            innerWidth: display.clientWidth,
-                            innerHeight: display.clientHeight
-                          }
-                        }
-                      ] | mergeObj
-                    "
+                    [authDetails]="authDetails"
+                    [pageDetails]="{
+                      frame: {
+                        innerWidth: display.clientWidth,
+                        innerHeight: display.clientHeight
+                      }
+                    }"
                   >
                   </thred-page>
                 </div>
@@ -200,8 +196,8 @@
           <!-- SIDEBAR -->
 
           <div
-            class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow p-0 border-end"
-            style="z-index: 50"
+            class="d-none d-md-block h-100 w-md-20 rounded-0 bg-white shadow p-0 border-end"
+            style="z-index: 50; min-width: 425px;"
             *ngIf="editable && openBar"
           >
             <app-layout-sidebar
@@ -250,22 +246,29 @@
           <!-- DISPLAY PREVIEW -->
 
           <div
-            class="w-100 w-md-{{
-              editable && openBar ? '80' : '100'
-            }} h-100 d-flex justify-content-center align-items-center bg-{{
+            class="w-100 h-100 d-flex justify-content-center align-items-center bg-{{
               editable ? 'light' : 'white'
             }} position-{{ openBar ? 'static' : 'absolute' }}"
+            [style.width.px]=""
           >
             <div class="m-0 {{ editableLayout.type }} shadow-preview">
               <div class="preview-display">
-                <div class="display" id="display">
+                <div class="display" id="display" #display>
                   <thred-page
                     [editable]="editable"
                     [layout]="editableLayout"
                     [overrideBlock]="activeBlock"
                     [currentPage]="{page, index: p}"
                     [defaultItems]="{ '6': defaultNFTs, '7': defaultChains }"
-                    [accountDetails]="page.type == 2 ? {user} : undefined"
+                    [accountDetails]="
+                        page.type == 2 ? {user} : undefined
+                    "
+                    [pageDetails]="{
+                      frame: {
+                        innerWidth: display.clientWidth,
+                        innerHeight: display.clientHeight
+                      }
+                    }"
                     (clickedLayout)="clickedCanvas.emit(true)"
                     (updatePages)="updatePages($any($event))"
                     (updateBlocks)="drop($event, p)"
