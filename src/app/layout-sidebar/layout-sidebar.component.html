@@ -1151,15 +1151,31 @@
         </div>
 
         <div class="wrap-input1 w-100 pt-3">
-          <p class="w-100 mb-4 text">Spacing</p>
+          <p class="w-100 mb-4 text">Vertical Spacing</p>
           <div class="px-3 w-100">
             <div class="w-100 mb-3">
               <app-layout-slider
                 [min]="0"
                 [max]="100"
-                [value]="activeBlock.block.grid.spacing"
+                [value]="activeBlock.block.grid.margins.vertical"
                 (valueChange)="
-                  activeBlock.block.grid.spacing = $event; setValue()
+                  activeBlock.block.grid.margins.vertical = $event; setValue()
+                "
+              ></app-layout-slider>
+            </div>
+          </div>
+        </div>
+
+        <div class="wrap-input1 w-100 pt-3">
+          <p class="w-100 mb-4 text">Horizontal Spacing</p>
+          <div class="px-3 w-100">
+            <div class="w-100 mb-3">
+              <app-layout-slider
+                [min]="0"
+                [max]="100"
+                [value]="activeBlock.block.grid.margins.horizontal"
+                (valueChange)="
+                  activeBlock.block.grid.margins.horizontal = $event; setValue()
                 "
               ></app-layout-slider>
             </div>

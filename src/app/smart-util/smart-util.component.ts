@@ -44,6 +44,7 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
 
   layouts = [
     { name: 'desktop', available: true, title: 'Desktop (Coming Soon)' },
+    { name: 'tablet', available: true, title: 'Tablet (Coming Soon)' },
     { name: 'mobile', available: true, title: 'Mobile' },
   ];
 
@@ -178,8 +179,8 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
     let authPage = this.wallet?.activeLayouts[id].authPage;
     if (authPage) {
       if (id == 'mobile') {
-        this.wallet!.activeLayouts['desktop'].pages = layout;
-        this.wallet!.activeLayouts['desktop'].authPage = authPage;
+        this.wallet!.activeLayouts['tablet'].pages = layout;
+        this.wallet!.activeLayouts['tablet'].authPage = authPage;
       } else if (id == 'desktop') {
         this.wallet!.activeLayouts['mobile'].pages = layout;
         this.wallet!.activeLayouts['mobile'].authPage = authPage;

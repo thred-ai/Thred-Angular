@@ -276,7 +276,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       0,
       [],
       [],
-      new Grid(0, 3, 0, 'start'),
+      new Grid(undefined, 3, 0, 'start'),
       '',
       '#FFFFFF00',
       0,
