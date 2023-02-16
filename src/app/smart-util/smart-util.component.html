@@ -476,11 +476,11 @@
                       class="w-100"
                       appearance="legacy"
                       floatLabel="never"
-                      [disabled]="!newWallet"
+                      [disabled]="false"
                     >
                       <mat-select
                         [ngModel]="wallet.authStyle"
-                        [disabled]="!newWallet"
+                        [disabled]="false"
                         (ngModelChange)="
                           wallet.authStyle = $event; edited = true
                         "
