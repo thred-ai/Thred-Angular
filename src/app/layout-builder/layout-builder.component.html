@@ -68,8 +68,8 @@
           <!-- SIDEBAR -->
 
           <div
-            class="d-none d-md-block w-100 w-md-20 h-100 rounded-0 bg-white shadow p-0 border-end"
-            style="z-index: 50"
+            class="d-none d-md-block h-100 rounded-0 bg-white shadow p-0 border-end"
+            style="z-index: 50; width: 450px"
             *ngIf="editable && openBar"
           >
             <app-layout-sidebar
@@ -105,9 +105,7 @@
           <!-- DISPLAY PREVIEW -->
 
           <div
-            class="w-100 w-md-{{
-              editable && openBar ? '80' : '100'
-            }} h-100 d-flex justify-content-center align-items-center bg-{{
+            class="w-100 h-100 d-flex justify-content-center align-items-center bg-{{
               editable ? 'light' : 'white'
             }} position-{{ openBar ? 'static' : 'absolute' }}"
           >
@@ -196,8 +194,8 @@
           <!-- SIDEBAR -->
 
           <div
-            class="d-none d-md-block h-100 w-md-20 rounded-0 bg-white shadow p-0 border-end"
-            style="z-index: 50; min-width: 425px;"
+            class="d-none d-md-block h-100 rounded-0 bg-white shadow p-0 border-end"
+            style="z-index: 50; width: 450px"
             *ngIf="editable && openBar"
           >
             <app-layout-sidebar
