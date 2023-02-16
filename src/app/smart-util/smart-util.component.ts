@@ -43,8 +43,8 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   newWallet = true;
 
   layouts = [
-    { name: 'desktop', available: true, title: 'Desktop (Coming Soon)' },
-    { name: 'tablet', available: true, title: 'Tablet (Coming Soon)' },
+    { name: 'desktop', available: false, title: 'Desktop (Coming Soon)' },
+    { name: 'tablet', available: true, title: 'Tablet' },
     { name: 'mobile', available: true, title: 'Mobile' },
   ];
 
