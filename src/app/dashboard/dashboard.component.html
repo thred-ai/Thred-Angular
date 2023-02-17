@@ -148,8 +148,7 @@
                       [analytics]="{
                         name: 'Activity',
                         locData: (views | location),
-                        nftData:
-                          (views | location: undefined:1:dev.utils)
+                        nftData: (views | location: undefined:1:dev.utils)
                       }"
                       [utils]="dev.utils"
                       (clicked)="
@@ -317,10 +316,13 @@
             </div>
             <div class="px-3 w-100">
               <div class="w-100 h-100 p-4 pt-0 px-3">
-                <div class="w-100 big-design-card rounded-15">
+                <div
+                  class="w-100 big-design-card rounded-15"
+                  *ngIf="dev?.utils ?? [] | walletStatus: [0, 1] as wallets"
+                >
                   <app-collection-table
-                    [utils]="dev?.utils ?? []"
-                    [count]="(dev?.utils ?? []).length"
+                    [utils]="wallets"
+                    [count]="wallets.length"
                     (clicked)="openUtil($event.app, $event.mode)"
                   >
                   </app-collection-table>

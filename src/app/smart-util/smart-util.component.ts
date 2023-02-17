@@ -469,6 +469,9 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
             this.edited = false;
             if (autopublish) {
               this.publish(wallet, close, (result) => {
+                if (close) {
+                  this.close();
+                }
                 this.loading = false;
               });
             } else {
@@ -487,6 +490,16 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
       }
     } else {
       console.log('masuk');
+    }
+  }
+
+  removeWallet() {
+    let index = this.loadService.loadedUser.value?.utils.findIndex(
+      (w) => w.id == this.wallet?.id
+    );
+
+    if (index != undefined && index > -1) {
+      this.loadService.loadedUser.value?.utils.splice(index, 1);
     }
   }
 

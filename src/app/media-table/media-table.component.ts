@@ -35,7 +35,7 @@ export class MediaTableComponent implements OnInit {
     { media: Media; index: number } | undefined
   >();
 
-  @Output() dataChanged = new EventEmitter<{data: Media, type: 0 | 1}>();
+  @Output() dataChanged = new EventEmitter<{data: Media[]}>();
 
   @ViewChild(MatTable) table!: MatTable<any>;
   data: Media[] = [];
@@ -108,12 +108,10 @@ export class MediaTableComponent implements OnInit {
   ngAfterViewInit() {}
 
   drop(event: any) {
-    // let arr = this.editableLayout?.pages[pageIndex].blocks ?? [];
     this.loading = 1;
     moveItemInArray(this.data, event.previousIndex, event.currentIndex);
-    // if (this.activeBlock.index == event.previousIndex) {
-    //   this.activeBlock.index = event.currentIndex;
-    // }
+
+    this.dataChanged.emit({data: this.data})
     this.reloadTable();
   }
 
@@ -186,7 +184,8 @@ export class MediaTableComponent implements OnInit {
 
           if (url) {
             media.url = url;
-            this.dataChanged.emit({data: media, type: 1});
+            this.data.push(media)
+            this.dataChanged.emit({data: this.data});
 
             this.reloadTable();
           }
@@ -200,12 +199,9 @@ export class MediaTableComponent implements OnInit {
     let index = this.data.indexOf(media);
     if (index > -1 && this.id) {
       this.data.splice(index, 1);
-      setTimeout(() => {
-        console.log(this.data);
-        // this.reloadTable();
-        this.dataChanged.emit({data: media, type: 0});
+      this.media = JSON.parse(JSON.stringify(this.data))
+      this.dataChanged.emit({data: this.data});
 
-      }, 250);
     }
   }
 

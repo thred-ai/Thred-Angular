@@ -154,37 +154,23 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   }
 
   saveLayout(delay: number) {
-    // if (this.activeBlock){
-    //   this.page.blocks[this.activeBlock.blockIndex] = this.activeBlock.block
-    // }
     this.saveLayouts.emit({ delay, page: this.page });
   }
 
-  setBlockImgData(event: { data: Media; type: 0 | 1 }) {
+  setBlockImgData(event: { data: Media[] }) {
+    console.log(event);
     if (!this.activeBlock) {
       return;
     }
-    if (event.type == 1) {
-      this.activeBlock.block.imgs.push(event.data);
-      return;
-    }
-
-    let index = this.activeBlock.block.imgs.indexOf(event.data);
-    if (index > -1) {
-      this.activeBlock.block.imgs.splice(index);
-    }
+    this.activeBlock.block.imgs = event.data ?? [];
   }
 
-  setAuthPageImgData(event: { data: Media; type: 0 | 1 }) {
+  setAuthPageImgData(event: { data: Media[] }) {
     let page = this.page as AuthPage;
 
-    if (page) {
-      if (event.type == 1) {
-        page.img = event.data;
-        return;
-      }
-
-      page.img = undefined;
+    if (page && event.data) {
+      console.log(event.data)
+      page.img = event.data[0];
     }
   }
 
@@ -367,10 +353,8 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-  sliderVal(event: Event){
-    console.log((event as RangeCustomEvent).detail.value)
+  sliderVal(event: Event) {
+    console.log((event as RangeCustomEvent).detail.value);
     return (event as RangeCustomEvent).detail.value as number;
   }
 

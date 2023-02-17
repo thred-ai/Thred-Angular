@@ -119,6 +119,7 @@ import { AddAppComponent } from './add-app/add-app.component';
 import { MergeObjPipe } from './merge-obj.pipe';
 import { CastPipe } from './cast.pipe';
 import { LayoutSliderComponent } from './layout-slider/layout-slider.component';
+import { WalletStatusPipe } from './wallet-status.pipe';
 
 
 
@@ -166,6 +167,7 @@ import { LayoutSliderComponent } from './layout-slider/layout-slider.component';
     TextEditorComponent,
     MergeObjPipe,
     LayoutSliderComponent,
+    WalletStatusPipe,
   ],
   imports: [
     CommonModule,

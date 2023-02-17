@@ -1,7 +1,7 @@
 <div class="p-0">
   <div
     class="d-flex px-3 justify-content-between align-items-center frame-header bg-{{
-      mode == 1 ? 'dark' : 'white'
+      mode == 1 ? 'edit' : 'white'
     }}"
   >
     <div class="d-flex justify-content-center align-items-center my-auto">
@@ -25,7 +25,7 @@
       </p>
 
       <button
-        class="btn bg-transparent shadow-0 rounded-pill fw-bold border-0 text-light-purple d-flex justify-content-between align-content-center ms-4 px-3 py-2 my-auto"
+        class="btn bg-transparent shadow-0 rounded-pill fw-bold border-0 text-white d-flex justify-content-between align-content-center ms-4 px-3 py-2 my-auto"
         (click)="loadingMode == 0 ? layoutBuilder?.save() : null"
         *ngIf="mode == 1"
       >
@@ -76,7 +76,7 @@
 
     <div
       class="d-flex justify-content-between align-items-center h-100"
-      *ngIf="mode == 1"
+      *ngIf="mode == 1 && layoutBuilder?.activeBlock?.block == undefined"
     >
       <div class="px-1">
         <button
@@ -1092,7 +1092,7 @@
                     <a
                       role="button"
                       class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
-                      (click)="wallet.status = 3; save(true, true)"
+                      (click)="wallet.status = 3; save(true, true); removeWallet()"
                     >
                       Delete Wallet
                     </a>
@@ -1232,7 +1232,7 @@
       </div>
     </div>
     <div
-      class="frame-body d-flex justify-content-center align-content-center rounded-10 bg-dark rounded-0"
+      class="frame-body d-flex justify-content-center align-content-center rounded-10 bg-edit rounded-0"
       *ngIf="mode == 1 && selectedIndex != undefined"
     >
       <div class="m-auto p-3 pt-0 h-100" style="width: 100vw">
