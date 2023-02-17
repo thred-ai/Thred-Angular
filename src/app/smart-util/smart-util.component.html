@@ -148,7 +148,7 @@
               <div class="m-3 pb-4 px-0">
                 <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
                   <h3 class="w-100 mb-4" style="font-size: 20px">
-                    Display Images
+                    App Images
                   </h3>
 
                   <div
@@ -1020,7 +1020,7 @@
 
                 <div class="wrap-input1 w-100 pt-3 px-4 px-md-5">
                   <h3 class="w-100 mb-4" style="font-size: 20px">
-                    New User Webhook
+                    New User Webhook (Beta)
                   </h3>
 
                   <div
@@ -1092,7 +1092,9 @@
                     <a
                       role="button"
                       class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
-                      (click)="wallet.status = 3; save(true, true); removeWallet()"
+                      (click)="
+                        wallet.status = 3; save(true, true); removeWallet()
+                      "
                     >
                       Delete Wallet
                     </a>
