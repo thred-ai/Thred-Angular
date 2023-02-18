@@ -43,10 +43,14 @@ export class SmartUtilComponent implements OnInit, OnDestroy {
   newWallet = true;
 
   layouts = [
-    { name: 'desktop', available: false, title: 'Desktop (Coming Soon)' },
-    { name: 'tablet', available: true, title: 'Tablet' },
-    { name: 'mobile', available: true, title: 'Mobile' },
+    { name: 'desktop', available: false, title: 'Desktop (Coming Soon)', icon: "desktop_windows" },
+    { name: 'tablet', available: true, title: 'Tablet', icon: "tablet_mac" },
+    { name: 'mobile', available: true, title: 'Mobile', icon: "phone_iphone" },
   ];
+
+  sameIcon(id: string){
+    return this.layouts.find(l => l.name == id)?.icon
+  }
 
   constructor(
     private fb: FormBuilder,

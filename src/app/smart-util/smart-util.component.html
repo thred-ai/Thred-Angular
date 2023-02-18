@@ -147,9 +147,7 @@
             <div class="big-design-body">
               <div class="m-3 pb-4 px-0">
                 <div class="wrap-input1 w-100 pt-3 mb-4 px-4 px-md-5">
-                  <h3 class="w-100 mb-4" style="font-size: 20px">
-                    App Images
-                  </h3>
+                  <h3 class="w-100 mb-4" style="font-size: 20px">App Images</h3>
 
                   <div
                     class="rounded-15 border w-100"
@@ -913,10 +911,7 @@
                                   "
                                 >
                                   {{
-                                    (wallet.displayedLayouts ?? [])[0] ==
-                                    "mobile"
-                                      ? "phone_iphone"
-                                      : "desktop_windows"
+                                    sameIcon((wallet.displayedLayouts ?? [])[0])
                                   }}
                                 </mat-icon>
                               </div>
@@ -945,10 +940,7 @@
                                   "
                                 >
                                   {{
-                                    (wallet.displayedLayouts ?? [])[1] ==
-                                    "mobile"
-                                      ? "phone_iphone"
-                                      : "desktop_windows"
+                                    sameIcon((wallet.displayedLayouts ?? [])[1])
                                   }}
                                 </mat-icon>
                               </div>
@@ -981,11 +973,7 @@
                                 class="me-2 h-100 rounded-circle"
                                 style="object-fit: contain; aspect-ratio: 1"
                               >
-                                {{
-                                  layout.name == "mobile"
-                                    ? "phone_iphone"
-                                    : "desktop_windows"
-                                }}
+                                {{ layout.icon }}
                               </mat-icon>
                               <span class="py-1" style="font-size: medium">
                                 {{ layout.title }}
@@ -1135,11 +1123,7 @@
                 <mat-tab *ngFor="let layout of walletLayouts ?? []">
                   <ng-template mat-tab-label>
                     <mat-icon class="example-tab-icon text-dark">
-                      {{
-                        layout.type == "mobile"
-                          ? "phone_iphone"
-                          : "desktop_windows"
-                      }}</mat-icon
+                      {{ sameIcon(layout.type) }}</mat-icon
                     >
                     <span class="ms-2 text-dark big-design-body fw-bold">
                       {{ layout.name }}
