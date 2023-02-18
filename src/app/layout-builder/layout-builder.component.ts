@@ -269,6 +269,7 @@ export class LayoutBuilderComponent implements OnInit {
 
   saveLayout(delay = 750) {
     console.log(delay);
+    this.cdr.detectChanges()
     setTimeout(() => {
       this.save();
     }, delay);

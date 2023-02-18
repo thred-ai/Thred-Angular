@@ -74,7 +74,6 @@
           >
             <app-layout-sidebar
               [page]="page"
-              [pages]="[page]"
               [pageIndex]="0"
               [walletId]="wallet.id"
               [overrideBlock]="activeBlock"
@@ -200,7 +199,6 @@
           >
             <app-layout-sidebar
               [page]="page"
-              [pages]="editableLayout.pages"
               [pageIndex]="p"
               [walletId]="wallet.id"
               [defaultItems]="{ '6': defaultNFTs, '7': defaultChains }"
@@ -247,7 +245,6 @@
             class="w-100 h-100 d-flex justify-content-center align-items-center bg-{{
               editable ? 'light' : 'white'
             }} position-{{ openBar ? 'static' : 'absolute' }}"
-            [style.width.px]=""
           >
             <div class="m-0 {{ editableLayout.type }} shadow-preview">
               <div class="preview-display">

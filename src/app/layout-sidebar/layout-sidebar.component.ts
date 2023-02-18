@@ -46,12 +46,12 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   blockShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
 
   @Input() page!: Page;
+  @Input() canDelete: boolean = false;
 
   AuthPage!: AuthPage;
   AccountPage!: AccountPage;
 
   @Input() pageIndex!: number;
-  @Input() pages!: Page[];
   @Input() walletId!: string;
 
   @Input() defaultItems?: Dict<any[]>;
@@ -132,7 +132,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   }
 
   syncBlockAndPageColors(pageIndex: number, value: string) {
-    this.pages[pageIndex]?.blocks?.forEach((block) => {
+    this.page.blocks?.forEach((block) => {
       if (block.backgroundColor == '') {
         block.backgroundColor = value ?? '#FFFFFF';
       }
@@ -363,7 +363,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let blocks = this.pages[this.activeBlock.pageIndex].blocks ?? [];
+    let blocks = this.page.blocks ?? [];
 
     if (blocks[this.activeBlock.blockIndex] != undefined) {
       blocks[this.activeBlock.blockIndex] = this.copyBlock(

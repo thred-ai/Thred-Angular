@@ -317,8 +317,8 @@
                   [cpPosition]="'top'"
                   [cpPositionRelativeToArrow]="false"
                   (colorPickerSelect)="
-                    pages[pageIndex]!.backgroundColor = $event;
-                    syncBlockAndPageColors(pageIndex, $event);
+                    page!.backgroundColor = $event;
+                    
                     saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
@@ -355,7 +355,7 @@
                   [cpPosition]="'top'"
                   [cpPositionRelativeToArrow]="false"
                   (colorPickerSelect)="
-                    pages[pageIndex]!.detailColor = $event;
+                    page!.detailColor = $event;
                     syncBlockAndPageColors(pageIndex, $event);
                     saveLayout(0)
                   "
@@ -393,7 +393,7 @@
                   [cpPosition]="'top'"
                   [cpPositionRelativeToArrow]="false"
                   (colorPickerSelect)="
-                    pages[pageIndex]!.textColor = $event;
+                    page!.textColor = $event;
                     syncBlockAndPageColors(pageIndex, $event);
                     saveLayout(0)
                   "
@@ -789,7 +789,7 @@
       <div class="px-3 d-flex justify-content-center align-content-center py-4">
         <button
           role="button"
-          [disabled]="pages.length === 1 || page.type != 0"
+          [disabled]="canDelete"
           (click)="removedPage.emit(pageIndex)"
           class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
         >
