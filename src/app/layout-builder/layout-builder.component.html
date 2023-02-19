@@ -114,7 +114,8 @@
                   <thred-page
                     [editable]="false"
                     [layout]="editableLayout"
-                    [currentPage]="{ page, index: 0 }"
+                    [page]="page"
+                    [pageIndex]="0"
                     [authDetails]="authDetails"
                     [pageDetails]="{
                       frame: {
@@ -253,7 +254,8 @@
                     [editable]="editable"
                     [layout]="editableLayout"
                     [overrideBlock]="activeBlock"
-                    [currentPage]="{page, index: p}"
+                    [page]="page"
+                    [pageIndex]="p"
                     [defaultItems]="{ '6': defaultNFTs, '7': defaultChains }"
                     [accountDetails]="
                         page.type == 2 ? {user} : undefined
