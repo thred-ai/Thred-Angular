@@ -46,7 +46,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   blockShadowDirection: { id: 'vertical' | 'horizontal' }[] = [];
 
   @Input() page!: Page;
-  @Input() canDelete: boolean = false;
 
   AuthPage!: AuthPage;
   AccountPage!: AccountPage;
@@ -131,14 +130,6 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
-  syncBlockAndPageColors(pageIndex: number, value: string) {
-    this.page.blocks?.forEach((block) => {
-      if (block.backgroundColor == '') {
-        block.backgroundColor = value ?? '#FFFFFF';
-      }
-    });
-  }
-
   finishedEditing(mode = 0) {
     // this.syncListeners(false);
 
@@ -169,7 +160,7 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
     let page = this.page as AuthPage;
 
     if (page && event.data) {
-      console.log(event.data)
+      console.log(event.data);
       page.img = event.data[0];
     }
   }
@@ -257,19 +248,21 @@ export class LayoutSidebarComponent implements OnInit, OnDestroy {
   }
 
   addBlock(pageIndex: number) {
-    let block = new Block(
-      undefined,
-      0,
-      [],
-      [],
-      new Grid(undefined, 3, 0, 'start'),
-      '',
-      '#FFFFFF00',
-      0,
-      '',
-      [],
-      ''
-    );
+    let block = this.page.blocks[this.page.blocks.length - 1]
+      ? this.copyBlock(this.page.blocks[this.page.blocks.length - 1])
+      : new Block(
+          undefined,
+          0,
+          [],
+          [],
+          new Grid(undefined, 3, 0, 'start'),
+          '',
+          '#FFFFFF00',
+          0,
+          '',
+          [],
+          ''
+        );
 
     this.addedBlock.emit({ block, pageIndex });
   }

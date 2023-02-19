@@ -356,7 +356,6 @@
                   [cpPositionRelativeToArrow]="false"
                   (colorPickerSelect)="
                     page!.detailColor = $event;
-                    syncBlockAndPageColors(pageIndex, $event);
                     saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
@@ -394,7 +393,6 @@
                   [cpPositionRelativeToArrow]="false"
                   (colorPickerSelect)="
                     page!.textColor = $event;
-                    syncBlockAndPageColors(pageIndex, $event);
                     saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
@@ -789,7 +787,7 @@
       <div class="px-3 d-flex justify-content-center align-content-center py-4">
         <button
           role="button"
-          [disabled]="canDelete"
+          [disabled]="page.type == 2 || page.type == 1"
           (click)="removedPage.emit(pageIndex)"
           class="btn bg-danger rounded-pill text-white fw-bold px-3 py-1 my-auto"
         >
