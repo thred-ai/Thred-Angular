@@ -317,9 +317,7 @@
                   [cpPosition]="'top'"
                   [cpPositionRelativeToArrow]="false"
                   (colorPickerSelect)="
-                    page!.backgroundColor = $event;
-                    
-                    saveLayout(0)
+                    page!.backgroundColor = $event; saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
                   [cpOKButton]="true"
@@ -355,8 +353,7 @@
                   [cpPosition]="'top'"
                   [cpPositionRelativeToArrow]="false"
                   (colorPickerSelect)="
-                    page!.detailColor = $event;
-                    saveLayout(0)
+                    page!.detailColor = $event; saveLayout(0)
                   "
                   [cpOutputFormat]="'hex'"
                   [cpOKButton]="true"
@@ -391,10 +388,7 @@
                   class="btn btn-transparent shadow-0 d-flex justify-content-between align-items-center"
                   [cpPosition]="'top'"
                   [cpPositionRelativeToArrow]="false"
-                  (colorPickerSelect)="
-                    page!.textColor = $event;
-                    saveLayout(0)
-                  "
+                  (colorPickerSelect)="page!.textColor = $event; saveLayout(0)"
                   [cpOutputFormat]="'hex'"
                   [cpOKButton]="true"
                   [cpOKButtonText]="'SET COLOR'"

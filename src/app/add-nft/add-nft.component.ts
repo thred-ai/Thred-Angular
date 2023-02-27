@@ -26,7 +26,7 @@ export class AddNftComponent implements OnInit {
 
   async ngOnInit() {
     let nft = this.data as NFT;
-    this.nft = nft ?? new NFT('', '', '', '', 0, 1, undefined);
+    this.nft = nft ?? new NFT('', '', '', '', "0", 1, undefined);
 
     console.log(this.nft);
     this.loadService.loadedChains.subscribe((chains) => {

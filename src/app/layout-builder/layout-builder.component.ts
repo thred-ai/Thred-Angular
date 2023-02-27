@@ -177,7 +177,7 @@ export class LayoutBuilderComponent implements OnInit {
       '',
       'https://cdn.simplehash.com/assets/9d1b2dc7a3ae37f313efce97b1bb8af53365809b82be47c169a2fdf61c9f26b1.png',
       '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D',
-      1,
+      "1",
       1
     ),
     new NFT(
@@ -185,7 +185,7 @@ export class LayoutBuilderComponent implements OnInit {
       '',
       'https://cdn.simplehash.com/assets/b3df9c78238ba23b0b65b5de687e1232e2a709c3ed091c6f20ec374967a4f29b.png',
       '0xED5AF388653567Af2F388E6224dC7C4b3241C544',
-      1,
+      "1",
       1
     ),
     new NFT(
@@ -193,7 +193,7 @@ export class LayoutBuilderComponent implements OnInit {
       '',
       'https://cdn.simplehash.com/assets/a200bf39b8c8ec73d1f42aaa579c688a37837090e1eed7cfe461be204448d680.png',
       '0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB',
-      1,
+      "1",
       1
     ),
   ];
